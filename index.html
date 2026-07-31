@@ -61,6 +61,27 @@
             width: 100%;
             height: auto;
         }
+
+        #figure_h_field_plot svg {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        #download_svg_wrap {
+            text-align: right;
+            margin-top: 2px;
+        }
+
+        #download_svg {
+            font-size: 0.82rem;
+            color: #444;
+            text-decoration: none;
+        }
+
+        #download_svg:hover {
+            text-decoration: underline;
+        }
     </style>
     <script type="module">
         const loading = document.getElementById('loading');
@@ -173,6 +194,7 @@
 
         <section class="pyscript">
             <div id="figure_h_field_plot"></div>
+            <div id="download_svg_wrap"><a id="download_svg" href="#" download="magnetic_field_plot.svg">Download figure as SVG</a></div>
             <script type="py" src="./index.py" config="./pyscript.toml"></script>
         </section>
 

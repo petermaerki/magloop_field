@@ -1,4 +1,4 @@
-Magnetic Loop H-Field Calculator
+**Magnetic Loop H-Field Calculator**
 
 
 

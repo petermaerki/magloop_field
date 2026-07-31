@@ -163,7 +163,7 @@ class Calculator:
         plt.axhline(0, color="black", lw=1.2)
         plt.axvline(0, color="black", lw=1.2)
 
-        plt.title("Magnetic Field Strength ($H$)", fontsize=12, pad=6, y=1.02)
+        plt.title("Magnetic Field Strength $|H|$", fontsize=12, pad=6, y=1.02)
         plt.xlabel("x [m]")
         plt.ylabel("y [m]")
         plt.gca().set_aspect("equal")

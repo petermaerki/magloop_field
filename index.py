@@ -1,4 +1,5 @@
 from pyscript.web import page
+from js import document
 import base64
 import io
 import math
@@ -54,12 +55,18 @@ def do_calculate(e):
         levels=levels,
     )
 
-    png_buffer = io.BytesIO()
-    figure_h_field_plot.savefig(png_buffer, format="png", bbox_inches="tight", pad_inches=0.01)
+    svg_buffer = io.BytesIO()
+    figure_h_field_plot.savefig(svg_buffer, format="svg", bbox_inches="tight", pad_inches=0.01)
     plt.close(figure_h_field_plot)
-    png_data = base64.b64encode(png_buffer.getvalue()).decode("ascii")
+    svg_text = svg_buffer.getvalue().decode("utf-8")
+    svg_data = base64.b64encode(svg_text.encode("utf-8")).decode("ascii")
 
     page["div#figure_h_field_plot"].innerHTML = ""
-    page["div#figure_h_field_plot"].innerHTML = (
-        f'<img src="data:image/png;base64,{png_data}" alt="Magnetic field plot">'
+    page["div#figure_h_field_plot"].innerHTML = svg_text
+    document.getElementById("download_svg").setAttribute(
+        "href", f"data:image/svg+xml;base64,{svg_data}"
     )
+
+
+# Render initial values and plot once on page load.
+do_calculate(None)
