@@ -1,7 +1,4 @@
-### Magnetic Loop H-Field Calculator
-
-Online Calculator: [petermaerki.github.io/magloop_field](https://petermaerki.github.io/iterativetrimmer)
-Repository: [github.com/petermaerki/magloop_field](https://github.com/petermaerki/iterativetrimmer)
+Magnetic Loop H-Field Calculator
 
 
 

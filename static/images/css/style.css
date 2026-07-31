@@ -5,19 +5,21 @@ td {
     vertical-align: top;
 }
 div#online_calculator {
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 6px;
-    padding: 4px 14px 12px 14px;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
     display: block;
     width: 100%;
     box-sizing: border-box;
-    background: rgba(144, 238, 144, 0.14);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    background: transparent;
+    box-shadow: none;
 }
 
 div#online_calculator table {
     width: 100%;
     table-layout: auto;
+    margin: 0;
 }
 
 div#online_calculator td.input_label {
@@ -32,4 +34,11 @@ div#online_calculator td.input_value {
 div#online_calculator td.input_value input[type="text"] {
     width: 100%;
     box-sizing: border-box;
+}
+
+div#online_calculator .formula_line {
+    margin-top: 6px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow-x: auto;
 }

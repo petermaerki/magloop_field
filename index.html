@@ -85,7 +85,7 @@
         <script type="py" src="./index_readme.py" async></script>
 
         <div id="online_calculator">
-            <h3>Online calculator</h3>
+
             <table>
                 <tbody>
                     <tr>
@@ -129,8 +129,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td>h_field @ point X/Y/Z: <b id="h_field">...</b></td>
+                        <td>Calculated |H| at point (X, Y, Z):</td>
+                        <td> <b id="h_field">...</b></td>
                     </tr>
                     <tr>
                         <td class="input_label">
@@ -175,6 +175,20 @@
             <div id="figure_h_field_plot"></div>
             <script type="py" src="./index.py" config="./pyscript.toml"></script>
         </section>
+
+        <div>
+            <small>
+                Limitations: Calculations on this page use the double-retarded magnetic dipole formula. The model is valid for a small magnetic loop (D &lt; 0.1 lambda), and fields are considered reliable mainly at distances of about one loop diameter or more from the origin. For larger loops, current is no longer constant around the circumference, so other formulas are required.
+            </small>
+            <div class="formula_line">
+                $|H| = \frac{m}{4\pi}\sqrt{4\cos^2(\varphi)\left(\frac{1}{r^6}+\frac{k^2}{r^4}\right)+\sin^2(\varphi)\left(\frac{1}{r^6}-\frac{k^2}{r^4}+\frac{k^4}{r^2}\right)}$, $k = \frac{2\pi f}{c}$
+            </div>
+        </div>
+
+        <div>
+            Online Calculator: <a href="https://petermaerki.github.io/iterativetrimmer">petermaerki.github.io/magloop_field</a>
+            Repository: <a href="https://github.com/petermaerki/iterativetrimmer">github.com/petermaerki/magloop_field</a>
+        </div>
     </div>
 
 </body>
