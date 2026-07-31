@@ -14,24 +14,50 @@
     <link rel="stylesheet" href="https://pyscript.net/releases/2025.8.1/core.css">
     <!-- This script tag bootstraps PyScript -->
     <script type="module" src="https://pyscript.net/releases/2025.8.1/core.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 
     <!-- for splashscreen -->
     <style>
         #loading { outline: none; border: none; background: transparent }
+        #app_content { display: none; }
     </style>
     <script type="module">
         const loading = document.getElementById('loading');
-        addEventListener('py:ready', () => loading.close());
+        const appContent = document.getElementById('app_content');
+        addEventListener('py:ready', () => {
+            loading.close();
+            appContent.style.display = 'block';
+        });
         loading.showModal();
     </script>
 
-    <title>IterativeTrimming Iterative adjustment with fix value resistor</title>
+    <title>H-Field Calculator for Magnetic Loop Antenna</title>
 </head>
 
 <body>
         <dialog id="loading">
             <h1>Loading...</h1>
         </dialog>
+
+    <div id="app_content">
+    <section class="pyscript">
+        <div id="figure_h_field_plot"></div>
+        <script type="py" src="./index.py" config="./pyscript.toml"></script>
+    </section>
+
+    <div id="readme"></div>
+    <script type="py" src="./index_readme.py" async></script>
 
     <div id="online_calculator">
         <h1>Online calculator</h1>
@@ -61,14 +87,7 @@
             </tbody>
         </table>
     </div>
-
-    <section class="pyscript">
-        <div id="figure_h_field_plot"></div>
-        <script type="py" src="./index.py" config="./pyscript.toml"></script>
-    </section>
-
-    <div id="readme"></div>
-    <script type="py" src="./index_readme.py" async></script>
+    </div>
 
 </body>
 

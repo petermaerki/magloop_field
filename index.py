@@ -24,4 +24,5 @@ def do_calculate(e):
         x_step=1.0,
         y_step=1.0,
     )
+    page["div#figure_h_field_plot"].innerHTML = ""
     display(figure_h_field_plot, target="figure_h_field_plot")
