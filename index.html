@@ -29,13 +29,38 @@
 
     <!-- for splashscreen -->
     <style>
-        #loading { outline: none; border: none; background: transparent }
-        #app_content { display: none; }
-        #online_calculator { margin-bottom: 6px; }
-        section.pyscript { margin-top: 0; width: 100%; }
-        #figure_h_field_plot { margin-top: 0; }
-        #figure_h_field_plot figure { margin: 0; }
-        #figure_h_field_plot img { display: block; width: 100%; height: auto; }
+        #loading {
+            outline: none;
+            border: none;
+            background: transparent
+        }
+
+        #app_content {
+            display: none;
+        }
+
+        #online_calculator {
+            margin-bottom: 6px;
+        }
+
+        section.pyscript {
+            margin-top: 0;
+            width: 100%;
+        }
+
+        #figure_h_field_plot {
+            margin-top: 0;
+        }
+
+        #figure_h_field_plot figure {
+            margin: 0;
+        }
+
+        #figure_h_field_plot img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
     </style>
     <script type="module">
         const loading = document.getElementById('loading');
@@ -51,49 +76,105 @@
 </head>
 
 <body>
-        <dialog id="loading">
-            <h1>Loading...</h1>
-        </dialog>
+    <dialog id="loading">
+        <h1>Loading...</h1>
+    </dialog>
 
     <div id="app_content">
-    <div id="readme"></div>
-    <script type="py" src="./index_readme.py" async></script>
+        <div id="readme"></div>
+        <script type="py" src="./index_readme.py" async></script>
 
-    <div id="online_calculator">
-        <h3>Online calculator</h3>
-        <table>
-            <tbody>
-                <tr>
-                    <td colspan="2">
-                        <label for="m_Am2">Magnetic dipole moment [A m^2]</label>
-                        <input type="text" id="m_Am2" maxlength="12" value="7.85">
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <button type="submit" py-click="do_calculate">Calculate</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Suggested fix value resistors</td>
-                    <td>Target resistance: <b id="loesung_sollwert">...</b></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>h_field: <b id="h_field">...</b></td>
-                </tr>
+        <div id="online_calculator">
+            <h3>Online calculator</h3>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="input_label">
+                            <label for="m_Am2">Magnetic dipole moment [A m^2]</label>
+                        </td>
+                        <td class="input_value">
+                            <input type="text" id="m_Am2" value="7.85">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="input_label">
+                            <label for="f_MHz">Frequency [MHz]</label>
+                        </td>
+                        <td class="input_value">
+                            <input type="text" id="f_MHz" value="14.1">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="input_label">
+                            <label for="x_m">X [m]</label>
+                        </td>
+                        <td class="input_value">
+                            <input type="text" id="x_m" value="2.0">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="input_label">
+                            <label for="y_m">Y [m]</label>
+                        </td>
+                        <td class="input_value">
+                            <input type="text" id="y_m" value="2.0">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="input_label">
+                            <label for="z_m">Z [m]</label>
+                        </td>
+                        <td class="input_value">
+                            <input type="text" id="z_m" value="0.0">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>h_field @ point X/Y/Z: <b id="h_field">...</b></td>
+                    </tr>
+                    <tr>
+                        <td class="input_label">
+                            <label for="lim_x_m">Figure range X +-[m]</label>
+                        </td>
+                        <td class="input_value">
+                            <input type="text" id="lim_x_m" value="4">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="input_label">
+                            <label for="lim_y_m">Figure range Y +-[m]</label>
+                        </td>
+                        <td class="input_value">
+                            <input type="text" id="lim_y_m" value="3">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="input_label">
+                            <label for="line_at_field">Line @ field [A/m]</label>
+                        </td>
+                        <td class="input_value">
+                            <input type="text" id="line_at_field" value="0.01, 0.05, 0.1, 0.2, 0.3">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button type="submit" py-click="do_calculate">Calculate</button>
+                        </td>
+                    </tr>
 
 
-                <!-- <script type="py" src="./index.py" config="pyscript.toml"></script> -->
 
-            </tbody>
-        </table>
-    </div>
 
-    <section class="pyscript">
-        <div id="figure_h_field_plot"></div>
-        <script type="py" src="./index.py" config="./pyscript.toml"></script>
-    </section>
+                    <!-- <script type="py" src="./index.py" config="pyscript.toml"></script> -->
+
+                </tbody>
+            </table>
+        </div>
+
+        <section class="pyscript">
+            <div id="figure_h_field_plot"></div>
+            <script type="py" src="./index.py" config="./pyscript.toml"></script>
+        </section>
     </div>
 
 </body>

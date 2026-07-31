@@ -14,3 +14,22 @@ div#online_calculator {
     background: rgba(144, 238, 144, 0.14);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
+
+div#online_calculator table {
+    width: 100%;
+    table-layout: auto;
+}
+
+div#online_calculator td.input_label {
+    white-space: nowrap;
+    padding-right: 10px;
+}
+
+div#online_calculator td.input_value {
+    width: 100%;
+}
+
+div#online_calculator td.input_value input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+}
