@@ -1,15 +1,20 @@
 from pyscript.web import page
 
-# from magloop_field import magloop_field
-from magnetic_field_strength import 
+from magnetic_field_strength import Calculator
+
+
 def do_calculate(e):
-    resistance_text, = page["input#resistance"].value
-    resistance_Ohm = float(resistance_text)
+    (I_A_text,) = page["input#I_A"].value
+    I_A = float(I_A_text)
 
-    trimmer = magloop_field(resistance_Ohm)
+    D_m = 1.0
+    calculator = Calculator(
+        D_m=D_m,
+        R_m=D_m / 2,
+        I_A=I_A,
+        f_Hz=14.1e6,
+        lim_x_m=4.0,
+        lim_y_m=3.0,
+    )
 
-    page["b#loesung_sollwert"].innerHTML = trimmer.sollwert
-    page["b#loesung_a"].innerHTML = trimmer.loesung_a
-    page["b#loesung_b"].innerHTML = trimmer.loesung_b
-    page["b#loesung_c"].innerHTML = trimmer.loesung_c
-    page["b#loesung_d"].innerHTML = trimmer.loesung_d
+    page["b#h_field"].innerHTML = f"{calculator.h_field:9.5f} field..."
