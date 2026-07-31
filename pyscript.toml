@@ -3,6 +3,6 @@ description = "magloop_field"
 packages = ["markdown", "numpy", "matplotlib"]
 
 [files]
-"./magloop_field.py" = ""
+"./index.py" = ""
 "./magnetic_field_strength.py" = ""
 "./README.md" = ""
