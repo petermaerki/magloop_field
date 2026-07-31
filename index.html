@@ -25,62 +25,6 @@
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 
-    <!-- for splashscreen -->
-    <style>
-        #loading {
-            outline: none;
-            border: none;
-            background: transparent
-        }
-
-        #app_content {
-            display: none;
-        }
-
-        #online_calculator {
-            margin-bottom: 6px;
-        }
-
-        section.pyscript {
-            margin-top: 0;
-            width: 100%;
-        }
-
-        #figure_h_field_plot {
-            margin-top: 0;
-        }
-
-        #figure_h_field_plot figure {
-            margin: 0;
-        }
-
-        #figure_h_field_plot img {
-            display: block;
-            width: 100%;
-            height: auto;
-        }
-
-        #figure_h_field_plot svg {
-            display: block;
-            width: 100%;
-            height: auto;
-        }
-
-        #download_svg_wrap {
-            text-align: right;
-            margin-top: 2px;
-        }
-
-        #download_svg {
-            font-size: 0.82rem;
-            color: #444;
-            text-decoration: none;
-        }
-
-        #download_svg:hover {
-            text-decoration: underline;
-        }
-    </style>
     <script type="module">
         const loading = document.getElementById('loading');
         const appContent = document.getElementById('app_content');
@@ -110,104 +54,115 @@
                 $L = \mu_0 \cdot \frac{D}{2} \left(\ln\left(\frac{8D}{d}\right) - 2\right)$<br>
                 mit $\mu_0 = 4\pi \cdot 10^{-7}$ H/m.
             </div>
-            
+
             <img src="static/images/basics_l_c_rt.svg" height="80" alt="LC circuit with damping resistor" />
-            <img src="static/images/basics_l_c_resistor_loss.svg" height="80" alt="LC circuit with loss and radiation resistances" />
+            <img src="static/images/basics_l_c_resistor_loss.svg" height="80"
+                alt="LC circuit with loss and radiation resistances" />
 
         </div>
-        <div id="inductance_calculator">
+        <div id="calculator">
             <table>
                 <tbody>
                     <tr>
                         <td class="input_label">
-                            <label for="D_m">Loop diameter D [m]</label>
+                            <label for="D_m">Loop diameter D</label>
                         </td>
                         <td class="input_value">
                             <input type="text" id="D_m" value="1.014">
                         </td>
+                        <td class="unit">m</td>
                     </tr>
                     <tr>
                         <td class="input_label">
-                            <label for="d_m">Conductor diameter d [m]</label>
+                            <label for="d_m">Conductor diameter d</label>
                         </td>
                         <td class="input_value">
                             <input type="text" id="d_m" value="0.1">
                         </td>
+                        <td class="unit">m</td>
                     </tr>
                     <tr>
                         <td class="input_label">
-                            <label for="f_L_MHz">Frequency f [MHz]</label>
+                            <label for="f_L_MHz">Frequency f</label>
                         </td>
                         <td class="input_value">
                             <input type="text" id="f_L_MHz" value="14.1">
                         </td>
+                        <td class="unit">MHz</td>
                     </tr>
                     <tr>
                         <td class="input_label">
-                            <label for="bw_kHz">Bandwidth B<sub>SWR=2.6</sub> [kHz]</label>
+                            <label for="bw_kHz">Bandwidth B<sub>SWR=2.6</sub></label>
                         </td>
                         <td class="input_value">
                             <input type="text" id="bw_kHz" value="86.6">
                         </td>
+                        <td class="unit">kHz</td>
                     </tr>
                     <tr>
                         <td class="input_label">
-                            <label for="P_W">Power into antenna P [W]</label>
+                            <label for="P_W">Power into antenna P</label>
                         </td>
                         <td class="input_value">
                             <input type="text" id="P_W" value="94">
                         </td>
+                        <td class="unit">W</td>
                     </tr>
                     <tr>
-                        <td colspan="2">
+                        <td colspan="3">
                             <button type="button" id="btn_calculate_antenna">Calculate Antenna</button>
                         </td>
                     </tr>
+
                     <tr>
-                        <td>Inductance L [H]</td>
+                        <td>Inductance L</td>
                         <td><b id="out_L_uH">...</b></td>
+                        <td class="unit">H</td>
                     </tr>
                     <tr>
-                        <td>Capacitance C [F]</td>
+                        <td>Capacitance C</td>
                         <td><b id="out_C_pF">...</b></td>
+                        <td class="unit">F</td>
                     </tr>
                     <tr>
                         <td>Unloaded Q<sub>0</sub></td>
                         <td><b id="out_Q0">...</b></td>
+                        <td class="unit"></td>
                     </tr>
                     <tr>
-                        <td>Damping resistance R<sub>T</sub> [Ohm]</td>
+                        <td>Damping resistance R<sub>T</sub></td>
                         <td><b id="out_RT_mOhm">...</b></td>
+                        <td class="unit">Ohm</td>
                     </tr>
                     <tr>
-                        <td>Loss resistance R<sub>Loss</sub>  [Ohm]</td>
+                        <td>Loss resistance R<sub>Loss</sub></td>
                         <td><b id="out_RLoss_Ohm">...</b></td>
+                        <td class="unit">Ohm</td>
                     </tr>
                     <tr>
-                        <td>Radiation resistance R<sub>R</sub> [Ohm]</td>
+                        <td>Radiation resistance R<sub>R</sub></td>
                         <td><b id="out_RR_mOhm">...</b></td>
+                        <td class="unit">Ohm</td>
                     </tr>
                     <tr>
-                        <td>Antenna efficiency η [1]</td>
+                        <td>Antenna efficiency η</td>
                         <td><b id="out_eta_percent">...</b></td>
+                        <td class="unit">1</td>
                     </tr>
                     <tr>
-                        <td>Loop current I<sub>main loop</sub> [A]</td>
+                        <td>Loop current I<sub>main loop</sub></td>
                         <td><b id="out_I_main_loop_A">...</b></td>
+                        <td class="unit">A</td>
                     </tr>
                     <tr>
-                        <td>Loop voltage U<sub>loop</sub> [V]</td>
+                        <td>Loop voltage U<sub>loop</sub></td>
                         <td><b id="out_U_loop_V">...</b></td>
+                        <td class="unit">V</td>
                     </tr>
                     <tr>
-                        <td>Magnetic dipole moment m [A m²]</td>
+                        <td>Magnetic dipole moment m</td>
                         <td><b id="out_m_Am2">...</b></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <button type="button" id="btn_copy_to_hfield">Calculate Antenna and copy values to Magnetic
-                                Field calculations</button>
-                        </td>
+                        <td class="unit">A m²</td>
                     </tr>
                 </tbody>
             </table>
@@ -236,80 +191,92 @@
                 $k = \frac{2\pi f}{c}$, $\varphi = \arctan2(\sqrt{y^2+z^2},x)$, $r=\sqrt{x^2+y^2+z^2}$
             </div>
         </div>
-        <div id="online_calculator">
+        <div id="calculator">
 
             <table>
                 <tbody>
                     <tr>
                         <td class="input_label">
-                            <label for="m_Am2">Magnetic dipole moment m [A m^2]</label>
+                            <label for="m_Am2">Magnetic dipole moment m</label>
                         </td>
                         <td class="input_value">
                             <input type="text" id="m_Am2" value="8.19">
                         </td>
+                        <td class="unit">A m^2</td>
+                        <td rowspan="2" style="vertical-align: middle;">
+                            <button type="button" id="btn_copy_above" style="height: 3em;">Copy from above</button>
+                        </td>
                     </tr>
                     <tr>
                         <td class="input_label">
-                            <label for="f_MHz">Frequency f [MHz]</label>
+                            <label for="f_MHz">Frequency f</label>
                         </td>
                         <td class="input_value">
                             <input type="text" id="f_MHz" value="14.1">
                         </td>
+                        <td class="unit">MHz</td>
                     </tr>
                     <tr>
                         <td class="input_label">
-                            <label for="x_m">X [m]</label>
+                            <label for="x_m">X</label>
                         </td>
                         <td class="input_value">
                             <input type="text" id="x_m" value="2.0">
                         </td>
+                        <td class="unit">m</td>
                     </tr>
                     <tr>
                         <td class="input_label">
-                            <label for="y_m">Y [m]</label>
+                            <label for="y_m">Y</label>
                         </td>
                         <td class="input_value">
                             <input type="text" id="y_m" value="2.0">
                         </td>
+                        <td class="unit">m</td>
                     </tr>
                     <tr>
                         <td class="input_label">
-                            <label for="z_m">Z [m]</label>
+                            <label for="z_m">Z</label>
                         </td>
                         <td class="input_value">
                             <input type="text" id="z_m" value="0.0">
                         </td>
+                        <td class="unit">m</td>
                     </tr>
                     <tr>
-                        <td class="input_label">Calculated |H| at point (X, Y, Z) [A/m]</td>
+                        <td class="input_label">Calculated |H| at point (X, Y, Z)</td>
                         <td> <b id="h_abs">...</b></td>
+                        <td class="unit">A/m</td>
                     </tr>
                     <tr>
                         <td class="input_label">
-                            <label for="lim_x_m">Figure range X +-[m]</label>
+                            <label for="lim_x_m">Figure range X +-</label>
                         </td>
                         <td class="input_value">
                             <input type="text" id="lim_x_m" value="4">
                         </td>
+                        <td class="unit">m</td>
                     </tr>
                     <tr>
                         <td class="input_label">
-                            <label for="lim_y_m">Figure range Y +-[m]</label>
+                            <label for="lim_y_m">Figure range Y +-</label>
                         </td>
                         <td class="input_value">
                             <input type="text" id="lim_y_m" value="3">
                         </td>
+                        <td class="unit">m</td>
                     </tr>
                     <tr>
                         <td class="input_label">
-                            <label for="line_at_field">Line @ field [A/m]</label>
+                            <label for="line_at_field">Line @ field</label>
                         </td>
                         <td class="input_value">
                             <input type="text" id="line_at_field" value="0.05, 0.1, 0.2">
                         </td>
+                        <td class="unit">A/m</td>
                     </tr>
                     <tr>
-                        <td colspan="2">
+                        <td colspan="3">
                             <button type="submit" py-click="do_calculate">Calculate H-Field</button>
                         </td>
                     </tr>
@@ -323,15 +290,15 @@
 
                 </tbody>
             </table>
+
+            <section class="pyscript">
+                <div id="figure_h_field_plot"></div>
+                <div id="download_svg_wrap"><a id="download_svg" href="#" download="magnetic_field_plot.svg">Download figure
+                        as SVG</a></div>
+                <script type="py" src="./index.py" config="./pyscript.toml"></script>
+            </section>
+
         </div>
-
-        <section class="pyscript">
-            <div id="figure_h_field_plot"></div>
-            <div id="download_svg_wrap"><a id="download_svg" href="#" download="magnetic_field_plot.svg">Download figure
-                    as SVG</a></div>
-            <script type="py" src="./index.py" config="./pyscript.toml"></script>
-        </section>
-
 
 
     </div>

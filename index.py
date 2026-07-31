@@ -1,15 +1,13 @@
-from pyscript import when
-from pyscript.web import page
-from js import document
 import base64
 import io
 import math
+
 import matplotlib.pyplot as plt
+from js import document
+from pyscript import when
+from pyscript.web import page
 
 from calculations import AntennaCalculator, Calculator
-
-
-latest_antenna_values = {"m_Am2": None, "f_MHz": None}
 
 
 @when("click", "#btn_calculate_antenna")
@@ -39,18 +37,11 @@ def do_calculate_inductance(e=None):
     page["b#out_U_loop_V"].innerHTML = f"{ac.U_loop_V:.3g}"
     page["b#out_m_Am2"].innerHTML = f"{ac.m_Am2:.3g}"
 
-    latest_antenna_values["m_Am2"] = ac.m_Am2
-    latest_antenna_values["f_MHz"] = f_Hz / 1e6
 
-
-@when("click", "#btn_copy_to_hfield")
-def copy_values_to_hfield(e=None):
-    # Always recompute first, so copy uses the current upper input values.
-    do_calculate_inductance(None)
-
-    (f_L_MHz_text,) = page["input#f_L_MHz"].value
-    document.getElementById("m_Am2").value = f"{latest_antenna_values['m_Am2']:.3g}"
-    document.getElementById("f_MHz").value = f_L_MHz_text.strip()
+@when("click", "#btn_copy_above")
+def copy_values_from_above(e=None):
+    document.getElementById("m_Am2").value = page["b#out_m_Am2"].innerHTML[0]
+    document.getElementById("f_MHz").value = page["input#f_L_MHz"].value[0]
 
 
 def do_calculate(e):
