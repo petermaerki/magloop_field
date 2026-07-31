@@ -1,5 +1,7 @@
 from pyscript.web import page
-from pyscript import display
+import base64
+import io
+import matplotlib.pyplot as plt
 
 from magnetic_field_strength import Calculator
 
@@ -24,5 +26,13 @@ def do_calculate(e):
         x_step=1.0,
         y_step=1.0,
     )
+
+    png_buffer = io.BytesIO()
+    figure_h_field_plot.savefig(png_buffer, format="png", bbox_inches="tight", pad_inches=0.01)
+    plt.close(figure_h_field_plot)
+    png_data = base64.b64encode(png_buffer.getvalue()).decode("ascii")
+
     page["div#figure_h_field_plot"].innerHTML = ""
-    display(figure_h_field_plot, target="figure_h_field_plot")
+    page["div#figure_h_field_plot"].innerHTML = (
+        f'<img src="data:image/png;base64,{png_data}" alt="Magnetic field plot">'
+    )

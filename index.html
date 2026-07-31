@@ -31,6 +31,11 @@
     <style>
         #loading { outline: none; border: none; background: transparent }
         #app_content { display: none; }
+        #online_calculator { margin-bottom: 6px; }
+        section.pyscript { margin-top: 0; width: 100%; }
+        #figure_h_field_plot { margin-top: 0; }
+        #figure_h_field_plot figure { margin: 0; }
+        #figure_h_field_plot img { display: block; width: 100%; height: auto; }
     </style>
     <script type="module">
         const loading = document.getElementById('loading');
@@ -51,16 +56,11 @@
         </dialog>
 
     <div id="app_content">
-    <section class="pyscript">
-        <div id="figure_h_field_plot"></div>
-        <script type="py" src="./index.py" config="./pyscript.toml"></script>
-    </section>
-
     <div id="readme"></div>
     <script type="py" src="./index_readme.py" async></script>
 
     <div id="online_calculator">
-        <h1>Online calculator</h1>
+        <h3>Online calculator</h3>
         <table>
             <tbody>
                 <tr>
@@ -87,6 +87,11 @@
             </tbody>
         </table>
     </div>
+
+    <section class="pyscript">
+        <div id="figure_h_field_plot"></div>
+        <script type="py" src="./index.py" config="./pyscript.toml"></script>
+    </section>
     </div>
 
 </body>

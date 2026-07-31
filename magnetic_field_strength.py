@@ -60,8 +60,6 @@ class Calculator:
         y_step,
         levels=None,
     ) -> matplotlib.figure.Figure:
-
-
         self._save_h_field_plot(
             lim_x_m=lim_x_m,
             lim_y_m=lim_y_m,
@@ -69,12 +67,7 @@ class Calculator:
             y_step=y_step,
             levels=levels,
         )
-        try:
-            return plt.gcf()
-        finally:
-            plt.close('all')
-            plt.cla() # clear current axes
-            plt.clf() # clear current figure
+        return plt.gcf()
 
     def save_h_field_plot(
         self,
@@ -110,7 +103,10 @@ class Calculator:
         X, Y = np.meshgrid(x, y)
         H_total = self.h_field_retarded(Y, X, self.R_m, self.I_A, self.f_Hz)
 
-        plt.figure(figsize=(10, 10))
+        aspect_ratio = lim_x_m / lim_y_m if lim_y_m else 1.0
+        fig_height = 8.0
+        fig_width = fig_height * aspect_ratio
+        plt.figure(figsize=(fig_width, fig_height))
 
         # Isolinien < 1 A/m
         if levels is None:
@@ -150,7 +146,7 @@ class Calculator:
         plt.axhline(0, color="black", lw=1.2)
         plt.axvline(0, color="black", lw=1.2)
 
-        plt.title("Magnetic Field Strength ($H$)", fontsize=12)
+        plt.title("Magnetic Field Strength ($H$)", fontsize=12, pad=6, y=1.02)
         plt.xlabel("x [m]")
         plt.ylabel("y [m]")
         plt.gca().set_aspect("equal")
@@ -176,7 +172,8 @@ class Calculator:
         ]
         plt.legend(handles=legend_elements, loc="upper right", frameon=True)
 
-        plt.tight_layout(pad=0.2)
+        # Keep figure margins minimal and deterministic for web rendering.
+        plt.subplots_adjust(left=0.06, right=0.995, bottom=0.06, top=0.96)
 
 
 def main() -> None:
