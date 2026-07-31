@@ -74,8 +74,8 @@ div#calculator {
     border-top: 0;
     border-right: 0;
     border-bottom: 0;
-    border-left: 30px solid gray;
-    padding: 0px 0px 0px 20px;
+    border-left: 30px solid rgb(42, 174, 246);
+    padding: 0px 0px 0px 5px;
     display: inline-block;
     box-shadow: 0;
 }
@@ -147,4 +147,16 @@ section.pyscript {
 
 #download_svg:hover {
     text-decoration: underline;
+}
+
+td.unit {
+    white-space: nowrap;
+}
+
+#h_warning {
+    display: inline-block;
+    margin-left: 8px;
+    white-space: nowrap;
+    color: #b00020;
+    font-size: 0.9em;
 }

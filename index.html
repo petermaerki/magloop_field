@@ -182,7 +182,7 @@
             <small>
                 Limitations: Calculations on this page use the retarded magnetic dipole formula. The model is valid for
                 a small magnetic loop (D &lt; 0.1 lambda), and fields are considered reliable mainly at distances of
-                about one loop diameter or more from the origin. For larger loops, current is no longer constant around
+                about 1.5 loop diameters or more from the origin. For larger loops, current is no longer constant around
                 the circumference, so other formulas are required.
             </small>
             <div class="formula_line">
@@ -246,7 +246,7 @@
                     <tr>
                         <td class="input_label">Calculated |H| at point (X, Y, Z)</td>
                         <td> <b id="h_abs">...</b></td>
-                        <td class="unit">A/m</td>
+                        <td class="unit">A/m <span id="h_warning"></span></td>
                     </tr>
                     <tr>
                         <td class="input_label">

@@ -61,7 +61,7 @@ def do_calculate(e):
     lim_x_m = float(lim_x_m_text)
     lim_y_m = float(lim_y_m_text)
     line_tokens = line_at_field_text.replace(",", " ").split()
-    levels = [float(token) for token in line_tokens] if line_tokens else None
+    levels = sorted({float(token) for token in line_tokens}) if line_tokens else None
 
     D_m = 1.0
     calculator = Calculator(
@@ -75,6 +75,20 @@ def do_calculate(e):
     k = 2.0 * math.pi * f_Hz / c
     r = math.sqrt(x_m**2 + y_m**2 + z_m**2)
     r = max(r, 1e-9)
+
+    try:
+        (D_m_text,) = page["input#D_m"].value
+        D_m_for_warning = float(D_m_text)
+    except Exception:
+        D_m_for_warning = 1.0
+
+    warning_node = document.getElementById("h_warning")
+    if warning_node is not None:
+        if r < 1.5 * D_m_for_warning:
+            warning_node.innerHTML = "Warning: r&lt;1.5D, too near to the antenna, value not accurate!"
+        else:
+            warning_node.innerHTML = ""
+
     rho_m = math.sqrt(y_m**2 + z_m**2)
     phi = math.atan2(rho_m, x_m)
     fac = m_Am2 / (4.0 * math.pi)
@@ -104,9 +118,13 @@ def do_calculate(e):
     )
 
 
-# Render initial values on page load: first antenna, then H-field.
+# Render initial values on page load:
+# 1) calculate antenna
+# 2) copy from above
+# 3) calculate H-field
 try:
     do_calculate_inductance(None)
+    copy_values_from_above(None)
     do_calculate(None)
 except Exception as e:
     print(f"Initial render failed: {e}")

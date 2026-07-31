@@ -155,6 +155,12 @@ class Calculator:
         X, Y = np.meshgrid(x, y)
         H_total = self.h_field_retarded_xyz(X, Y, 0.0, self.m_Am2, self.f_Hz)
 
+        # Do not draw contour lines in the near-field area where the model is unreliable.
+        # Use the full 3D radius definition r = sqrt(x^2 + y^2 + z^2) with z=0 in this plot slice.
+        z_plane_m = 0.0
+        r_3d = np.sqrt(X**2 + Y**2 + z_plane_m**2)
+        H_total_masked = np.ma.masked_where(r_3d <= 1.5 * self.D_m, H_total)
+
         aspect_ratio = lim_x_m / lim_y_m if lim_y_m else 1.0
         fig_height = 8.0
         fig_width = fig_height * aspect_ratio
@@ -163,7 +169,19 @@ class Calculator:
         # Isolinien < 1 A/m
         if levels is None:
             levels = [0.05, 0.1, 0.2]
-        cp = plt.contour(X, Y, H_total, levels=levels, colors="black", linewidths=1.0)
+        else:
+            levels = np.unique(np.asarray(levels, dtype=float))
+            if levels.size == 0:
+                levels = np.array([0.05, 0.1, 0.2], dtype=float)
+        cp = plt.contour(
+            X,
+            Y,
+            H_total_masked,
+            levels=levels,
+            colors="black",
+            linewidths=1.0,
+            corner_mask=False,
+        )
         clabels = plt.clabel(
             cp, inline=True, fmt=lambda v: f"{v:g} A/m", fontsize=10, rightside_up=True
         )
@@ -182,12 +200,13 @@ class Calculator:
             2 * self.R_m,
             color=antennenfarbe,
             fill=True,
+            zorder=3.0,
         )
         plt.gca().add_artist(rectangle)
 
         # Gefüllte Kreise an den Enden
-        circle1 = plt.Circle((0, self.R_m), r_leiter_m, color=antennenfarbe, fill=True)
-        circle2 = plt.Circle((0, -self.R_m), r_leiter_m, color=antennenfarbe, fill=True)
+        circle1 = plt.Circle((0, self.R_m), r_leiter_m, color=antennenfarbe, fill=True, zorder=3.0)
+        circle2 = plt.Circle((0, -self.R_m), r_leiter_m, color=antennenfarbe, fill=True, zorder=3.0)
         plt.gca().add_artist(circle1)
         plt.gca().add_artist(circle2)
 
@@ -204,6 +223,8 @@ class Calculator:
         plt.gca().set_aspect("equal")
         plt.xlim(-lim_x_m, lim_x_m)
         plt.ylim(-lim_y_m, lim_y_m)
+
+        # Contour lines are already masked for r <= 1.5D via H_total_masked.
 
         # Legende
         legend_elements = [
