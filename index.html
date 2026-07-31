@@ -5,9 +5,9 @@
     <link rel="icon" type="image/png" href="./static/favicon.png" />
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <meta name="description"
-        content="An alternative approach to adjust something very accurate in electronic circuits by assembling fix value resistors instead of using trimmers or potentiometers.">
+        content="Calculator for the magnetic field of a small magnetic loop antenna.">
     <meta name="keywords"
-        content="IterativeTrimming Iterative Trimmer Potentiometer fix value accuracy resistor stability longterm adjusting amplifier low-noise precision error">
+        content="Small magnetic loop antenna magnetic dipole moment calculator">
     <link rel="stylesheet" href="static/images/css/style.css">
 
     <!-- PyScript CSS -->
@@ -105,6 +105,22 @@
         <div id="readme"></div>
         <script type="py" src="./index_readme.py" async></script>
 
+        <div style="display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap;">
+            <img src="static/images/koordinatensystem.jpeg" height="150" alt="Koordinatensystem" />
+            <img src="static/images/skizze_loop_diameter.svg" height="150" alt="Loop diameter sketch" />
+            <div style="max-width: 420px; line-height: 1.35;">
+                Magnetic loop dipole moment: $m = I_{\text{main loop}} \cdot A$.<br>
+                For a circular loop: $m = I_{\text{main loop}} \cdot \pi \left(\frac{D}{2}\right)^2$.
+            </div>
+        </div>
+        <div>
+            <small>
+                Limitations: Calculations on this page use the retarded magnetic dipole formula. The model is valid for a small magnetic loop (D &lt; 0.1 lambda), and fields are considered reliable mainly at distances of about one loop diameter or more from the origin. For larger loops, current is no longer constant around the circumference, so other formulas are required.
+            </small>
+            <div class="formula_line">
+                $|H| = \frac{m}{4\pi}\sqrt{4\cos^2(\varphi)\left(\frac{1}{r^6}+\frac{k^2}{r^4}\right)+\sin^2(\varphi)\left(\frac{1}{r^6}-\frac{k^2}{r^4}+\frac{k^4}{r^2}\right)}$, $k = \frac{2\pi f}{c}$, $\varphi = \arctan2(\sqrt{y^2+z^2},x)$, $r=\sqrt{x^2+y^2+z^2}$
+            </div>
+        </div>
         <div id="online_calculator">
 
             <table>
@@ -198,19 +214,8 @@
             <script type="py" src="./index.py" config="./pyscript.toml"></script>
         </section>
 
-        <div>
-            <small>
-                Limitations: Calculations on this page use the retarded magnetic dipole formula. The model is valid for a small magnetic loop (D &lt; 0.1 lambda), and fields are considered reliable mainly at distances of about one loop diameter or more from the origin. For larger loops, current is no longer constant around the circumference, so other formulas are required.
-            </small>
-            <div class="formula_line">
-                $|H| = \frac{m}{4\pi}\sqrt{4\cos^2(\varphi)\left(\frac{1}{r^6}+\frac{k^2}{r^4}\right)+\sin^2(\varphi)\left(\frac{1}{r^6}-\frac{k^2}{r^4}+\frac{k^4}{r^2}\right)}$, $k = \frac{2\pi f}{c}$, $\varphi = \arctan2(\sqrt{y^2+z^2},x)$, $r=\sqrt{x^2+y^2+z^2}$
-            </div>
-        </div>
 
-        <div>
-            Online Calculator: <a href="https://petermaerki.github.io/magloop_field">petermaerki.github.io/magloop_field</a>
-            Repository: <a href="https://github.com/petermaerki/magloop_field">github.com/petermaerki/magloop_field</a>
-        </div>
+
     </div>
 
 </body>
