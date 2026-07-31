@@ -1,6 +1,7 @@
 from pyscript.web import page
 import base64
 import io
+import math
 import matplotlib.pyplot as plt
 
 from magnetic_field_strength import Calculator
@@ -33,9 +34,17 @@ def do_calculate(e):
         f_Hz=f_Hz,
     )
 
-    rho_m = (y_m**2 + z_m**2) ** 0.5
-    h_field_at_point = calculator.h_field_retarded(rho_m, x_m, m_Am2, f_Hz)
-    page["b#h_field"].innerHTML = f"{h_field_at_point:9.5f} A/m"
+    c = 299792458.0
+    k = 2.0 * math.pi * f_Hz / c
+    r = math.sqrt(x_m**2 + y_m**2 + z_m**2)
+    r = max(r, 1e-9)
+    rho_m = math.sqrt(y_m**2 + z_m**2)
+    phi = math.atan2(rho_m, x_m)
+    fac = m_Am2 / (4.0 * math.pi)
+    h_r_sq = fac**2 * 4.0 * math.cos(phi) ** 2 * (1.0 / r**6 + k**2 / r**4)
+    h_theta_sq = fac**2 * math.sin(phi) ** 2 * (1.0 / r**6 - k**2 / r**4 + k**4 / r**2)
+    h_field_at_point = math.sqrt(h_r_sq + h_theta_sq)
+    page["b#h_abs"].innerHTML = f"{h_field_at_point:.4g} A/m"
 
     figure_h_field_plot = calculator.figure_h_field_plot(
         lim_x_m=lim_x_m,

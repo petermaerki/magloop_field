@@ -50,6 +50,25 @@ class Calculator:
 
         return np.sqrt(H_r_sq + H_theta_sq)
 
+    def h_field_retarded_xyz(self, x_m, y_m, z_m, m_Am2, f_Hz):
+        """Retarded dipole |H| at Cartesian point (x, y, z)."""
+        c = 299792458.0
+        k = 2.0 * np.pi * f_Hz / c
+        fac = m_Am2 / (4.0 * np.pi)
+
+        x_m = np.asarray(x_m, dtype=float)
+        y_m = np.asarray(y_m, dtype=float)
+        z_m = np.asarray(z_m, dtype=float)
+
+        r = np.sqrt(x_m**2 + y_m**2 + z_m**2)
+        r = np.maximum(r, 1e-9)
+        rho = np.sqrt(y_m**2 + z_m**2)
+        phi = np.arctan2(rho, x_m)
+
+        H_r_sq = fac**2 * 4 * np.cos(phi) ** 2 * (1.0 / r**6 + k**2 / r**4)
+        H_theta_sq = fac**2 * np.sin(phi) ** 2 * (1.0 / r**6 - k**2 / r**4 + k**4 / r**2)
+        return np.sqrt(H_r_sq + H_theta_sq)
+
     def figure_h_field_plot(
         self,
         lim_x_m,
@@ -155,7 +174,7 @@ class Calculator:
         legend_elements = [
             Line2D([0], [0], color=antennenfarbe, lw=4, label="Antenna"),
             Line2D(
-                [0], [0], marker="None", color="None", label=f"m = {self.m_Am2:.2f} A m^2"
+                [0], [0], marker="None", color="None", label=f"m = {self.m_Am2:.2f} A m²"
             ),
             Line2D(
                 [0],

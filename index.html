@@ -90,15 +90,15 @@
                 <tbody>
                     <tr>
                         <td class="input_label">
-                            <label for="m_Am2">Magnetic dipole moment [A m^2]</label>
+                            <label for="m_Am2">Magnetic dipole moment m [A m^2]</label>
                         </td>
                         <td class="input_value">
-                            <input type="text" id="m_Am2" value="7.85">
+                            <input type="text" id="m_Am2" value="8.19">
                         </td>
                     </tr>
                     <tr>
                         <td class="input_label">
-                            <label for="f_MHz">Frequency [MHz]</label>
+                            <label for="f_MHz">Frequency f [MHz]</label>
                         </td>
                         <td class="input_value">
                             <input type="text" id="f_MHz" value="14.1">
@@ -130,7 +130,7 @@
                     </tr>
                     <tr>
                         <td>Calculated |H| at point (X, Y, Z):</td>
-                        <td> <b id="h_field">...</b></td>
+                        <td> <b id="h_abs">...</b></td>
                     </tr>
                     <tr>
                         <td class="input_label">
@@ -153,7 +153,7 @@
                             <label for="line_at_field">Line @ field [A/m]</label>
                         </td>
                         <td class="input_value">
-                            <input type="text" id="line_at_field" value="0.01, 0.05, 0.1, 0.2, 0.3">
+                            <input type="text" id="line_at_field" value="0.05, 0.1, 0.2">
                         </td>
                     </tr>
                     <tr>
@@ -178,10 +178,10 @@
 
         <div>
             <small>
-                Limitations: Calculations on this page use the double-retarded magnetic dipole formula. The model is valid for a small magnetic loop (D &lt; 0.1 lambda), and fields are considered reliable mainly at distances of about one loop diameter or more from the origin. For larger loops, current is no longer constant around the circumference, so other formulas are required.
+                Limitations: Calculations on this page use the retarded magnetic dipole formula. The model is valid for a small magnetic loop (D &lt; 0.1 lambda), and fields are considered reliable mainly at distances of about one loop diameter or more from the origin. For larger loops, current is no longer constant around the circumference, so other formulas are required.
             </small>
             <div class="formula_line">
-                $|H| = \frac{m}{4\pi}\sqrt{4\cos^2(\varphi)\left(\frac{1}{r^6}+\frac{k^2}{r^4}\right)+\sin^2(\varphi)\left(\frac{1}{r^6}-\frac{k^2}{r^4}+\frac{k^4}{r^2}\right)}$, $k = \frac{2\pi f}{c}$
+                $|H| = \frac{m}{4\pi}\sqrt{4\cos^2(\varphi)\left(\frac{1}{r^6}+\frac{k^2}{r^4}\right)+\sin^2(\varphi)\left(\frac{1}{r^6}-\frac{k^2}{r^4}+\frac{k^4}{r^2}\right)}$, $k = \frac{2\pi f}{c}$, $\varphi = \arctan2(\sqrt{y^2+z^2},x)$, $r=\sqrt{x^2+y^2+z^2}$
             </div>
         </div>
 
