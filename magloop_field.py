@@ -2,13 +2,13 @@
 # Autor: Peter Maerki, 2017, Switzerland.
 # Please feel free to adopt to your needs.
 # This script is a quick hack. No guarantee at all!
-# See www.positron.ch/iterativetrimmer
+# See www.positron.ch/magloop_field
 from __future__ import annotations
 import random
 import math
 
 
-class IterativeTrimmer:
+class magloop_field:
     _TOLERANZ = 0.015 / 100.0
     """
     Standardtoleranz meiner Duennfilmwiderstaende 0.5%, gemessen am 17.1.14 anhand von 20 Widerstaenden
@@ -131,7 +131,7 @@ def main():
     print("")
     while True:
         sollwert = float(input("Measured resistance by potentiometer [Ohm]: "))
-        trimmer = IterativeTrimmer(sollwert)
+        trimmer = magloop_field(sollwert)
 
         print(f"Target    : {sollwert:0.0f}")
         print(
