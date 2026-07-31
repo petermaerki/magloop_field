@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# Autor: Peter Maerki, 2017, Switzerland.
+# Autor: Peter Maerki, 2026, Switzerland.
 # Please feel free to adopt to your needs.
 # This script is a quick hack. No guarantee at all!
 # See www.positron.ch/magloop_field
