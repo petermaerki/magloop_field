@@ -9,6 +9,9 @@ import matplotlib.pyplot as plt
 from calculations import AntennaCalculator, Calculator
 
 
+latest_antenna_values = {"m_Am2": None, "f_MHz": None}
+
+
 @when("click", "#btn_calculate_antenna")
 def do_calculate_inductance(e=None):
     (D_m_text,) = page["input#D_m"].value
@@ -25,14 +28,29 @@ def do_calculate_inductance(e=None):
 
     ac = AntennaCalculator(D_m=D_m, d_m=d_m, f_Hz=f_Hz, bw_Hz=bw_Hz, P_W=P_W)
 
-    page["b#out_L_uH"].innerHTML = f"{ac.L_H * 1e6:.3g} \u00b5H"
-    page["b#out_C_pF"].innerHTML = f"{ac.C_F * 1e12:.3g} pF"
-    page["b#out_Q0"].innerHTML = f"{ac.Q0:.1f}"
-    page["b#out_RT_mOhm"].innerHTML = f"{ac.RT_Ohm * 1e3:.3g} m\u03a9"
-    page["b#out_RR_mOhm"].innerHTML = f"{ac.RR_Ohm * 1e3:.3g} m\u03a9"
-    page["b#out_I_main_loop_A"].innerHTML = f"{ac.I_main_loop_A:.3g} A"
-    page["b#out_U_loop_V"].innerHTML = f"{ac.U_loop_V:.3g} V"
-    page["b#out_m_Am2"].innerHTML = f"{ac.m_Am2:.4g} A m\u00b2"
+    page["b#out_L_uH"].innerHTML = f"{ac.L_H:.3g}"
+    page["b#out_C_pF"].innerHTML = f"{ac.C_F:.3g}"
+    page["b#out_Q0"].innerHTML = f"{ac.Q0:.3g}"
+    page["b#out_RT_mOhm"].innerHTML = f"{ac.RT_Ohm:.3g}"
+    page["b#out_RLoss_Ohm"].innerHTML = f"{(ac.RT_Ohm - ac.RR_Ohm):.3g}"
+    page["b#out_RR_mOhm"].innerHTML = f"{ac.RR_Ohm:.3g}"
+    page["b#out_eta_percent"].innerHTML = f"{(ac.RR_Ohm / ac.RT_Ohm):.3g}"
+    page["b#out_I_main_loop_A"].innerHTML = f"{ac.I_main_loop_A:.3g}"
+    page["b#out_U_loop_V"].innerHTML = f"{ac.U_loop_V:.3g}"
+    page["b#out_m_Am2"].innerHTML = f"{ac.m_Am2:.3g}"
+
+    latest_antenna_values["m_Am2"] = ac.m_Am2
+    latest_antenna_values["f_MHz"] = f_Hz / 1e6
+
+
+@when("click", "#btn_copy_to_hfield")
+def copy_values_to_hfield(e=None):
+    # Always recompute first, so copy uses the current upper input values.
+    do_calculate_inductance(None)
+
+    (f_L_MHz_text,) = page["input#f_L_MHz"].value
+    document.getElementById("m_Am2").value = f"{latest_antenna_values['m_Am2']:.3g}"
+    document.getElementById("f_MHz").value = f_L_MHz_text.strip()
 
 
 def do_calculate(e):
@@ -72,7 +90,7 @@ def do_calculate(e):
     h_r_sq = fac**2 * 4.0 * math.cos(phi) ** 2 * (1.0 / r**6 + k**2 / r**4)
     h_theta_sq = fac**2 * math.sin(phi) ** 2 * (1.0 / r**6 - k**2 / r**4 + k**4 / r**2)
     h_field_at_point = math.sqrt(h_r_sq + h_theta_sq)
-    page["b#h_abs"].innerHTML = f"{h_field_at_point:.4g} A/m"
+    page["b#h_abs"].innerHTML = f"{h_field_at_point:.4g}"
 
     figure_h_field_plot = calculator.figure_h_field_plot(
         lim_x_m=lim_x_m,
@@ -95,8 +113,9 @@ def do_calculate(e):
     )
 
 
-# Render initial values and plot once on page load.
+# Render initial values on page load: first antenna, then H-field.
 try:
+    do_calculate_inductance(None)
     do_calculate(None)
 except Exception as e:
     print(f"Initial render failed: {e}")

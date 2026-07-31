@@ -4,10 +4,8 @@
 <head>
     <link rel="icon" type="image/png" href="./static/favicon.png" />
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
-    <meta name="description"
-        content="Calculator for the magnetic field of a small magnetic loop antenna.">
-    <meta name="keywords"
-        content="Small magnetic loop antenna magnetic dipole moment calculator">
+    <meta name="description" content="Calculator for the magnetic field of a small magnetic loop antenna.">
+    <meta name="keywords" content="Small magnetic loop antenna magnetic dipole moment calculator">
     <link rel="stylesheet" href="static/images/css/style.css">
 
     <!-- PyScript CSS -->
@@ -105,12 +103,17 @@
         <div id="readme"></div>
         <script type="py" src="./index_readme.py" async></script>
         <hr>
+        <b>Antenna Calculations</b>
         <div style="display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap;">
             <img src="static/images/loop_diameter.svg" height="150" alt="Loop diameter sketch" />
             <div style="max-width: 420px; line-height: 1.35;">
                 $L = \mu_0 \cdot \frac{D}{2} \left(\ln\left(\frac{8D}{d}\right) - 2\right)$<br>
                 mit $\mu_0 = 4\pi \cdot 10^{-7}$ H/m.
             </div>
+            
+            <img src="static/images/basics_l_c_rt.svg" height="80" alt="LC circuit with damping resistor" />
+            <img src="static/images/basics_l_c_resistor_loss.svg" height="80" alt="LC circuit with loss and radiation resistances" />
+
         </div>
         <div id="inductance_calculator">
             <table>
@@ -161,11 +164,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Inductance L [µH]</td>
+                        <td>Inductance L [H]</td>
                         <td><b id="out_L_uH">...</b></td>
                     </tr>
                     <tr>
-                        <td>Capacitance C [pF]</td>
+                        <td>Capacitance C [F]</td>
                         <td><b id="out_C_pF">...</b></td>
                     </tr>
                     <tr>
@@ -173,12 +176,20 @@
                         <td><b id="out_Q0">...</b></td>
                     </tr>
                     <tr>
-                        <td>Damping resistance R<sub>T</sub> [mΩ]</td>
+                        <td>Damping resistance R<sub>T</sub> [Ohm]</td>
                         <td><b id="out_RT_mOhm">...</b></td>
                     </tr>
                     <tr>
-                        <td>Radiation resistance R<sub>R</sub> [mΩ]</td>
+                        <td>Loss resistance R<sub>Loss</sub>  [Ohm]</td>
+                        <td><b id="out_RLoss_Ohm">...</b></td>
+                    </tr>
+                    <tr>
+                        <td>Radiation resistance R<sub>R</sub> [Ohm]</td>
                         <td><b id="out_RR_mOhm">...</b></td>
+                    </tr>
+                    <tr>
+                        <td>Antenna efficiency η [1]</td>
+                        <td><b id="out_eta_percent">...</b></td>
                     </tr>
                     <tr>
                         <td>Loop current I<sub>main loop</sub> [A]</td>
@@ -192,11 +203,17 @@
                         <td>Magnetic dipole moment m [A m²]</td>
                         <td><b id="out_m_Am2">...</b></td>
                     </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button type="button" id="btn_copy_to_hfield">Calculate Antenna and copy values to Magnetic
+                                Field calculations</button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
         <hr>
-
+        <b>Magnetic Field Calculations</b>
         <div style="display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap;">
             <img src="static/images/koordinatensystem.jpeg" height="150" alt="Koordinatensystem" />
             <img src="static/images/skizze_loop_diameter.svg" height="150" alt="Loop diameter sketch" />
@@ -204,13 +221,19 @@
                 Magnetic loop dipole moment: $m = I_{\text{main loop}} \cdot A$.<br>
                 For a circular loop: $m = I_{\text{main loop}} \cdot \pi \left(\frac{D}{2}\right)^2$.
             </div>
+
         </div>
         <div>
             <small>
-                Limitations: Calculations on this page use the retarded magnetic dipole formula. The model is valid for a small magnetic loop (D &lt; 0.1 lambda), and fields are considered reliable mainly at distances of about one loop diameter or more from the origin. For larger loops, current is no longer constant around the circumference, so other formulas are required.
+                Limitations: Calculations on this page use the retarded magnetic dipole formula. The model is valid for
+                a small magnetic loop (D &lt; 0.1 lambda), and fields are considered reliable mainly at distances of
+                about one loop diameter or more from the origin. For larger loops, current is no longer constant around
+                the circumference, so other formulas are required.
             </small>
             <div class="formula_line">
-                $|H| = \frac{m}{4\pi}\sqrt{4\cos^2(\varphi)\left(\frac{1}{r^6}+\frac{k^2}{r^4}\right)+\sin^2(\varphi)\left(\frac{1}{r^6}-\frac{k^2}{r^4}+\frac{k^4}{r^2}\right)}$, $k = \frac{2\pi f}{c}$, $\varphi = \arctan2(\sqrt{y^2+z^2},x)$, $r=\sqrt{x^2+y^2+z^2}$
+                $|H| =
+                \frac{m}{4\pi}\sqrt{4\cos^2(\varphi)\left(\frac{1}{r^6}+\frac{k^2}{r^4}\right)+\sin^2(\varphi)\left(\frac{1}{r^6}-\frac{k^2}{r^4}+\frac{k^4}{r^2}\right)}$,
+                $k = \frac{2\pi f}{c}$, $\varphi = \arctan2(\sqrt{y^2+z^2},x)$, $r=\sqrt{x^2+y^2+z^2}$
             </div>
         </div>
         <div id="online_calculator">
@@ -258,7 +281,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Calculated |H| at point (X, Y, Z):</td>
+                        <td class="input_label">Calculated |H| at point (X, Y, Z) [A/m]</td>
                         <td> <b id="h_abs">...</b></td>
                     </tr>
                     <tr>
@@ -304,7 +327,8 @@
 
         <section class="pyscript">
             <div id="figure_h_field_plot"></div>
-            <div id="download_svg_wrap"><a id="download_svg" href="#" download="magnetic_field_plot.svg">Download figure as SVG</a></div>
+            <div id="download_svg_wrap"><a id="download_svg" href="#" download="magnetic_field_plot.svg">Download figure
+                    as SVG</a></div>
             <script type="py" src="./index.py" config="./pyscript.toml"></script>
         </section>
 

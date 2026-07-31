@@ -28,12 +28,23 @@ div#online_calculator td.input_label {
 }
 
 div#online_calculator td.input_value {
-    width: 100%;
+    width: auto;
 }
 
 div#online_calculator td.input_value input[type="text"] {
-    width: 100%;
+    width: clamp(120px, 32vw, 260px);
+    max-width: 100%;
     box-sizing: border-box;
+}
+
+@media (max-width: 760px) {
+    div#online_calculator td.input_label {
+        white-space: normal;
+    }
+
+    div#online_calculator td.input_value input[type="text"] {
+        width: 100%;
+    }
 }
 
 div#online_calculator .formula_line {
