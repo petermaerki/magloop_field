@@ -64,11 +64,13 @@
         <table>
             <tbody>
                 <tr>
-                    <td>
-                        <label for="I_A">Current<br>(measured value of Potentiometer)</label>
+                    <td colspan="2">
+                        <label for="m_Am2">Magnetic dipole moment [A m^2]</label>
+                        <input type="text" id="m_Am2" maxlength="12" value="7.85">
                     </td>
-                    <td>
-                        <input type="text" id="I_A" maxlength="10" value="10">
+                </tr>
+                <tr>
+                    <td colspan="2">
                         <button type="submit" py-click="do_calculate">Calculate</button>
                     </td>
                 </tr>

@@ -12,14 +12,14 @@ from matplotlib.lines import Line2D
 class Calculator:
     D_m: float
     R_m: float
-    I_A: float
+    m_Am2: float
     f_Hz: float
 
     @property
     def h_field(self) -> float:
-        return self.I_A * 2
+        return self.m_Am2 * 2
 
-    def h_field_retarded(self, rho, z_dist, R, I, f_Hz):
+    def h_field_retarded(self, rho, z_dist, m_Am2, f_Hz):
         """
         Retarded H-field magnitude of an oscillating magnetic dipole (small circular loop).
         Includes near-field (1/r³), intermediate (1/r²), and far-field (1/r) terms.
@@ -27,8 +27,7 @@ class Calculator:
 
         rho    : radial distance in loop plane [m]
         z_dist : axial distance along loop axis [m]
-        R      : loop radius [m]
-        I      : loop current peak amplitude [A]
+        m_Am2  : magnetic dipole moment [A·m²]
         f_Hz   : frequency [Hz]
 
         |H_r|²  = (m/4π)² · 4cos²θ · (1/r⁶ + k²/r⁴)
@@ -37,8 +36,7 @@ class Calculator:
         """
         c = 299792458.0
         k = 2.0 * np.pi * f_Hz / c
-        m = I * np.pi * R**2  # magnetic dipole moment [A·m²]
-        fac = m / (4.0 * np.pi)
+        fac = m_Am2 / (4.0 * np.pi)
 
         rho = np.asarray(rho, dtype=float)
         z_dist = np.asarray(z_dist, dtype=float)
@@ -101,7 +99,7 @@ class Calculator:
         x = np.linspace(-lim_x_m, lim_x_m, 1000)
         y = np.linspace(-lim_y_m, lim_y_m, 1000)
         X, Y = np.meshgrid(x, y)
-        H_total = self.h_field_retarded(Y, X, self.R_m, self.I_A, self.f_Hz)
+        H_total = self.h_field_retarded(Y, X, self.m_Am2, self.f_Hz)
 
         aspect_ratio = lim_x_m / lim_y_m if lim_y_m else 1.0
         fig_height = 8.0
@@ -157,10 +155,7 @@ class Calculator:
         legend_elements = [
             Line2D([0], [0], color=antennenfarbe, lw=4, label="Antenna"),
             Line2D(
-                [0], [0], marker="None", color="None", label=f"D = {self.D_m:.0f} m"
-            ),
-            Line2D(
-                [0], [0], marker="None", color="None", label=f"I = {self.I_A:.1f} A"
+                [0], [0], marker="None", color="None", label=f"m = {self.m_Am2:.2f} A m^2"
             ),
             Line2D(
                 [0],
@@ -178,10 +173,12 @@ class Calculator:
 
 def main() -> None:
     D_m = 1.0
+    I_A = 10.5
+    m_Am2 = I_A * np.pi * (D_m / 2) ** 2
     calculator = Calculator(
         D_m=D_m,
         R_m=D_m / 2,
-        I_A=10.5,
+        m_Am2=m_Am2,
         f_Hz=14.1e6,
     )
 

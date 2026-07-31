@@ -8,7 +8,9 @@ div#online_calculator {
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 6px;
     padding: 4px 14px 12px 14px;
-    display: inline-block;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
     background: rgba(144, 238, 144, 0.14);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }

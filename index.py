@@ -7,14 +7,14 @@ from magnetic_field_strength import Calculator
 
 
 def do_calculate(e):
-    (I_A_text,) = page["input#I_A"].value
-    I_A = float(I_A_text)
+    (m_Am2_text,) = page["input#m_Am2"].value
+    m_Am2 = float(m_Am2_text)
 
     D_m = 1.0
     calculator = Calculator(
         D_m=D_m,
         R_m=D_m / 2,
-        I_A=I_A,
+        m_Am2=m_Am2,
         f_Hz=14.1e6,
     )
 
