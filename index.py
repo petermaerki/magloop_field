@@ -1,7 +1,7 @@
 from pyscript.web import page
 
-from magloop_field import magloop_field
-
+# from magloop_field import magloop_field
+from magnetic_field_strength import 
 def do_calculate(e):
     resistance_text, = page["input#resistance"].value
     resistance_Ohm = float(resistance_text)

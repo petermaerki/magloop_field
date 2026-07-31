@@ -4,4 +4,5 @@ packages = ["markdown", "numpy", "matplotlib"]
 
 [files]
 "./magloop_field.py" = ""
+"./magnetic_field_strength" = ""
 "./README.md" = ""
