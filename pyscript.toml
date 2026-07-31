@@ -4,5 +4,5 @@ packages = ["markdown", "numpy", "matplotlib"]
 
 [files]
 "./index.py" = ""
-"./magnetic_field_strength.py" = ""
+"./calculations.py" = ""
 "./README.md" = ""

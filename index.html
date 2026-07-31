@@ -104,6 +104,98 @@
     <div id="app_content">
         <div id="readme"></div>
         <script type="py" src="./index_readme.py" async></script>
+        <hr>
+        <div style="display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap;">
+            <img src="static/images/loop_diameter.svg" height="150" alt="Loop diameter sketch" />
+            <div style="max-width: 420px; line-height: 1.35;">
+                $L = \mu_0 \cdot \frac{D}{2} \left(\ln\left(\frac{8D}{d}\right) - 2\right)$<br>
+                mit $\mu_0 = 4\pi \cdot 10^{-7}$ H/m.
+            </div>
+        </div>
+        <div id="inductance_calculator">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="input_label">
+                            <label for="D_m">Loop diameter D [m]</label>
+                        </td>
+                        <td class="input_value">
+                            <input type="text" id="D_m" value="1.014">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="input_label">
+                            <label for="d_m">Conductor diameter d [m]</label>
+                        </td>
+                        <td class="input_value">
+                            <input type="text" id="d_m" value="0.1">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="input_label">
+                            <label for="f_L_MHz">Frequency f [MHz]</label>
+                        </td>
+                        <td class="input_value">
+                            <input type="text" id="f_L_MHz" value="14.1">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="input_label">
+                            <label for="bw_kHz">Bandwidth B<sub>SWR=2.6</sub> [kHz]</label>
+                        </td>
+                        <td class="input_value">
+                            <input type="text" id="bw_kHz" value="86.6">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="input_label">
+                            <label for="P_W">Power into antenna P [W]</label>
+                        </td>
+                        <td class="input_value">
+                            <input type="text" id="P_W" value="94">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button type="button" id="btn_calculate_antenna">Calculate Antenna</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Inductance L [µH]</td>
+                        <td><b id="out_L_uH">...</b></td>
+                    </tr>
+                    <tr>
+                        <td>Capacitance C [pF]</td>
+                        <td><b id="out_C_pF">...</b></td>
+                    </tr>
+                    <tr>
+                        <td>Unloaded Q<sub>0</sub></td>
+                        <td><b id="out_Q0">...</b></td>
+                    </tr>
+                    <tr>
+                        <td>Damping resistance R<sub>T</sub> [mΩ]</td>
+                        <td><b id="out_RT_mOhm">...</b></td>
+                    </tr>
+                    <tr>
+                        <td>Radiation resistance R<sub>R</sub> [mΩ]</td>
+                        <td><b id="out_RR_mOhm">...</b></td>
+                    </tr>
+                    <tr>
+                        <td>Loop current I<sub>main loop</sub> [A]</td>
+                        <td><b id="out_I_main_loop_A">...</b></td>
+                    </tr>
+                    <tr>
+                        <td>Loop voltage U<sub>loop</sub> [V]</td>
+                        <td><b id="out_U_loop_V">...</b></td>
+                    </tr>
+                    <tr>
+                        <td>Magnetic dipole moment m [A m²]</td>
+                        <td><b id="out_m_Am2">...</b></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr>
 
         <div style="display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap;">
             <img src="static/images/koordinatensystem.jpeg" height="150" alt="Koordinatensystem" />
@@ -195,7 +287,7 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <button type="submit" py-click="do_calculate">Calculate</button>
+                            <button type="submit" py-click="do_calculate">Calculate H-Field</button>
                         </td>
                     </tr>
 
@@ -203,6 +295,8 @@
 
 
                     <!-- <script type="py" src="./index.py" config="pyscript.toml"></script> -->
+
+
 
                 </tbody>
             </table>

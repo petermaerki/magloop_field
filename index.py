@@ -1,3 +1,4 @@
+from pyscript import when
 from pyscript.web import page
 from js import document
 import base64
@@ -5,7 +6,33 @@ import io
 import math
 import matplotlib.pyplot as plt
 
-from magnetic_field_strength import Calculator
+from calculations import AntennaCalculator, Calculator
+
+
+@when("click", "#btn_calculate_antenna")
+def do_calculate_inductance(e=None):
+    (D_m_text,) = page["input#D_m"].value
+    (d_m_text,) = page["input#d_m"].value
+    (f_L_MHz_text,) = page["input#f_L_MHz"].value
+    (bw_kHz_text,) = page["input#bw_kHz"].value
+    (P_W_text,) = page["input#P_W"].value
+
+    D_m = float(D_m_text)
+    d_m = float(d_m_text)
+    f_Hz = float(f_L_MHz_text) * 1e6
+    bw_Hz = float(bw_kHz_text) * 1e3
+    P_W = float(P_W_text)
+
+    ac = AntennaCalculator(D_m=D_m, d_m=d_m, f_Hz=f_Hz, bw_Hz=bw_Hz, P_W=P_W)
+
+    page["b#out_L_uH"].innerHTML = f"{ac.L_H * 1e6:.3g} \u00b5H"
+    page["b#out_C_pF"].innerHTML = f"{ac.C_F * 1e12:.3g} pF"
+    page["b#out_Q0"].innerHTML = f"{ac.Q0:.1f}"
+    page["b#out_RT_mOhm"].innerHTML = f"{ac.RT_Ohm * 1e3:.3g} m\u03a9"
+    page["b#out_RR_mOhm"].innerHTML = f"{ac.RR_Ohm * 1e3:.3g} m\u03a9"
+    page["b#out_I_main_loop_A"].innerHTML = f"{ac.I_main_loop_A:.3g} A"
+    page["b#out_U_loop_V"].innerHTML = f"{ac.U_loop_V:.3g} V"
+    page["b#out_m_Am2"].innerHTML = f"{ac.m_Am2:.4g} A m\u00b2"
 
 
 def do_calculate(e):
@@ -69,4 +96,7 @@ def do_calculate(e):
 
 
 # Render initial values and plot once on page load.
-do_calculate(None)
+try:
+    do_calculate(None)
+except Exception as e:
+    print(f"Initial render failed: {e}")

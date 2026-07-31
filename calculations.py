@@ -1,4 +1,5 @@
 import dataclasses
+import math
 import pathlib
 
 import matplotlib
@@ -6,6 +7,71 @@ import matplotlib.figure
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.lines import Line2D
+
+
+_MU0 = 4.0 * math.pi * 1e-7  # H/m
+_C_LIGHT = 299792458.0  # m/s
+
+
+@dataclasses.dataclass(frozen=True)
+class AntennaCalculator:
+    """Computes antenna parameters from geometry and measurement."""
+
+    D_m: float    # loop diameter [m]
+    d_m: float    # conductor diameter [m]
+    f_Hz: float   # frequency [Hz]
+    bw_Hz: float  # bandwidth B_SWR2.62 [Hz]
+    P_W: float    # power into antenna [W]
+
+    @property
+    def L_H(self) -> float:
+        """Inductance [H]"""
+        return _MU0 * (self.D_m / 2) * (math.log(8 * self.D_m / self.d_m) - 2)
+
+    @property
+    def C_F(self) -> float:
+        """Resonance capacitance [F]"""
+        return 1.0 / ((2 * math.pi * self.f_Hz) ** 2 * self.L_H)
+
+    @property
+    def Q0(self) -> float:
+        """Unloaded quality factor"""
+        return self.f_Hz / self.bw_Hz
+
+    @property
+    def XL(self) -> float:
+        """Inductive reactance [Ohm]"""
+        return 2 * math.pi * self.f_Hz * self.L_H
+
+    @property
+    def RT_Ohm(self) -> float:
+        """Damping resistance [Ohm]"""
+        return self.XL / self.Q0
+
+    @property
+    def A_m2(self) -> float:
+        """Loop area [m²]"""
+        return math.pi * (self.D_m / 2) ** 2
+
+    @property
+    def RR_Ohm(self) -> float:
+        """Radiation resistance [Ohm] — Rayleigh approximation"""
+        return 31171.0 * ((self.A_m2 * self.f_Hz**2) / _C_LIGHT**2) ** 2
+
+    @property
+    def I_main_loop_A(self) -> float:
+        """Loop current [A]"""
+        return math.sqrt(self.P_W / self.RT_Ohm)
+
+    @property
+    def U_loop_V(self) -> float:
+        """Loop voltage [V]"""
+        return self.I_main_loop_A * self.XL
+
+    @property
+    def m_Am2(self) -> float:
+        """Magnetic dipole moment [A m²]"""
+        return self.I_main_loop_A * self.A_m2
 
 
 @dataclasses.dataclass(frozen=True)
@@ -177,14 +243,14 @@ def main() -> None:
     calculator.save_h_field_plot(
         lim_x_m=4,
         lim_y_m=3,
-        filename=output_dir / "magnetic_field_strength.svg",
+        filename=output_dir / "calculations.svg",
         x_step=1.0,
         y_step=1.0,
     )
     calculator.save_h_field_plot(
         lim_x_m=30,
         lim_y_m=60,
-        filename=output_dir / "magnetic_field_strenght_big.svg",
+        filename=output_dir / "calculations_big.svg",
         x_step=10.0,
         y_step=10.0,
         levels=[0.001, 0.002, 0.005, 0.05],
