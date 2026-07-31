@@ -1,9 +1,11 @@
 import dataclasses
+import pathlib
 
-import numpy as np
+import matplotlib
+import matplotlib.figure
 import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib.lines import Line2D
-import os
 
 
 @dataclasses.dataclass(frozen=True)
@@ -13,12 +15,9 @@ class Calculator:
     I_A: float
     f_Hz: float
 
-    lim_x_m: float
-    lim_y_m: float
-
     @property
     def h_field(self) -> float:
-        return 5.0
+        return self.I_A * 2
 
     def h_field_retarded(self, rho, z_dist, R, I, f_Hz):
         """
@@ -53,9 +52,59 @@ class Calculator:
 
         return np.sqrt(H_r_sq + H_theta_sq)
 
+    def figure_h_field_plot(
+        self,
+        lim_x_m,
+        lim_y_m,
+        x_step,
+        y_step,
+        levels=None,
+    ) -> matplotlib.figure.Figure:
+
+
+        self._save_h_field_plot(
+            lim_x_m=lim_x_m,
+            lim_y_m=lim_y_m,
+            x_step=x_step,
+            y_step=y_step,
+            levels=levels,
+        )
+        try:
+            return plt.gcf()
+        finally:
+            plt.close('all')
+            plt.cla() # clear current axes
+            plt.clf() # clear current figure
+
     def save_h_field_plot(
-        self, lim_x_m, lim_y_m, output_name, x_step, y_step, output_dir, levels=None
-    ):
+        self,
+        lim_x_m,
+        lim_y_m,
+        x_step,
+        y_step,
+        filename: pathlib.Path,
+        levels=None,
+    ) -> None:
+        assert isinstance(filename, pathlib.Path)
+
+        self._save_h_field_plot(
+            lim_x_m=lim_x_m,
+            lim_y_m=lim_y_m,
+            x_step=x_step,
+            y_step=y_step,
+            levels=levels,
+        )
+        plt.savefig(filename, bbox_inches="tight", pad_inches=0.02)
+        plt.close()
+
+    def _save_h_field_plot(
+        self,
+        lim_x_m,
+        lim_y_m,
+        x_step,
+        y_step,
+        levels,
+    ) -> None:
         x = np.linspace(-lim_x_m, lim_x_m, 1000)
         y = np.linspace(-lim_y_m, lim_y_m, 1000)
         X, Y = np.meshgrid(x, y)
@@ -127,10 +176,7 @@ class Calculator:
         ]
         plt.legend(handles=legend_elements, loc="upper right", frameon=True)
 
-        output_path = os.path.join(output_dir, output_name)
         plt.tight_layout(pad=0.2)
-        plt.savefig(output_path, bbox_inches="tight", pad_inches=0.02)
-        plt.close()
 
 
 def main() -> None:
@@ -140,13 +186,11 @@ def main() -> None:
         R_m=D_m / 2,
         I_A=10.5,
         f_Hz=14.1e6,
-        lim_x_m=4.0,
-        lim_y_m=3.0,
     )
 
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    output_dir = os.path.abspath(os.path.join(script_dir, "..", "images"))
-    os.makedirs(output_dir, exist_ok=True)
+    DIRECTORY_OF_THIS_FILE = pathlib.Path(__file__).parent
+    output_dir = DIRECTORY_OF_THIS_FILE / "generated_images"
+    output_dir.mkdir(exist_ok=True, parents=True)
 
     # Gemessene Werte in dBm
     messwerte_dBm = {
@@ -169,19 +213,17 @@ def main() -> None:
     calculator.save_h_field_plot(
         lim_x_m=4,
         lim_y_m=3,
-        output_name="magnetic_field_strength.svg",
+        filename=output_dir / "magnetic_field_strength.svg",
         x_step=1.0,
         y_step=1.0,
-        output_dir=output_dir,
     )
     calculator.save_h_field_plot(
         lim_x_m=30,
         lim_y_m=60,
-        output_name="magnetic_field_strenght_big.svg",
+        filename=output_dir / "magnetic_field_strenght_big.svg",
         x_step=10.0,
         y_step=10.0,
         levels=[0.001, 0.002, 0.005, 0.05],
-        output_dir=output_dir,
     )
 
     # Berechne die Feldstärke für einzelne Punkte bei I_A = 10.5A
