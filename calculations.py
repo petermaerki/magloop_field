@@ -167,11 +167,13 @@ class Calculator:
         X, Y = np.meshgrid(x, y)
         H_total = self.h_field_retarded_xyz(X, Y, 0.0, self.m_Am2, self.f_Hz)
 
-        # Do not draw contour lines in the near-field area where the model is unreliable.
-        # Use the full 3D radius definition r = sqrt(x^2 + y^2 + z^2) with z=0 in this plot slice.
+        # Split contours into far/near region so near-field lines can be shown dotted.
+        # Use full 3D radius definition r = sqrt(x^2 + y^2 + z^2) with z=0 in this plot slice.
         z_plane_m = 0.0
         r_3d = np.sqrt(X**2 + Y**2 + z_plane_m**2)
-        H_total_masked = np.ma.masked_where(r_3d <= 1.5 * self.D_m, H_total)
+        near_region = r_3d <= 1.5 * self.D_m
+        H_total_far = np.ma.masked_where(near_region, H_total)
+        H_total_near = np.ma.masked_where(~near_region, H_total)
 
         aspect_ratio = lim_x_m / lim_y_m if lim_y_m else 1.0
         fig_height = 8.0
@@ -188,7 +190,7 @@ class Calculator:
         cp = plt.contour(
             X,
             Y,
-            H_total_masked,
+            H_total_far,
             levels=levels,
             colors="black",
             linewidths=1.0,
@@ -200,15 +202,31 @@ class Calculator:
         for label in clabels:
             label.set_bbox({"facecolor": "white", "edgecolor": "none", "pad": 3})
 
+        # In the near-field region, draw the same contour levels dotted.
+        try:
+            plt.contour(
+                X,
+                Y,
+                H_total_near,
+                levels=levels,
+                colors="black",
+                linewidths=1.0,
+                linestyles="dotted",
+                corner_mask=False,
+            )
+        except ValueError:
+            # No valid levels in near-field masked data.
+            pass
+
         show_blue_limit_line = False
         if show_icnirp_blue and icnirp_limit_a_per_m is not None and np.isfinite(icnirp_limit_a_per_m):
-            h_min = float(np.ma.min(H_total_masked))
-            h_max = float(np.ma.max(H_total_masked))
+            h_min = float(np.ma.min(H_total_far))
+            h_max = float(np.ma.max(H_total_far))
             if h_min <= float(icnirp_limit_a_per_m) <= h_max:
                 cp_limit = plt.contour(
                     X,
                     Y,
-                    H_total_masked,
+                    H_total_far,
                     levels=[float(icnirp_limit_a_per_m)],
                     colors="blue",
                     linewidths=1.6,
@@ -225,6 +243,21 @@ class Calculator:
                 for label in limit_labels:
                     label.set_bbox({"facecolor": "white", "edgecolor": "none", "pad": 3})
                 show_blue_limit_line = True
+
+            # Optional near-field ICNIRP line as dotted (if present there).
+            try:
+                plt.contour(
+                    X,
+                    Y,
+                    H_total_near,
+                    levels=[float(icnirp_limit_a_per_m)],
+                    colors="blue",
+                    linewidths=1.6,
+                    linestyles="dotted",
+                    corner_mask=False,
+                )
+            except ValueError:
+                pass
 
         antennenfarbe = "red"
         # Leiterquerschnitt als gefüllte Form
@@ -268,6 +301,14 @@ class Calculator:
         legend_elements = [
             Line2D([0], [0], color=antennenfarbe, lw=4, label="Antenna"),
             Line2D(
+                [0],
+                [0],
+                color="black",
+                lw=1.0,
+                linestyle="dotted",
+                label="Dotted: too close to the\nantenna, less accurate",
+            ),
+            Line2D(
                 [0], [0], marker="None", color="None", label=f"m = {self.m_Am2:.2f} A m²"
             ),
             Line2D(
@@ -278,16 +319,6 @@ class Calculator:
                 label=f"f = {self.f_Hz / 1e6:.1f} MHz",
             ),
         ]
-        if show_blue_limit_line:
-            legend_elements.append(
-                Line2D(
-                    [0],
-                    [0],
-                    color="blue",
-                    lw=1.6,
-                    label=f"ICNIRP 1998 = {float(icnirp_limit_a_per_m):g} A/m",
-                )
-            )
         plt.legend(handles=legend_elements, loc="upper right", frameon=True)
 
         # Keep figure margins minimal and deterministic for web rendering.
