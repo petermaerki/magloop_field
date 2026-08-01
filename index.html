@@ -55,10 +55,10 @@
                     </tr>
                     <tr>
                         <td class="input_label">
-                            <label for="D_m">Loop diameter D</label>
+                            <label for="antenna_D_m">Loop diameter D</label>
                         </td>
                         <td class="input_value">
-                            <input type="text" id="D_m" value="1.014">
+                            <input type="text" id="antenna_D_m" value="1.014">
                         </td>
                         <td class="unit">m</td>
                         <td rowspan="2"><img src="static/images/loop_diameter.svg" height="150"
@@ -204,16 +204,11 @@
         </div>
         <div>
             <small>
-                Limitations: Calculations on this page use the retarded magnetic dipole formula. The model is valid for
-                a small magnetic loop (D &lt; 0.1 lambda), and fields are considered reliable mainly at distances of
-                about 1.5 loop diameters or more from the origin. For larger loops, current is no longer constant around
-                the circumference, so other formulas are required.
+                Method: exact circular-loop Biot-Savart model (complete elliptic integrals), intended for
+                electrically small loops (D &lt; 0.1 lambda). Values very close to the conductor are suppressed;
+                see source code for details.
             </small>
-            <div class="formula_line">
-                $|H| =
-                \frac{m}{4\pi}\sqrt{4\cos^2(\varphi)\left(\frac{1}{r^6}+\frac{k^2}{r^4}\right)+\sin^2(\varphi)\left(\frac{1}{r^6}-\frac{k^2}{r^4}+\frac{k^4}{r^2}\right)}$,
-                $k = \frac{2\pi f}{c}$, $\varphi = \arctan2(\sqrt{y^2+z^2},x)$, $r=\sqrt{x^2+y^2+z^2}$
-            </div>
+
         </div>
         <div id="calculator">
 
@@ -227,8 +222,8 @@
                             <input type="text" id="m_Am2" value="8.19">
                         </td>
                         <td class="unit">A m^2</td>
-                        <td rowspan="2" style="vertical-align: middle;">
-                            <button type="button" id="btn_copy_above" style="height: 3em;">Copy from above</button>
+                        <td rowspan="3" style="vertical-align: middle;">
+                            <button type="button" id="btn_copy_above" style="height: 6em;">Copy from above</button>
                         </td>
                     </tr>
                     <tr>
@@ -239,6 +234,15 @@
                             <input type="text" id="f_MHz" value="14.1">
                         </td>
                         <td class="unit">MHz</td>
+                    </tr>
+                    <tr>
+                        <td class="input_label">
+                            <label for="field_D_m">Loop diameter D</label>
+                        </td>
+                        <td class="input_value">
+                            <input type="text" id="field_D_m" value="1.014">
+                        </td>
+                        <td class="unit">m</td>
                     </tr>
                     <tr>
                         <td class="input_label">
@@ -304,7 +308,7 @@
                         <td><b id="out_icnirp_limit">...</b></td>
                         <td class="unit">A/m</td>
                         <td>
-                            <label><input type="checkbox" id="show_icnirp_blue" checked> Show in blue</label><br>
+                            <label><input type="checkbox" id="show_icnirp_blue" checked> Show Limit in blue</label><br>
                             <small id="out_icnirp_section">...</small>
                         </td>
                     </tr>

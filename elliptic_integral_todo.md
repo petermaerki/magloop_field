@@ -9,7 +9,7 @@ Implementiere die exakte magnetische Feldberechnung einer kreisförmigen Magneti
 ### Eingangsgrößen
 
 - Magnetisches Dipolmoment `m_Am2`
-- Schleifendurchmesser `D_m` (und daraus Radius `R_m = D_m/2`)
+- Schleifendurchmesser `antenna_D_m` (und daraus Radius `R_m = antenna_D_m/2`)
 - Frequenz `f_Hz`
 - Beobachtungspunkt `x_m`, `y_m`, `z_m`
 

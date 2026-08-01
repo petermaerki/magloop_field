@@ -33,19 +33,25 @@ def icnirp_1998_h_limit_section_text(f_hz: float) -> str:
 
 @when("click", "#btn_calculate_antenna")
 def do_calculate_inductance(e=None):
-    (D_m_text,) = page["input#D_m"].value
+    (antenna_D_m_text,) = page["input#antenna_D_m"].value
     (d_m_text,) = page["input#d_m"].value
     (f_L_MHz_text,) = page["input#f_L_MHz"].value
     (bw_kHz_text,) = page["input#bw_kHz"].value
     (P_W_text,) = page["input#P_W"].value
 
-    D_m = float(D_m_text)
+    antenna_D_m = float(antenna_D_m_text)
     d_m = float(d_m_text)
     f_Hz = float(f_L_MHz_text) * 1e6
     bw_Hz = float(bw_kHz_text) * 1e3
     P_W = float(P_W_text)
 
-    ac = AntennaCalculator(D_m=D_m, d_m=d_m, f_Hz=f_Hz, bw_Hz=bw_Hz, P_W=P_W)
+    ac = AntennaCalculator(
+        antenna_D_m=antenna_D_m,
+        d_m=d_m,
+        f_Hz=f_Hz,
+        bw_Hz=bw_Hz,
+        P_W=P_W,
+    )
 
     page["b#out_L_uH"].innerHTML = f"{ac.L_H:.3g}"
     page["b#out_C_pF"].innerHTML = f"{ac.C_F:.3g}"
@@ -63,6 +69,7 @@ def do_calculate_inductance(e=None):
 def copy_values_from_above(e=None):
     document.getElementById("m_Am2").value = page["b#out_m_Am2"].innerHTML[0]
     document.getElementById("f_MHz").value = page["input#f_L_MHz"].value[0]
+    document.getElementById("field_D_m").value = page["input#antenna_D_m"].value[0]
 
 
 def do_calculate(e):
@@ -90,20 +97,20 @@ def do_calculate(e):
 
     d_min_abstand_m = 0.01
     try:
-        (D_m_text,) = page["input#D_m"].value
-        D_m = float(D_m_text)
+        (antenna_D_m_text,) = page["input#field_D_m"].value
+        antenna_D_m = float(antenna_D_m_text)
     except Exception:
-        D_m = 1.0
+        antenna_D_m = 1.0
 
     calculator = Calculator(
-        D_m=D_m,
-        R_m=D_m / 2,
+        antenna_D_m=antenna_D_m,
+        R_m=antenna_D_m / 2,
         m_Am2=m_Am2,
         f_Hz=f_Hz,
     )
 
     rho_m = math.sqrt(y_m**2 + z_m**2)
-    r_loop_m = D_m / 2.0
+    r_loop_m = antenna_D_m / 2.0
     d_abstand_zu_wire = math.sqrt((rho_m - r_loop_m) ** 2 + x_m**2)
 
     warning_node = document.getElementById("h_warning")
@@ -123,7 +130,7 @@ def do_calculate(e):
                 y_m=y_m,
                 z_m=z_m,
                 m_Am2=m_Am2,
-                D_m=D_m,
+                antenna_D_m=antenna_D_m,
             )
         )
         page["b#h_abs"].innerHTML = f"{h_field_at_point:.4g}"
