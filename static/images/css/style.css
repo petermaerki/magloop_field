@@ -80,6 +80,16 @@ div#calculator {
     box-shadow: 0;
 }
 
+div#calculator td {
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+div#calculator td small,
+div#calculator td img {
+    vertical-align: top;
+}
+
 @media print {
     div#calculator {
         border: 0;
@@ -151,6 +161,11 @@ section.pyscript {
 
 td.unit {
     white-space: nowrap;
+}
+
+a.img_popup {
+    text-decoration: none;
+    display: inline-block;
 }
 
 #h_warning {

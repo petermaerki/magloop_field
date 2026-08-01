@@ -32,9 +32,9 @@ def do_calculate_inductance(e=None):
     page["b#out_RT_mOhm"].innerHTML = f"{ac.RT_Ohm:.3g}"
     page["b#out_RLoss_Ohm"].innerHTML = f"{(ac.RT_Ohm - ac.RR_Ohm):.3g}"
     page["b#out_RR_mOhm"].innerHTML = f"{ac.RR_Ohm:.3g}"
-    page["b#out_eta_percent"].innerHTML = f"{(ac.RR_Ohm / ac.RT_Ohm):.3g}"
+    page["b#out_eta_percent"].innerHTML = f"{(100.0 * ac.RR_Ohm / ac.RT_Ohm):.3g}"
     page["b#out_I_main_loop_A"].innerHTML = f"{ac.I_main_loop_A:.3g}"
-    page["b#out_U_loop_V"].innerHTML = f"{ac.U_loop_V:.3g}"
+    page["b#out_U_loop_V"].innerHTML = f"{ac.U_loop_V:.0f}"
     page["b#out_m_Am2"].innerHTML = f"{ac.m_Am2:.3g}"
 
 

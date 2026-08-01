@@ -47,22 +47,12 @@
         <div id="readme"></div>
         <script type="py" src="./index_readme.py" async></script>
         <hr>
-        <b>Antenna Calculations</b>
-        <div style="display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap;">
-            <img src="static/images/loop_diameter.svg" height="150" alt="Loop diameter sketch" />
-            <div style="max-width: 420px; line-height: 1.35;">
-                $L = \mu_0 \cdot \frac{D}{2} \left(\ln\left(\frac{8D}{d}\right) - 2\right)$<br>
-                mit $\mu_0 = 4\pi \cdot 10^{-7}$ H/m.
-            </div>
-
-            <img src="static/images/basics_l_c_rt.svg" height="80" alt="LC circuit with damping resistor" />
-            <img src="static/images/basics_l_c_resistor_loss.svg" height="80"
-                alt="LC circuit with loss and radiation resistances" />
-
-        </div>
         <div id="calculator">
             <table>
                 <tbody>
+                    <tr>
+                        <td colspan="4"><b>Antenna Calculations</b></td>
+                    </tr>
                     <tr>
                         <td class="input_label">
                             <label for="D_m">Loop diameter D</label>
@@ -71,6 +61,8 @@
                             <input type="text" id="D_m" value="1.014">
                         </td>
                         <td class="unit">m</td>
+                        <td rowspan="2"><img src="static/images/loop_diameter.svg" height="150"
+                            alt="Loop diameter sketch" />For non-circular loops, enter the mean diameter.</td>
                     </tr>
                     <tr>
                         <td class="input_label">
@@ -89,6 +81,15 @@
                             <input type="text" id="f_L_MHz" value="14.1">
                         </td>
                         <td class="unit">MHz</td>
+                        <td rowspan="2">
+                            <a class="img_popup" href="static/images/swr_klein_arrow.png" target="_blank" rel="noopener noreferrer">
+                                <img src="static/images/swr_klein_arrow.png" height="100" alt="SWR curve" />
+                            </a>
+                            <a class="img_popup" href="static/images/smith_klein.png" target="_blank" rel="noopener noreferrer">
+                                <img src="static/images/smith_klein.png" height="100" alt="Smith chart" />
+                            </a>
+                            VNA calibrated at the cable end at the antenna.
+                        </td>
                     </tr>
                     <tr>
                         <td class="input_label">
@@ -98,6 +99,7 @@
                             <input type="text" id="bw_kHz" value="86.6">
                         </td>
                         <td class="unit">kHz</td>
+
                     </tr>
                     <tr>
                         <td class="input_label">
@@ -107,6 +109,7 @@
                             <input type="text" id="P_W" value="94">
                         </td>
                         <td class="unit">W</td>
+                        <td>Power at the antenna feed point. Do not forget cable losses.</td>
                     </tr>
                     <tr>
                         <td colspan="3">
@@ -118,51 +121,72 @@
                         <td>Inductance L</td>
                         <td><b id="out_L_uH">...</b></td>
                         <td class="unit">H</td>
+                        <td><small>$L = \mu_0 \cdot \frac{D}{2} \left(\ln\left(\frac{8D}{d}\right) - 2\right)$ with
+                                $\mu_0 = 4\pi \cdot 10^{-7}$ H/m.</small></td>
                     </tr>
                     <tr>
                         <td>Capacitance C</td>
                         <td><b id="out_C_pF">...</b></td>
                         <td class="unit">F</td>
+                        <td><small>$C = \frac{1}{(2\pi f)^2 L}$</small></td>
                     </tr>
                     <tr>
                         <td>Unloaded Q<sub>0</sub></td>
                         <td><b id="out_Q0">...</b></td>
                         <td class="unit"></td>
+                        <td><small>$Q_0 = \frac{f}{B_{\mathrm{SWR}=2.6}}$</small></td>
                     </tr>
                     <tr>
                         <td>Damping resistance R<sub>T</sub></td>
                         <td><b id="out_RT_mOhm">...</b></td>
                         <td class="unit">Ohm</td>
-                    </tr>
-                    <tr>
-                        <td>Loss resistance R<sub>Loss</sub></td>
-                        <td><b id="out_RLoss_Ohm">...</b></td>
-                        <td class="unit">Ohm</td>
+                        <td><small>$R_T = \frac{X_L}{Q_0} = \frac{2\pi f L}{Q_0}$</small> <a class="img_popup"
+                                href="static/images/basics_l_c_rt.svg" target="_blank" rel="noopener noreferrer"><img
+                                    src="static/images/basics_l_c_rt.svg" height="60"
+                                    alt="LC circuit with damping resistor" /></a></td>
                     </tr>
                     <tr>
                         <td>Radiation resistance R<sub>R</sub></td>
                         <td><b id="out_RR_mOhm">...</b></td>
                         <td class="unit">Ohm</td>
+                        <td><small>$R_R \approx 31171\left(\frac{A f^2}{c^2}\right)^2\left(1+\frac{1}{2}\left(\frac{\pi
+                                D f}{c}\right)^2\right)$</small></td>
                     </tr>
+                    <tr>
+                        <td>Loss resistance R<sub>Loss</sub></td>
+                        <td><b id="out_RLoss_Ohm">...</b></td>
+                        <td class="unit">Ohm</td>
+                        <td><small>$R_{\mathrm{Loss}} = R_T - R_R$</small><a class="img_popup"
+                                href="static/images/basics_l_c_resistor_loss.svg" target="_blank"
+                                rel="noopener noreferrer"><img src="static/images/basics_l_c_resistor_loss.svg"
+                                    height="60" alt="LC circuit with loss and radiation resistances" /></a></td>
+                    </tr>
+
                     <tr>
                         <td>Antenna efficiency η</td>
                         <td><b id="out_eta_percent">...</b></td>
-                        <td class="unit">1</td>
+                        <td class="unit">%</td>
+                        <td><small>$\eta = \frac{R_R}{R_T}$</small></td>
                     </tr>
                     <tr>
                         <td>Loop current I<sub>main loop</sub></td>
                         <td><b id="out_I_main_loop_A">...</b></td>
                         <td class="unit">A</td>
+                        <td><small>$I_{\mathrm{main\ loop}} = \sqrt{\frac{P}{R_T}}$</small></td>
                     </tr>
                     <tr>
                         <td>Loop voltage U<sub>loop</sub></td>
                         <td><b id="out_U_loop_V">...</b></td>
                         <td class="unit">V</td>
+                        <td><small>$U_{\mathrm{loop}} = I_{\mathrm{main\ loop}} X_L = I_{\mathrm{main\ loop}}\,2\pi f
+                                L$</small></td>
                     </tr>
                     <tr>
                         <td>Magnetic dipole moment m</td>
                         <td><b id="out_m_Am2">...</b></td>
                         <td class="unit">A m²</td>
+                        <td><small>$m = I_{\mathrm{main\ loop}} A = I_{\mathrm{main\
+                                loop}}\,\pi\left(\frac{D}{2}\right)^2$</small></td>
                     </tr>
                 </tbody>
             </table>
@@ -293,7 +317,8 @@
 
             <section class="pyscript">
                 <div id="figure_h_field_plot"></div>
-                <div id="download_svg_wrap"><a id="download_svg" href="#" download="magnetic_field_plot.svg">Download figure
+                <div id="download_svg_wrap"><a id="download_svg" href="#" download="magnetic_field_plot.svg">Download
+                        figure
                         as SVG</a></div>
                 <script type="py" src="./index.py" config="./pyscript.toml"></script>
             </section>

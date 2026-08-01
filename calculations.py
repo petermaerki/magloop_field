@@ -55,8 +55,10 @@ class AntennaCalculator:
 
     @property
     def RR_Ohm(self) -> float:
-        """Radiation resistance [Ohm] — Rayleigh approximation"""
-        return 31171.0 * ((self.A_m2 * self.f_Hz**2) / _C_LIGHT**2) ** 2
+        """Radiation resistance [Ohm] — Rayleigh term with King finite-size correction."""
+        rayleigh = 31171.0 * ((self.A_m2 * self.f_Hz**2) / _C_LIGHT**2) ** 2
+        king_correction = 1.0 + 0.5 * ((math.pi * self.D_m * self.f_Hz) / _C_LIGHT) ** 2
+        return rayleigh * king_correction
 
     @property
     def I_main_loop_A(self) -> float:
