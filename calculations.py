@@ -13,6 +13,99 @@ _MU0 = 4.0 * math.pi * 1e-7  # H/m
 _C_LIGHT = 299792458.0  # m/s
 
 
+def _ellip_rf(x, y, z, tol=1e-12, max_iter=60):
+    """Carlson symmetric integral RF(x, y, z) for non-negative x, y, z."""
+    x = np.asarray(x, dtype=float)
+    y = np.asarray(y, dtype=float)
+    z = np.asarray(z, dtype=float)
+    x, y, z = np.broadcast_arrays(x, y, z)
+
+    an = (x + y + z) / 3.0
+    xn = x.copy()
+    yn = y.copy()
+    zn = z.copy()
+
+    for _ in range(max_iter):
+        sx = np.sqrt(xn)
+        sy = np.sqrt(yn)
+        sz = np.sqrt(zn)
+        lam = sx * sy + sx * sz + sy * sz
+        xn = 0.25 * (xn + lam)
+        yn = 0.25 * (yn + lam)
+        zn = 0.25 * (zn + lam)
+        an = 0.25 * (an + lam)
+
+        dx = np.abs(1.0 - xn / an)
+        dy = np.abs(1.0 - yn / an)
+        dz = np.abs(1.0 - zn / an)
+        if np.max(np.stack([dx, dy, dz])) < tol:
+            break
+
+    xbar = 1.0 - xn / an
+    ybar = 1.0 - yn / an
+    zbar = 1.0 - zn / an
+    e2 = xbar * ybar - zbar * zbar
+    e3 = xbar * ybar * zbar
+    poly = 1.0 - e2 / 10.0 + e3 / 14.0 + (e2 * e2) / 24.0 - (3.0 * e2 * e3) / 44.0
+    return poly / np.sqrt(an)
+
+
+def _ellip_rd(x, y, z, tol=1e-12, max_iter=60):
+    """Carlson symmetric integral RD(x, y, z) for non-negative x, y, z>0."""
+    x = np.asarray(x, dtype=float)
+    y = np.asarray(y, dtype=float)
+    z = np.asarray(z, dtype=float)
+    x, y, z = np.broadcast_arrays(x, y, z)
+
+    xn = x.copy()
+    yn = y.copy()
+    zn = z.copy()
+    sigma = np.zeros_like(xn)
+    fac = np.ones_like(xn)
+
+    for _ in range(max_iter):
+        sx = np.sqrt(xn)
+        sy = np.sqrt(yn)
+        sz = np.sqrt(zn)
+        lam = sx * (sy + sz) + sy * sz
+        sigma += fac / (sz * (zn + lam))
+        fac *= 0.25
+        xn = 0.25 * (xn + lam)
+        yn = 0.25 * (yn + lam)
+        zn = 0.25 * (zn + lam)
+
+        an = (xn + yn + 3.0 * zn) / 5.0
+        dx = np.abs(1.0 - xn / an)
+        dy = np.abs(1.0 - yn / an)
+        dz = np.abs(1.0 - zn / an)
+        if np.max(np.stack([dx, dy, dz])) < tol:
+            break
+
+    an = (xn + yn + 3.0 * zn) / 5.0
+    xbar = 1.0 - xn / an
+    ybar = 1.0 - yn / an
+    zbar = 1.0 - zn / an
+
+    ea = xbar * ybar
+    eb = zbar * zbar
+    ec = ea - eb
+    ed = ea - 6.0 * eb
+    ef = ed + 2.0 * ec
+
+    s1 = ed * (-3.0 / 14.0 + (9.0 / 88.0) * ed - (9.0 / 52.0) * zbar * ef)
+    s2 = zbar * ((1.0 / 6.0) * ef + zbar * (-(9.0 / 22.0) * ec + (3.0 / 26.0) * zbar * ea))
+    return 3.0 * sigma + fac * (1.0 + s1 + s2) / (an * np.sqrt(an))
+
+
+def _ellipk_e_from_m(m):
+    """Complete elliptic integrals K(m), E(m) with parameter m in [0, 1)."""
+    m = np.asarray(m, dtype=float)
+    m = np.clip(m, 0.0, 1.0 - 1e-15)
+    k_val = _ellip_rf(0.0, 1.0 - m, 1.0)
+    e_val = k_val - (m / 3.0) * _ellip_rd(0.0, 1.0 - m, 1.0)
+    return k_val, e_val
+
+
 @dataclasses.dataclass(frozen=True)
 class AntennaCalculator:
     """Computes antenna parameters from geometry and measurement."""
@@ -87,6 +180,49 @@ class Calculator:
     def h_field(self) -> float:
         return self.m_Am2 * 2
 
+    def h_field_elliptic_abs_xyz(self, x_m, y_m, z_m, m_Am2, D_m):
+        """Exact |H| of a circular loop via elliptic integrals (magnetostatic closed form).
+
+        Geometry used in this project:
+        - Loop lies in the y-z plane
+        - Loop axis is the x-axis
+        - Loop radius R = D/2
+        """
+        x_m = np.asarray(x_m, dtype=float)
+        y_m = np.asarray(y_m, dtype=float)
+        z_m = np.asarray(z_m, dtype=float)
+
+        R_m = 0.5 * float(D_m)
+        I_main_loop_A = float(m_Am2) / (math.pi * R_m**2)
+
+        # Cylindrical coordinates around x-axis (loop axis)
+        rho_m = np.sqrt(y_m**2 + z_m**2)
+        x2 = x_m**2
+        alpha2 = (R_m - rho_m) ** 2 + x2
+        beta2 = (R_m + rho_m) ** 2 + x2
+        m_param = np.clip(4.0 * R_m * rho_m / np.maximum(beta2, 1e-30), 0.0, 1.0 - 1e-15)
+
+        K_m, E_m = _ellipk_e_from_m(m_param)
+        beta = np.sqrt(np.maximum(beta2, 1e-30))
+        alpha2_safe = np.maximum(alpha2, 1e-30)
+
+        # Brho, Bx from standard loop formulas (mapped to axis=x).
+        pref_bx = _MU0 * I_main_loop_A / (2.0 * math.pi * beta)
+        bx = pref_bx * (K_m + ((R_m**2 - rho_m**2 - x2) / alpha2_safe) * E_m)
+
+        pref_brho = _MU0 * I_main_loop_A * x_m / (2.0 * math.pi * np.maximum(rho_m, 1e-30) * beta)
+        brho = pref_brho * (-K_m + ((R_m**2 + rho_m**2 + x2) / alpha2_safe) * E_m)
+
+        # On-axis limit (rho -> 0): Brho=0, exact finite Bx expression.
+        axis_mask = rho_m < 1e-12
+        if np.any(axis_mask):
+            bx_axis = _MU0 * I_main_loop_A * R_m**2 / (2.0 * (R_m**2 + x2) ** 1.5)
+            bx = np.where(axis_mask, bx_axis, bx)
+            brho = np.where(axis_mask, 0.0, brho)
+
+        b_abs = np.sqrt(bx**2 + brho**2)
+        return b_abs / _MU0
+
     def h_field_retarded_xyz(self, x_m, y_m, z_m, m_Am2, f_Hz):
         """Retarded dipole |H| at Cartesian point (x, y, z)."""
         c = 299792458.0
@@ -106,6 +242,29 @@ class Calculator:
         H_theta_sq = fac**2 * np.sin(phi) ** 2 * (1.0 / r**6 - k**2 / r**4 + k**4 / r**2)
         return np.sqrt(H_r_sq + H_theta_sq)
 
+    def compare_retarded_vs_elliptic_samples(self, points_xyz_m):
+        """Compare old retarded |H| against new elliptic-integral |H| at sample points.
+
+        Returns a list of dict rows with absolute values and relative deviation.
+        """
+        rows = []
+        for x_m, y_m, z_m in points_xyz_m:
+            h_ret = float(self.h_field_retarded_xyz(x_m, y_m, z_m, self.m_Am2, self.f_Hz))
+            h_ell = float(self.h_field_elliptic_abs_xyz(x_m, y_m, z_m, self.m_Am2, self.D_m))
+            denom = max(abs(h_ell), 1e-30)
+            rel_err = (h_ret - h_ell) / denom
+            rows.append(
+                {
+                    "x_m": float(x_m),
+                    "y_m": float(y_m),
+                    "z_m": float(z_m),
+                    "h_ret_a_per_m": h_ret,
+                    "h_ell_a_per_m": h_ell,
+                    "rel_err": rel_err,
+                }
+            )
+        return rows
+
     def figure_h_field_plot(
         self,
         lim_x_m,
@@ -115,6 +274,7 @@ class Calculator:
         levels=None,
         icnirp_limit_a_per_m=None,
         show_icnirp_blue=False,
+        d_min_abstand_m=0.01,
     ) -> matplotlib.figure.Figure:
         self._save_h_field_plot(
             lim_x_m=lim_x_m,
@@ -124,6 +284,7 @@ class Calculator:
             levels=levels,
             icnirp_limit_a_per_m=icnirp_limit_a_per_m,
             show_icnirp_blue=show_icnirp_blue,
+            d_min_abstand_m=d_min_abstand_m,
         )
         return plt.gcf()
 
@@ -137,6 +298,7 @@ class Calculator:
         levels=None,
         icnirp_limit_a_per_m=None,
         show_icnirp_blue=False,
+        d_min_abstand_m=0.01,
     ) -> None:
         assert isinstance(filename, pathlib.Path)
 
@@ -148,6 +310,7 @@ class Calculator:
             levels=levels,
             icnirp_limit_a_per_m=icnirp_limit_a_per_m,
             show_icnirp_blue=show_icnirp_blue,
+            d_min_abstand_m=d_min_abstand_m,
         )
         plt.savefig(filename, bbox_inches="tight", pad_inches=0.02)
         plt.close()
@@ -161,17 +324,18 @@ class Calculator:
         levels,
         icnirp_limit_a_per_m=None,
         show_icnirp_blue=False,
+        d_min_abstand_m=0.01,
     ) -> None:
         x = np.linspace(-lim_x_m, lim_x_m, 1000)
         y = np.linspace(-lim_y_m, lim_y_m, 1000)
         X, Y = np.meshgrid(x, y)
-        H_total = self.h_field_retarded_xyz(X, Y, 0.0, self.m_Am2, self.f_Hz)
+        H_total = self.h_field_elliptic_abs_xyz(X, Y, 0.0, self.m_Am2, self.D_m)
 
-        # Split contours into far/near region so near-field lines can be shown dotted.
-        # Use full 3D radius definition r = sqrt(x^2 + y^2 + z^2) with z=0 in this plot slice.
-        z_plane_m = 0.0
-        r_3d = np.sqrt(X**2 + Y**2 + z_plane_m**2)
-        near_region = r_3d <= 1.5 * self.D_m
+        # Split contours into far/near region by distance to the conductor axis.
+        # Loop axis is x, loop lies in y-z plane, and this plot slice uses z=0.
+        rho_m = np.sqrt(Y**2)
+        d_abstand_zu_wire = np.sqrt((rho_m - self.R_m) ** 2 + X**2)
+        near_region = d_abstand_zu_wire < float(d_min_abstand_m)
         H_total_far = np.ma.masked_where(near_region, H_total)
         H_total_near = np.ma.masked_where(~near_region, H_total)
 
@@ -260,11 +424,10 @@ class Calculator:
                 pass
 
         antennenfarbe = "red"
-        # Leiterquerschnitt als gefüllte Form
+        # Draw conductor with end caps using centerline diameter convention.
+        # D refers to the centerline (cap centers at y=±R), so outer length is D + d_leiter.
         d_leiter_m = 0.1
         r_leiter_m = d_leiter_m / 2
-
-        # Gefülltes Rechteck
         rectangle = plt.Rectangle(
             (-r_leiter_m, -self.R_m),
             d_leiter_m,
@@ -275,7 +438,6 @@ class Calculator:
         )
         plt.gca().add_artist(rectangle)
 
-        # Gefüllte Kreise an den Enden
         circle1 = plt.Circle((0, self.R_m), r_leiter_m, color=antennenfarbe, fill=True, zorder=3.0)
         circle2 = plt.Circle((0, -self.R_m), r_leiter_m, color=antennenfarbe, fill=True, zorder=3.0)
         plt.gca().add_artist(circle1)
@@ -295,7 +457,7 @@ class Calculator:
         plt.xlim(-lim_x_m, lim_x_m)
         plt.ylim(-lim_y_m, lim_y_m)
 
-        # Contour lines are already masked for r <= 1.5D via H_total_masked.
+        # Contour lines are split by conductor distance via d_abstand_zu_wire.
 
         # Legende
         legend_elements = [
@@ -306,7 +468,7 @@ class Calculator:
                 color="black",
                 lw=1.0,
                 linestyle="dotted",
-                label="Dotted: too close to the\nantenna, less accurate",
+                label="Dotted: too close to the\nconductor, less accurate",
             ),
             Line2D(
                 [0], [0], marker="None", color="None", label=f"m = {self.m_Am2:.2f} A m²"
@@ -355,6 +517,21 @@ def main() -> None:
         y_step=10.0,
         levels=[0.001, 0.002, 0.005, 0.05],
     )
+
+    # Step-2 validation helper: compare legacy retarded model vs. exact elliptic model.
+    sample_points = [
+        (0.5, 0.5, 0.0),
+        (1.0, 1.0, 0.0),
+        (2.0, 2.0, 0.0),
+        (5.0, 0.0, 0.0),
+    ]
+    print("\nretarded vs elliptic |H| comparison")
+    print("x_m  y_m  z_m    H_ret[A/m]    H_ell[A/m]    rel_err")
+    for row in calculator.compare_retarded_vs_elliptic_samples(sample_points):
+        print(
+            f"{row['x_m']:>3.1f}  {row['y_m']:>3.1f}  {row['z_m']:>3.1f}  "
+            f"{row['h_ret_a_per_m']:>11.4e}  {row['h_ell_a_per_m']:>11.4e}  {row['rel_err']:>+8.3%}"
+        )
 
 
 if __name__ == "__main__":

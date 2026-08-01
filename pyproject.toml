@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "magloop-field"
+version = "0.1.0"
+description = "Magnetic loop antenna calculations and field plotting"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "maerki" }]
+dependencies = [
+    "numpy>=1.26",
+    "matplotlib>=3.8",
+]
+
+[tool.setuptools]
+py-modules = ["calculations", "index", "index_readme", "magnetic_field_strength"]

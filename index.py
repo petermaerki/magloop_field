@@ -88,7 +88,13 @@ def do_calculate(e):
     if show_icnirp_node is not None:
         show_icnirp_blue = bool(show_icnirp_node.checked)
 
-    D_m = 1.0
+    d_min_abstand_m = 0.01
+    try:
+        (D_m_text,) = page["input#D_m"].value
+        D_m = float(D_m_text)
+    except Exception:
+        D_m = 1.0
+
     calculator = Calculator(
         D_m=D_m,
         R_m=D_m / 2,
@@ -96,31 +102,31 @@ def do_calculate(e):
         f_Hz=f_Hz,
     )
 
-    c = 299792458.0
-    k = 2.0 * math.pi * f_Hz / c
-    r = math.sqrt(x_m**2 + y_m**2 + z_m**2)
-    r = max(r, 1e-9)
-
-    try:
-        (D_m_text,) = page["input#D_m"].value
-        D_m_for_warning = float(D_m_text)
-    except Exception:
-        D_m_for_warning = 1.0
+    rho_m = math.sqrt(y_m**2 + z_m**2)
+    r_loop_m = D_m / 2.0
+    d_abstand_zu_wire = math.sqrt((rho_m - r_loop_m) ** 2 + x_m**2)
 
     warning_node = document.getElementById("h_warning")
-    if warning_node is not None:
-        if r < 1.5 * D_m_for_warning:
-            warning_node.innerHTML = "Warning: r&lt;1.5D, too near to the antenna, value not accurate!"
-        else:
+    if d_abstand_zu_wire < d_min_abstand_m:
+        if warning_node is not None:
+            warning_node.innerHTML = (
+                f"Warning: too close to conductor (d&lt;{d_min_abstand_m:g} m), value not shown."
+            )
+        page["b#h_abs"].innerHTML = "NaN"
+    else:
+        if warning_node is not None:
             warning_node.innerHTML = ""
 
-    rho_m = math.sqrt(y_m**2 + z_m**2)
-    phi = math.atan2(rho_m, x_m)
-    fac = m_Am2 / (4.0 * math.pi)
-    h_r_sq = fac**2 * 4.0 * math.cos(phi) ** 2 * (1.0 / r**6 + k**2 / r**4)
-    h_theta_sq = fac**2 * math.sin(phi) ** 2 * (1.0 / r**6 - k**2 / r**4 + k**4 / r**2)
-    h_field_at_point = math.sqrt(h_r_sq + h_theta_sq)
-    page["b#h_abs"].innerHTML = f"{h_field_at_point:.4g}"
+        h_field_at_point = float(
+            calculator.h_field_elliptic_abs_xyz(
+                x_m=x_m,
+                y_m=y_m,
+                z_m=z_m,
+                m_Am2=m_Am2,
+                D_m=D_m,
+            )
+        )
+        page["b#h_abs"].innerHTML = f"{h_field_at_point:.4g}"
 
     icnirp_limit_a_per_m = icnirp_1998_h_limit_a_per_m(f_Hz)
     page["b#out_icnirp_limit"].innerHTML = f"{icnirp_limit_a_per_m:.3g}"
@@ -134,6 +140,7 @@ def do_calculate(e):
         levels=levels,
         icnirp_limit_a_per_m=icnirp_limit_a_per_m,
         show_icnirp_blue=show_icnirp_blue,
+        d_min_abstand_m=d_min_abstand_m,
     )
 
     svg_buffer = io.BytesIO()
