@@ -11,6 +11,11 @@ from matplotlib.lines import Line2D
 
 _MU0 = 4.0 * math.pi * 1e-7  # H/m
 _C_LIGHT = 299792458.0  # m/s
+_KR_NEAR = 0.3
+_KR_FAR = 1.0
+# Transition tuning for the hybrid model:
+# keep the elliptic (quasi-static) solution dominant for kr < 0.3,
+# blend in the mid zone, and enforce pure retarded behavior for kr >= 1.0.
 
 
 def _ellip_rf(x, y, z, tol=1e-12, max_iter=60):
@@ -223,6 +228,45 @@ class Calculator:
         b_abs = np.sqrt(bx**2 + brho**2)
         return b_abs / _MU0
 
+    def h_field_retarded_dipole_abs_xyz(self, x_m, y_m, z_m, m_Am2, f_Hz):
+        """Retarded magnetic dipole |H| at Cartesian point (x, y, z)."""
+        k = 2.0 * np.pi * f_Hz / _C_LIGHT
+        fac = m_Am2 / (4.0 * np.pi)
+
+        x_m = np.asarray(x_m, dtype=float)
+        y_m = np.asarray(y_m, dtype=float)
+        z_m = np.asarray(z_m, dtype=float)
+
+        r = np.sqrt(x_m**2 + y_m**2 + z_m**2)
+        r = np.maximum(r, 1e-9)
+        rho = np.sqrt(y_m**2 + z_m**2)
+        phi = np.arctan2(rho, x_m)
+
+        h_r_sq = fac**2 * 4.0 * np.cos(phi) ** 2 * (1.0 / r**6 + k**2 / r**4)
+        h_theta_sq = fac**2 * np.sin(phi) ** 2 * (1.0 / r**6 - k**2 / r**4 + k**4 / r**2)
+        return np.sqrt(h_r_sq + h_theta_sq)
+
+    def h_field_abs_xyz(self, x_m, y_m, z_m, m_Am2, antenna_D_m, f_Hz):
+        """Hybrid |H| model: exact elliptic near field, retarded dipole far field.
+
+        Transition uses kr = 2*pi*r/lambda with smooth blending in the mid range.
+        In the far zone (kr >= kr_far), the result is exactly the retarded model.
+        """
+        x_m = np.asarray(x_m, dtype=float)
+        y_m = np.asarray(y_m, dtype=float)
+        z_m = np.asarray(z_m, dtype=float)
+
+        h_ell = self.h_field_elliptic_abs_xyz(x_m, y_m, z_m, m_Am2, antenna_D_m)
+        h_ret = self.h_field_retarded_dipole_abs_xyz(x_m, y_m, z_m, m_Am2, f_Hz)
+
+        r = np.sqrt(x_m**2 + y_m**2 + z_m**2)
+        kr = 2.0 * np.pi * f_Hz * r / _C_LIGHT
+
+        # Near: pure elliptic. Mid: smooth blend. Far: pure retarded.
+        t = np.clip((kr - _KR_NEAR) / (_KR_FAR - _KR_NEAR), 0.0, 1.0)
+        w_far = t * t * (3.0 - 2.0 * t)  # smoothstep
+        return (1.0 - w_far) * h_ell + w_far * h_ret
+
     def figure_h_field_plot(
         self,
         lim_x_m,
@@ -287,7 +331,14 @@ class Calculator:
         x = np.linspace(-lim_x_m, lim_x_m, 1000)
         y = np.linspace(-lim_y_m, lim_y_m, 1000)
         X, Y = np.meshgrid(x, y)
-        H_total = self.h_field_elliptic_abs_xyz(X, Y, 0.0, self.m_Am2, self.antenna_D_m)
+        H_total = self.h_field_abs_xyz(
+            X,
+            Y,
+            0.0,
+            self.m_Am2,
+            self.antenna_D_m,
+            self.f_Hz,
+        )
 
         # Split contours into far/near region by distance to the conductor axis.
         # Loop axis is x, loop lies in y-z plane, and this plot slice uses z=0.

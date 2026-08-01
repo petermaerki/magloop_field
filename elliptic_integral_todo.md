@@ -46,3 +46,5 @@ Zur Vermeidung der Singularität direkt am idealisierten Leiter gilt:
 - Alte Logik entfernen: Die 1.5D-Zentrum-Logik (gepunktete Linien im Plot) entfällt vollständig.
 - Alte Warntext-Logik entfernen: Der bisherige Warntext auf Basis `r < 1.5D` entfällt.
 - Neue Warntext-Logik: Warnung stattdessen ausschließlich über `d_abstand_zu_wire < d_min_abstand_m` steuern.
+
+

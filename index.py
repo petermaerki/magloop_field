@@ -125,12 +125,13 @@ def do_calculate(e):
             warning_node.innerHTML = ""
 
         h_field_at_point = float(
-            calculator.h_field_elliptic_abs_xyz(
+            calculator.h_field_abs_xyz(
                 x_m=x_m,
                 y_m=y_m,
                 z_m=z_m,
                 m_Am2=m_Am2,
                 antenna_D_m=antenna_D_m,
+                f_Hz=f_Hz,
             )
         )
         page["b#h_abs"].innerHTML = f"{h_field_at_point:.4g}"
