@@ -10,6 +10,27 @@ from pyscript.web import page
 from calculations import AntennaCalculator, Calculator
 
 
+def icnirp_1998_h_limit_a_per_m(f_hz: float) -> float:
+    """ICNIRP 1998 reference level for magnetic field strength H [A/m] (general public), RF range."""
+    f_mhz = f_hz / 1e6
+    if f_mhz < 10.0:
+        return 0.73 / max(f_mhz, 1e-9)
+    if f_mhz <= 400.0:
+        return 0.073
+    if f_mhz <= 2000.0:
+        return 0.0037 * math.sqrt(f_mhz)
+    return 0.16
+
+
+def icnirp_1998_h_limit_section_text(f_hz: float) -> str:
+    """Human-readable ICNIRP 1998 note focused on HF range only."""
+    return (
+        "Using ICNIRP 1998 general public: "
+        "0.1-10 MHz: H = 0.73/f_MHz A/m; "
+        "10-30 MHz: H = 0.073 A/m."
+    )
+
+
 @when("click", "#btn_calculate_antenna")
 def do_calculate_inductance(e=None):
     (D_m_text,) = page["input#D_m"].value
@@ -62,6 +83,10 @@ def do_calculate(e):
     lim_y_m = float(lim_y_m_text)
     line_tokens = line_at_field_text.replace(",", " ").split()
     levels = sorted({float(token) for token in line_tokens}) if line_tokens else None
+    show_icnirp_blue = True
+    show_icnirp_node = document.getElementById("show_icnirp_blue")
+    if show_icnirp_node is not None:
+        show_icnirp_blue = bool(show_icnirp_node.checked)
 
     D_m = 1.0
     calculator = Calculator(
@@ -97,12 +122,18 @@ def do_calculate(e):
     h_field_at_point = math.sqrt(h_r_sq + h_theta_sq)
     page["b#h_abs"].innerHTML = f"{h_field_at_point:.4g}"
 
+    icnirp_limit_a_per_m = icnirp_1998_h_limit_a_per_m(f_Hz)
+    page["b#out_icnirp_limit"].innerHTML = f"{icnirp_limit_a_per_m:.3g}"
+    page["small#out_icnirp_section"].innerHTML = icnirp_1998_h_limit_section_text(f_Hz)
+
     figure_h_field_plot = calculator.figure_h_field_plot(
         lim_x_m=lim_x_m,
         lim_y_m=lim_y_m,
         x_step=1.0,
         y_step=1.0,
         levels=levels,
+        icnirp_limit_a_per_m=icnirp_limit_a_per_m,
+        show_icnirp_blue=show_icnirp_blue,
     )
 
     svg_buffer = io.BytesIO()
@@ -116,6 +147,11 @@ def do_calculate(e):
     document.getElementById("download_svg").setAttribute(
         "href", f"data:image/svg+xml;base64,{svg_data}"
     )
+
+
+@when("change", "#show_icnirp_blue")
+def on_show_icnirp_blue_change(e=None):
+    do_calculate(e)
 
 
 # Render initial values on page load:

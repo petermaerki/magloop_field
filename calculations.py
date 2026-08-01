@@ -113,6 +113,8 @@ class Calculator:
         x_step,
         y_step,
         levels=None,
+        icnirp_limit_a_per_m=None,
+        show_icnirp_blue=False,
     ) -> matplotlib.figure.Figure:
         self._save_h_field_plot(
             lim_x_m=lim_x_m,
@@ -120,6 +122,8 @@ class Calculator:
             x_step=x_step,
             y_step=y_step,
             levels=levels,
+            icnirp_limit_a_per_m=icnirp_limit_a_per_m,
+            show_icnirp_blue=show_icnirp_blue,
         )
         return plt.gcf()
 
@@ -131,6 +135,8 @@ class Calculator:
         y_step,
         filename: pathlib.Path,
         levels=None,
+        icnirp_limit_a_per_m=None,
+        show_icnirp_blue=False,
     ) -> None:
         assert isinstance(filename, pathlib.Path)
 
@@ -140,6 +146,8 @@ class Calculator:
             x_step=x_step,
             y_step=y_step,
             levels=levels,
+            icnirp_limit_a_per_m=icnirp_limit_a_per_m,
+            show_icnirp_blue=show_icnirp_blue,
         )
         plt.savefig(filename, bbox_inches="tight", pad_inches=0.02)
         plt.close()
@@ -151,6 +159,8 @@ class Calculator:
         x_step,
         y_step,
         levels,
+        icnirp_limit_a_per_m=None,
+        show_icnirp_blue=False,
     ) -> None:
         x = np.linspace(-lim_x_m, lim_x_m, 1000)
         y = np.linspace(-lim_y_m, lim_y_m, 1000)
@@ -189,6 +199,32 @@ class Calculator:
         )
         for label in clabels:
             label.set_bbox({"facecolor": "white", "edgecolor": "none", "pad": 3})
+
+        show_blue_limit_line = False
+        if show_icnirp_blue and icnirp_limit_a_per_m is not None and np.isfinite(icnirp_limit_a_per_m):
+            h_min = float(np.ma.min(H_total_masked))
+            h_max = float(np.ma.max(H_total_masked))
+            if h_min <= float(icnirp_limit_a_per_m) <= h_max:
+                cp_limit = plt.contour(
+                    X,
+                    Y,
+                    H_total_masked,
+                    levels=[float(icnirp_limit_a_per_m)],
+                    colors="blue",
+                    linewidths=1.6,
+                    corner_mask=False,
+                )
+                limit_labels = plt.clabel(
+                    cp_limit,
+                    inline=True,
+                    fmt=lambda v: f"ICNIRP {v:g} A/m",
+                    fontsize=10,
+                    colors="blue",
+                    rightside_up=True,
+                )
+                for label in limit_labels:
+                    label.set_bbox({"facecolor": "white", "edgecolor": "none", "pad": 3})
+                show_blue_limit_line = True
 
         antennenfarbe = "red"
         # Leiterquerschnitt als gefüllte Form
@@ -242,6 +278,16 @@ class Calculator:
                 label=f"f = {self.f_Hz / 1e6:.1f} MHz",
             ),
         ]
+        if show_blue_limit_line:
+            legend_elements.append(
+                Line2D(
+                    [0],
+                    [0],
+                    color="blue",
+                    lw=1.6,
+                    label=f"ICNIRP 1998 = {float(icnirp_limit_a_per_m):g} A/m",
+                )
+            )
         plt.legend(handles=legend_elements, loc="upper right", frameon=True)
 
         # Keep figure margins minimal and deterministic for web rendering.
