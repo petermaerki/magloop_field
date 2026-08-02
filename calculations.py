@@ -18,6 +18,25 @@ _KR_FAR = 1.0
 # blend in the mid zone, and enforce pure retarded behavior for kr >= 1.0.
 
 
+def _suggest_tick_step(limit_m: float) -> float:
+    """Choose a visually reasonable tick step for a plot range."""
+    if not np.isfinite(limit_m) or limit_m <= 0.0:
+        return 1.0
+
+    rough_step = max(float(limit_m) / 8.0, 0.1)
+    magnitude = 10.0 ** math.floor(math.log10(rough_step))
+    normalized = rough_step / magnitude
+
+    if normalized <= 1.5:
+        nice = 1.0
+    elif normalized <= 3.5:
+        nice = 2.0
+    else:
+        nice = 10.0
+
+    return float(nice * magnitude)
+
+
 def _ellip_rf(x, y, z, tol=1e-12, max_iter=60):
     """Carlson symmetric integral RF(x, y, z) for non-negative x, y, z."""
     x = np.asarray(x, dtype=float)
@@ -271,8 +290,8 @@ class Calculator:
         self,
         lim_x_m,
         lim_y_m,
-        x_step,
-        y_step,
+        x_step=None,
+        y_step=None,
         levels=None,
         icnirp_limit_a_per_m=None,
         show_icnirp_blue=False,
@@ -294,9 +313,9 @@ class Calculator:
         self,
         lim_x_m,
         lim_y_m,
-        x_step,
-        y_step,
         filename: pathlib.Path,
+        x_step=None,
+        y_step=None,
         levels=None,
         icnirp_limit_a_per_m=None,
         show_icnirp_blue=False,
@@ -321,9 +340,9 @@ class Calculator:
         self,
         lim_x_m,
         lim_y_m,
-        x_step,
-        y_step,
-        levels,
+        x_step=None,
+        y_step=None,
+        levels=None,
         icnirp_limit_a_per_m=None,
         show_icnirp_blue=False,
         d_min_abstand_m=0.01,
@@ -420,8 +439,10 @@ class Calculator:
         plt.gca().add_artist(circle2)
 
         # Raster & Achsen
-        plt.xticks(np.arange(-lim_x_m, lim_x_m + 1, x_step))
-        plt.yticks(np.arange(-lim_y_m, lim_y_m + 1, y_step))
+        x_tick_step = x_step if x_step is not None else _suggest_tick_step(lim_x_m)
+        y_tick_step = y_step if y_step is not None else _suggest_tick_step(lim_y_m)
+        plt.xticks(np.arange(-lim_x_m, lim_x_m + x_tick_step, x_tick_step))
+        plt.yticks(np.arange(-lim_y_m, lim_y_m + y_tick_step, y_tick_step))
         plt.grid(True, which="major", linestyle="-", color="gray", alpha=0.3)
         plt.axhline(0, color="black", lw=1.2)
         plt.axvline(0, color="black", lw=1.2)

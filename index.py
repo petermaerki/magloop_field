@@ -143,8 +143,6 @@ def do_calculate(e):
     figure_h_field_plot = calculator.figure_h_field_plot(
         lim_x_m=lim_x_m,
         lim_y_m=lim_y_m,
-        x_step=1.0,
-        y_step=1.0,
         levels=levels,
         icnirp_limit_a_per_m=icnirp_limit_a_per_m,
         show_icnirp_blue=show_icnirp_blue,
