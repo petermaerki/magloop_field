@@ -163,6 +163,10 @@ td.unit {
     white-space: nowrap;
 }
 
+input#p_m {
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
 a.img_popup {
     text-decoration: none;
     display: inline-block;

@@ -2,6 +2,7 @@ import dataclasses
 import math
 
 import numpy as np
+from scipy import special
 
 _MU0 = 4.0 * math.pi * 1e-7  # H/m
 _C_LIGHT = 299792458.0  # m/s
@@ -121,6 +122,15 @@ class AntennaCalculator:
     conductor diameter [m]
     """
 
+    n: int
+    """
+    loop count
+    """
+    swr_min: float
+    """
+    minimum SWR at antenna input [-]
+    """
+
     f_Hz: float
     """
     frequency [Hz]
@@ -130,20 +140,65 @@ class AntennaCalculator:
     """
     bandwidth B_SWR2.62 [Hz]
     """
-    
-    P_W: float 
+
+    P_W: float
     """
     power into antenna [W]
     """
+    p_m: float = 0.0
+    """
+    winding pitch [m] for multi-turn coils
+    """
+
+    def __post_init__(self) -> None:
+        assert self.n > 0, f"n must be a positive integer, got {self.n}"
+        assert isinstance(self.n, int) and not isinstance(self.n, bool), (
+            f"n must be an integer, got {self.n}"
+        )
+        assert self.d_m > 0, f"d_m must be positive, got {self.d_m}"
+        assert self.p_m >= 0, f"p_m must be non-negative, got {self.p_m}"
+        if self.n > 1:
+            assert self.p_m > 0.0, f"p_m must be positive for n > 1, got {self.p_m}"
+        assert self.D_m > 0, f"D_m must be positive, got {self.D_m}"
 
     @property
     def L_H(self) -> float:
-        """Inductance [H]"""
-        return (
-            _MU0
-            * (self.D_m / 2)
-            * (math.log(8 * self.D_m / self.d_m) - 2)
-        )
+        assert self.D_m > 0
+        assert self.d_m > 0
+        assert self.n > 0
+
+        radius_m = self.D_m / 2.0
+        conductor_radius_m = self.d_m / 2.0
+
+        # Self-inductance of a single circular loop made from round wire.
+        l_single = _MU0 * radius_m * (math.log(8 * radius_m / conductor_radius_m) - 2.0)
+
+        if self.n == 1:
+            return l_single
+
+        # Mutual inductance of two identical coaxial circular turns.
+        # The pitch is the axial distance between the centers of adjacent turns.
+        total = self.n * l_single
+        for separation in range(1, self.n):
+            pitch_m = separation * self.p_m
+            k_sq = (4 * radius_m * radius_m) / (
+                4 * radius_m * radius_m + pitch_m * pitch_m
+            )
+            if math.isclose(k_sq, 1.0, rel_tol=0.0, abs_tol=1e-12):
+                mutual = l_single
+            else:
+                k = math.sqrt(k_sq)
+                k_elliptic = special.ellipk(k_sq)
+                e_elliptic = special.ellipe(k_sq)
+                mutual = (
+                    _MU0
+                    * radius_m
+                    * (2.0 / k)
+                    * ((1.0 - k_sq / 2.0) * k_elliptic - e_elliptic)
+                )
+            total += 2.0 * (self.n - separation) * mutual
+
+        return total
 
     @property
     def C_F(self) -> float:
@@ -174,10 +229,27 @@ class AntennaCalculator:
     def RR_Ohm(self) -> float:
         """Radiation resistance [Ohm] — Rayleigh term with King finite-size correction."""
         rayleigh = 31171.0 * ((self.A_m2 * self.f_Hz**2) / _C_LIGHT**2) ** 2
-        king_correction = (
-            1.0 + 0.5 * ((math.pi * self.D_m * self.f_Hz) / _C_LIGHT) ** 2
-        )
-        return rayleigh * king_correction
+        king_correction = 1.0 + 0.5 * ((math.pi * self.D_m * self.f_Hz) / _C_LIGHT) ** 2
+        return self.n**2 * rayleigh * king_correction
+
+    @property
+    def RLoss_Ohm(self) -> float:
+        return self.RT_Ohm - self.RR_Ohm
+
+    @property
+    def eta(self) -> float:
+        return self.eta_antenna * self.eta_SWR_ant
+
+    @property
+    def eta_antenna(self) -> float:
+        return self.RR_Ohm / self.RT_Ohm if self.RT_Ohm > 0 else 0.0
+
+    @property
+    def eta_SWR_ant(self) -> float:
+        s = self.swr_min
+        if s <= 0:
+            return 0.0
+        return 4.0 * s / (1.0 + s) ** 2
 
     @property
     def I_main_loop_A(self) -> float:
@@ -192,7 +264,7 @@ class AntennaCalculator:
     @property
     def m_Am2(self) -> float:
         """Magnetic dipole moment [A m²]"""
-        return self.I_main_loop_A * self.A_m2
+        return self.n * self.I_main_loop_A * self.A_m2
 
 
 @dataclasses.dataclass(frozen=True)

@@ -36,22 +36,39 @@ def icnirp_1998_h_limit_section_text(f_hz: float) -> str:
 def do_calculate_inductance(e=None):
     (antenna_D_m_text,) = page["input#antenna_D_m"].value
     (d_m_text,) = page["input#d_m"].value
+    (n_text,) = page["input#n"].value
+    (p_m_text,) = page["input#p_m"].value
     (f_L_MHz_text,) = page["input#f_L_MHz"].value
     (bw_kHz_text,) = page["input#bw_kHz"].value
     (P_W_text,) = page["input#P_W"].value
 
     antenna_D_m = float(antenna_D_m_text)
     d_m = float(d_m_text)
+    n = int(n_text)
+    p_m = float(p_m_text)
+
+    pitch_input = document.getElementById("p_m")
+    if pitch_input is not None:
+        if n == 1:
+            pitch_input.style.backgroundColor = "#e6e6e6"
+            pitch_input.style.color = "#666666"
+        else:
+            pitch_input.style.backgroundColor = ""
+            pitch_input.style.color = ""
+
     f_Hz = float(f_L_MHz_text) * 1e6
     bw_Hz = float(bw_kHz_text) * 1e3
     P_W = float(P_W_text)
 
     ac = AntennaCalculator(
-        antenna_D_m=antenna_D_m,
+        D_m=antenna_D_m,
         d_m=d_m,
+        n=n,
+        swr_min=2.62,
         f_Hz=f_Hz,
-        bw_Hz=bw_Hz,
+        bw262_Hz=bw_Hz,
         P_W=P_W,
+        p_m=p_m,
     )
 
     page["b#out_L_uH"].innerHTML = f"{ac.L_H:.3g}"

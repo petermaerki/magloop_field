@@ -62,7 +62,7 @@
                         </td>
                         <td class="unit">m</td>
                         <td rowspan="2"><img src="static/images/loop_diameter.svg" height="150"
-                            alt="Loop diameter sketch" />For non-circular loops, enter the mean diameter.</td>
+                                alt="Loop diameter sketch" />For non-circular loops, enter the mean diameter.</td>
                     </tr>
                     <tr>
                         <td class="input_label">
@@ -75,6 +75,29 @@
                     </tr>
                     <tr>
                         <td class="input_label">
+                            <label for="n">Loop count n</label>
+                        </td>
+                        <td class="input_value">
+                            <input type="text" id="n" value="1">
+                        </td>
+                        <td class="unit"></td>
+                        <td rowspan="2">
+                            <img src="static/images/pitch.svg" height="60" alt="Pitch illustration" />
+                        For $n = 1$, the pitch input is irrelevant.
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="input_label">
+                            <label for="p_m">Loop pitch p</label>
+                        </td>
+                        <td class="input_value">
+                            <input type="text" id="p_m" value="0.0">
+                        </td>
+                        <td class="unit">m</td>
+                    </tr>
+                    <tr>
+                        <td class="input_label">
                             <label for="f_L_MHz">Frequency f</label>
                         </td>
                         <td class="input_value">
@@ -82,10 +105,12 @@
                         </td>
                         <td class="unit">MHz</td>
                         <td rowspan="2">
-                            <a class="img_popup" href="static/images/swr_klein_arrow.png" target="_blank" rel="noopener noreferrer">
+                            <a class="img_popup" href="static/images/swr_klein_arrow.png" target="_blank"
+                                rel="noopener noreferrer">
                                 <img src="static/images/swr_klein_arrow.png" height="100" alt="SWR curve" />
                             </a>
-                            <a class="img_popup" href="static/images/smith_klein.png" target="_blank" rel="noopener noreferrer">
+                            <a class="img_popup" href="static/images/smith_klein.png" target="_blank"
+                                rel="noopener noreferrer">
                                 <img src="static/images/smith_klein.png" height="100" alt="Smith chart" />
                             </a>
                             VNA calibrated at the cable end at the antenna.
@@ -122,7 +147,7 @@
                         <td><b id="out_L_uH">...</b></td>
                         <td class="unit">H</td>
                         <td><small>$L = \mu_0 \cdot \frac{D}{2} \left(\ln\left(\frac{8D}{d}\right) - 2\right)$ with
-                                $\mu_0 = 4\pi \cdot 10^{-7}$ H/m.</small></td>
+                                $\mu_0 = 4\pi \cdot 10^{-7}$ H/m.</small> More complex formulas for multiple turns are given in the source code.</td>
                     </tr>
                     <tr>
                         <td>Capacitance C</td>
@@ -149,7 +174,7 @@
                         <td>Radiation resistance R<sub>R</sub></td>
                         <td><b id="out_RR_mOhm">...</b></td>
                         <td class="unit">Ohm</td>
-                        <td><small>$R_R \approx 31171\left(\frac{A f^2}{c^2}\right)^2\left(1+\frac{1}{2}\left(\frac{\pi
+                        <td><small>$R_R \approx n^2 \cdot 31171\left(\frac{A f^2}{c^2}\right)^2\left(1+\frac{1}{2}\left(\frac{\pi
                                 D f}{c}\right)^2\right)$</small></td>
                     </tr>
                     <tr>
@@ -185,7 +210,7 @@
                         <td>Magnetic dipole moment m</td>
                         <td><b id="out_m_Am2">...</b></td>
                         <td class="unit">A m²</td>
-                        <td><small>$m = I_{\mathrm{main\ loop}} A = I_{\mathrm{main\
+                        <td><small>$m = n \cdot I_{\mathrm{main\ loop}} A = n \cdot I_{\mathrm{main\
                                 loop}}\,\pi\left(\frac{D}{2}\right)^2$</small></td>
                     </tr>
                 </tbody>
@@ -197,16 +222,16 @@
             <img src="static/images/koordinatensystem.jpeg" height="150" alt="Koordinatensystem" />
             <img src="static/images/skizze_loop_diameter.svg" height="150" alt="Loop diameter sketch" />
             <div style="max-width: 420px; line-height: 1.35;">
-                Magnetic loop dipole moment: $m = I_{\text{main loop}} \cdot A$.<br>
-                For a circular loop: $m = I_{\text{main loop}} \cdot \pi \left(\frac{D}{2}\right)^2$.
+                Magnetic loop dipole moment: $m = n \cdot I_{\text{main loop}} \cdot A$.<br>
+                For a circular loop: $m = n \cdot I_{\text{main loop}} \cdot \pi \left(\frac{D}{2}\right)^2$.
             </div>
 
         </div>
         <div>
             <small>
                 Method: exact circular-loop Biot-Savart model (elliptic integrals) in the near field, smoothly
-                blended to a retarded dipole model in the far field (uses c and f). Values very close to the
-                conductor are suppressed; see source code for details.
+                blended into a retarded dipole model in the far field (using $c$ and $f$). Multi-turn loops are treated as a single wire.
+                Values very close to the conductor are suppressed; see the source code for details.
             </small>
 
         </div>

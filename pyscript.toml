@@ -1,6 +1,6 @@
 name = "magloop_field"
 description = "magloop_field"
-packages = ["markdown", "numpy", "matplotlib"]
+packages = ["markdown", "scipy", "numpy", "matplotlib"]
 
 [files]
 "./index_readme.py" = ""
