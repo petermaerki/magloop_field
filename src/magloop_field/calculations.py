@@ -111,19 +111,38 @@ def _ellipk_e_from_m(m):
 class AntennaCalculator:
     """Computes antenna parameters from geometry and measurement."""
 
-    antenna_D_m: float  # loop diameter [m]
-    d_m: float  # conductor diameter [m]
-    f_Hz: float  # frequency [Hz]
-    bw_Hz: float  # bandwidth B_SWR2.62 [Hz]
-    P_W: float  # power into antenna [W]
+    D_m: float
+    """
+    loop diameter [m]
+    """
+
+    d_m: float
+    """
+    conductor diameter [m]
+    """
+
+    f_Hz: float
+    """
+    frequency [Hz]
+    """
+
+    bw262_Hz: float
+    """
+    bandwidth B_SWR2.62 [Hz]
+    """
+    
+    P_W: float 
+    """
+    power into antenna [W]
+    """
 
     @property
     def L_H(self) -> float:
         """Inductance [H]"""
         return (
             _MU0
-            * (self.antenna_D_m / 2)
-            * (math.log(8 * self.antenna_D_m / self.d_m) - 2)
+            * (self.D_m / 2)
+            * (math.log(8 * self.D_m / self.d_m) - 2)
         )
 
     @property
@@ -134,7 +153,7 @@ class AntennaCalculator:
     @property
     def Q0(self) -> float:
         """Unloaded quality factor"""
-        return self.f_Hz / self.bw_Hz
+        return self.f_Hz / self.bw262_Hz
 
     @property
     def XL(self) -> float:
@@ -149,14 +168,14 @@ class AntennaCalculator:
     @property
     def A_m2(self) -> float:
         """Loop area [m²]"""
-        return math.pi * (self.antenna_D_m / 2) ** 2
+        return math.pi * (self.D_m / 2) ** 2
 
     @property
     def RR_Ohm(self) -> float:
         """Radiation resistance [Ohm] — Rayleigh term with King finite-size correction."""
         rayleigh = 31171.0 * ((self.A_m2 * self.f_Hz**2) / _C_LIGHT**2) ** 2
         king_correction = (
-            1.0 + 0.5 * ((math.pi * self.antenna_D_m * self.f_Hz) / _C_LIGHT) ** 2
+            1.0 + 0.5 * ((math.pi * self.D_m * self.f_Hz) / _C_LIGHT) ** 2
         )
         return rayleigh * king_correction
 
