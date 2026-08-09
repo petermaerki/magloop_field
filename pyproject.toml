@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
 
 [project]
 name = "magloop-field"
@@ -15,5 +15,18 @@ dependencies = [
     "matplotlib>=3.8",
 ]
 
-[tool.setuptools]
-py-modules = ["calculations", "index", "index_readme", "magnetic_field_strength"]
+# [tool.setuptools]
+# py-modules = ["calculations", "index", "index_readme", "magnetic_field_strength"]
+
+[tool.pdm]
+version = "0.0.1"
+distribution = true
+
+[tool.pdm.build]
+package-dir = "src"
+includes = [
+    "src/",
+]
+source-includes = [
+    "README.md"
+]

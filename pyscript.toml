@@ -3,6 +3,8 @@ description = "magloop_field"
 packages = ["markdown", "numpy", "matplotlib"]
 
 [files]
+"./index_readme.py" = ""
 "./index.py" = ""
-"./calculations.py" = ""
 "./README.md" = ""
+"./src/magloop_field/calculations.py" = "./magloop_field/calculations.py"
+"./src/magloop_field/diagram.py" = "./magloop_field/diagram.py"

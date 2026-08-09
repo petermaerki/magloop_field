@@ -7,7 +7,8 @@ from js import document
 from pyscript import when
 from pyscript.web import page
 
-from calculations import AntennaCalculator, Calculator
+from magloop_field.calculations import AntennaCalculator, Calculator
+from magloop_field import diagram
 
 
 def icnirp_1998_h_limit_a_per_m(f_hz: float) -> float:
@@ -140,7 +141,8 @@ def do_calculate(e):
     page["b#out_icnirp_limit"].innerHTML = f"{icnirp_limit_a_per_m:.3g}"
     page["small#out_icnirp_section"].innerHTML = icnirp_1998_h_limit_section_text(f_Hz)
 
-    figure_h_field_plot = calculator.figure_h_field_plot(
+    figure_h_field_plot = diagram.figure_h_field_plot(
+        calculator=calculator,
         lim_x_m=lim_x_m,
         lim_y_m=lim_y_m,
         levels=levels,
