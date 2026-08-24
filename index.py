@@ -1,14 +1,12 @@
 import base64
-import io
 import math
 
-import matplotlib.pyplot as plt
 from js import document
 from pyscript import when
 from pyscript.web import page
 
-from magloop_field.calculations import AntennaCalculator, Calculator
 from magloop_field import diagram
+from magloop_field.calculations import AntennaCalculator, Calculator
 
 
 def icnirp_1998_h_limit_a_per_m(f_hz: float) -> float:
@@ -134,9 +132,7 @@ def do_calculate(e):
     warning_node = document.getElementById("h_warning")
     if d_abstand_zu_wire < d_min_abstand_m:
         if warning_node is not None:
-            warning_node.innerHTML = (
-                f"Warning: too close to conductor (d&lt;{d_min_abstand_m:g} m), value not shown."
-            )
+            warning_node.innerHTML = f"Warning: too close to conductor (d&lt;{d_min_abstand_m:g} m), value not shown."
         page["b#h_abs"].innerHTML = "NaN"
     else:
         if warning_node is not None:
@@ -158,7 +154,7 @@ def do_calculate(e):
     page["b#out_icnirp_limit"].innerHTML = f"{icnirp_limit_a_per_m:.3g}"
     page["small#out_icnirp_section"].innerHTML = icnirp_1998_h_limit_section_text(f_Hz)
 
-    figure_h_field_plot = diagram.figure_h_field_plot(
+    plot = diagram.HFieldPlot(
         calculator=calculator,
         lim_x_m=lim_x_m,
         lim_y_m=lim_y_m,
@@ -168,14 +164,12 @@ def do_calculate(e):
         d_min_abstand_m=d_min_abstand_m,
     )
 
-    svg_buffer = io.BytesIO()
-    figure_h_field_plot.savefig(svg_buffer, format="svg", bbox_inches="tight", pad_inches=0.01)
-    plt.close(figure_h_field_plot)
-    svg_text = svg_buffer.getvalue().decode("utf-8")
-    svg_data = base64.b64encode(svg_text.encode("utf-8")).decode("ascii")
+    svg_text = plot.svg_text()
 
     page["div#figure_h_field_plot"].innerHTML = ""
     page["div#figure_h_field_plot"].innerHTML = svg_text
+
+    svg_data = base64.b64encode(svg_text.encode("utf-8")).decode("ascii")
     document.getElementById("download_svg").setAttribute(
         "href", f"data:image/svg+xml;base64,{svg_data}"
     )

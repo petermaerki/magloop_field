@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://pyscript.net/releases/2025.8.1/core.css">
     <!-- This script tag bootstraps PyScript -->
     <script type="module" src="https://pyscript.net/releases/2025.8.1/core.js"></script>
+    <!-- Enable MathJax -->
     <script>
         window.MathJax = {
             tex: {
@@ -45,7 +46,6 @@
 
     <div id="app_content">
         <div id="readme"></div>
-        <script type="py" src="./index_readme.py" async></script>
         <hr>
         <div id="calculator">
             <table>
@@ -360,6 +360,7 @@
                         figure
                         as SVG</a></div>
                 <script type="py" src="./index.py" config="./pyscript.toml"></script>
+                <script type="py" src="./index_readme.py" async></script>
             </section>
 
         </div>
