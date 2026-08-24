@@ -26,13 +26,9 @@
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 
+    <!-- Loading Message-Box: closed from resources/index.py once rendering is complete -->
     <script type="module">
-        const loading = document.getElementById('loading');
-        const appContent = document.getElementById('app_content');
-        addEventListener('py:ready', () => {
-            loading.close();
-            appContent.style.display = 'block';
-        });
+        document.getElementById('loading').showModal();
         loading.showModal();
     </script>
 

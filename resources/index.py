@@ -172,8 +172,20 @@ def do_calculate(e):
 def on_show_icnirp_blue_change(e=None):
     do_calculate(e)
 
+def close_splash_dialog()-> None:
+    """
+    Everything is loaded and rendered now: reveal the page and dismiss the splash screen.
+    """
+    loading = document.getElementById("loading")
+    if loading is not None:
+        loading.close()
+
+    app_content = document.getElementById("app_content")
+    if app_content is not None:
+        app_content.style.display = "block"
 
 print("A")
+
 
 if True:
     # Render initial values on page load:
@@ -188,3 +200,7 @@ if True:
         print(f"Initial render failed: {e}")
 
 print("B")
+
+close_splash_dialog()
+
+print("C")
