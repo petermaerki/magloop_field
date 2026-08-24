@@ -13,6 +13,26 @@ _KR_FAR = 1.0
 # blend in the mid zone, and enforce pure retarded behavior for kr >= 1.0.
 
 
+def icnirp_1998_h_limit_a_per_m(f_hz: float) -> float:
+    """ICNIRP 1998 reference level for magnetic field strength H [A/m] (general public), RF range."""
+    f_mhz = f_hz / 1e6
+    if f_mhz < 10.0:
+        return 0.73 / max(f_mhz, 1e-9)
+    if f_mhz <= 400.0:
+        return 0.073
+    if f_mhz <= 2000.0:
+        return 0.0037 * math.sqrt(f_mhz)
+    return 0.16
+
+
+def icnirp_1998_h_limit_section_text(f_hz: float) -> str:
+    """Human-readable ICNIRP 1998 note focused on HF range only."""
+    return (
+        "Using ICNIRP 1998 general public: "
+        "0.1-10 MHz: H = 0.73/f_MHz A/m; "
+        "10-30 MHz: H = 0.073 A/m."
+    )
+
 def _ellip_rf(x, y, z, tol=1e-12, max_iter=60):
     """Carlson symmetric integral RF(x, y, z) for non-negative x, y, z."""
     x = np.asarray(x, dtype=float)

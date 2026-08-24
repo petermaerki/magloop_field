@@ -8,32 +8,11 @@ from pyscript.web import page
 try:
     DEVELOPMENT_NUMPY = False
     import numpy
+
     DEVELOPMENT_NUMPY = True
+    from magloop_field import calculations, diagram
 except ModuleNotFoundError:
     pass
-
-if DEVELOPMENT_NUMPY:
-    from magloop_field import calculations, diagram
-
-def icnirp_1998_h_limit_a_per_m(f_hz: float) -> float:
-    """ICNIRP 1998 reference level for magnetic field strength H [A/m] (general public), RF range."""
-    f_mhz = f_hz / 1e6
-    if f_mhz < 10.0:
-        return 0.73 / max(f_mhz, 1e-9)
-    if f_mhz <= 400.0:
-        return 0.073
-    if f_mhz <= 2000.0:
-        return 0.0037 * math.sqrt(f_mhz)
-    return 0.16
-
-
-def icnirp_1998_h_limit_section_text(f_hz: float) -> str:
-    """Human-readable ICNIRP 1998 note focused on HF range only."""
-    return (
-        "Using ICNIRP 1998 general public: "
-        "0.1-10 MHz: H = 0.73/f_MHz A/m; "
-        "10-30 MHz: H = 0.073 A/m."
-    )
 
 
 @when("click", "#btn_calculate_antenna")
@@ -162,9 +141,11 @@ def do_calculate(e):
         )
         page["b#h_abs"].innerHTML = f"{h_field_at_point:.4g}"
 
-    icnirp_limit_a_per_m = icnirp_1998_h_limit_a_per_m(f_Hz)
+    icnirp_limit_a_per_m = calculations.icnirp_1998_h_limit_a_per_m(f_Hz)
     page["b#out_icnirp_limit"].innerHTML = f"{icnirp_limit_a_per_m:.3g}"
-    page["small#out_icnirp_section"].innerHTML = icnirp_1998_h_limit_section_text(f_Hz)
+    page[
+        "small#out_icnirp_section"
+    ].innerHTML = calculations.icnirp_1998_h_limit_section_text(f_Hz)
 
     plot = diagram.HFieldPlot(
         calculator=calculator,
@@ -192,13 +173,18 @@ def on_show_icnirp_blue_change(e=None):
     do_calculate(e)
 
 
-# Render initial values on page load:
-# 1) calculate antenna
-# 2) copy from above
-# 3) calculate H-field
-try:
-    do_calculate_inductance(None)
-    copy_values_from_above(None)
-    do_calculate(None)
-except Exception as e:
-    print(f"Initial render failed: {e}")
+print("A")
+
+if True:
+    # Render initial values on page load:
+    # 1) calculate antenna
+    # 2) copy from above
+    # 3) calculate H-field
+    try:
+        do_calculate_inductance(None)
+        copy_values_from_above(None)
+        do_calculate(None)
+    except Exception as e:
+        print(f"Initial render failed: {e}")
+
+print("B")
