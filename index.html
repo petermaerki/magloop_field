@@ -6,12 +6,20 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <meta name="description" content="Calculator for the magnetic field of a small magnetic loop antenna.">
     <meta name="keywords" content="Small magnetic loop antenna magnetic dipole moment calculator">
-    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="static/css/style_body.css">
+    <link rel="stylesheet" href="static/css/style_body_tabs.css">
+    <link rel="stylesheet" href="static/css/style_page_calculator.css">
+    <link rel="stylesheet" href="static/css/style_page_vergleich_filter.css">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- PyScript CSS -->
     <link rel="stylesheet" href="https://pyscript.net/releases/2025.8.1/core.css">
+    <!-- <link rel="stylesheet" href="https://pyscript.net/releases/2026.7.3/core.css"> -->
     <!-- This script tag bootstraps PyScript -->
     <script type="module" src="https://pyscript.net/releases/2025.8.1/core.js"></script>
+    <!-- <script type="module" src="https://pyscript.net/releases/2026.7.3/core.js"></script> -->
     <!-- Enable MathJax -->
     <script>
         window.MathJax = {
@@ -29,23 +37,63 @@
     <!-- Loading Message-Box: closed from resources/index.py once rendering is complete -->
     <script type="module">
         document.getElementById('loading').showModal();
-        loading.showModal();
     </script>
 
     <title>H-Field Calculator for Magnetic Loop Antenna</title>
 </head>
 
-<body>
+<body class="bg-slate-50 p-6 text-slate-900">
     <dialog id="loading">
         <h1>Loading...</h1>
     </dialog>
 
     <div id="app_content">
-        <div id="page_vergleich">
-        </div>
-        <div id="page_calculator">
-        </div>
+        <section id="page-card" aria-label="Pages">
+            <div role="tablist" aria-label="Page selection">
+                <button type="button" role="tab" aria-selected="true" aria-controls="page-berechnung"
+                    data-page-tab="berechnung">
+                    <span class="material-icons" aria-hidden="true">manage_search</span>
+                    Berechnung
+                </button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="page-vergleich"
+                    data-page-tab="vergleich">
+                    <span class="material-icons" aria-hidden="true">podcasts</span>
+                    Vergleich
+                </button>
+            </div>
+
+            <div id="page_calculator" role="tabpanel" data-page-panel="berechnung">Berechnung</div>
+            <div id="page_vergleich" role="tabpanel" data-page-panel="vergleich" hidden>Vergleich</div>
+        </section>
     </div>
+
+
+    <script>
+        function printCheckedCheckboxes() {
+            const checkedCheckboxes = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+                .map((checkbox) => checkbox.value);
+
+            console.log(checkedCheckboxes);
+        }
+
+        document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+            checkbox.addEventListener('change', printCheckedCheckboxes);
+        });
+
+        function showPage(pageName) {
+            document.querySelectorAll('[data-page-tab]').forEach((tab) => {
+                tab.setAttribute('aria-selected', String(tab.dataset.pageTab === pageName));
+            });
+
+            document.querySelectorAll('[data-page-panel]').forEach((panel) => {
+                panel.hidden = panel.dataset.pagePanel !== pageName;
+            });
+        }
+
+        document.querySelectorAll('[data-page-tab]').forEach((tab) => {
+            tab.addEventListener('click', () => showPage(tab.dataset.pageTab));
+        });
+    </script>
 
     <script type="py" src="./resources/lazyload.py" async></script>
 

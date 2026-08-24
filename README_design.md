@@ -22,4 +22,4 @@ https://pyscript.com/@ntoll/piratical
 * https://pyscript.net/main.py
 * https://github.com/pyscript/pyscript.net
 * https://pyscript.com/@examples
-* https://docs.pyscript.net/2025.8.1/user-guide/first-steps/
+* https://docs.pyscript.net/2026.7.3/user-guide/first-steps/

@@ -30,10 +30,10 @@ def load_md(selector: str, filename: str) -> None:
 
 
 load(
-    "div#page_vergleich", "./resources/index_page_vergleich.html"
+    "div#page_vergleich", "./resources/page_vergleich.html"
 )
 load(
-    "div#page_calculator", "./resources/index_page_calculator.html"
+    "div#page_calculator", "./resources/page_calculator.html"
 )
 
 # Must be loaded after 'page_calcuator'!
