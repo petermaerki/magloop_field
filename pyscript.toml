@@ -5,6 +5,7 @@ packages = ["markdown", "scipy", "numpy", "matplotlib"]
 [files]
 "./README.md" = ""
 "./resources/index_page_calculator.html" = "./resources/index_page_calculator.html"
+"./resources/index_page_vergleich.html" = "./resources/index_page_vergleich.html"
 "./resources/index.py" = "./resources/index.py"
 "./resources/lazyload.py" = "./resources/lazyload.py"
 "./src/magloop_field/calculations.py" = "./magloop_field/calculations.py"
