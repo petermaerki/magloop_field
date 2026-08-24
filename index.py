@@ -5,9 +5,15 @@ from js import document
 from pyscript import when
 from pyscript.web import page
 
-from magloop_field import diagram
-from magloop_field.calculations import AntennaCalculator, Calculator
+try:
+    DEVELOPMENT_NUMPY = False
+    import numpy
+    DEVELOPMENT_NUMPY = True
+except ModuleNotFoundError:
+    pass
 
+if DEVELOPMENT_NUMPY:
+    from magloop_field import calculations, diagram
 
 def icnirp_1998_h_limit_a_per_m(f_hz: float) -> float:
     """ICNIRP 1998 reference level for magnetic field strength H [A/m] (general public), RF range."""
@@ -32,6 +38,9 @@ def icnirp_1998_h_limit_section_text(f_hz: float) -> str:
 
 @when("click", "#btn_calculate_antenna")
 def do_calculate_inductance(e=None):
+    if not DEVELOPMENT_NUMPY:
+        return
+
     (antenna_D_m_text,) = page["input#antenna_D_m"].value
     (d_m_text,) = page["input#d_m"].value
     (n_text,) = page["input#n"].value
@@ -58,7 +67,7 @@ def do_calculate_inductance(e=None):
     bw_Hz = float(bw_kHz_text) * 1e3
     P_W = float(P_W_text)
 
-    ac = AntennaCalculator(
+    ac = calculations.AntennaCalculator(
         D_m=antenna_D_m,
         d_m=d_m,
         n=n,
@@ -89,6 +98,9 @@ def copy_values_from_above(e=None):
 
 
 def do_calculate(e):
+    if not DEVELOPMENT_NUMPY:
+        return
+
     (m_Am2_text,) = page["input#m_Am2"].value
     (f_MHz_text,) = page["input#f_MHz"].value
     (x_m_text,) = page["input#x_m"].value
@@ -118,7 +130,7 @@ def do_calculate(e):
     except Exception:
         antenna_D_m = 1.0
 
-    calculator = Calculator(
+    calculator = calculations.Calculator(
         antenna_D_m=antenna_D_m,
         R_m=antenna_D_m / 2,
         m_Am2=m_Am2,
