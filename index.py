@@ -4,6 +4,7 @@ import math
 
 import matplotlib.pyplot as plt
 from js import document, window
+from pyodide.ffi import create_proxy
 from pyscript import when
 from pyscript.web import page
 
@@ -11,13 +12,15 @@ from magloop_field.calculations import AntennaCalculator, Calculator
 from magloop_field import diagram
 
 
-def on_shape_change(value):
-    """Called from JS (see Vue `watch(shape, ...)` in index.html) whenever `shape` changes."""
+def on_shape_change(value, old_value, y):
+    """Called by Vue whenever the `shape` ref (window.shape_ref, set in index.html) changes."""
+    print(f"{value!r}, {old_value!r}, {y!r}")
+    print(repr(value), repr(old_value), repr(y))
     print("shape changed:", list(value))
 
 
-# Expose to JS: pyodide wraps this Python callable so `window.on_shape_change(...)` works from Vue.
-window.on_shape_change = on_shape_change
+# create_proxy keeps the Python callable alive so Vue can invoke it as a JS function.
+window.Vue.watch(window.shape_ref, create_proxy(on_shape_change))
 
 
 def icnirp_1998_h_limit_a_per_m(f_hz: float) -> float:

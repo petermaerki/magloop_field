@@ -457,12 +457,8 @@
                 const shape = Vue.ref([]);
                 const tab = Vue.ref('berechnung');
 
-                Vue.watch(shape, (value) => {
-                    // window.on_shape_change is defined in index.py (exposed via `window.on_shape_change = ...`)
-                    if (window.on_shape_change) {
-                        window.on_shape_change(value);
-                    }
-                });
+                // Expose the ref so index.py can call Vue.watch(window.shape_ref, ...) itself.
+                window.shape_ref = shape;
 
                 return {
                     shape,
