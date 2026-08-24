@@ -1,11 +1,26 @@
-body {
-    font-family: Arial, sans-serif;
+
+#page_calculator h1 {
+    font-size: 1.5rem;
+    font-weight: bolder;
 }
-td {
+
+#page_calculator a {
+    color: -webkit-link;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#page_calculator td {
     vertical-align: top;
 }
+
+#page_calculator input {
+    border-spacing: 2px;
+    border-width: 2px;
+}
+
 /*
-div#online_calculator {
+#page_calculator div#online_calculator {
     border: none;
     border-radius: 0;
     padding: 0;
@@ -17,22 +32,22 @@ div#online_calculator {
     box-shadow: none;
 }
 
-div#online_calculator table {
+#page_calculator div#online_calculator table {
     width: 100%;
     table-layout: auto;
     margin: 0;
 }
 
-div#online_calculator td.input_label {
+#page_calculator div#online_calculator td.input_label {
     white-space: nowrap;
     padding-right: 10px;
 }
 
-div#online_calculator td.input_value {
+#page_calculator div#online_calculator td.input_value {
     width: auto;
 }
 
-div#online_calculator td.input_value input[type="text"] {
+#page_calculator div#online_calculator td.input_value input[type="text"] {
     width: clamp(120px, 32vw, 260px);
     max-width: 100%;
     box-sizing: border-box;
@@ -41,18 +56,18 @@ div#online_calculator td.input_value input[type="text"] {
 
 /*
 @media (max-width: 760px) {
-    div#online_calculator td.input_label {
+    #page_calculator div#online_calculator td.input_label {
         white-space: normal;
     }
 
-    div#online_calculator td.input_value input[type="text"] {
+    #page_calculator div#online_calculator td.input_value input[type="text"] {
         width: 100%;
     }
 }
 */
 
 /*
-div#online_calculator .formula_line {
+#page_calculator div#online_calculator .formula_line {
     margin-top: 6px;
     font-size: 0.85rem;
     white-space: nowrap;
@@ -61,7 +76,7 @@ div#online_calculator .formula_line {
 */
 
 /*
-div#inductance_calculator {
+#page_calculator div#inductance_calculator {
     border-radius: 8px;
     padding: 10px 20px 10px 20px;
     display: inline-block;
@@ -70,7 +85,7 @@ div#inductance_calculator {
 }
 */
 
-div#calculator {
+#page_calculator div#calculator {
     border-top: 0;
     border-right: 0;
     border-bottom: 0;
@@ -80,18 +95,19 @@ div#calculator {
     box-shadow: 0;
 }
 
-div#calculator td {
+#page_calculator div#calculator td {
     padding-left: 6px;
     padding-right: 6px;
 }
 
-div#calculator td small,
-div#calculator td img {
+#page_calculator div#calculator td small,
+#page_calculator div#calculator td img {
     vertical-align: top;
+    /* height: revert; */
 }
 
 @media print {
-    div#calculator {
+    #page_calculator div#calculator {
         border: 0;
         border-radius: 0;
         padding: 0;
@@ -102,77 +118,64 @@ div#calculator td img {
 }
 
 
-/*
- for splashscreen
-*/
-#loading {
-    outline: none;
-    border: none;
-    background: transparent
-}
-
-#app_content {
-    display: none;
-}
-
-#online_calculator {
+#page_calculator #online_calculator {
     margin-bottom: 6px;
 }
 
-section.pyscript {
+#page_calculator section.pyscript {
     margin-top: 0;
     width: 100%;
 }
 
-#figure_h_field_plot {
+#page_calculator #figure_h_field_plot {
     margin-top: 0;
 }
 
-#figure_h_field_plot figure {
+#page_calculator #figure_h_field_plot figure {
     margin: 0;
 }
 
-#figure_h_field_plot img {
+#page_calculator #figure_h_field_plot img {
     display: block;
     width: 100%;
     height: auto;
 }
 
-#figure_h_field_plot svg {
+#page_calculator #figure_h_field_plot svg {
     display: block;
     width: 100%;
     height: auto;
 }
 
-#download_svg_wrap {
+#page_calculator #download_svg_wrap {
     text-align: right;
     margin-top: 2px;
 }
 
-#download_svg {
+#page_calculator #download_svg {
     font-size: 0.82rem;
     color: #444;
     text-decoration: none;
 }
 
-#download_svg:hover {
+#page_calculator #download_svg:hover {
     text-decoration: underline;
 }
 
-td.unit {
+#page_calculator td.unit {
     white-space: nowrap;
 }
 
-input#p_m {
+#page_calculator input#p_m {
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-a.img_popup {
+#page_calculator a.img_popup {
     text-decoration: none;
     display: inline-block;
 }
 
-#h_warning {
+#page_calculator #h_warning {
     display: inline-block;
     margin-left: 8px;
     white-space: nowrap;
