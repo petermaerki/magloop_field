@@ -434,13 +434,12 @@
                 </tbody>
             </table>
 
-            <section class="pyscript">
-                <div id="figure_h_field_plot"></div>
-                <div id="download_svg_wrap"><a id="download_svg" href="#" download="magnetic_field_plot.svg">Download
-                        figure
-                        as SVG</a></div>
-                <script type="py" src="./index.py" config="./pyscript.toml"></script>
-            </section>
+            <div id="figure_h_field_plot"></div>
+            <div id="download_svg_wrap">
+                <a id="download_svg" href="#" download="magnetic_field_plot.svg">Download
+                    figure
+                    as SVG</a>
+            </div>
 
         </div>
     </div>
@@ -455,7 +454,7 @@
         const app = Vue.createApp({
             setup() {
                 const shape = Vue.ref([]);
-                const tab = Vue.ref('berechnung');
+                const tab = Vue.ref('vergleich');
 
                 // Expose the ref so index.py can call Vue.watch(window.shape_ref, ...) itself.
                 window.shape_ref = shape;
@@ -470,6 +469,10 @@
         app.use(Quasar);
         app.mount('#q-app');
     </script>
+
+    <section class="pyscript">
+        <script type="py" src="./index.py" config="./pyscript.toml"></script>
+    </section>
 
 </body>
 
