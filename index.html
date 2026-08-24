@@ -2,8 +2,10 @@
 <html lang="en">
 
 <head>
-    <link rel="icon" type="image/png" href="./static/favicon.png" />
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="./static/favicon.png" />
+    <title>H-Field Calculator for Magnetic Loop Antenna</title>
     <meta name="description" content="Calculator for the magnetic field of a small magnetic loop antenna.">
     <meta name="keywords" content="Small magnetic loop antenna magnetic dipole moment calculator">
     <link rel="stylesheet" href="static/images/css/style.css">
@@ -12,6 +14,11 @@
     <link rel="stylesheet" href="https://pyscript.net/releases/2025.8.1/core.css">
     <!-- This script tag bootstraps PyScript -->
     <script type="module" src="https://pyscript.net/releases/2025.8.1/core.js"></script>
+    <!-- Quasar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/quasar@2/dist/quasar.prod.css" rel="stylesheet" type="text/css">
+    <!-- Material Icons (used by Quasar components like q-expansion-item) -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+
     <script>
         window.MathJax = {
             tex: {
@@ -34,14 +41,84 @@
         });
         loading.showModal();
     </script>
-
-    <title>H-Field Calculator for Magnetic Loop Antenna</title>
 </head>
 
 <body>
     <dialog id="loading">
         <h1>Loading...</h1>
     </dialog>
+
+    <div id="q-app" style="min-height: 100vh;">
+        <div class="q-pa-md">
+            <div class="q-gutter-y-md">
+                <q-tabs v-model="tab" inline-label align="justify" class="bg-primary text-white shadow-2">
+                    <q-tab name="berechnung" icon="podcasts" label="Berechnung"></q-tab>
+                    <q-tab name="vergleich" icon="manage_search" label="Antennenvergleich"></q-tab>
+                </q-tabs>
+            </div>
+
+            <q-tab-panels v-model="tab" animated>
+                <q-tab-panel name="berechnung" class="q-pa-none">
+                    <q-card bordered flat style="background-color: lightgray; border-radius: 16px;">
+                        <q-expansion-item label="Filter" default-opened header-class="filter-header">
+
+                            <q-card-section class="q-py-none">
+                                <div class="checkbox-row">
+                                    <span class="filter-label">Brands:</span>
+                                    <div class="checkbox-options">
+                                        <q-checkbox v-model="shape" val="xs" label="Size 'xs'"></q-checkbox>
+                                        <q-checkbox v-model="shape" val="sm" label="Size 'sm'"></q-checkbox>
+                                        <q-checkbox v-model="shape" val="md" label="Size 'md'"></q-checkbox>
+                                        <q-checkbox v-model="shape" val="lg" label="Size 'lg'"></q-checkbox>
+                                        <q-checkbox v-model="shape" val="xl" label="Size 'xl1'"></q-checkbox>
+                                        <q-checkbox v-model="shape" val="xl" label="Size 'xl2'"></q-checkbox>
+                                        <q-checkbox v-model="shape" val="xl" label="Size 'xl3'"></q-checkbox>
+                                        <q-checkbox v-model="shape" val="xl" label="Size 'xl4'"></q-checkbox>
+                                        <q-checkbox v-model="shape" val="xl" label="Size 'xl5'"></q-checkbox>
+                                        <q-checkbox v-model="shape" val="xl" label="Size 'xl6'"></q-checkbox>
+                                        <q-checkbox v-model="shape" val="xl" label="Size 'xl7'"></q-checkbox>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="q-px-sm q-mt-sm">
+                  Your selection is: <strong>{{ shape }}</strong>
+                </div> -->
+                            </q-card-section>
+
+                            <q-separator></q-separator>
+
+                            <q-card-section class="q-py-none">
+                                <div class="checkbox-row">
+                                    <span class="filter-label">Names:</span>
+                                    <div class="checkbox-options">
+                                        <q-checkbox v-model="shape" val="xs" label="Size 'xs'"></q-checkbox>
+                                        <q-checkbox v-model="shape" val="sm" label="Size 'sm'"></q-checkbox>
+                                        <q-checkbox v-model="shape" val="md" label="Size 'md'"></q-checkbox>
+                                        <q-checkbox v-model="shape" val="lg" label="Size 'lg'"></q-checkbox>
+                                        <q-checkbox v-model="shape" val="xl" label="Size 'xl'"></q-checkbox>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="q-px-sm q-mt-sm">
+                  Your selection is: <strong>{{ shape }}</strong>
+                </div> -->
+                                <div>3 Antennen selektiert</div>
+                            </q-card-section>
+                        </q-expansion-item>
+                    </q-card>
+
+                    <div class="text-h6">Aaa</div>
+                    <q-separator></q-separator>
+                    <div class="text-h6">Bbb</div>
+
+                </q-tab-panel>
+
+                <q-tab-panel name="vergleich">
+                    <div class="text-h6">Muh miau</div>
+                </q-tab-panel>
+            </q-tab-panels>
+        </div>
+    </div>
 
     <div id="app_content">
         <div id="readme"></div>
@@ -83,7 +160,7 @@
                         <td class="unit"></td>
                         <td rowspan="2">
                             <img src="static/images/pitch.svg" height="60" alt="Pitch illustration" />
-                        For $n = 1$, the pitch input is irrelevant.
+                            For $n = 1$, the pitch input is irrelevant.
 
                         </td>
                     </tr>
@@ -147,7 +224,8 @@
                         <td><b id="out_L_uH">...</b></td>
                         <td class="unit">H</td>
                         <td><small>$L = \mu_0 \cdot \frac{D}{2} \left(\ln\left(\frac{8D}{d}\right) - 2\right)$ with
-                                $\mu_0 = 4\pi \cdot 10^{-7}$ H/m.</small> More complex formulas for multiple turns are given in the source code.</td>
+                                $\mu_0 = 4\pi \cdot 10^{-7}$ H/m.</small> More complex formulas for multiple turns are
+                            given in the source code.</td>
                     </tr>
                     <tr>
                         <td>Capacitance C</td>
@@ -174,7 +252,8 @@
                         <td>Radiation resistance R<sub>R</sub></td>
                         <td><b id="out_RR_mOhm">...</b></td>
                         <td class="unit">Ohm</td>
-                        <td><small>$R_R \approx n^2 \cdot 31171\left(\frac{A f^2}{c^2}\right)^2\left(1+\frac{1}{2}\left(\frac{\pi
+                        <td><small>$R_R \approx n^2 \cdot 31171\left(\frac{A
+                                f^2}{c^2}\right)^2\left(1+\frac{1}{2}\left(\frac{\pi
                                 D f}{c}\right)^2\right)$</small></td>
                     </tr>
                     <tr>
@@ -230,7 +309,8 @@
         <div>
             <small>
                 Method: exact circular-loop Biot-Savart model (elliptic integrals) in the near field, smoothly
-                blended into a retarded dipole model in the far field (using $c$ and $f$). Multi-turn loops are treated as a single wire.
+                blended into a retarded dipole model in the far field (using $c$ and $f$). Multi-turn loops are treated
+                as a single wire.
                 Values very close to the conductor are suppressed; see the source code for details.
             </small>
 
@@ -364,6 +444,36 @@
 
         </div>
     </div>
+
+    <!-- Vue 3 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+
+    <!-- Quasar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/quasar@2/dist/quasar.umd.prod.js"></script>
+
+    <script>
+        const app = Vue.createApp({
+            setup() {
+                const shape = Vue.ref([]);
+                const tab = Vue.ref('berechnung');
+
+                Vue.watch(shape, (value) => {
+                    // window.on_shape_change is defined in index.py (exposed via `window.on_shape_change = ...`)
+                    if (window.on_shape_change) {
+                        window.on_shape_change(value);
+                    }
+                });
+
+                return {
+                    shape,
+                    tab
+                };
+            }
+        });
+
+        app.use(Quasar);
+        app.mount('#q-app');
+    </script>
 
 </body>
 

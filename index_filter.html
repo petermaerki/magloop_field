@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Index Filter</title>
+
+  <!-- Quasar CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/quasar@2/dist/quasar.prod.css" rel="stylesheet" type="text/css">
+
+  <!-- Material Icons (used by Quasar components like q-expansion-item) -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+
+  <style>
+    .checkbox-row {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      column-gap: 8px;
+      align-items: stretch;
+    }
+
+    .checkbox-options {
+      display: flex;
+      flex-wrap: wrap;
+      column-gap: 8px;
+      row-gap: 0;
+    }
+
+    .filter-label {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+    }
+
+    .filter-header {
+      position: relative;
+    }
+
+    .filter-header .q-item__section--main {
+      text-align: center;
+    }
+
+    .filter-header .q-item__section--side {
+      position: absolute;
+      right: 16px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="q-app" style="min-height: 100vh;">
+    <div class="q-pa-md">
+      <div class="q-gutter-y-md">
+        <q-tabs v-model="tab" inline-label align="justify" class="bg-primary text-white shadow-2">
+          <q-tab name="berechnung" icon="podcasts" label="Berechnung"></q-tab>
+          <q-tab name="vergleich" icon="manage_search" label="Antennenvergleich"></q-tab>
+        </q-tabs>
+      </div>
+
+      <q-tab-panels v-model="tab" animated>
+        <q-tab-panel name="berechnung" class="q-pa-none">
+          <q-card bordered flat style="background-color: lightgray; border-radius: 16px;">
+            <q-expansion-item label="Filter" default-opened header-class="filter-header">
+
+              <q-card-section class="q-py-none">
+                <div class="checkbox-row">
+                  <span class="filter-label">Brands:</span>
+                  <div class="checkbox-options">
+                    <q-checkbox v-model="shape" val="xs" label="Size 'xs'"></q-checkbox>
+                    <q-checkbox v-model="shape" val="sm" label="Size 'sm'"></q-checkbox>
+                    <q-checkbox v-model="shape" val="md" label="Size 'md'"></q-checkbox>
+                    <q-checkbox v-model="shape" val="lg" label="Size 'lg'"></q-checkbox>
+                    <q-checkbox v-model="shape" val="xl" label="Size 'xl1'"></q-checkbox>
+                    <q-checkbox v-model="shape" val="xl" label="Size 'xl2'"></q-checkbox>
+                    <q-checkbox v-model="shape" val="xl" label="Size 'xl3'"></q-checkbox>
+                    <q-checkbox v-model="shape" val="xl" label="Size 'xl4'"></q-checkbox>
+                    <q-checkbox v-model="shape" val="xl" label="Size 'xl5'"></q-checkbox>
+                    <q-checkbox v-model="shape" val="xl" label="Size 'xl6'"></q-checkbox>
+                    <q-checkbox v-model="shape" val="xl" label="Size 'xl7'"></q-checkbox>
+                  </div>
+                </div>
+
+                <!-- <div class="q-px-sm q-mt-sm">
+                  Your selection is: <strong>{{ shape }}</strong>
+                </div> -->
+              </q-card-section>
+
+              <q-separator></q-separator>
+
+              <q-card-section class="q-py-none">
+                <div class="checkbox-row">
+                  <span class="filter-label">Names:</span>
+                  <div class="checkbox-options">
+                    <q-checkbox v-model="shape" val="xs" label="Size 'xs'"></q-checkbox>
+                    <q-checkbox v-model="shape" val="sm" label="Size 'sm'"></q-checkbox>
+                    <q-checkbox v-model="shape" val="md" label="Size 'md'"></q-checkbox>
+                    <q-checkbox v-model="shape" val="lg" label="Size 'lg'"></q-checkbox>
+                    <q-checkbox v-model="shape" val="xl" label="Size 'xl'"></q-checkbox>
+                  </div>
+                </div>
+
+                <!-- <div class="q-px-sm q-mt-sm">
+                  Your selection is: <strong>{{ shape }}</strong>
+                </div> -->
+                <div>3 Antennen selektiert</div>
+              </q-card-section>
+            </q-expansion-item>
+          </q-card>
+
+          <div class="text-h6">Aaa</div>
+          <q-separator></q-separator>
+          <div class="text-h6">Bbb</div>
+
+        </q-tab-panel>
+
+        <q-tab-panel name="vergleich">
+          <div class="text-h6">Muh miau</div>
+        </q-tab-panel>
+      </q-tab-panels>
+    </div>
+  </div>
+
+  <!-- Vue 3 -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+
+  <!-- Quasar JS -->
+  <script src="https://cdn.jsdelivr.net/npm/quasar@2/dist/quasar.umd.prod.js"></script>
+
+  <script>
+    const app = Vue.createApp({
+      setup() {
+        const shape = Vue.ref([]);
+        const tab = Vue.ref('berechnung');
+
+        return {
+          shape,
+          tab
+        };
+      }
+    });
+
+    app.use(Quasar);
+    app.mount('#q-app');
+  </script>
+</body>
+
+</html>
