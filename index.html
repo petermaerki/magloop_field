@@ -37,7 +37,7 @@
         const appContent = document.getElementById('app_content');
         addEventListener('py:ready', () => {
             loading.close();
-            appContent.style.display = 'block';
+            // appContent.style.display = 'block';
         });
         loading.showModal();
     </script>
@@ -57,8 +57,8 @@
                 </q-tabs>
             </div>
 
-            <q-tab-panels v-model="tab" animated>
-                <q-tab-panel name="berechnung" class="q-pa-none">
+            <q-tab-panels v-model="tab" animated keep-alive>
+                <q-tab-panel name="vergleich" class="q-pa-none">
                     <q-card bordered flat style="background-color: lightgray; border-radius: 16px;">
                         <q-expansion-item label="Filter" default-opened header-class="filter-header">
 
@@ -113,336 +113,349 @@
 
                 </q-tab-panel>
 
-                <q-tab-panel name="vergleich">
+                <q-tab-panel name="berechnung">
                     <div class="text-h6">Muh miau</div>
+
+                    <div id="app_content">
+                        <div id="readme"></div>
+                        <script type="py" src="./index_readme.py" async></script>
+                        <hr>
+                        <div id="calculator">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="4"><b>Antenna Calculations</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="input_label">
+                                            <label for="antenna_D_m">Loop diameter D</label>
+                                        </td>
+                                        <td class="input_value">
+                                            <input type="text" id="antenna_D_m" value="1.014">
+                                        </td>
+                                        <td class="unit">m</td>
+                                        <td rowspan="2"><img src="static/images/loop_diameter.svg" height="150"
+                                                alt="Loop diameter sketch" />For non-circular loops, enter the mean
+                                            diameter.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="input_label">
+                                            <label for="d_m">Conductor diameter d</label>
+                                        </td>
+                                        <td class="input_value">
+                                            <input type="text" id="d_m" value="0.1">
+                                        </td>
+                                        <td class="unit">m</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="input_label">
+                                            <label for="n">Loop count n</label>
+                                        </td>
+                                        <td class="input_value">
+                                            <input type="text" id="n" value="1">
+                                        </td>
+                                        <td class="unit"></td>
+                                        <td rowspan="2">
+                                            <img src="static/images/pitch.svg" height="60" alt="Pitch illustration" />
+                                            For $n = 1$, the pitch input is irrelevant.
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="input_label">
+                                            <label for="p_m">Loop pitch p</label>
+                                        </td>
+                                        <td class="input_value">
+                                            <input type="text" id="p_m" value="0.0">
+                                        </td>
+                                        <td class="unit">m</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="input_label">
+                                            <label for="f_L_MHz">Frequency f</label>
+                                        </td>
+                                        <td class="input_value">
+                                            <input type="text" id="f_L_MHz" value="14.1">
+                                        </td>
+                                        <td class="unit">MHz</td>
+                                        <td rowspan="2">
+                                            <a class="img_popup" href="static/images/swr_klein_arrow.png"
+                                                target="_blank" rel="noopener noreferrer">
+                                                <img src="static/images/swr_klein_arrow.png" height="100"
+                                                    alt="SWR curve" />
+                                            </a>
+                                            <a class="img_popup" href="static/images/smith_klein.png" target="_blank"
+                                                rel="noopener noreferrer">
+                                                <img src="static/images/smith_klein.png" height="100"
+                                                    alt="Smith chart" />
+                                            </a>
+                                            VNA calibrated at the cable end at the antenna.
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="input_label">
+                                            <label for="bw_kHz">Bandwidth B<sub>SWR=2.6</sub></label>
+                                        </td>
+                                        <td class="input_value">
+                                            <input type="text" id="bw_kHz" value="86.6">
+                                        </td>
+                                        <td class="unit">kHz</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="input_label">
+                                            <label for="P_W">Power into antenna P</label>
+                                        </td>
+                                        <td class="input_value">
+                                            <input type="text" id="P_W" value="94">
+                                        </td>
+                                        <td class="unit">W</td>
+                                        <td>Power at the antenna feed point. Do not forget cable losses.</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <button type="button" id="btn_calculate_antenna">Calculate Antenna</button>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Inductance L</td>
+                                        <td><b id="out_L_uH">...</b></td>
+                                        <td class="unit">H</td>
+                                        <td><small>$L = \mu_0 \cdot \frac{D}{2} \left(\ln\left(\frac{8D}{d}\right) -
+                                                2\right)$ with
+                                                $\mu_0 = 4\pi \cdot 10^{-7}$ H/m.</small> More complex formulas for
+                                            multiple turns are
+                                            given in the source code.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Capacitance C</td>
+                                        <td><b id="out_C_pF">...</b></td>
+                                        <td class="unit">F</td>
+                                        <td><small>$C = \frac{1}{(2\pi f)^2 L}$</small></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Unloaded Q<sub>0</sub></td>
+                                        <td><b id="out_Q0">...</b></td>
+                                        <td class="unit"></td>
+                                        <td><small>$Q_0 = \frac{f}{B_{\mathrm{SWR}=2.6}}$</small></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Damping resistance R<sub>T</sub></td>
+                                        <td><b id="out_RT_mOhm">...</b></td>
+                                        <td class="unit">Ohm</td>
+                                        <td><small>$R_T = \frac{X_L}{Q_0} = \frac{2\pi f L}{Q_0}$</small> <a
+                                                class="img_popup" href="static/images/basics_l_c_rt.svg" target="_blank"
+                                                rel="noopener noreferrer"><img src="static/images/basics_l_c_rt.svg"
+                                                    height="60" alt="LC circuit with damping resistor" /></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Radiation resistance R<sub>R</sub></td>
+                                        <td><b id="out_RR_mOhm">...</b></td>
+                                        <td class="unit">Ohm</td>
+                                        <td><small>$R_R \approx n^2 \cdot 31171\left(\frac{A
+                                                f^2}{c^2}\right)^2\left(1+\frac{1}{2}\left(\frac{\pi
+                                                D f}{c}\right)^2\right)$</small></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Loss resistance R<sub>Loss</sub></td>
+                                        <td><b id="out_RLoss_Ohm">...</b></td>
+                                        <td class="unit">Ohm</td>
+                                        <td><small>$R_{\mathrm{Loss}} = R_T - R_R$</small><a class="img_popup"
+                                                href="static/images/basics_l_c_resistor_loss.svg" target="_blank"
+                                                rel="noopener noreferrer"><img
+                                                    src="static/images/basics_l_c_resistor_loss.svg" height="60"
+                                                    alt="LC circuit with loss and radiation resistances" /></a></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Antenna efficiency η</td>
+                                        <td><b id="out_eta_percent">...</b></td>
+                                        <td class="unit">%</td>
+                                        <td><small>$\eta = \frac{R_R}{R_T}$</small></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Loop current I<sub>main loop</sub></td>
+                                        <td><b id="out_I_main_loop_A">...</b></td>
+                                        <td class="unit">A</td>
+                                        <td><small>$I_{\mathrm{main\ loop}} = \sqrt{\frac{P}{R_T}}$</small></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Loop voltage U<sub>loop</sub></td>
+                                        <td><b id="out_U_loop_V">...</b></td>
+                                        <td class="unit">V</td>
+                                        <td><small>$U_{\mathrm{loop}} = I_{\mathrm{main\ loop}} X_L = I_{\mathrm{main\
+                                                loop}}\,2\pi f
+                                                L$</small></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Magnetic dipole moment m</td>
+                                        <td><b id="out_m_Am2">...</b></td>
+                                        <td class="unit">A m²</td>
+                                        <td><small>$m = n \cdot I_{\mathrm{main\ loop}} A = n \cdot I_{\mathrm{main\
+                                                loop}}\,\pi\left(\frac{D}{2}\right)^2$</small></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <hr>
+                        <b>Magnetic Field Calculations</b>
+                        <div style="display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap;">
+                            <img src="static/images/koordinatensystem.jpeg" height="150" alt="Koordinatensystem" />
+                            <img src="static/images/skizze_loop_diameter.svg" height="150" alt="Loop diameter sketch" />
+                            <div style="max-width: 420px; line-height: 1.35;">
+                                Magnetic loop dipole moment: $m = n \cdot I_{\text{main loop}} \cdot A$.<br>
+                                For a circular loop: $m = n \cdot I_{\text{main loop}} \cdot \pi
+                                \left(\frac{D}{2}\right)^2$.
+                            </div>
+
+                        </div>
+                        <div>
+                            <small>
+                                Method: exact circular-loop Biot-Savart model (elliptic integrals) in the near field,
+                                smoothly
+                                blended into a retarded dipole model in the far field (using $c$ and $f$). Multi-turn
+                                loops are treated
+                                as a single wire.
+                                Values very close to the conductor are suppressed; see the source code for details.
+                            </small>
+
+                        </div>
+                        <div id="calculator">
+
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td class="input_label">
+                                            <label for="m_Am2">Magnetic dipole moment m</label>
+                                        </td>
+                                        <td class="input_value">
+                                            <input type="text" id="m_Am2" value="8.19">
+                                        </td>
+                                        <td class="unit">A m^2</td>
+                                        <td rowspan="3" style="vertical-align: middle;">
+                                            <button type="button" id="btn_copy_above" style="height: 6em;">Copy from
+                                                above</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="input_label">
+                                            <label for="f_MHz">Frequency f</label>
+                                        </td>
+                                        <td class="input_value">
+                                            <input type="text" id="f_MHz" value="14.1">
+                                        </td>
+                                        <td class="unit">MHz</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="input_label">
+                                            <label for="field_D_m">Loop diameter D</label>
+                                        </td>
+                                        <td class="input_value">
+                                            <input type="text" id="field_D_m" value="1.014">
+                                        </td>
+                                        <td class="unit">m</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="input_label">
+                                            <label for="x_m">X</label>
+                                        </td>
+                                        <td class="input_value">
+                                            <input type="text" id="x_m" value="2.0">
+                                        </td>
+                                        <td class="unit">m</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="input_label">
+                                            <label for="y_m">Y</label>
+                                        </td>
+                                        <td class="input_value">
+                                            <input type="text" id="y_m" value="2.0">
+                                        </td>
+                                        <td class="unit">m</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="input_label">
+                                            <label for="z_m">Z</label>
+                                        </td>
+                                        <td class="input_value">
+                                            <input type="text" id="z_m" value="0.0">
+                                        </td>
+                                        <td class="unit">m</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="input_label">Calculated |H| at point (X, Y, Z)</td>
+                                        <td> <b id="h_abs">...</b></td>
+                                        <td class="unit">A/m <span id="h_warning"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="input_label">
+                                            <label for="lim_x_m">Figure range X +-</label>
+                                        </td>
+                                        <td class="input_value">
+                                            <input type="text" id="lim_x_m" value="4">
+                                        </td>
+                                        <td class="unit">m</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="input_label">
+                                            <label for="lim_y_m">Figure range Y +-</label>
+                                        </td>
+                                        <td class="input_value">
+                                            <input type="text" id="lim_y_m" value="3">
+                                        </td>
+                                        <td class="unit">m</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="input_label">
+                                            <label for="line_at_field">Line @ field</label>
+                                        </td>
+                                        <td class="input_value">
+                                            <input type="text" id="line_at_field" value="0.05, 0.1, 0.2">
+                                        </td>
+                                        <td class="unit">A/m</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="input_label">Limit (ICNIRP, 1998)</td>
+                                        <td><b id="out_icnirp_limit">...</b></td>
+                                        <td class="unit">A/m</td>
+                                        <td>
+                                            <label><input type="checkbox" id="show_icnirp_blue" checked> Show Limit in
+                                                blue</label><br>
+                                            <small id="out_icnirp_section">...</small>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="3">
+                                            <button type="submit" py-click="do_calculate">Calculate H-Field</button>
+                                        </td>
+                                    </tr>
+
+
+
+
+                                    <!-- <script type="py" src="./index.py" config="pyscript.toml"></script> -->
+
+
+
+                                </tbody>
+                            </table>
+
+                            <div id="figure_h_field_plot"></div>
+                            <div id="download_svg_wrap">
+                                <a id="download_svg" href="#" download="magnetic_field_plot.svg">Download
+                                    figure
+                                    as SVG</a>
+                            </div>
+
+                        </div>
+                    </div>
                 </q-tab-panel>
             </q-tab-panels>
         </div>
     </div>
 
-    <div id="app_content">
-        <div id="readme"></div>
-        <script type="py" src="./index_readme.py" async></script>
-        <hr>
-        <div id="calculator">
-            <table>
-                <tbody>
-                    <tr>
-                        <td colspan="4"><b>Antenna Calculations</b></td>
-                    </tr>
-                    <tr>
-                        <td class="input_label">
-                            <label for="antenna_D_m">Loop diameter D</label>
-                        </td>
-                        <td class="input_value">
-                            <input type="text" id="antenna_D_m" value="1.014">
-                        </td>
-                        <td class="unit">m</td>
-                        <td rowspan="2"><img src="static/images/loop_diameter.svg" height="150"
-                                alt="Loop diameter sketch" />For non-circular loops, enter the mean diameter.</td>
-                    </tr>
-                    <tr>
-                        <td class="input_label">
-                            <label for="d_m">Conductor diameter d</label>
-                        </td>
-                        <td class="input_value">
-                            <input type="text" id="d_m" value="0.1">
-                        </td>
-                        <td class="unit">m</td>
-                    </tr>
-                    <tr>
-                        <td class="input_label">
-                            <label for="n">Loop count n</label>
-                        </td>
-                        <td class="input_value">
-                            <input type="text" id="n" value="1">
-                        </td>
-                        <td class="unit"></td>
-                        <td rowspan="2">
-                            <img src="static/images/pitch.svg" height="60" alt="Pitch illustration" />
-                            For $n = 1$, the pitch input is irrelevant.
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="input_label">
-                            <label for="p_m">Loop pitch p</label>
-                        </td>
-                        <td class="input_value">
-                            <input type="text" id="p_m" value="0.0">
-                        </td>
-                        <td class="unit">m</td>
-                    </tr>
-                    <tr>
-                        <td class="input_label">
-                            <label for="f_L_MHz">Frequency f</label>
-                        </td>
-                        <td class="input_value">
-                            <input type="text" id="f_L_MHz" value="14.1">
-                        </td>
-                        <td class="unit">MHz</td>
-                        <td rowspan="2">
-                            <a class="img_popup" href="static/images/swr_klein_arrow.png" target="_blank"
-                                rel="noopener noreferrer">
-                                <img src="static/images/swr_klein_arrow.png" height="100" alt="SWR curve" />
-                            </a>
-                            <a class="img_popup" href="static/images/smith_klein.png" target="_blank"
-                                rel="noopener noreferrer">
-                                <img src="static/images/smith_klein.png" height="100" alt="Smith chart" />
-                            </a>
-                            VNA calibrated at the cable end at the antenna.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="input_label">
-                            <label for="bw_kHz">Bandwidth B<sub>SWR=2.6</sub></label>
-                        </td>
-                        <td class="input_value">
-                            <input type="text" id="bw_kHz" value="86.6">
-                        </td>
-                        <td class="unit">kHz</td>
-
-                    </tr>
-                    <tr>
-                        <td class="input_label">
-                            <label for="P_W">Power into antenna P</label>
-                        </td>
-                        <td class="input_value">
-                            <input type="text" id="P_W" value="94">
-                        </td>
-                        <td class="unit">W</td>
-                        <td>Power at the antenna feed point. Do not forget cable losses.</td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <button type="button" id="btn_calculate_antenna">Calculate Antenna</button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Inductance L</td>
-                        <td><b id="out_L_uH">...</b></td>
-                        <td class="unit">H</td>
-                        <td><small>$L = \mu_0 \cdot \frac{D}{2} \left(\ln\left(\frac{8D}{d}\right) - 2\right)$ with
-                                $\mu_0 = 4\pi \cdot 10^{-7}$ H/m.</small> More complex formulas for multiple turns are
-                            given in the source code.</td>
-                    </tr>
-                    <tr>
-                        <td>Capacitance C</td>
-                        <td><b id="out_C_pF">...</b></td>
-                        <td class="unit">F</td>
-                        <td><small>$C = \frac{1}{(2\pi f)^2 L}$</small></td>
-                    </tr>
-                    <tr>
-                        <td>Unloaded Q<sub>0</sub></td>
-                        <td><b id="out_Q0">...</b></td>
-                        <td class="unit"></td>
-                        <td><small>$Q_0 = \frac{f}{B_{\mathrm{SWR}=2.6}}$</small></td>
-                    </tr>
-                    <tr>
-                        <td>Damping resistance R<sub>T</sub></td>
-                        <td><b id="out_RT_mOhm">...</b></td>
-                        <td class="unit">Ohm</td>
-                        <td><small>$R_T = \frac{X_L}{Q_0} = \frac{2\pi f L}{Q_0}$</small> <a class="img_popup"
-                                href="static/images/basics_l_c_rt.svg" target="_blank" rel="noopener noreferrer"><img
-                                    src="static/images/basics_l_c_rt.svg" height="60"
-                                    alt="LC circuit with damping resistor" /></a></td>
-                    </tr>
-                    <tr>
-                        <td>Radiation resistance R<sub>R</sub></td>
-                        <td><b id="out_RR_mOhm">...</b></td>
-                        <td class="unit">Ohm</td>
-                        <td><small>$R_R \approx n^2 \cdot 31171\left(\frac{A
-                                f^2}{c^2}\right)^2\left(1+\frac{1}{2}\left(\frac{\pi
-                                D f}{c}\right)^2\right)$</small></td>
-                    </tr>
-                    <tr>
-                        <td>Loss resistance R<sub>Loss</sub></td>
-                        <td><b id="out_RLoss_Ohm">...</b></td>
-                        <td class="unit">Ohm</td>
-                        <td><small>$R_{\mathrm{Loss}} = R_T - R_R$</small><a class="img_popup"
-                                href="static/images/basics_l_c_resistor_loss.svg" target="_blank"
-                                rel="noopener noreferrer"><img src="static/images/basics_l_c_resistor_loss.svg"
-                                    height="60" alt="LC circuit with loss and radiation resistances" /></a></td>
-                    </tr>
-
-                    <tr>
-                        <td>Antenna efficiency η</td>
-                        <td><b id="out_eta_percent">...</b></td>
-                        <td class="unit">%</td>
-                        <td><small>$\eta = \frac{R_R}{R_T}$</small></td>
-                    </tr>
-                    <tr>
-                        <td>Loop current I<sub>main loop</sub></td>
-                        <td><b id="out_I_main_loop_A">...</b></td>
-                        <td class="unit">A</td>
-                        <td><small>$I_{\mathrm{main\ loop}} = \sqrt{\frac{P}{R_T}}$</small></td>
-                    </tr>
-                    <tr>
-                        <td>Loop voltage U<sub>loop</sub></td>
-                        <td><b id="out_U_loop_V">...</b></td>
-                        <td class="unit">V</td>
-                        <td><small>$U_{\mathrm{loop}} = I_{\mathrm{main\ loop}} X_L = I_{\mathrm{main\ loop}}\,2\pi f
-                                L$</small></td>
-                    </tr>
-                    <tr>
-                        <td>Magnetic dipole moment m</td>
-                        <td><b id="out_m_Am2">...</b></td>
-                        <td class="unit">A m²</td>
-                        <td><small>$m = n \cdot I_{\mathrm{main\ loop}} A = n \cdot I_{\mathrm{main\
-                                loop}}\,\pi\left(\frac{D}{2}\right)^2$</small></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <hr>
-        <b>Magnetic Field Calculations</b>
-        <div style="display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap;">
-            <img src="static/images/koordinatensystem.jpeg" height="150" alt="Koordinatensystem" />
-            <img src="static/images/skizze_loop_diameter.svg" height="150" alt="Loop diameter sketch" />
-            <div style="max-width: 420px; line-height: 1.35;">
-                Magnetic loop dipole moment: $m = n \cdot I_{\text{main loop}} \cdot A$.<br>
-                For a circular loop: $m = n \cdot I_{\text{main loop}} \cdot \pi \left(\frac{D}{2}\right)^2$.
-            </div>
-
-        </div>
-        <div>
-            <small>
-                Method: exact circular-loop Biot-Savart model (elliptic integrals) in the near field, smoothly
-                blended into a retarded dipole model in the far field (using $c$ and $f$). Multi-turn loops are treated
-                as a single wire.
-                Values very close to the conductor are suppressed; see the source code for details.
-            </small>
-
-        </div>
-        <div id="calculator">
-
-            <table>
-                <tbody>
-                    <tr>
-                        <td class="input_label">
-                            <label for="m_Am2">Magnetic dipole moment m</label>
-                        </td>
-                        <td class="input_value">
-                            <input type="text" id="m_Am2" value="8.19">
-                        </td>
-                        <td class="unit">A m^2</td>
-                        <td rowspan="3" style="vertical-align: middle;">
-                            <button type="button" id="btn_copy_above" style="height: 6em;">Copy from above</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="input_label">
-                            <label for="f_MHz">Frequency f</label>
-                        </td>
-                        <td class="input_value">
-                            <input type="text" id="f_MHz" value="14.1">
-                        </td>
-                        <td class="unit">MHz</td>
-                    </tr>
-                    <tr>
-                        <td class="input_label">
-                            <label for="field_D_m">Loop diameter D</label>
-                        </td>
-                        <td class="input_value">
-                            <input type="text" id="field_D_m" value="1.014">
-                        </td>
-                        <td class="unit">m</td>
-                    </tr>
-                    <tr>
-                        <td class="input_label">
-                            <label for="x_m">X</label>
-                        </td>
-                        <td class="input_value">
-                            <input type="text" id="x_m" value="2.0">
-                        </td>
-                        <td class="unit">m</td>
-                    </tr>
-                    <tr>
-                        <td class="input_label">
-                            <label for="y_m">Y</label>
-                        </td>
-                        <td class="input_value">
-                            <input type="text" id="y_m" value="2.0">
-                        </td>
-                        <td class="unit">m</td>
-                    </tr>
-                    <tr>
-                        <td class="input_label">
-                            <label for="z_m">Z</label>
-                        </td>
-                        <td class="input_value">
-                            <input type="text" id="z_m" value="0.0">
-                        </td>
-                        <td class="unit">m</td>
-                    </tr>
-                    <tr>
-                        <td class="input_label">Calculated |H| at point (X, Y, Z)</td>
-                        <td> <b id="h_abs">...</b></td>
-                        <td class="unit">A/m <span id="h_warning"></span></td>
-                    </tr>
-                    <tr>
-                        <td class="input_label">
-                            <label for="lim_x_m">Figure range X +-</label>
-                        </td>
-                        <td class="input_value">
-                            <input type="text" id="lim_x_m" value="4">
-                        </td>
-                        <td class="unit">m</td>
-                    </tr>
-                    <tr>
-                        <td class="input_label">
-                            <label for="lim_y_m">Figure range Y +-</label>
-                        </td>
-                        <td class="input_value">
-                            <input type="text" id="lim_y_m" value="3">
-                        </td>
-                        <td class="unit">m</td>
-                    </tr>
-                    <tr>
-                        <td class="input_label">
-                            <label for="line_at_field">Line @ field</label>
-                        </td>
-                        <td class="input_value">
-                            <input type="text" id="line_at_field" value="0.05, 0.1, 0.2">
-                        </td>
-                        <td class="unit">A/m</td>
-                    </tr>
-                    <tr>
-                        <td class="input_label">Limit (ICNIRP, 1998)</td>
-                        <td><b id="out_icnirp_limit">...</b></td>
-                        <td class="unit">A/m</td>
-                        <td>
-                            <label><input type="checkbox" id="show_icnirp_blue" checked> Show Limit in blue</label><br>
-                            <small id="out_icnirp_section">...</small>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="3">
-                            <button type="submit" py-click="do_calculate">Calculate H-Field</button>
-                        </td>
-                    </tr>
-
-
-
-
-                    <!-- <script type="py" src="./index.py" config="pyscript.toml"></script> -->
-
-
-
-                </tbody>
-            </table>
-
-            <div id="figure_h_field_plot"></div>
-            <div id="download_svg_wrap">
-                <a id="download_svg" href="#" download="magnetic_field_plot.svg">Download
-                    figure
-                    as SVG</a>
-            </div>
-
-        </div>
-    </div>
 
     <!-- Vue 3 -->
     <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
@@ -456,8 +469,20 @@
                 const shape = Vue.ref([]);
                 const tab = Vue.ref('vergleich');
 
-                // Expose the ref so index.py can call Vue.watch(window.shape_ref, ...) itself.
+                // Expose the refs so index.py can call Vue.watch(window.xxx_ref, ...) itself.
                 window.shape_ref = shape;
+                window.tab_ref = tab;
+
+
+                Vue.watch(tab, (newTab, oldTab) => {
+                    console.log(`tab changed ${oldTab} -> ${newTab}`);
+
+                    if (newTab === 'berechnung') {
+                        Vue.nextTick(() => {
+                            window.cb_tab_berechnung_ready();
+                        });
+                    }
+                });
 
                 return {
                     shape,

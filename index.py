@@ -3,24 +3,13 @@ import io
 import math
 
 import matplotlib.pyplot as plt
-from js import document, window
+from js import MutationObserver, document, window
 from pyodide.ffi import create_proxy
 from pyscript import when
 from pyscript.web import page
 
 from magloop_field.calculations import AntennaCalculator, Calculator
 from magloop_field import diagram
-
-
-def on_shape_change(value, old_value, y):
-    """Called by Vue whenever the `shape` ref (window.shape_ref, set in index.html) changes."""
-    print(f"{value!r}, {old_value!r}, {y!r}")
-    print(repr(value), repr(old_value), repr(y))
-    print("shape changed:", list(value))
-
-
-# create_proxy keeps the Python callable alive so Vue can invoke it as a JS function.
-window.Vue.watch(window.shape_ref, create_proxy(on_shape_change))
 
 
 def icnirp_1998_h_limit_a_per_m(f_hz: float) -> float:
@@ -146,9 +135,7 @@ def do_calculate(e):
     warning_node = document.getElementById("h_warning")
     if d_abstand_zu_wire < d_min_abstand_m:
         if warning_node is not None:
-            warning_node.innerHTML = (
-                f"Warning: too close to conductor (d&lt;{d_min_abstand_m:g} m), value not shown."
-            )
+            warning_node.innerHTML = f"Warning: too close to conductor (d&lt;{d_min_abstand_m:g} m), value not shown."
         page["b#h_abs"].innerHTML = "NaN"
     else:
         if warning_node is not None:
@@ -181,7 +168,9 @@ def do_calculate(e):
     )
 
     svg_buffer = io.BytesIO()
-    figure_h_field_plot.savefig(svg_buffer, format="svg", bbox_inches="tight", pad_inches=0.01)
+    figure_h_field_plot.savefig(
+        svg_buffer, format="svg", bbox_inches="tight", pad_inches=0.01
+    )
     plt.close(figure_h_field_plot)
     svg_text = svg_buffer.getvalue().decode("utf-8")
     svg_data = base64.b64encode(svg_text.encode("utf-8")).decode("ascii")
@@ -198,13 +187,34 @@ def on_show_icnirp_blue_change(e=None):
     do_calculate(e)
 
 
-# Render initial values on page load:
-# 1) calculate antenna
-# 2) copy from above
-# 3) calculate H-field
-try:
-    do_calculate_inductance(None)
-    copy_values_from_above(None)
-    do_calculate(None)
-except Exception as e:
-    print(f"Initial render failed: {e}")
+def cb_tab_berechnung_ready():
+    """Called by Vue whenever the `tab` ref (window.tab_ref, set in index.html) changes."""
+    print("tab changed")
+    # Render initial values on page load:
+    # 1) calculate antenna
+    # 2) copy from above
+    # 3) calculate H-field
+    try:
+        do_calculate_inductance(None)
+        copy_values_from_above(None)
+        do_calculate(None)
+    except Exception as e:
+        print(f"Initial render failed: {e}")
+
+window.cb_tab_berechnung_ready = create_proxy(cb_tab_berechnung_ready)
+
+if False:
+    print(f"page={page!r} title={page.title} dir={dir(page)}")
+    print(f"page[input#antenna_D_m]={page['input#antenna_D_m']}")
+    el = document.getElementById("antenna_D_m")
+    print(f"el={el!r}")
+    try:
+        do_calculate_inductance(None)
+        copy_values_from_above(None)
+        do_calculate(None)
+    except Exception as e:
+        print(f"Initial render failed: {e}")
+
+print("Loaded")
+
+
