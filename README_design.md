@@ -1,8 +1,18 @@
 # mgloop field
 
+## Installation
+
+```bash
+uv venv
+. .venv/bin/activate
+uv pip install -e .[dev]
+```
+
 ## Run locally
 
 ```bash
+uv build --wheel
+
 python -m http.server 8000
 ```
 

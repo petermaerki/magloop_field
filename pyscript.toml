@@ -1,6 +1,12 @@
 name = "magloop_field"
 description = "magloop_field"
-packages = ["markdown", "scipy", "numpy", "matplotlib"]
+packages = [
+    "markdown",
+    "scipy", 
+    "numpy", 
+    "matplotlib", 
+    "./dist/magloop_field-0.1.0-py3-none-any.whl",
+]
 
 [files]
 "./README.md" = ""
