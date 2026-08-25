@@ -2,3 +2,4 @@ generated_images/
 __pycache__/
 *.pyc
 magloop_field.egg-info/*
+**/s1p_results/*

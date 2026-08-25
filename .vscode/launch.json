@@ -10,5 +10,40 @@
             "request": "launch",
             "module": "magloop_field.diagram"
         },
+        {
+            "name": "run_0_s1p",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "antennenvergleich.run_0_s1p",
+            "justMyCode": false
+        },
+        {
+            "name": "run_2_html",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "antennenvergleich.run_2_html",
+            "justMyCode": false
+        },
+        {
+            "name": "debug_loop_directories",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "antennenvergleich.loop_directories",
+            "justMyCode": false
+        },
+        {
+            "name": "mazzoni_baby_loop_HB0SM.h_field.h_field_data",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "antennen.mazzoni_baby_loop_HB0SM.h_field.h_field_data",
+            "justMyCode": false
+        },
+        {
+            "name": "mazzoni_midi_loop_HB0SM.h_field.h_field_data",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "antennen.mazzoni_midi_loop_HB0SM.h_field.h_field_data",
+            "justMyCode": false
+        },
     ]
 }
