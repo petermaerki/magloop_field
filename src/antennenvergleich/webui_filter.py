@@ -7,11 +7,11 @@ from antennenvergleich import datatypes
 from . import renderer_html
 
 
-class EnumCategory(enum.IntEnum):
-    BRAND = 1
-    NAME = 2
-    LOCATION = 3
-    BAND = 4
+class EnumCategory(enum.StrEnum):
+    BRAND = "Brand"
+    NAME = "Name"
+    LOCATION = "Location"
+    BAND = "Band"
 
 
 @dataclasses.dataclass(frozen=True, repr=True)
@@ -81,6 +81,10 @@ class Checkbox:
     def text(self) -> None:
         return f"{self.name}[{self.state.value}]"
 
+    @property
+    def checked(self) -> bool:
+        return self.state == CheckboxState.CHECKED
+
     def set_checked(self, checked: bool) -> None:
         self.state = CheckboxState.CHECKED if checked else CheckboxState.UNCHECKED
 
@@ -111,9 +115,8 @@ class CategoryStats:
         return antenna_join.value(category=self.category) in self.checked
 
     def dump(self) -> None:
-        print(f"  {self.category.name}")
         values = [c.text for c in self.checkboxes]
-        print(f"    {' '.join(values)}")
+        print(f"    {self.category.name}: {' '.join(values)}")
 
     def updated_checked(self, set_checked: set[str]) -> None:
         for checkbox in self.checkboxes:
@@ -146,7 +149,7 @@ class Filter:
 
         self.antenna_joins = antenna_joins
 
-        self.categories: list[CategoryStats] = [
+        self.category_stats: list[CategoryStats] = [
             CategoryStats(EnumCategory.BRAND, self.antenna_joins),
             CategoryStats(EnumCategory.NAME, self.antenna_joins),
             CategoryStats(EnumCategory.LOCATION, self.antenna_joins),
@@ -156,12 +159,12 @@ class Filter:
         self.reset()
 
     def reset(self) -> None:
-        for level in self.categories:
+        for level in self.category_stats:
             level.reset()
 
     def _find_category(self, category: EnumCategory) -> CategoryStats:
         assert isinstance(category, EnumCategory)
-        for l in self.categories:
+        for l in self.category_stats:
             if l.category == category:
                 return l
         else:
@@ -194,7 +197,7 @@ class Filter:
 
         print(f" First pass: aj_remaining={len(aj_remaining)}")
 
-        for c in self.categories:
+        for c in self.category_stats:
             set_category_checked = c.set_checked
             aj_remaining = [
                 aj
@@ -205,7 +208,7 @@ class Filter:
         print(f" Second pass: aj_remaining={len(aj_remaining)}")
 
         # Third pass: Make checkboxes invisible
-        for c in self.categories:
+        for c in self.category_stats:
             if c.category == category:
                 continue
 
@@ -217,7 +220,7 @@ class Filter:
     @property
     def aj_filtered(self) -> list[AntennaJoin]:
         aj_remaining = self.antenna_joins.copy()
-        for c in self.categories:
+        for c in self.category_stats:
             aj_remaining = c.filter(antenna_joins=aj_remaining)
         return aj_remaining
 
@@ -228,5 +231,5 @@ class Filter:
 
     def dump(self) -> None:
         print("---------------")
-        for level in self.categories:
+        for level in self.category_stats:
             level.dump()

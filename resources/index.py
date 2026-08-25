@@ -2,9 +2,12 @@ import base64
 import math
 
 from js import document
-from pyodide.ffi import create_proxy
+from pyodide.ffi import JsNull, create_proxy
 from pyscript import when
 from pyscript.web import page
+
+from antennenvergleich import renderer_html, webui_filter
+from webui import util_compare
 
 try:
     DEVELOPMENT_NUMPY = False
@@ -192,49 +195,69 @@ def close_splash_dialog() -> None:
 #
 # COMPARE
 #
-from webui import util_compare
+def query(selector: str):
+    element = document.querySelector(selector)
+    if element is None or isinstance(element, JsNull):
+        raise ValueError(f"Error: '{selector}' not found!")
+        return
+    return element
+
+
+def update_svg(selector: str, svg: str) -> None:
+    img = query(selector=selector)
+    svg_data = base64.b64encode(svg.encode("utf-8")).decode("ascii")
+    img.src = f"data:image/svg+xml;base64,{svg_data}"
 
 
 def load_compare() -> None:
     fw = util_compare.FilterWrapper()
-    page["div#compare_results"].innerHTML = fw.render_results_html()
 
-    # page["div#compare_table_tbody"].innerHTML = fw.render_table_tbody_html()
-    elem_tbody = document.querySelector("div#compare_table_tbody")
+    def redraw():
+        page["div#compare_results"].innerHTML = fw.render_results_html()
+        svg = fw.render_eta_f_svg()
+        update_svg(selector=f"img#{renderer_html.ID_SVG_ETA_F}", svg=svg)
 
-    def on_brand_checkbox_change(e=None) -> None:
-        checked_brands = [
-            checkbox.value
-            for checkbox in document.querySelectorAll('input[name="brand"]')
-            if checkbox.checked
-        ]
-        print("checked_brands", checked_brands)
+    redraw()
 
-    tr = document.createElement("tr")
+    def on_checkbox_change(checkbox: webui_filter.Checkbox, elem_input) -> None:
+        try:
+            print("checked_brands", checkbox, elem_input.checked)
+            checkbox.set_checked(checked=elem_input.checked)
+            fw.apply_filter()
+            redraw()
 
-    td_label = document.createElement("td")
-    td_label.textContent = "Brand:"
-    tr.appendChild(td_label)
+            fw.filter.dump()
+        except Exception as e:
+            print(f"Error in on_checkbox_change(): {e!r}")
 
-    td_checkboxes = document.createElement("td")
-    tr.appendChild(td_checkboxes)
+    elem_tbody = query("tbody#compare_table_tbody")
+    for category_stat in fw.filter.category_stats:
+        tr = document.createElement("tr")
+        elem_tbody.appendChild(tr)
+        td_label = document.createElement("td")
+        tr.appendChild(td_label)
+        td_label.textContent = category_stat.category.value
+        td_checkboxes = document.createElement("td")
+        tr.appendChild(td_checkboxes)
 
-    for value, text in (
-        ("homebrew", "Homebrew"),
-        ("Marzolo", "Marzolo"),
-        ("Kilimanera", "Kilimanera"),
-    ):
-        label = document.createElement("label")
-        checkbox = document.createElement("input")
-        checkbox.type = "checkbox"
-        checkbox.name = "brand"
-        checkbox.value = value
-        checkbox.addEventListener("change", create_proxy(on_brand_checkbox_change))
-        label.appendChild(checkbox)
-        label.appendChild(document.createTextNode(text))
-        td_checkboxes.appendChild(label)
+        for checkbox in category_stat.checkboxes:
+            label = document.createElement("label")
+            td_checkboxes.appendChild(label)
+            elem_input = document.createElement("input")
+            elem_input.type = "checkbox"
+            elem_input.name = checkbox.name
+            elem_input.value = elem_input.name
+            elem_input.checked = checkbox.checked
 
-    elem_tbody.appendChild(tr)
+            def make_handler(checkbox, elem_input):
+                def handler(e):
+                    on_checkbox_change(checkbox, elem_input)
+
+                return handler
+
+            elem_input.onchange = create_proxy(make_handler(checkbox, elem_input))
+            label.appendChild(elem_input)
+            label.appendChild(document.createTextNode(elem_input.name))
 
 
 #

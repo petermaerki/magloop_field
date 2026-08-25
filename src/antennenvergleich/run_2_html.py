@@ -38,8 +38,16 @@ def main() -> None:
     print(f"Written: {filename}")
 
     antennas = [entry.antenna for entry in antenna_entries]
-    renderer_html.Diagramm_eta_f_svg().render(antennas)
-    renderer_html.Diagramm_eta_D_lambda_svg().render(antennas)
+
+    svg = renderer_html.Diagramm_eta_f_svg().render(antennas)
+    filename_svg = constants.DIRECTORY_REPO / renderer_html.FILENAME_SVG_ETA_F
+    filename_svg.write_text(svg, encoding="utf-8")
+    print(f"Written: {filename_svg}")
+
+    svg = renderer_html.Diagramm_eta_D_lambda_svg().render(antennas)
+    filename_svg = constants.DIRECTORY_REPO / renderer_html.FILENAME_SVG_ETA_DL
+    filename_svg.write_text(svg, encoding="utf-8")
+    print(f"Written: {filename_svg}")
 
 
 if __name__ == "__main__":

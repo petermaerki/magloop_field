@@ -35,6 +35,15 @@ package-dir = "src"
 includes = [
     "src/",
 ]
+excludes = [
+    "**/*.svg",
+    "**/*.jpg",
+    "**/*.jpeg",
+    "**/*.png",
+    "**/*.md",
+    "**/*.s1p",
+    "**/*.html",
+]
 source-includes = [
     "README.md"
 ]

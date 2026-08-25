@@ -32,6 +32,7 @@ from .constants_s1p import (
 )
 
 FILENAME_SVG_ETA_F = "generated_magnetic_loops_compare_eta_f.svg"
+ID_SVG_ETA_F = "id_svg_eta_f"
 FILENAME_SVG_ETA_DL = "generated_magnetic_loops_compare_eta_DL.svg"
 
 # ── Constants (same as calculations.py) ───────────────────────────────────────
@@ -1282,7 +1283,7 @@ class HtmlRenderer:
 </head>
 <body>
 <h2>Magnetic Loop Antenna Compare</h2>
-<img src="{FILENAME_SVG_ETA_F}" alt="Antenna efficiency eta over frequency" style="max-width: 100%; height: auto; display: block; margin-bottom: 12px;">
+<img src="{FILENAME_SVG_ETA_F}" id="{ID_SVG_ETA_F}" alt="Antenna efficiency eta over frequency" style="max-width: 100%; height: auto; display: block; margin-bottom: 12px;">
 """
 
     def _overview_pictures_from_field(self, item: "BandAntenna") -> list[str]:
@@ -1302,7 +1303,7 @@ class HtmlRenderer:
             # The following line will fail if the resulting path starts with '../'
             # which never should happen on the web...
             rel = str(filename.relative_to(self.html_root_directory))
-            print("rel:", rel)
+            # print("rel:", rel)
             return rel.replace("site-packages/", "src/")
 
         assert filename.is_file(), f"Path does not exist: '{filename}'!"
@@ -1469,7 +1470,6 @@ class Diagramm_eta_f_svg:
     _ETA_MIN = 1.0e-5  # 0.001 %
 
     def __init__(self) -> None:
-        self.out = constants.DIRECTORY_REPO / FILENAME_SVG_ETA_F
         self._pw = self._W - self._ML - self._MR
         self._ph = self._H - self._MT - self._MB
         self._ETA_MAX = 1.0  # overwritten in render() from data
@@ -1523,7 +1523,7 @@ class Diagramm_eta_f_svg:
         result.sort(key=lambda item: item[0].casefold())
         return result
 
-    def render(self, antennas: list[Antenna]) -> None:
+    def render(self, antennas: list[Antenna]) -> str:
         data = self._collect_data(antennas)
         all_etas = [e for _, pts in data for _, e in pts]
         if all_etas:
@@ -1545,8 +1545,7 @@ class Diagramm_eta_f_svg:
             [(name, self._color_for_index(i)) for i, (name, _) in enumerate(data)]
         )
         buf.append("</svg>")
-        self.out.write_text("\n".join(buf), encoding="utf-8")
-        print(f"Written: {self.out}")
+        return "\n".join(buf)
 
     def _draw_grid(self) -> list[str]:
         lines = []
@@ -1657,7 +1656,6 @@ class Diagramm_eta_D_lambda_svg:
     _ETA_MIN = 1.0e-5
 
     def __init__(self) -> None:
-        self.out = constants.DIRECTORY_REPO / FILENAME_SVG_ETA_DL
         self._pw = self._W - self._ML - self._MR
         self._ph = self._H - self._MT - self._MB
         self._ETA_MAX = 1.0
@@ -1707,7 +1705,7 @@ class Diagramm_eta_D_lambda_svg:
         result.sort(key=lambda item: item[0].casefold())
         return result
 
-    def render(self, antennas: list[Antenna]) -> None:
+    def render(self, antennas: list[Antenna]) -> str:
         data = self._collect_data(antennas)
         all_etas = [e for _, pts in data for _, e in pts]
         xs = [x for _, pts in data for x, _ in pts]
@@ -1733,8 +1731,8 @@ class Diagramm_eta_D_lambda_svg:
             [(name, self._color_for_index(i)) for i, (name, _) in enumerate(data)]
         )
         buf.append("</svg>")
-        self.out.write_text("\n".join(buf), encoding="utf-8")
-        print(f"Written: {self.out}")
+        return "\n".join(buf)
+
 
     def _draw_grid(self, xs: list[float]) -> list[str]:
         lines = []
