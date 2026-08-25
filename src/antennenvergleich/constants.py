@@ -1,7 +1,16 @@
+import pathlib
+import sys
 from math import pi, sqrt
 from types import SimpleNamespace
 
 from antennenvergleich.datatypes import Antenna, FloatText, IntText, VnaCalibration
+
+IS_PYODIDE = sys.platform == "emscripten"
+
+DIRECTORY_OF_THIS_FILE = pathlib.Path(__file__).parent
+DIRECTORY_REPO = DIRECTORY_OF_THIS_FILE.parent.parent
+if not IS_PYODIDE:
+    assert (DIRECTORY_REPO / "README.md").is_file(), str(DIRECTORY_REPO)
 
 ANTENNENDATEN_FILENAME = "antennendaten.py"
 

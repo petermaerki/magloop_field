@@ -11,15 +11,18 @@ from collections.abc import Callable
 from urllib.parse import urlsplit, urlunsplit
 
 import matplotlib.colors
+
+from antennenvergleich.datatypes import Antenna, BandData, VnaCalibration
+from antennenvergleich.datatypes_s1p import AntennaModelFit, SwrValues, ValuesDataFile
 from magloop_field.calculations import AntennaCalculator as FieldAntennaCalculator
 
-from antennenvergleich import loop_directories
-from antennenvergleich.antenna_calculations import (
+from . import constants, loop_directories
+from .antenna_calculations import (
     AntennaCalculator,
     _make_calc,
 )
-from antennenvergleich.constants import BANDS
-from antennenvergleich.constants_s1p import (
+from .constants import BANDS
+from .constants_s1p import (
     CAP_VALUES_TAGS,
     RESULTS_SUBDIR,
     SMITH_SUFFIX,
@@ -27,8 +30,6 @@ from antennenvergleich.constants_s1p import (
     SWR_SUFFIX,
     VALUES_SUFFIX,
 )
-from antennenvergleich.datatypes import Antenna, BandData, VnaCalibration
-from antennenvergleich.datatypes_s1p import AntennaModelFit, SwrValues, ValuesDataFile
 
 # ── Constants (same as calculations.py) ───────────────────────────────────────
 _C_LIGHT = 299_792_458.0  # m/s
@@ -1046,7 +1047,7 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
 </body>
 </html>
 """
-    (antenna_dir / "antenna.html").write_text(doc)
+    (antenna_dir / "generated_antenna.html").write_text(doc)
 
 
 def _generate_antenna_html_files() -> int:
@@ -1264,7 +1265,8 @@ div.overview-pictures { display: grid; gap: 6px; }
 
 
 class HtmlRenderer:
-    def __init__(self) -> None:
+    def __init__(self, html_root_directory=constants.DIRECTORY_REPO) -> None:
+        self.html_root_directory = html_root_directory
         self.sections: list[str] = []
         self.html_prefix = f"""<!-- Automatically generated file by run_2_html.py. Do not edit manually. -->
 
@@ -1280,21 +1282,28 @@ class HtmlRenderer:
 <img src="magnetic_loops_compare_eta_f.svg" alt="Antenna efficiency eta over frequency" style="max-width: 100%; height: auto; display: block; margin-bottom: 12px;">
 """
 
-    @staticmethod
-    def _overview_pictures_from_field(item: "BandAntenna") -> list[str]:
+    def _overview_pictures_from_field(self, item: "BandAntenna") -> list[str]:
         files: list[str] = []
-        for rel in item.antenna.overview_pictures:
-            rel_clean = rel.strip()
-            if not rel_clean:
-                continue
-            candidate = (item.antenna_dir / rel_clean).resolve()
-            if not candidate.is_file():
-                continue
-            rel_to_html = pathlib.Path(
-                os.path.relpath(candidate, DIRECTORY_OF_THIS_FILE)
-            ).as_posix()
+        for filename_relative in item.antenna.overview_pictures:
+            rel_clean = filename_relative.strip()
+            assert rel_clean == filename_relative, (
+                f"Path has leading/ending spaces: '{filename_relative}'!"
+            )
+            filename = (item.antenna_dir / filename_relative).resolve()
+            rel_to_html = self._get_relative_path(filename=filename)
             files.append(rel_to_html)
         return files
+
+    def _get_relative_path(self, filename: pathlib.Path) -> str:
+        if constants.IS_PYODIDE:
+            # The following line will fail if the resulting path starts with '../'
+            # which never should happen on the web...
+            rel = str(filename.relative_to(self.html_root_directory))
+            print("rel:", rel)
+            return rel.replace("site-packages/", "src/")
+
+        assert filename.is_file(), f"Path does not exist: '{filename}'!"
+        return os.path.relpath(filename, self.html_root_directory)
 
     def render(self, band: str, antennas_in_band: list["BandAntenna"]) -> None:
         if not antennas_in_band:
@@ -1318,13 +1327,13 @@ class HtmlRenderer:
             header_brand += f"<th style='font-weight: normal;' title='{tooltip_attr}'>{brand_html}</th>"
             header_names += f"<th style='font-weight: normal;' title='{tooltip_attr}'>{name_html}</th>"
             header_calls += f"<th style='font-weight: normal;'>{location_html}</th>"
-            overview_path = (item.antenna_dir / "antenna.html").resolve()
-            if overview_path.is_file():
-                rel_overview = pathlib.Path(
-                    os.path.relpath(overview_path, DIRECTORY_OF_THIS_FILE)
-                ).as_posix()
+            filename_html_antenna = (
+                item.antenna_dir / "generated_antenna.html"
+            ).resolve()
+            if filename_html_antenna.is_file():
+                filename_relative = self._get_relative_path(filename_html_antenna)
                 link_html = (
-                    f"<a href='{html.escape(rel_overview, quote=True)}'>description</a>"
+                    f"<a href='{html.escape(filename_relative, quote=True)}'>description</a>"
                     "<br>"
                     "<a href='https://petermaerki.github.io/magloop_field/'>calculator</a>"
                 )

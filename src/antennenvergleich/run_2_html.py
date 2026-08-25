@@ -1,10 +1,6 @@
 """Generates compare.html — comparison table for magnetic loop antennas."""
 
-import pathlib
-
-from antennenvergleich import loop_directories, renderer_html, webui_filter
-
-DIRECTORY_OF_THIS_FILE = pathlib.Path(__file__).parent
+from . import constants, loop_directories, renderer_html, webui_filter
 
 
 def main() -> None:
@@ -37,7 +33,7 @@ def main() -> None:
         html_renderer.render(band, antennas_in_band)
 
     html = html_renderer.close()
-    filename = DIRECTORY_OF_THIS_FILE / "compare.html"
+    filename = constants.DIRECTORY_REPO / "generated_compare.html"
     filename.write_text(html, encoding="utf-8")
     print(f"Written: {filename}")
 
