@@ -987,14 +987,14 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
         if header_parts:
             header_title = " ".join(header_parts)
 
-    compare_overview_path = DIRECTORY_OF_THIS_FILE / "compare.html"
+    compare_overview_path = constants.DIRECTORY_REPO / "generated_compare.html"
     compare_overview_rel = pathlib.Path(
-        os.path.relpath(compare_overview_path, antenna_dir)
+        os.path.relpath(compare_overview_path.resolve(), antenna_dir.resolve())
     ).as_posix()
     compare_overview_link_html = (
         f"<p>All antennas overview: "
         f'<a href="{html.escape(compare_overview_rel, quote=True)}">'
-        f"compare.html</a></p>"
+        f"generated_compare.html</a></p>"
     )
 
     doc = f"""<!-- Automatically generated file by run_2_html.py. Do not edit manually. -->
