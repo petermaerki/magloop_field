@@ -12,6 +12,7 @@
 
 #page_calculator td {
     vertical-align: top;
+    border: none;
 }
 
 #page_calculator input {
