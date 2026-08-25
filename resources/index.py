@@ -2,6 +2,7 @@ import base64
 import math
 
 from js import document
+from pyodide.ffi import create_proxy
 from pyscript import when
 from pyscript.web import page
 
@@ -13,6 +14,7 @@ try:
     from magloop_field import calculations, diagram
 except ModuleNotFoundError:
     pass
+
 
 #
 # CALCULATOR
@@ -173,7 +175,8 @@ def do_calculate(e):
 def on_show_icnirp_blue_change(e=None):
     do_calculate(e)
 
-def close_splash_dialog()-> None:
+
+def close_splash_dialog() -> None:
     """
     Everything is loaded and rendered now: reveal the page and dismiss the splash screen.
     """
@@ -185,13 +188,54 @@ def close_splash_dialog()-> None:
     if app_content is not None:
         app_content.style.display = "block"
 
+
 #
 # COMPARE
 #
 from webui import util_compare
 
-def load_compare()->None:
-    page["div#compare_table"].innerHTML = util_compare.render_html()
+
+def load_compare() -> None:
+    fw = util_compare.FilterWrapper()
+    page["div#compare_results"].innerHTML = fw.render_results_html()
+
+    # page["div#compare_table_tbody"].innerHTML = fw.render_table_tbody_html()
+    elem_tbody = document.querySelector("div#compare_table_tbody")
+
+    def on_brand_checkbox_change(e=None) -> None:
+        checked_brands = [
+            checkbox.value
+            for checkbox in document.querySelectorAll('input[name="brand"]')
+            if checkbox.checked
+        ]
+        print("checked_brands", checked_brands)
+
+    tr = document.createElement("tr")
+
+    td_label = document.createElement("td")
+    td_label.textContent = "Brand:"
+    tr.appendChild(td_label)
+
+    td_checkboxes = document.createElement("td")
+    tr.appendChild(td_checkboxes)
+
+    for value, text in (
+        ("homebrew", "Homebrew"),
+        ("Marzolo", "Marzolo"),
+        ("Kilimanera", "Kilimanera"),
+    ):
+        label = document.createElement("label")
+        checkbox = document.createElement("input")
+        checkbox.type = "checkbox"
+        checkbox.name = "brand"
+        checkbox.value = value
+        checkbox.addEventListener("change", create_proxy(on_brand_checkbox_change))
+        label.appendChild(checkbox)
+        label.appendChild(document.createTextNode(text))
+        td_checkboxes.appendChild(label)
+
+    elem_tbody.appendChild(tr)
+
 
 #
 # COMMON
