@@ -14,7 +14,9 @@ try:
 except ModuleNotFoundError:
     pass
 
-
+#
+# CALCULATOR
+#
 @when("click", "#btn_calculate_antenna")
 def do_calculate_inductance(e=None):
     if not DEVELOPMENT_NUMPY:
@@ -184,8 +186,22 @@ def close_splash_dialog()-> None:
     if app_content is not None:
         app_content.style.display = "block"
 
+#
+# COMPARE
+#
+from webui import util_compare
+
+def load_compare()->None:
+    page["div#compare_table"].innerHTML = util_compare.render_html()
+
+#
+# COMMON
+#
+
 print("A")
 
+if True:
+    load_compare()
 
 if True:
     # Render initial values on page load:
@@ -200,6 +216,7 @@ if True:
         print(f"Initial render failed: {e}")
 
 print("B")
+
 
 close_splash_dialog()
 

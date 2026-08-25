@@ -1265,7 +1265,6 @@ div.overview-pictures { display: grid; gap: 6px; }
 
 class HtmlRenderer:
     def __init__(self) -> None:
-        self.out = DIRECTORY_OF_THIS_FILE / "compare.html"
         self.sections: list[str] = []
         self.html_prefix = f"""<!-- Automatically generated file by run_2_html.py. Do not edit manually. -->
 
@@ -1291,7 +1290,9 @@ class HtmlRenderer:
             candidate = (item.antenna_dir / rel_clean).resolve()
             if not candidate.is_file():
                 continue
-            rel_to_html = pathlib.Path(os.path.relpath(candidate, DIRECTORY_OF_THIS_FILE)).as_posix()
+            rel_to_html = pathlib.Path(
+                os.path.relpath(candidate, DIRECTORY_OF_THIS_FILE)
+            ).as_posix()
             files.append(rel_to_html)
         return files
 
@@ -1392,14 +1393,13 @@ class HtmlRenderer:
         )
         self.sections.append(section)
 
-    def close(self) -> None:
+    def close(self) -> str:
         html_suffix = """
-    </body>
-    </html>
-    """
+</body>
+</html>
+"""
         html = f"{self.html_prefix}{''.join(self.sections)}{html_suffix}"
-        self.out.write_text(html, encoding="utf-8")
-        print(f"Written: {self.out}")
+        return html
 
 
 @dataclasses.dataclass(frozen=True)

@@ -1,13 +1,7 @@
-"""Generates compare.html — comparison table for magnetic loop antennas."""
-
-import pathlib
-
 from antennenvergleich import loop_directories, renderer_html, webui_filter
 
-DIRECTORY_OF_THIS_FILE = pathlib.Path(__file__).parent
 
-
-def main() -> None:
+def render_html() -> str:
     antenna_entries = loop_directories.get_antennen_daten()
 
     if False:
@@ -23,28 +17,12 @@ def main() -> None:
             a for a in antenna_entries if a.directory in filter.set_antenna_dir
         ]
 
-    for entry in antenna_entries:
-        entry.enrich_s1p()
-
-    generated_antennas = renderer_html._generate_antenna_html_files()
-    print(f"Antenna HTML files generated/updated: {generated_antennas}")
-
     html_renderer = renderer_html.HtmlRenderer()
     for band in renderer_html.BAND_ORDER:
         antennas_in_band = renderer_html.get_antennas_in_band(antenna_entries, band)
         if len(antennas_in_band) == 0:
             continue
         html_renderer.render(band, antennas_in_band)
-
     html = html_renderer.close()
-    filename = DIRECTORY_OF_THIS_FILE / "compare.html"
-    filename.write_text(html, encoding="utf-8")
-    print(f"Written: {filename}")
 
-    antennas = [entry.antenna for entry in antenna_entries]
-    renderer_html.Diagramm_eta_f_svg().render(antennas)
-    renderer_html.Diagramm_eta_D_lambda_svg().render(antennas)
-
-
-if __name__ == "__main__":
-    main()
+    return html

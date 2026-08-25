@@ -30,7 +30,7 @@ def load_md(selector: str, filename: str) -> None:
 
 
 load(
-    "div#page_vergleich", "./resources/page_vergleich.html"
+    "div#page_compare", "./resources/page_compare.html"
 )
 load(
     "div#page_calculator", "./resources/page_calculator.html"

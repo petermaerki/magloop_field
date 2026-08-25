@@ -11,7 +11,7 @@ packages = [
 [files]
 "./README.md" = ""
 "./resources/page_calculator.html" = "./resources/page_calculator.html"
-"./resources/page_vergleich.html" = "./resources/page_vergleich.html"
+"./resources/page_compare.html" = "./resources/page_compare.html"
 "./resources/index.py" = "./resources/index.py"
 "./resources/lazyload.py" = "./resources/lazyload.py"
 "./src/magloop_field/calculations.py" = "./magloop_field/calculations.py"
