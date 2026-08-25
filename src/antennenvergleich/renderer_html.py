@@ -1334,18 +1334,15 @@ class HtmlRenderer:
             filename_html_antenna = (
                 item.antenna_dir / "generated_antenna.html"
             ).resolve()
-            if filename_html_antenna.is_file():
-                filename_relative = self._get_relative_path(filename_html_antenna)
-                link_html = (
-                    f"<a href='{html.escape(filename_relative, quote=True)}'>description</a>"
-                    "<br>"
-                    "<a href='https://petermaerki.github.io/magloop_field/'>calculator</a>"
-                )
-                header_overview_links += (
-                    f"<th style='font-weight: normal;'>{link_html}</th>"
-                )
-            else:
-                header_overview_links += "<th></th>"
+            filename_relative = self._get_relative_path(filename_html_antenna)
+            link_html = (
+                f"<a href='{html.escape(filename_relative, quote=True)}'>description</a>"
+                "<br>"
+                "<a href='https://petermaerki.github.io/magloop_field/'>calculator</a>"
+            )
+            header_overview_links += (
+                f"<th style='font-weight: normal;'>{link_html}</th>"
+            )
             overview_pictures = self._overview_pictures_from_field(item)
             if not overview_pictures:
                 header_overview_pictures += "<th></th>"
@@ -1732,7 +1729,6 @@ class Diagramm_eta_D_lambda_svg:
         )
         buf.append("</svg>")
         return "\n".join(buf)
-
 
     def _draw_grid(self, xs: list[float]) -> list[str]:
         lines = []

@@ -9,7 +9,7 @@ def main() -> None:
     for entry in antenna_entries:
         entry.enrich_s1p()
 
-    if True:
+    if False:
         # Filter
         antenna_joins = webui_filter.get_antenna_joins(antenna_entries=antenna_entries)
         filter = webui_filter.Filter(antenna_joins=antenna_joins)

@@ -1,3 +1,9 @@
+#page_compare  a {
+    color: -webkit-link;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 #page_compare details#filter summary {
     cursor: pointer;
     background-color: rgb(243 244 246);
