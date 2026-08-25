@@ -34,7 +34,7 @@ die ihreseits etwas vom L kompensiert (reale Verhältnisse!)"
 ANTENNENDATEN = Antenna(
     # name="Selfmade 1.25m n2",
     # call="DK3SS",
-    selection_brand="selfmade",
+    selection_brand="Selfmade",
     selection_location="DK3SS",
     selection_name="1.25m n2",
     overview_pictures=("images/overview.jpg",),

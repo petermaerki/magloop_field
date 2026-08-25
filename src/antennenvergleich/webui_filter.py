@@ -49,8 +49,10 @@ def get_antenna_joins(
     antenna_joins: list[AntennaJoin] = []
     for antenna_entry in antenna_entries:
         antenna = antenna_entry.antenna
+        assert isinstance(antenna.bands, list)
         for band in antenna.bands:
             band_str = renderer_html._band_from_frequency(f_Hz=band.f_Hz.value)
+            print(antenna.selection_location)
             antenna_joins.append(
                 AntennaJoin(
                     directory=antenna_entry.directory,

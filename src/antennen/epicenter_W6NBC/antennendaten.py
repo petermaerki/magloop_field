@@ -41,7 +41,7 @@ print(
 ANTENNENDATEN = Antenna(
     #name="epicenter",
     #call="W6NBC",
-    selection_brand="selfmade",
+    selection_brand="Selfmade",
     selection_location="W6NBC",
     selection_name="epicenter",
     D_m=FloatText(

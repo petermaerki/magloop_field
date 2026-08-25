@@ -6,7 +6,10 @@ from . import constants, loop_directories, renderer_html, webui_filter
 def main() -> None:
     antenna_entries = loop_directories.get_antennen_daten()
 
-    if False:
+    for entry in antenna_entries:
+        entry.enrich_s1p()
+
+    if True:
         # Filter
         antenna_joins = webui_filter.get_antenna_joins(antenna_entries=antenna_entries)
         filter = webui_filter.Filter(antenna_joins=antenna_joins)
@@ -18,9 +21,6 @@ def main() -> None:
         antenna_entries = [
             a for a in antenna_entries if a.directory in filter.set_antenna_dir
         ]
-
-    for entry in antenna_entries:
-        entry.enrich_s1p()
 
     generated_antennas = renderer_html._generate_antenna_html_files()
     print(f"Antenna HTML files generated/updated: {generated_antennas}")

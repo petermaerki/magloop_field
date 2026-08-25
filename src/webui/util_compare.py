@@ -6,6 +6,9 @@ class FilterWrapper:
         self.antenna_entries = loop_directories.get_antennen_daten()
         self.filtered_antenna_entries = self.antenna_entries
 
+        for entry in self.antenna_entries:
+            entry.enrich_s1p()
+
         # Filter
         antenna_joins = webui_filter.get_antenna_joins(
             antenna_entries=self.antenna_entries
