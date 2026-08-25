@@ -20,6 +20,22 @@
     border-width: 2px;
 }
 
+/* Tailwind resets button styling: restore the browser defaults. */
+#page_calculator buttonX {
+    appearance: auto;
+    -webkit-appearance: button;
+    background-color: buttonface;
+    color: buttontext;
+    border: 2px outset buttonborder;
+    border-radius: revert;
+    padding: 1px 6px;
+    margin: 0;
+    font: 400 13.3333px Arial;
+    text-align: center;
+    text-transform: none;
+    cursor: default;
+}
+
 /*
 #page_calculator div#online_calculator {
     border: none;
@@ -90,7 +106,7 @@
     border-top: 0;
     border-right: 0;
     border-bottom: 0;
-    border-left: 30px solid rgb(42, 174, 246);
+    border-left: 30px solid rgb(147 197 253);
     padding: 0px 0px 0px 5px;
     display: inline-block;
     box-shadow: 0;
