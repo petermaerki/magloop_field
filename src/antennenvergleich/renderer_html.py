@@ -31,6 +31,9 @@ from .constants_s1p import (
     VALUES_SUFFIX,
 )
 
+FILENAME_SVG_ETA_F = "generated_magnetic_loops_compare_eta_f.svg"
+FILENAME_SVG_ETA_DL = "generated_magnetic_loops_compare_eta_DL.svg"
+
 # ── Constants (same as calculations.py) ───────────────────────────────────────
 _C_LIGHT = 299_792_458.0  # m/s
 
@@ -1279,7 +1282,7 @@ class HtmlRenderer:
 </head>
 <body>
 <h2>Magnetic Loop Antenna Compare</h2>
-<img src="magnetic_loops_compare_eta_f.svg" alt="Antenna efficiency eta over frequency" style="max-width: 100%; height: auto; display: block; margin-bottom: 12px;">
+<img src="{FILENAME_SVG_ETA_F}" alt="Antenna efficiency eta over frequency" style="max-width: 100%; height: auto; display: block; margin-bottom: 12px;">
 """
 
     def _overview_pictures_from_field(self, item: "BandAntenna") -> list[str]:
@@ -1466,7 +1469,7 @@ class Diagramm_eta_f_svg:
     _ETA_MIN = 1.0e-5  # 0.001 %
 
     def __init__(self) -> None:
-        self.out = DIRECTORY_OF_THIS_FILE / "magnetic_loops_compare_eta_f.svg"
+        self.out = constants.DIRECTORY_REPO / FILENAME_SVG_ETA_F
         self._pw = self._W - self._ML - self._MR
         self._ph = self._H - self._MT - self._MB
         self._ETA_MAX = 1.0  # overwritten in render() from data
@@ -1654,7 +1657,7 @@ class Diagramm_eta_D_lambda_svg:
     _ETA_MIN = 1.0e-5
 
     def __init__(self) -> None:
-        self.out = DIRECTORY_OF_THIS_FILE / "magnetic_loops_compare_eta_DL.svg"
+        self.out = constants.DIRECTORY_REPO / FILENAME_SVG_ETA_DL
         self._pw = self._W - self._ML - self._MR
         self._ph = self._H - self._MT - self._MB
         self._ETA_MAX = 1.0

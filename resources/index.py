@@ -161,7 +161,6 @@ def do_calculate(e):
 
     svg_text = plot.svg_text()
 
-    page["div#figure_h_field_plot"].innerHTML = ""
     page["div#figure_h_field_plot"].innerHTML = svg_text
 
     svg_data = base64.b64encode(svg_text.encode("utf-8")).decode("ascii")
