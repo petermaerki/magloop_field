@@ -329,15 +329,6 @@ def setup_compare_scrollbars() -> None:
 
 def load_compare() -> None:
     fw = util_compare.FilterWrapper()
-    filter_widgets = []
-
-    def update_filter_option_styles() -> None:
-        for category, checkbox, label, _elem_input in filter_widgets:
-            has_match = fw.filter.option_has_matches(category, checkbox.name)
-            if has_match:
-                label.classList.remove("filter-option-empty")
-            else:
-                label.classList.add("filter-option-empty")
 
     def redraw():
         page["div#compare_results"].innerHTML = fw.render_results_html()
@@ -352,7 +343,7 @@ def load_compare() -> None:
             print("checked_brands", checkbox, elem_input.checked)
             checkbox.set_checked(checked=elem_input.checked)
             fw.apply_filter()
-            update_filter_option_styles()
+            fw.filter.update_grey_states()
             redraw()
 
             fw.filter.dump()
@@ -387,17 +378,9 @@ def load_compare() -> None:
             elem_input.onchange = create_proxy(make_handler(checkbox, elem_input))
             label.appendChild(elem_input)
             label.appendChild(document.createTextNode(elem_input.name))
-            # TODO: Peter
-            # Neuer member 'element'. Darüber kann gesteuert werden:
-            # if has_match:
-            #    label.classList.remove("filter-option-empty")
-            # else:
-            #    label.classList.add("filter-option-empty")
+            checkbox.bind_dom(element_label=label, element_input=elem_input)
 
-            checkbox.element = elem_input
-            filter_widgets.append((category_stat.category, checkbox, label, elem_input))
-
-    update_filter_option_styles()
+    fw.filter.update_grey_states()
 
 
 #
