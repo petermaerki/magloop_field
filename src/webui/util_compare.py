@@ -24,8 +24,7 @@ class FilterWrapper:
         print(f"apply_filter() {len(self.filtered_antenna_entries)} remaining")
 
     def render_results_html(self) -> str:
-        color_map = webui_filter.build_color_map_from_entries(self.antenna_entries)
-        html_renderer = renderer_html.HtmlRenderer(color_map=color_map)
+        html_renderer = renderer_html.HtmlRenderer()
 
         html_renderer.render(self.filtered_antenna_entries)
         html = html_renderer.close()
@@ -34,6 +33,5 @@ class FilterWrapper:
 
     def render_eta_f_svg(self) -> str:
         antennas = [entry.antenna for entry in self.filtered_antenna_entries]
-        color_map = webui_filter.build_color_map_from_entries(self.antenna_entries)
 
-        return renderer_html.Diagramm_eta_f_svg().render(antennas, color_map=color_map)
+        return renderer_html.Diagramm_eta_f_svg().render(antennas)

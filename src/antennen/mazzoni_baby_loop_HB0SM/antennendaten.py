@@ -4,6 +4,7 @@ from antennenvergleich.datatypes import Antenna, FloatText, IntText
 ANTENNENDATEN = Antenna(
     # name="Mazzoni Baby Loop",
     # call="HB0SM",
+    color="#0066cc",
     selection_brand="Mazzoni",
     selection_location="HB0SM",
     selection_name="Baby",

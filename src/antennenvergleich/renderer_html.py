@@ -19,7 +19,6 @@ from .antenna_calculations import (
     AntennaCalculator,
     _make_calc,
 )
-from .compare_colors import COLORS_COMPARE_GLASBEY_64
 from .constants import BANDS
 from .constants_s1p import (
     CAP_VALUES_TAGS,
@@ -36,29 +35,6 @@ FILENAME_SVG_ETA_DL = "generated_magnetic_loops_compare_eta_DL.svg"
 
 # ── Constants (same as calculations.py) ───────────────────────────────────────
 _C_LIGHT = 299_792_458.0  # m/s
-
-
-def _antenna_label(antenna: Antenna) -> str:
-    return (
-        f"{antenna.selection_brand} "
-        f"{antenna.selection_name} "
-        f"{antenna.selection_location}"
-    )
-
-
-def build_antenna_color_map(antennas: list[Antenna]) -> dict[str, str]:
-    """Assign stable colors in input order (typically directory order)."""
-    color_map: dict[str, str] = {}
-    color_index = 0
-    for antenna in antennas:
-        key = _antenna_label(antenna)
-        if key in color_map:
-            continue
-        color_map[key] = COLORS_COMPARE_GLASBEY_64[
-            color_index % len(COLORS_COMPARE_GLASBEY_64)
-        ]
-        color_index += 1
-    return color_map
 
 BAND_ORDER = ["10m", "12m", "15m", "20m", "30m", "40m", "60m", "80m", "160m"]
 
@@ -1308,10 +1284,8 @@ class HtmlRenderer:
     def __init__(
         self,
         html_root_directory=constants.DIRECTORY_REPO,
-        color_map: dict[str, str] | None = None,
     ) -> None:
         self.html_root_directory = html_root_directory
-        self.color_map = color_map or {}
         self.sections: list[str] = []
         self.html_prefix = f"""<!-- Automatically generated file by run_2_html.py. Do not edit manually. -->
 
@@ -1325,10 +1299,6 @@ class HtmlRenderer:
 <body>
 <img src="{FILENAME_SVG_ETA_F}" id="{ID_SVG_ETA_F}" alt="Antenna efficiency eta over frequency">
 """
-
-    def _antenna_color(self, antenna: Antenna) -> str:
-        key = _antenna_label(antenna)
-        return self.color_map.get(key, COLORS_COMPARE_GLASBEY_64[0])
 
     def _build_calculator_url(
         self, antenna: Antenna, band_data: BandData | None = None
@@ -1430,7 +1400,7 @@ class HtmlRenderer:
             header_brand += f"<th style='font-weight: normal;' title='{tooltip_attr}'>{brand_html}</th>"
             header_names += f"<th style='font-weight: normal;' title='{tooltip_attr}'>{name_html}</th>"
             header_calls += f"<th style='font-weight: normal;'>{location_html}</th>"
-            color = html.escape(self._antenna_color(antenna), quote=True)
+            color = html.escape(antenna.color, quote=True)
             header_overview_colors += (
                 "<th class='color-cell'>"
                 f"<div class='color-swatch' style='background:{color};'></div>"
@@ -1622,13 +1592,6 @@ class Diagramm_eta_f_svg:
         lmax = math.log10(self._F_MAX_HZ)
         return self._ML + (lf - lmin) / (lmax - lmin) * self._pw
 
-    def _color_for_name(
-        self, name: str, color_map: dict[str, str] | None = None
-    ) -> str:
-        if color_map is not None and name in color_map:
-            return color_map[name]
-        return COLORS_COMPARE_GLASBEY_64[0]
-
     def _visible_band_centers_mhz(self) -> list[float]:
         return [
             f_mhz
@@ -1644,30 +1607,34 @@ class Diagramm_eta_f_svg:
         lmax = math.log10(self._ETA_MAX)
         return self._MT + (1.0 - (le - lmin) / (lmax - lmin)) * self._ph
 
+    @staticmethod
+    def _eta_points_for_antenna(antenna: Antenna) -> list[tuple[float, float]]:
+        pts: list[tuple[float, float]] = []
+        for bd in antenna.bands:
+            if bd.f_Hz.value is None or bd.bw262_Hz.value is None:
+                continue
+            calc = _make_calc(antenna, bd)
+            if calc.eta > 0:
+                pts.append((bd.f_Hz.value, calc.eta))
+        pts.sort()
+        return pts
+
     def _collect_data(
         self, antennas: list[Antenna]
-    ) -> list[tuple[str, list[tuple[float, float]]]]:
+    ) -> list[tuple[Antenna, list[tuple[float, float]]]]:
         result = []
         for antenna in antennas:
             if antenna.D_m.value is None or antenna.d_m.value is None:
                 continue
-            pts: list[tuple[float, float]] = []
-            for bd in antenna.bands:
-                if bd.f_Hz.value is None or bd.bw262_Hz.value is None:
-                    continue
-                calc = _make_calc(antenna, bd)
-                if calc.eta > 0:
-                    pts.append((bd.f_Hz.value, calc.eta))
-            pts.sort()
+            pts = self._eta_points_for_antenna(antenna)
             if pts:
-                result.append((_antenna_label(antenna), pts))
-        result.sort(key=lambda item: item[0].casefold())
+                result.append((antenna, pts))
+        result.sort(key=lambda item: item[0].antenna_label.casefold())
         return result
 
     def render(
         self,
         antennas: list[Antenna],
-        color_map: dict[str, str] | None = None,
     ) -> str:
         data = self._collect_data(antennas)
         all_etas = [e for _, pts in data for _, e in pts]
@@ -1684,10 +1651,10 @@ class Diagramm_eta_f_svg:
         buf += self._draw_x_ticks()
         buf += self._draw_y_ticks()
         buf += self._draw_axis_labels()
-        for name, pts in data:
-            buf += self._draw_series(pts, self._color_for_name(name, color_map))
+        for antenna, pts in data:
+            buf += self._draw_series(pts, antenna.color)
         buf += self._draw_legend(
-            [(name, self._color_for_name(name, color_map)) for name, _ in data]
+            [(antenna.antenna_label, antenna.color) for antenna, _ in data]
         )
         buf.append("</svg>")
         return "\n".join(buf)
@@ -1810,13 +1777,6 @@ class Diagramm_eta_D_lambda_svg:
             self._ML + (x_value - self._X_MIN) / (self._X_MAX - self._X_MIN) * self._pw
         )
 
-    def _color_for_name(
-        self, name: str, color_map: dict[str, str] | None = None
-    ) -> str:
-        if color_map is not None and name in color_map:
-            return color_map[name]
-        return COLORS_COMPARE_GLASBEY_64[0]
-
     def _py(self, eta: float) -> float:
         if eta <= 0:
             return self._MT + self._ph
@@ -1827,7 +1787,7 @@ class Diagramm_eta_D_lambda_svg:
 
     def _collect_data(
         self, antennas: list[Antenna]
-    ) -> list[tuple[str, list[tuple[float, float]]]]:
+    ) -> list[tuple[Antenna, list[tuple[float, float]]]]:
         result = []
         for antenna in antennas:
             if antenna.D_m.value is None:
@@ -1843,14 +1803,13 @@ class Diagramm_eta_D_lambda_svg:
                     pts.append((x_value, calc.eta))
             pts.sort()
             if pts:
-                result.append((_antenna_label(antenna), pts))
-        result.sort(key=lambda item: item[0].casefold())
+                result.append((antenna, pts))
+            result.sort(key=lambda item: item[0].antenna_label.casefold())
         return result
 
     def render(
         self,
         antennas: list[Antenna],
-        color_map: dict[str, str] | None = None,
     ) -> str:
         data = self._collect_data(antennas)
         all_etas = [e for _, pts in data for _, e in pts]
@@ -1871,10 +1830,10 @@ class Diagramm_eta_D_lambda_svg:
         buf += self._draw_x_ticks(xs)
         buf += self._draw_y_ticks()
         buf += self._draw_axis_labels()
-        for name, pts in data:
-            buf += self._draw_series(pts, self._color_for_name(name, color_map))
+        for antenna, pts in data:
+            buf += self._draw_series(pts, antenna.color)
         buf += self._draw_legend(
-            [(name, self._color_for_name(name, color_map)) for name, _ in data]
+            [(antenna.antenna_label, antenna.color) for antenna, _ in data]
         )
         buf.append("</svg>")
         return "\n".join(buf)

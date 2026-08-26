@@ -16,6 +16,7 @@ NOTES = [
 ANTENNENDATEN = Antenna(
     # name="Mazzoni Baby Loop",
     # call="Datasheet",
+    color="#0066cc",
     selection_brand="Mazzoni",
     selection_location="Datasheet",
     selection_name="Baby",

@@ -33,7 +33,7 @@ BANDS = SimpleNamespace(
 
 _power_standard_P_W = 100.0
 
-PETER_TUBBY = ANTENNENDATEN = Antenna(
+PETER_TUBBY = Antenna(
     name="Tubby Peter Outdoor",
     call="HB9ISP",
     D_m=FloatText(

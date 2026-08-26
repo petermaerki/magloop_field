@@ -11,6 +11,7 @@ NOTES = []
 FOOTNOTES = {}
 
 ANTENNENDATEN = Antenna(
+    color="#0066cc",
     selection_brand="Mazzoni",
     selection_location="HE9DJB",
     selection_name="Stealth",

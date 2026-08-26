@@ -18,6 +18,7 @@ FOOTNOTES = {
 ANTENNENDATEN = Antenna(
     # name="Mazzoni Stealth Loop",
     # call="Datasheet",
+    color="#0066cc",
     selection_brand="Mazzoni",
     selection_location="Datasheet",
     selection_name="Stealth",

@@ -80,6 +80,7 @@ class AntennaPlusDirectory:
                 continue
             yield values_path
 
+
 @dataclass(frozen=True)
 class Antenna:
     """Antennendaten: Geometrie und gemessene/herstellerangegebene Bandbreiten pro Band."""
@@ -93,11 +94,12 @@ class Antenna:
     info_conductor_str: str
     info_capacitor_str: str
     powerP_W: FloatText
+    color: str = "#000000"
     name: str = ""
     call: str = ""
-    selection_brand: str = ""
-    selection_location: str = ""
-    selection_name: str = ""
+    selection_brand: str = "-"
+    selection_location: str = "-"
+    selection_name: str = "-"
     info_thanks_str: str = ""
     vna_calibration: VnaCalibration = VnaCalibration.AT_VNA
     measurement_html: tuple[str, ...] = field(default_factory=tuple)
@@ -108,6 +110,15 @@ class Antenna:
 
     def __post_init__(self) -> None:
         value = self.vna_calibration
+
+        def assert_selection(v: str) -> None:
+            assert v == v.strip(), self.antenna_label
+            assert len(v) > 0, self.antenna_label
+
+        assert_selection(self.selection_brand)
+        assert_selection(self.selection_name)
+        assert_selection(self.selection_location)
+
         if isinstance(value, str):
             try:
                 object.__setattr__(self, "vna_calibration", VnaCalibration(value))
@@ -117,6 +128,16 @@ class Antenna:
                 ) from exc
         elif not isinstance(value, VnaCalibration):
             raise TypeError("vna_calibration must be VnaCalibration or str")
+
+    @property
+    def antenna_label(self) -> str:
+        return " ".join(
+            (
+                self.selection_brand,
+                self.selection_name,
+                self.selection_location,
+            )
+        )
 
     @staticmethod
     def _read_values_file(values_file: Path):
@@ -147,4 +168,3 @@ class Antenna:
             raise TypeError(f"{values_file.name}: model hat unerwarteten Typ")
 
         return ValuesDataFile(swr_values=swr_values, model=model)
-

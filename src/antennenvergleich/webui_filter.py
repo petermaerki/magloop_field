@@ -21,7 +21,6 @@ class AntennaJoin:
     name: str
     location: str
     band: str
-    color: str
 
     def value(self, category: EnumCategory) -> str:
         assert isinstance(category, EnumCategory)
@@ -47,12 +46,9 @@ def get_antenna_joins(
 ) -> list[AntennaJoin]:
     assert isinstance(antenna_entries, list)
 
-    color_map = build_color_map_from_entries(antenna_entries)
-
     antenna_joins: list[AntennaJoin] = []
     for antenna_entry in antenna_entries:
         antenna = antenna_entry.antenna
-        color = color_map[renderer_html._antenna_label(antenna)]
         assert isinstance(antenna.bands, list)
         for band in antenna.bands:
             band_str = renderer_html._band_from_frequency(f_Hz=band.f_Hz.value)
@@ -64,18 +60,9 @@ def get_antenna_joins(
                     name=antenna.selection_name,
                     location=antenna.selection_location,
                     band=band_str,
-                    color=color,
                 )
             )
     return antenna_joins
-
-
-def build_color_map_from_entries(
-    antenna_entries: list[datatypes.AntennaPlusDirectory],
-) -> dict[str, str]:
-    return renderer_html.build_antenna_color_map(
-        [entry.antenna for entry in antenna_entries]
-    )
 
 
 class CheckboxState(enum.StrEnum):

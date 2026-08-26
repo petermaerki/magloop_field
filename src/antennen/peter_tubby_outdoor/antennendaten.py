@@ -6,6 +6,7 @@ from antennenvergleich.datatypes import Antenna, BandData, FloatText, IntText
 ANTENNENDATEN = Antenna(
     # name="Selfmade Tubby Outdoor",
     # call="HB9ISP",
+    color="#d60000",
     selection_brand="Selfmade",
     selection_location="HB9ISP",
     selection_name="Tubby outdoor",

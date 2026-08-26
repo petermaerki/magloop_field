@@ -17,6 +17,7 @@ bw262_Hz_30m = BANDS.f_hz_by_band_name["30m"] / q_30m
 ANTENNENDATEN = Antenna(
     # name="Selfmade 0.86m n2",
     # call="DK3SS",
+    color="#d60000",
     selection_brand="Selfmade",
     selection_location="DK3SS",
     selection_name="0.86m n2",

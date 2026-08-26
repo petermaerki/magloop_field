@@ -26,9 +26,8 @@ def main() -> None:
     print(f"Antenna HTML files generated/updated: {generated_antennas}")
 
     antennas = [entry.antenna for entry in antenna_entries]
-    color_map = webui_filter.build_color_map_from_entries(antenna_entries)
 
-    html_renderer = renderer_html.HtmlRenderer(color_map=color_map)
+    html_renderer = renderer_html.HtmlRenderer()
     html_renderer.render(antenna_entries)
 
     html = html_renderer.close()
@@ -36,14 +35,12 @@ def main() -> None:
     filename.write_text(html, encoding="utf-8")
     print(f"Written: {filename}")
 
-    svg = renderer_html.Diagramm_eta_f_svg().render(antennas, color_map=color_map)
+    svg = renderer_html.Diagramm_eta_f_svg().render(antennas)
     filename_svg = constants.DIRECTORY_REPO / renderer_html.FILENAME_SVG_ETA_F
     filename_svg.write_text(svg, encoding="utf-8")
     print(f"Written: {filename_svg}")
 
-    svg = renderer_html.Diagramm_eta_D_lambda_svg().render(
-        antennas, color_map=color_map
-    )
+    svg = renderer_html.Diagramm_eta_D_lambda_svg().render(antennas)
     filename_svg = constants.DIRECTORY_REPO / renderer_html.FILENAME_SVG_ETA_DL
     filename_svg.write_text(svg, encoding="utf-8")
     print(f"Written: {filename_svg}")

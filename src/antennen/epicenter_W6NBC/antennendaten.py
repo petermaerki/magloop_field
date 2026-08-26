@@ -41,6 +41,7 @@ print(
 ANTENNENDATEN = Antenna(
     #name="epicenter",
     #call="W6NBC",
+    color="#d60000",
     selection_brand="Selfmade",
     selection_location="W6NBC",
     selection_name="epicenter",
