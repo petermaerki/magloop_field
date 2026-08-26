@@ -65,25 +65,7 @@ The antenna S11 parameters were measured with a VNA. <br>The following values we
 <tr><td><h3>20260824_1258_HE9DJB_14MHz</h3><a href="s1p_results/20260824_1258_HE9DJB_14MHz_SMITH.svg"><img src="s1p_results/20260824_1258_HE9DJB_14MHz_SMITH.svg" alt="20260824_1258_HE9DJB_14MHz smith"></a></td><td><h3>20260824_1258_HE9DJB_14MHz</h3><a href="s1p_results/20260824_1258_HE9DJB_14MHz_SWR.svg"><img src="s1p_results/20260824_1258_HE9DJB_14MHz_SWR.svg" alt="20260824_1258_HE9DJB_14MHz swr"></a></td></tr>
     </tbody>
 </table>
-    <h2>Inductance</h2>
-
-<p>The main loop inductance is an important parameter because it directly affects the antenna efficiency calculation.
-<br>The inductance can be estimated from geometry (L). In general, an additional measurement is used as a cross-check, especially for non-circular loops where the geometric estimate is more difficult.</p>
-<h3>Inductance cross-check measurement</h3>
-
-<p>The resonance frequency of the LC circuit depends on L and C. Additional known capacitors are connected in parallel with the existing capacitor, and the new resonance frequency is measured.</p>
-
-<p><a href="../../shared/inductivity/capacity_switch_concept.svg"><img src="../../shared/inductivity/capacity_switch_concept.svg" alt="Capacitor switching concept" width="400"></a></p>
-<ul>
-    <li>f<sub>NIX</sub>: resonance frequency with no additional capacitors connected. </li>
-     <li>f<sub>OFF</sub>: capacitors and switches are physically connected at the antenna capacitor. A small parasitic capacitance from wiring and switches lowers the resonance frequency.</li>
-     <li>f<sub>100</sub>: resonance frequency with an additional 100 pF capacitor switched in.</li>
-    <li>f<sub>560</sub>: resonance frequency with an additional 560 pF capacitor switched in.</li>
-</ul>
-
-
-<p class="section-label"> </p>
-<table class="compact"><tbody><tr><td>L</td><td class='unit'>H</td><td class='val'><span class='hl-yellow'>1.064e-06</span></td><td>calculated from geometry of the main loop</td></tr></tbody></table>
+    
     
     <p>All antennas overview: <a href="../../../generated_compare.html">generated_compare.html</a></p>
 </body>
