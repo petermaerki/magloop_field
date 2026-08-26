@@ -1037,7 +1037,7 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
     ).as_posix()
     compare_overview_link_html = (
         f"<p>All antennas overview: "
-        f'<a href="{html.escape(compare_overview_rel, quote=True)}">'
+        f'<a href="{html.escape(compare_overview_rel, quote=True)}?page=compare">'
         f"compare page</a></p>"
     )
 

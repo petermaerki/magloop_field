@@ -80,19 +80,47 @@
             checkbox.addEventListener('change', printCheckedCheckboxes);
         });
 
-        function showPage(pageName) {
+        function normalizePageName(rawValue) {
+            if (!rawValue) {
+                return 'calculation';
+            }
+            const value = String(rawValue).toLowerCase();
+            if (value === 'compare') {
+                return 'compare';
+            }
+            if (value === 'calculator') {
+                return 'calculation';
+            }
+            if (value === 'calculation') {
+                return 'calculation';
+            }
+            return 'calculation';
+        }
+
+        function showPage(pageName, updateUrl = true) {
+            const normalized = normalizePageName(pageName);
             document.querySelectorAll('[data-page-tab]').forEach((tab) => {
-                tab.setAttribute('aria-selected', String(tab.dataset.pageTab === pageName));
+                tab.setAttribute('aria-selected', String(tab.dataset.pageTab === normalized));
             });
 
             document.querySelectorAll('[data-page-panel]').forEach((panel) => {
-                panel.hidden = panel.dataset.pagePanel !== pageName;
+                panel.hidden = panel.dataset.pagePanel !== normalized;
             });
+
+            if (updateUrl) {
+                const url = new URL(window.location.href);
+                const pageParam = normalized === 'calculation' ? 'calculator' : 'compare';
+                url.searchParams.set('page', pageParam);
+                window.history.replaceState({}, '', url);
+            }
         }
 
         document.querySelectorAll('[data-page-tab]').forEach((tab) => {
             tab.addEventListener('click', () => showPage(tab.dataset.pageTab));
         });
+
+        const initialPageParam = new URLSearchParams(window.location.search).get('page');
+        showPage(normalizePageName(initialPageParam), false);
     </script>
 
     <script type="py" src="./resources/lazyload.py" async></script>
