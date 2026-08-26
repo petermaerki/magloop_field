@@ -331,32 +331,9 @@ def load_compare() -> None:
     fw = util_compare.FilterWrapper()
     filter_widgets = []
 
-    def option_has_matches(
-        category: webui_filter.EnumCategory,
-        option_name: str,
-    ) -> bool:
-        for antenna_join in fw.filter.antenna_joins:
-            if antenna_join.value(category=category) != option_name:
-                continue
-
-            is_match = True
-            for category_stat in fw.filter.category_stats:
-                if category_stat.category == category:
-                    continue
-                if (
-                    antenna_join.value(category=category_stat.category)
-                    not in category_stat.set_checked
-                ):
-                    is_match = False
-                    break
-
-            if is_match:
-                return True
-        return False
-
     def update_filter_option_styles() -> None:
         for category, checkbox, label, _elem_input in filter_widgets:
-            has_match = option_has_matches(category, checkbox.name)
+            has_match = fw.filter.option_has_matches(category, checkbox.name)
             if has_match:
                 label.classList.remove("filter-option-empty")
             else:

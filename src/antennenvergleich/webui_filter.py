@@ -164,6 +164,26 @@ class Filter:
         for level in self.category_stats:
             level.reset()
 
+    def option_has_matches(self, category: EnumCategory, option_name: str) -> bool:
+        for antenna_join in self.antenna_joins:
+            if antenna_join.value(category=category) != option_name:
+                continue
+
+            is_match = True
+            for category_stat in self.category_stats:
+                if category_stat.category == category:
+                    continue
+                if (
+                    antenna_join.value(category=category_stat.category)
+                    not in category_stat.set_checked
+                ):
+                    is_match = False
+                    break
+
+            if is_match:
+                return True
+        return False
+
     def _find_category(self, category: EnumCategory) -> CategoryStats:
         assert isinstance(category, EnumCategory)
         for l in self.category_stats:
