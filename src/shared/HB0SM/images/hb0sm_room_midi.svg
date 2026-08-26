@@ -266,5 +266,11 @@
     <text class="SVGTextShape"><tspan class="TextParagraph"><tspan class="TextPosition" x="11901" y="8760"><tspan font-family="Liberation Sans, sans-serif" font-size="282px" font-weight="400" fill="rgb(191,129,158)" stroke="none" style="white-space: pre">soft iron   sheet</tspan></tspan></tspan></text>
    </g>
   </g>
+  <g class="TextShape">
+   <g id="id29">
+    <rect class="BoundingBox" stroke="none" fill="none" x="14791" y="10037" width="607" height="320"/>
+    <text class="SVGTextShape"><tspan class="TextParagraph"><tspan class="TextPosition" x="14791" y="10295"><tspan font-family="Liberation Sans, sans-serif" font-size="282px" font-weight="400" fill="rgb(0,0,0)" stroke="none" style="white-space: pre">mm</tspan></tspan></tspan></text>
+   </g>
+  </g>
  </g>
 </svg>

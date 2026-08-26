@@ -1031,14 +1031,14 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
         if header_parts:
             header_title = " ".join(header_parts)
 
-    compare_overview_path = constants.DIRECTORY_REPO / "generated_compare.html"
+    compare_overview_path = constants.DIRECTORY_REPO / "index.html"
     compare_overview_rel = pathlib.Path(
         os.path.relpath(compare_overview_path.resolve(), antenna_dir.resolve())
     ).as_posix()
     compare_overview_link_html = (
         f"<p>All antennas overview: "
         f'<a href="{html.escape(compare_overview_rel, quote=True)}">'
-        f"generated_compare.html</a></p>"
+        f"compare page</a></p>"
     )
 
     antenna_css_path = constants.DIRECTORY_REPO / "static/css/style_antenna.css"
