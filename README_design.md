@@ -16,6 +16,10 @@ uv build --wheel
 python -m http.server 8000
 ```
 
+## Update
+
+./ run_build_all.sh
+
 
 ## https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site
 
