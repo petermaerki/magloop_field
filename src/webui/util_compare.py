@@ -24,7 +24,8 @@ class FilterWrapper:
         print(f"apply_filter() {len(self.filtered_antenna_entries)} remaining")
 
     def render_results_html(self) -> str:
-        html_renderer = renderer_html.HtmlRenderer()
+        color_map = webui_filter.build_color_map_from_entries(self.antenna_entries)
+        html_renderer = renderer_html.HtmlRenderer(color_map=color_map)
 
         for band in renderer_html.BAND_ORDER:
             antennas_in_band = renderer_html.get_antennas_in_band(
@@ -39,5 +40,6 @@ class FilterWrapper:
 
     def render_eta_f_svg(self) -> str:
         antennas = [entry.antenna for entry in self.filtered_antenna_entries]
+        color_map = webui_filter.build_color_map_from_entries(self.antenna_entries)
 
-        return renderer_html.Diagramm_eta_f_svg().render(antennas)
+        return renderer_html.Diagramm_eta_f_svg().render(antennas, color_map=color_map)

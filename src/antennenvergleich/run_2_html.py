@@ -25,7 +25,10 @@ def main() -> None:
     generated_antennas = renderer_html._generate_antenna_html_files()
     print(f"Antenna HTML files generated/updated: {generated_antennas}")
 
-    html_renderer = renderer_html.HtmlRenderer()
+    antennas = [entry.antenna for entry in antenna_entries]
+    color_map = webui_filter.build_color_map_from_entries(antenna_entries)
+
+    html_renderer = renderer_html.HtmlRenderer(color_map=color_map)
     for band in renderer_html.BAND_ORDER:
         antennas_in_band = renderer_html.get_antennas_in_band(antenna_entries, band)
         if len(antennas_in_band) == 0:
@@ -37,14 +40,14 @@ def main() -> None:
     filename.write_text(html, encoding="utf-8")
     print(f"Written: {filename}")
 
-    antennas = [entry.antenna for entry in antenna_entries]
-
-    svg = renderer_html.Diagramm_eta_f_svg().render(antennas)
+    svg = renderer_html.Diagramm_eta_f_svg().render(antennas, color_map=color_map)
     filename_svg = constants.DIRECTORY_REPO / renderer_html.FILENAME_SVG_ETA_F
     filename_svg.write_text(svg, encoding="utf-8")
     print(f"Written: {filename_svg}")
 
-    svg = renderer_html.Diagramm_eta_D_lambda_svg().render(antennas)
+    svg = renderer_html.Diagramm_eta_D_lambda_svg().render(
+        antennas, color_map=color_map
+    )
     filename_svg = constants.DIRECTORY_REPO / renderer_html.FILENAME_SVG_ETA_DL
     filename_svg.write_text(svg, encoding="utf-8")
     print(f"Written: {filename_svg}")

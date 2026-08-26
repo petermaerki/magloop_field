@@ -56,6 +56,20 @@ div.overview-pictures {
     gap: 6px;
 }
 
+th.color-cell {
+    vertical-align: middle;
+    text-align: center;
+}
+
+div.color-swatch {
+    height: 10px;
+    width: 92%;
+    margin: 1px auto;
+    border: 0.5px solid rgb(165 165 165);
+    border-radius: 2px;
+    box-sizing: border-box;
+}
+
 h2.band-title {
     background: #fff59d;
     display: inline-block;

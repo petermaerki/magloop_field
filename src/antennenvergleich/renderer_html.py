@@ -10,8 +10,6 @@ import re
 from collections.abc import Callable
 from urllib.parse import urlsplit, urlunsplit
 
-import matplotlib.colors
-
 from antennenvergleich.datatypes import Antenna, BandData, VnaCalibration
 from antennenvergleich.datatypes_s1p import AntennaModelFit, SwrValues, ValuesDataFile
 from magloop_field.calculations import AntennaCalculator as FieldAntennaCalculator
@@ -21,6 +19,7 @@ from .antenna_calculations import (
     AntennaCalculator,
     _make_calc,
 )
+from .compare_colors import COLORS_COMPARE_GLASBEY_64
 from .constants import BANDS
 from .constants_s1p import (
     CAP_VALUES_TAGS,
@@ -37,6 +36,29 @@ FILENAME_SVG_ETA_DL = "generated_magnetic_loops_compare_eta_DL.svg"
 
 # ── Constants (same as calculations.py) ───────────────────────────────────────
 _C_LIGHT = 299_792_458.0  # m/s
+
+
+def _antenna_label(antenna: Antenna) -> str:
+    return (
+        f"{antenna.selection_brand} "
+        f"{antenna.selection_name} "
+        f"{antenna.selection_location}"
+    )
+
+
+def build_antenna_color_map(antennas: list[Antenna]) -> dict[str, str]:
+    """Assign stable colors in input order (typically directory order)."""
+    color_map: dict[str, str] = {}
+    color_index = 0
+    for antenna in antennas:
+        key = _antenna_label(antenna)
+        if key in color_map:
+            continue
+        color_map[key] = COLORS_COMPARE_GLASBEY_64[
+            color_index % len(COLORS_COMPARE_GLASBEY_64)
+        ]
+        color_index += 1
+    return color_map
 
 BAND_ORDER = ["10m", "12m", "15m", "20m", "30m", "40m", "60m", "80m", "160m"]
 
@@ -1283,8 +1305,13 @@ _ROWS: list[tuple[str, str, str, RowFormatter]] = [
 # ── HTML generation ────────────────────────────────────────────────────────────
 
 class HtmlRenderer:
-    def __init__(self, html_root_directory=constants.DIRECTORY_REPO) -> None:
+    def __init__(
+        self,
+        html_root_directory=constants.DIRECTORY_REPO,
+        color_map: dict[str, str] | None = None,
+    ) -> None:
         self.html_root_directory = html_root_directory
+        self.color_map = color_map or {}
         self.sections: list[str] = []
         self.html_prefix = f"""<!-- Automatically generated file by run_2_html.py. Do not edit manually. -->
 
@@ -1299,12 +1326,16 @@ class HtmlRenderer:
 <img src="{FILENAME_SVG_ETA_F}" id="{ID_SVG_ETA_F}" alt="Antenna efficiency eta over frequency">
 """
 
+    def _antenna_color(self, antenna: Antenna) -> str:
+        key = _antenna_label(antenna)
+        return self.color_map.get(key, COLORS_COMPARE_GLASBEY_64[0])
+
     def _build_calculator_url(self, item: "BandAntenna") -> str:
         """Build calculator URL with parameters from antenna and band data."""
         # Use relative path so it works both locally and on GitHub Pages
         base_url = "index.html"
         params = []
-        
+
         # Extract geometry parameters from antenna
         if item.antenna.D_m.value is not None:
             params.append(f"D_m={item.antenna.D_m.value}")
@@ -1314,17 +1345,17 @@ class HtmlRenderer:
             params.append(f"n={item.antenna.n.value}")
         if item.antenna.p_m.value is not None:
             params.append(f"p_m={item.antenna.p_m.value}")
-        
+
         # Extract band-specific parameters
         if item.band_data.f_Hz.value is not None:
             params.append(f"f_Hz={item.band_data.f_Hz.value}")
         if item.band_data.bw262_Hz.value is not None:
             params.append(f"bw_Hz={item.band_data.bw262_Hz.value}")
-        
+
         # Extract power parameter
         if item.antenna.powerP_W.value is not None:
             params.append(f"P_W={item.antenna.powerP_W.value}")
-        
+
         if params:
             return f"{base_url}?{'&'.join(params)}"
         return base_url
@@ -1362,6 +1393,9 @@ class HtmlRenderer:
         header_overview_links = (
             "<tr><th style='font-weight: normal;'>Links</th><th></th>"
         )
+        header_overview_colors = (
+            "<tr><th style='font-weight: normal;'>Color</th><th></th>"
+        )
         header_overview_pictures = (
             "<tr><th style='font-weight: normal;'>Picture</th><th></th>"
         )
@@ -1387,6 +1421,12 @@ class HtmlRenderer:
             header_overview_links += (
                 f"<th style='font-weight: normal;'>{link_html}</th>"
             )
+            color = html.escape(self._antenna_color(item.antenna), quote=True)
+            header_overview_colors += (
+                "<th class='color-cell'>"
+                f"<div class='color-swatch' style='background:{color};'></div>"
+                "</th>"
+            )
             overview_pictures = self._overview_pictures_from_field(item)
             if not overview_pictures:
                 header_overview_pictures += "<th></th>"
@@ -1408,10 +1448,11 @@ class HtmlRenderer:
         header_names += "</tr>"
         header_calls += "</tr>"
         header_overview_links += "</tr>"
+        header_overview_colors += "</tr>"
         header_overview_pictures += "</tr>"
         header = (
             f"{header_brand}{header_names}{header_calls}"
-            f"{header_overview_pictures}{header_overview_links}"
+            f"{header_overview_colors}{header_overview_pictures}{header_overview_links}"
         )
 
         body = ""
@@ -1490,7 +1531,6 @@ def get_antennas_in_band(
 
 
 class Diagramm_eta_f_svg:
-    _COLORS = list(matplotlib.colors.TABLEAU_COLORS.values())
     _BAND_CENTERS_MHZ = [
         1.85,
         3.65,
@@ -1524,8 +1564,12 @@ class Diagramm_eta_f_svg:
         lmax = math.log10(self._F_MAX_HZ)
         return self._ML + (lf - lmin) / (lmax - lmin) * self._pw
 
-    def _color_for_index(self, index: int) -> str:
-        return self._COLORS[index % len(self._COLORS)]
+    def _color_for_name(
+        self, name: str, color_map: dict[str, str] | None = None
+    ) -> str:
+        if color_map is not None and name in color_map:
+            return color_map[name]
+        return COLORS_COMPARE_GLASBEY_64[0]
 
     def _visible_band_centers_mhz(self) -> list[float]:
         return [
@@ -1558,16 +1602,15 @@ class Diagramm_eta_f_svg:
                     pts.append((bd.f_Hz.value, calc.eta))
             pts.sort()
             if pts:
-                result.append(
-                    (
-                        f"{antenna.selection_brand} {antenna.selection_name} {antenna.selection_location}",
-                        pts,
-                    )
-                )
+                result.append((_antenna_label(antenna), pts))
         result.sort(key=lambda item: item[0].casefold())
         return result
 
-    def render(self, antennas: list[Antenna]) -> str:
+    def render(
+        self,
+        antennas: list[Antenna],
+        color_map: dict[str, str] | None = None,
+    ) -> str:
         data = self._collect_data(antennas)
         all_etas = [e for _, pts in data for _, e in pts]
         if all_etas:
@@ -1583,10 +1626,10 @@ class Diagramm_eta_f_svg:
         buf += self._draw_x_ticks()
         buf += self._draw_y_ticks()
         buf += self._draw_axis_labels()
-        for idx, (_name, pts) in enumerate(data):
-            buf += self._draw_series(pts, self._color_for_index(idx))
+        for name, pts in data:
+            buf += self._draw_series(pts, self._color_for_name(name, color_map))
         buf += self._draw_legend(
-            [(name, self._color_for_index(i)) for i, (name, _) in enumerate(data)]
+            [(name, self._color_for_name(name, color_map)) for name, _ in data]
         )
         buf.append("</svg>")
         return "\n".join(buf)
@@ -1688,8 +1731,6 @@ class Diagramm_eta_f_svg:
 
 
 class Diagramm_eta_D_lambda_svg:
-    _COLORS = list(matplotlib.colors.TABLEAU_COLORS.values())
-
     _W = 860
     _H = 520
     _ML = 85
@@ -1711,8 +1752,12 @@ class Diagramm_eta_D_lambda_svg:
             self._ML + (x_value - self._X_MIN) / (self._X_MAX - self._X_MIN) * self._pw
         )
 
-    def _color_for_index(self, index: int) -> str:
-        return self._COLORS[index % len(self._COLORS)]
+    def _color_for_name(
+        self, name: str, color_map: dict[str, str] | None = None
+    ) -> str:
+        if color_map is not None and name in color_map:
+            return color_map[name]
+        return COLORS_COMPARE_GLASBEY_64[0]
 
     def _py(self, eta: float) -> float:
         if eta <= 0:
@@ -1740,16 +1785,15 @@ class Diagramm_eta_D_lambda_svg:
                     pts.append((x_value, calc.eta))
             pts.sort()
             if pts:
-                result.append(
-                    (
-                        f"{antenna.selection_brand} {antenna.selection_name} {antenna.selection_location}",
-                        pts,
-                    )
-                )
+                result.append((_antenna_label(antenna), pts))
         result.sort(key=lambda item: item[0].casefold())
         return result
 
-    def render(self, antennas: list[Antenna]) -> str:
+    def render(
+        self,
+        antennas: list[Antenna],
+        color_map: dict[str, str] | None = None,
+    ) -> str:
         data = self._collect_data(antennas)
         all_etas = [e for _, pts in data for _, e in pts]
         xs = [x for _, pts in data for x, _ in pts]
@@ -1769,10 +1813,10 @@ class Diagramm_eta_D_lambda_svg:
         buf += self._draw_x_ticks(xs)
         buf += self._draw_y_ticks()
         buf += self._draw_axis_labels()
-        for idx, (_name, pts) in enumerate(data):
-            buf += self._draw_series(pts, self._color_for_index(idx))
+        for name, pts in data:
+            buf += self._draw_series(pts, self._color_for_name(name, color_map))
         buf += self._draw_legend(
-            [(name, self._color_for_index(i)) for i, (name, _) in enumerate(data)]
+            [(name, self._color_for_name(name, color_map)) for name, _ in data]
         )
         buf.append("</svg>")
         return "\n".join(buf)
