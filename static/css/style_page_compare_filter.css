@@ -4,6 +4,14 @@
     text-decoration: underline;
 }
 
+#page_compare {
+    overflow-x: auto;
+}
+
+#page_compare #compare_results {
+    overflow-x: auto;
+}
+
 #page_compare details#filter summary {
     cursor: pointer;
     background-color: rgb(243 244 246);

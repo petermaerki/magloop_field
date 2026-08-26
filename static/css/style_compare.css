@@ -15,8 +15,80 @@ h2 {
     margin: 0 0 4px 0;
 }
 
-table {
+.compare-table-wrap table {
     border-collapse: collapse;
+    width: max-content;
+    min-width: max-content;
+}
+
+div.compare-table-wrap {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-gutter: stable both-edges;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    scrollbar-width: auto;
+    scrollbar-color: #9ca3af #f3f4f6;
+}
+
+div.compare-scroll-dual {
+    width: 100%;
+    max-width: 100%;
+}
+
+div.compare-table-scroll-top {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-gutter: stable both-edges;
+    scrollbar-width: auto;
+    scrollbar-color: #9ca3af #f3f4f6;
+}
+
+div.compare-table-scroll-top-inner {
+    height: 1px;
+}
+
+#page_compare #compare_results {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+#page_compare #compare_results .compare-table-wrap {
+    overflow-x: auto;
+}
+
+#page_compare #compare_results .compare-table-wrap::-webkit-scrollbar {
+    height: 12px;
+}
+
+#page_compare #compare_results .compare-table-scroll-top::-webkit-scrollbar {
+    height: 12px;
+}
+
+#page_compare #compare_results .compare-table-wrap::-webkit-scrollbar-track {
+    background: #f3f4f6;
+}
+
+#page_compare #compare_results .compare-table-scroll-top::-webkit-scrollbar-track {
+    background: #f3f4f6;
+}
+
+#page_compare #compare_results .compare-table-wrap::-webkit-scrollbar-thumb {
+    background: #9ca3af;
+    border-radius: 999px;
+}
+
+#page_compare #compare_results .compare-table-scroll-top::-webkit-scrollbar-thumb {
+    background: #9ca3af;
+    border-radius: 999px;
 }
 
 td, th {
@@ -28,6 +100,10 @@ td, th {
 }
 
 td.unit {
+    white-space: nowrap;
+}
+
+td:first-child {
     white-space: nowrap;
 }
 
@@ -78,10 +154,20 @@ h2.band-title {
     margin-top: 12px;
 }
 
-tr.efficiency-row td {
+tr.efficiency-row td.val:not(.miss) {
     background: #fff59d !important;
 }
 
-tr.efficiency-row td.neg {
+tr.efficiency-row td.val.neg {
     background: #ffcccc !important;
+}
+
+tr.band-row td.band-label {
+    background: #fff59d;
+    font-weight: 600;
+    text-align: center;
+}
+
+tr.band-row-sep td.band-label {
+    border-top: 8px solid #fff;
 }

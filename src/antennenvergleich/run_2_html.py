@@ -29,11 +29,7 @@ def main() -> None:
     color_map = webui_filter.build_color_map_from_entries(antenna_entries)
 
     html_renderer = renderer_html.HtmlRenderer(color_map=color_map)
-    for band in renderer_html.BAND_ORDER:
-        antennas_in_band = renderer_html.get_antennas_in_band(antenna_entries, band)
-        if len(antennas_in_band) == 0:
-            continue
-        html_renderer.render(band, antennas_in_band)
+    html_renderer.render(antenna_entries)
 
     html = html_renderer.close()
     filename = constants.DIRECTORY_REPO / "generated_compare.html"

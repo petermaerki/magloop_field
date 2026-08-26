@@ -1330,47 +1330,71 @@ class HtmlRenderer:
         key = _antenna_label(antenna)
         return self.color_map.get(key, COLORS_COMPARE_GLASBEY_64[0])
 
-    def _build_calculator_url(self, item: "BandAntenna") -> str:
-        """Build calculator URL with parameters from antenna and band data."""
+    def _build_calculator_url(
+        self, antenna: Antenna, band_data: BandData | None = None
+    ) -> str:
+        """Build calculator URL with parameters from antenna and optional band data."""
+
+        def fmt_param(value: float | int, decimals: int) -> str:
+            if isinstance(value, int):
+                return str(value)
+            text = f"{value:.{decimals}f}".rstrip("0").rstrip(".")
+            return text or "0"
+
         # Use relative path so it works both locally and on GitHub Pages
         base_url = "index.html"
         params = []
 
         # Extract geometry parameters from antenna
-        if item.antenna.D_m.value is not None:
-            params.append(f"D_m={item.antenna.D_m.value}")
-        if item.antenna.d_m.value is not None:
-            params.append(f"d_m={item.antenna.d_m.value}")
-        if item.antenna.n.value is not None:
-            params.append(f"n={item.antenna.n.value}")
-        if item.antenna.p_m.value is not None:
-            params.append(f"p_m={item.antenna.p_m.value}")
+        if antenna.D_m.value is not None:
+            params.append(f"D_m={fmt_param(antenna.D_m.value, 4)}")
+        if antenna.d_m.value is not None:
+            params.append(f"d_m={fmt_param(antenna.d_m.value, 4)}")
+        if antenna.n.value is not None:
+            params.append(f"n={antenna.n.value}")
+        if antenna.p_m.value is not None:
+            params.append(f"p_m={antenna.p_m.value}")
 
         # Extract band-specific parameters
-        if item.band_data.f_Hz.value is not None:
-            params.append(f"f_Hz={item.band_data.f_Hz.value}")
-        if item.band_data.bw262_Hz.value is not None:
-            params.append(f"bw_Hz={item.band_data.bw262_Hz.value}")
+        if band_data is not None:
+            if band_data.f_Hz.value is not None:
+                params.append(f"f_Hz={band_data.f_Hz.value}")
+            if band_data.bw262_Hz.value is not None:
+                params.append(f"bw_Hz={fmt_param(band_data.bw262_Hz.value, 0)}")
 
         # Extract power parameter
-        if item.antenna.powerP_W.value is not None:
-            params.append(f"P_W={item.antenna.powerP_W.value}")
+        if antenna.powerP_W.value is not None:
+            params.append(f"P_W={antenna.powerP_W.value}")
 
         if params:
             return f"{base_url}?{'&'.join(params)}"
         return base_url
 
-    def _overview_pictures_from_field(self, item: "BandAntenna") -> list[str]:
+    def _overview_pictures_from_field(
+        self, antenna: Antenna, antenna_dir: pathlib.Path
+    ) -> list[str]:
         files: list[str] = []
-        for filename_relative in item.antenna.overview_pictures:
+        for filename_relative in antenna.overview_pictures:
             rel_clean = filename_relative.strip()
             assert rel_clean == filename_relative, (
                 f"Path has leading/ending spaces: '{filename_relative}'!"
             )
-            filename = (item.antenna_dir / filename_relative).resolve()
+            filename = (antenna_dir / filename_relative).resolve()
             rel_to_html = self._get_relative_path(filename=filename)
             files.append(rel_to_html)
         return files
+
+    @staticmethod
+    def _preferred_band_data(antenna: Antenna) -> BandData | None:
+        by_band: dict[str, BandData] = {}
+        for bd in antenna.bands:
+            band = _band_from_frequency(bd.f_Hz.value)
+            if band is not None and band not in by_band:
+                by_band[band] = bd
+        for band in BAND_ORDER:
+            if band in by_band:
+                return by_band[band]
+        return antenna.bands[0] if antenna.bands else None
 
     def _get_relative_path(self, filename: pathlib.Path) -> str:
         if constants.IS_PYODIDE:
@@ -1383,51 +1407,36 @@ class HtmlRenderer:
         assert filename.is_file(), f"Path does not exist: '{filename}'!"
         return os.path.relpath(filename, self.html_root_directory)
 
-    def render(self, band: str, antennas_in_band: list["BandAntenna"]) -> None:
-        if not antennas_in_band:
+    def render(self, antenna_entries: list[loop_directories.AntennaPlusDirectory]) -> None:
+        if not antenna_entries:
             return
 
         header_brand = "<tr><th style='font-weight: normal;'>Brand</th><th></th>"
         header_names = "<tr><th style='font-weight: normal;'>Name</th><th></th>"
         header_calls = "<tr><th style='font-weight: normal;'>Location</th><th></th>"
-        header_overview_links = (
-            "<tr><th style='font-weight: normal;'>Links</th><th></th>"
-        )
         header_overview_colors = (
             "<tr><th style='font-weight: normal;'>Color</th><th></th>"
         )
         header_overview_pictures = (
             "<tr><th style='font-weight: normal;'>Picture</th><th></th>"
         )
-        for item in antennas_in_band:
-            tooltip_text = _antenna_info_tooltip(item.antenna)
+        for entry in antenna_entries:
+            antenna = entry.antenna
+            tooltip_text = _antenna_info_tooltip(antenna)
             tooltip_attr = html.escape(tooltip_text, quote=True)
-            brand_html = html.escape(item.antenna.selection_brand)
-            name_html = html.escape(item.antenna.selection_name)
-            location_html = html.escape(item.antenna.selection_location)
+            brand_html = html.escape(antenna.selection_brand)
+            name_html = html.escape(antenna.selection_name)
+            location_html = html.escape(antenna.selection_location)
             header_brand += f"<th style='font-weight: normal;' title='{tooltip_attr}'>{brand_html}</th>"
             header_names += f"<th style='font-weight: normal;' title='{tooltip_attr}'>{name_html}</th>"
             header_calls += f"<th style='font-weight: normal;'>{location_html}</th>"
-            filename_html_antenna = (
-                item.antenna_dir / "generated_antenna.html"
-            ).resolve()
-            filename_relative = self._get_relative_path(filename_html_antenna)
-            calculator_url = self._build_calculator_url(item)
-            link_html = (
-                f"<a href='{html.escape(filename_relative, quote=True)}'>description</a>"
-                "<br>"
-                f"<a href='{html.escape(calculator_url, quote=True)}' style='text-decoration: underline;'>calculator</a>"
-            )
-            header_overview_links += (
-                f"<th style='font-weight: normal;'>{link_html}</th>"
-            )
-            color = html.escape(self._antenna_color(item.antenna), quote=True)
+            color = html.escape(self._antenna_color(antenna), quote=True)
             header_overview_colors += (
                 "<th class='color-cell'>"
                 f"<div class='color-swatch' style='background:{color};'></div>"
                 "</th>"
             )
-            overview_pictures = self._overview_pictures_from_field(item)
+            overview_pictures = self._overview_pictures_from_field(antenna, entry.directory)
             if not overview_pictures:
                 header_overview_pictures += "<th></th>"
             else:
@@ -1435,7 +1444,7 @@ class HtmlRenderer:
                 for overview_picture in overview_pictures:
                     src = html.escape(overview_picture, quote=True)
                     alt = html.escape(
-                        f"Overview picture {item.antenna.selection_brand} {item.antenna.selection_name} {item.antenna.selection_location}",
+                        f"Overview picture {antenna.selection_brand} {antenna.selection_name} {antenna.selection_location}",
                         quote=True,
                     )
                     images_html += (
@@ -1447,46 +1456,95 @@ class HtmlRenderer:
         header_brand += "</tr>"
         header_names += "</tr>"
         header_calls += "</tr>"
-        header_overview_links += "</tr>"
         header_overview_colors += "</tr>"
         header_overview_pictures += "</tr>"
-        header = (
+        header_block_prefix = (
             f"{header_brand}{header_names}{header_calls}"
-            f"{header_overview_colors}{header_overview_pictures}{header_overview_links}"
+            f"{header_overview_colors}{header_overview_pictures}"
         )
 
+        band_data_by_dir: dict[pathlib.Path, dict[str, BandData]] = {}
+        for entry in antenna_entries:
+            by_band: dict[str, BandData] = {}
+            for bd in entry.antenna.bands:
+                band = _band_from_frequency(bd.f_Hz.value)
+                if band is not None and band not in by_band:
+                    by_band[band] = bd
+            band_data_by_dir[entry.directory] = by_band
+
+        available_bands = [
+            band
+            for band in BAND_ORDER
+            if any(band in band_data_by_dir[entry.directory] for entry in antenna_entries)
+        ]
+
         body = ""
-        for label, unit, tooltip, fmt in _ROWS:
-            is_rloss = "Loss" in label
-            is_efficiency_row = "Antenna efficiency" in label
-            unit_html = f"<b>{unit}</b>" if is_efficiency_row else unit
-            tooltip_attr = html.escape(tooltip, quote=True)
-            row_class = " class='efficiency-row'" if is_efficiency_row else ""
-            row = f"<tr{row_class}><td title='{tooltip_attr}'>{label}</td><td class='unit'>{unit_html}</td>"
-            for item in antennas_in_band:
-                calc = _make_calc(item.antenna, item.band_data)
-                val = fmt(calc)
-                if is_efficiency_row:
-                    val = f"<b>{val}</b>"
-                highlight_neg = is_rloss and calc.RLoss_Ohm < 0
-                highlight_over_100_efficiency = (
-                    is_efficiency_row and (calc.eta * 100) > 100
+        for band_index, band in enumerate(available_bands):
+            header_overview_links_band = (
+                "<tr><th style='font-weight: normal;'>Links</th><th></th>"
+            )
+            for entry in antenna_entries:
+                filename_html_antenna = (
+                    entry.directory / "generated_antenna.html"
+                ).resolve()
+                filename_relative = self._get_relative_path(filename_html_antenna)
+                band_data = band_data_by_dir[entry.directory].get(band)
+                calculator_url = self._build_calculator_url(entry.antenna, band_data)
+                link_html = (
+                    f"<a href='{html.escape(filename_relative, quote=True)}'>description</a>"
+                    "<br>"
+                    f"<a href='{html.escape(calculator_url, quote=True)}' style='text-decoration: underline;'>calculator</a>"
                 )
-                extra = (
-                    " neg" if (highlight_neg or highlight_over_100_efficiency) else ""
+                header_overview_links_band += (
+                    f"<th style='font-weight: normal;'>{link_html}</th>"
                 )
-                source_text = _value_source(label, item.antenna, item.band_data) or ""
-                source_attr = html.escape(source_text, quote=True)
-                row += f"<td class='val{extra}' title='{source_attr}'>{val}</td>"
-            row += "</tr>\n"
-            body += row
+            header_overview_links_band += "</tr>"
+
+            band_row_class = "band-row" if band_index == 0 else "band-row band-row-sep"
+            body += (
+                f"<tr class='{band_row_class}'>"
+                f"<td class='band-label' colspan='{len(antenna_entries) + 2}'>{band} Band</td>"
+                "</tr>\n"
+            )
+            body += header_block_prefix + header_overview_links_band
+            for label, unit, tooltip, fmt in _ROWS:
+                is_rloss = "Loss" in label
+                is_efficiency_row = "Antenna efficiency" in label
+                unit_html = f"<b>{unit}</b>" if is_efficiency_row else unit
+                tooltip_attr = html.escape(tooltip, quote=True)
+                row_class = " class='efficiency-row'" if is_efficiency_row else ""
+                row = f"<tr{row_class}><td title='{tooltip_attr}'>{label}</td><td class='unit'>{unit_html}</td>"
+                for entry in antenna_entries:
+                    band_data = band_data_by_dir[entry.directory].get(band)
+                    if band_data is None:
+                        row += "<td class='val miss'></td>"
+                        continue
+                    calc = _make_calc(entry.antenna, band_data)
+                    val = fmt(calc)
+                    if is_efficiency_row:
+                        val = f"<b>{val}</b>"
+                    highlight_neg = is_rloss and calc.RLoss_Ohm < 0
+                    highlight_over_100_efficiency = (
+                        is_efficiency_row and (calc.eta * 100) > 100
+                    )
+                    extra = (
+                        " neg"
+                        if (highlight_neg or highlight_over_100_efficiency)
+                        else ""
+                    )
+                    source_text = _value_source(label, entry.antenna, band_data) or ""
+                    source_attr = html.escape(source_text, quote=True)
+                    row += f"<td class='val{extra}' title='{source_attr}'>{val}</td>"
+                row += "</tr>\n"
+                body += row
 
         section = (
-            f"<h2 class='band-title'>{band} Band</h2>\n"
-            f"<table>\n"
-            f"<thead>{header}</thead>\n"
-            f"<tbody>{body}</tbody>\n"
-            f"</table>\n"
+            "<div class='compare-scroll-dual'>\n"
+            "<div class='compare-table-scroll-top' aria-hidden='true'><div class='compare-table-scroll-top-inner'></div></div>\n"
+            "<div class='compare-table-wrap'>\n"
+            f"<table>\n<tbody>{body}</tbody>\n</table>\n"
+            "</div>\n"
+            "</div>\n"
         )
         self.sections.append(section)
 

@@ -288,11 +288,51 @@ def update_svg(selector: str, svg: str) -> None:
     img.src = f"data:image/svg+xml;base64,{svg_data}"
 
 
+def setup_compare_scrollbars() -> None:
+    containers = document.querySelectorAll("#compare_results .compare-scroll-dual")
+    for container in containers:
+        top = container.querySelector(".compare-table-scroll-top")
+        top_inner = container.querySelector(".compare-table-scroll-top-inner")
+        bottom = container.querySelector(".compare-table-wrap")
+        table = container.querySelector("table")
+        if top is None or top_inner is None or bottom is None or table is None:
+            continue
+
+        top_inner.style.width = f"{table.scrollWidth}px"
+
+        sync = {"active": False}
+
+        def on_top_scroll(_event=None):
+            if sync["active"]:
+                return
+            sync["active"] = True
+            bottom.scrollLeft = top.scrollLeft
+            sync["active"] = False
+
+        def on_bottom_scroll(_event=None):
+            if sync["active"]:
+                return
+            sync["active"] = True
+            top.scrollLeft = bottom.scrollLeft
+            sync["active"] = False
+
+        proxy_top = create_proxy(on_top_scroll)
+        proxy_bottom = create_proxy(on_bottom_scroll)
+
+        top.addEventListener("scroll", proxy_top)
+        bottom.addEventListener("scroll", proxy_bottom)
+
+        # Keep proxy references alive while this DOM node exists.
+        container._scroll_proxy_top = proxy_top
+        container._scroll_proxy_bottom = proxy_bottom
+
+
 def load_compare() -> None:
     fw = util_compare.FilterWrapper()
 
     def redraw():
         page["div#compare_results"].innerHTML = fw.render_results_html()
+        setup_compare_scrollbars()
         svg = fw.render_eta_f_svg()
         update_svg(selector=f"img#{renderer_html.ID_SVG_ETA_F}", svg=svg)
 
