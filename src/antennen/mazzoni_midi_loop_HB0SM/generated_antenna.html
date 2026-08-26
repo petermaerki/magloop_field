@@ -5,32 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>mazzoni_midi_loop_HB0SM - antenna</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 1.5rem; }
-        table { border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid #ccc; vertical-align: top; padding: 0.18rem 0.35rem; text-align: left; line-height: 1.15; }
-        th { background: #f4f4f4; }
-        td.unit { white-space: nowrap; }
-        td.val { text-align: right; }
-        td.merged { text-align: center; }
-        td.neg { background: #ffcccc; }
-        tr.band-row td { background: #fff59d; font-weight: 600; }
-        tr.eff-row td { background: #fff59d; }
-        tr.eff-row td.neg { background: #ffcccc; }
-        table.compact { width: auto; }
-        table.charts { width: auto; }
-        table.charts td { width: auto; vertical-align: top; }
-        table.charts img { width: 100%; max-width: 400px; height: auto; border: 1px solid #ddd; }
-        h2 { margin-top: 2rem; }
-        h3 { font-size: 1rem; margin: 0 0 0.5rem 0; }
-        p.section-label { margin: 1rem 0 0.5rem 0; font-weight: 400; }
-        pre { background: #f8f8f8; border: 1px solid #ddd; padding: 0.8rem; white-space: pre-wrap; }
-        div.inductivity-pictures { display: grid; gap: 0.8rem; }
-        img.inductivity-picture { width: 100%; max-width: 400px; height: auto; border: 1px solid #ddd; }
-        img.vna-calibration-picture { width: 100%; max-width: 200px; height: auto; border: 1px solid #ddd; }
-        img.overview-antenna-picture { width: auto; max-width: 300pt; height: auto; max-height: 500px; border: 1px solid #ddd; }
-        .hl-yellow { background: #fff59d; padding: 0 0.15rem; }
-    </style>
+    <link rel="stylesheet" href="../../../static/css/style_antenna.css">
 </head>
 <body>
     <h1>Mazzoni Midi HB0SM</h1>
@@ -187,8 +162,7 @@ To quantify the extent of this distortion, the H-field was measured and compared
 
 
 <!-- Automatically generated file by h_field_dump.py. Do not edit manually. -->
-<style>table{border-collapse:collapse;font-family:Arial,sans-serif;font-size:12px;margin:0 0 8px 0;width:fit-content;max-width:100%;margin-left:0;margin-right:auto;}th,td{border:1px solid #999;padding:1px 4px;line-height:1.1;}th{font-weight:600;}td.num{text-align:right;}.measure-table tr.head-row th{border:none;background:transparent;}.measure-table th.point-col,.measure-table td.point-col{border:none;}.measure-table td.hl-factor{background:#fff59d;}</style>
-<table><tr><td>tx_power_w</td><td>100.0</td></tr><tr><td>f_Hz</td><td>3740000</td></tr><tr><td>attenuation_cables_connectors_total_dbm</td><td>0.44 dB</td></tr><tr><td>tx_after_cable_w</td><td>90.4</td></tr><tr><td>I_main_loop_A</td><td>24.0</td></tr><tr><td>magnetic dipole moment m (Am2)</td><td>69.5</td></tr></table>
+<table class='h-field-summary'><tr><td>tx_power_w</td><td>100.0</td></tr><tr><td>f_Hz</td><td>3740000</td></tr><tr><td>attenuation_cables_connectors_total_dbm</td><td>0.44 dB</td></tr><tr><td>tx_after_cable_w</td><td>90.4</td></tr><tr><td>I_main_loop_A</td><td>24.0</td></tr><tr><td>magnetic dipole moment m (Am2)</td><td>69.5</td></tr></table>
 <table class='measure-table'><thead><tr class='head-row'><th class='point-col'></th><th>X</th><th>Y</th><th>Z</th><th>expected</th><th>measured</th><th>factor</th></tr><tr class='head-row'><th class='point-col'></th><th>m</th><th>m</th><th>m</th><th>A/m</th><th>A/m</th><th></th></tr></thead><tbody><tr><td class='point-col'>A</td><td>-6.7</td><td>-6.1</td><td>-0.5</td><td>0.0133</td><td>0.0691</td><td class='hl-factor'>5.179</td></tr></tbody></table>
 
 

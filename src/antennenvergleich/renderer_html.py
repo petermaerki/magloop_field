@@ -1001,6 +1001,11 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
         f"generated_compare.html</a></p>"
     )
 
+    antenna_css_path = constants.DIRECTORY_REPO / "static/css/style_antenna.css"
+    antenna_css_rel = pathlib.Path(
+        os.path.relpath(antenna_css_path.resolve(), antenna_dir.resolve())
+    ).as_posix()
+
     doc = f"""<!-- Automatically generated file by run_2_html.py. Do not edit manually. -->
 <!doctype html>
 <html lang=\"de\"> 
@@ -1008,32 +1013,7 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
     <meta charset=\"utf-8\">
     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
     <title>{html.escape(antenna_dir_name)} - antenna</title>
-    <style>
-        body {{ font-family: Arial, sans-serif; margin: 1.5rem; }}
-        table {{ border-collapse: collapse; width: 100%; }}
-        th, td {{ border: 1px solid #ccc; vertical-align: top; padding: 0.18rem 0.35rem; text-align: left; line-height: 1.15; }}
-        th {{ background: #f4f4f4; }}
-        td.unit {{ white-space: nowrap; }}
-        td.val {{ text-align: right; }}
-        td.merged {{ text-align: center; }}
-        td.neg {{ background: #ffcccc; }}
-        tr.band-row td {{ background: #fff59d; font-weight: 600; }}
-        tr.eff-row td {{ background: #fff59d; }}
-        tr.eff-row td.neg {{ background: #ffcccc; }}
-        table.compact {{ width: auto; }}
-        table.charts {{ width: auto; }}
-        table.charts td {{ width: auto; vertical-align: top; }}
-        table.charts img {{ width: 100%; max-width: 400px; height: auto; border: 1px solid #ddd; }}
-        h2 {{ margin-top: 2rem; }}
-        h3 {{ font-size: 1rem; margin: 0 0 0.5rem 0; }}
-        p.section-label {{ margin: 1rem 0 0.5rem 0; font-weight: 400; }}
-        pre {{ background: #f8f8f8; border: 1px solid #ddd; padding: 0.8rem; white-space: pre-wrap; }}
-        div.inductivity-pictures {{ display: grid; gap: 0.8rem; }}
-        img.inductivity-picture {{ width: 100%; max-width: 400px; height: auto; border: 1px solid #ddd; }}
-        img.vna-calibration-picture {{ width: 100%; max-width: 200px; height: auto; border: 1px solid #ddd; }}
-        img.overview-antenna-picture {{ width: auto; max-width: 300pt; height: auto; max-height: 500px; border: 1px solid #ddd; }}
-        .hl-yellow {{ background: #fff59d; padding: 0 0.15rem; }}
-    </style>
+    <link rel="stylesheet" href="{html.escape(antenna_css_rel, quote=True)}">
 </head>
 <body>
     <h1>{html.escape(header_title)}</h1>

@@ -248,16 +248,7 @@ class HFieldData:
 
         doc = (
             "<!-- Automatically generated file by h_field_dump.py. Do not edit manually. -->\n"
-            "<style>"
-            "table{border-collapse:collapse;font-family:Arial,sans-serif;font-size:12px;margin:0 0 8px 0;width:fit-content;max-width:100%;margin-left:0;margin-right:auto;}"
-            "th,td{border:1px solid #999;padding:1px 4px;line-height:1.1;}"
-            "th{font-weight:600;}"
-            "td.num{text-align:right;}"
-            ".measure-table tr.head-row th{border:none;background:transparent;}"
-            ".measure-table th.point-col,.measure-table td.point-col{border:none;}"
-            ".measure-table td.hl-factor{background:#fff59d;}"
-            "</style>\n"
-            "<table>"
+            "<table class='h-field-summary'>"
             f"{summary_html}"
             "</table>\n"
             "<table class='measure-table'>"
