@@ -11,9 +11,9 @@ NOTES = []
 FOOTNOTES = {}
 
 ANTENNENDATEN = Antenna(
-    color="#0066cc",
+    color="#573b00",  # color from compare_colors.py
     selection_brand="Mazzoni",
-    selection_location="HE9DJB",
+    selection_location="HE9DJB-draft",
     selection_name="Stealth",
     D_m=MAZZONI_STEALTH.D_m,
     d_m=MAZZONI_STEALTH.d_m,

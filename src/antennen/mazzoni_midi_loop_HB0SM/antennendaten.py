@@ -4,7 +4,7 @@ from antennenvergleich.datatypes import Antenna, FloatText, IntText, VnaCalibrat
 ANTENNENDATEN = Antenna(
     # name="Mazzoni Midi Loop",
     # call="HB0SM",
-    color="#0066cc",
+    color="#6b004f",  # color from compare_colors.py
     selection_brand="Mazzoni",
     selection_location="HB0SM",
     selection_name="Midi",

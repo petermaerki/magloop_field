@@ -41,7 +41,7 @@ print(
 ANTENNENDATEN = Antenna(
     #name="epicenter",
     #call="W6NBC",
-    color="#d60000",
+    color="#018700",  # color from compare_colors.py
     selection_brand="Selfmade",
     selection_location="W6NBC",
     selection_name="epicenter",
