@@ -231,9 +231,10 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
             "<tr>"
             f"<td>{html.escape(values_path.name)}</td>"
             f"<td>{html.escape(fmt((f0_hz / 1e6) if isinstance(f0_hz, (int, float)) else None, 3))}</td>"
-            f"<td>{html.escape(fmt(bswr, None))}</td>"
+            f"<td>{html.escape(fmt((bswr / 1e3) if isinstance(bswr, (int, float)) else None, 1))}</td>"
             f"<td>{html.escape(fmt(alpha, 3))}</td>"
             f"<td>{html.escape(fmt(tau_ns, 2))}</td>"
+            f"<td>{html.escape(fmt(swr_min, 2))}</td>"
             f"<td>{html.escape(fmt(eta_ant, 3))}</td>"
             "</tr>"
         )
@@ -662,7 +663,6 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
         )
 
     l_h_geometry_value: float | None = None
-    l_h_geometry_str = "n/a"
     if antenna_data is not None and first_values_with_model is not None:
         try:
             calc = FieldAntennaCalculator(
@@ -676,7 +676,6 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
                 powerP_W=100.0,
             )
             l_h_geometry_value = float(calc.L_H)
-            l_h_geometry_str = f"{calc.L_H:.4g}"
         except Exception as exc:  # pragma: no cover - best effort for optional section
             print(
                 f"Warnung: L_H aus Geometrie konnte nicht berechnet werden ({antenna_dir_name}): {exc}"
@@ -805,13 +804,15 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
                 '<a href="http://www.positron.ch/rf/choke_simple">'
                 "positron.ch/rf/choke_simple"
                 "</a>.<br>"
-                "Used cables: 80 cm RG400 (including the choke) and 10 m LMR195."
+                "Used cables: 80 cm RG400 (including the choke) and 10 m LMR195.<br>"
+                "The cable attenuation alpha and the cable delay tau in the following table should therefore be small."
             )
         elif calibration_value == VnaCalibration.AT_VNA:
             calibration_img = "kabel_vna.svg"
             calibration_text_html = (
                 "The VNA calibration was done directly at the VNA: green line. "
-                "The cable influence was measured and removed."
+                "The cable influence was measured and removed.<br>"
+                "The cable attenuation alpha and the cable delay tau in the following table show the estimated cable values based on the VNA measurement."
             )
 
         if calibration_img and calibration_text_html:
@@ -835,16 +836,19 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
     if table_rows:
         measurements_section_html = (
             "<h2>VNA-measurements</h2>\n"
-            "The antenna S11 parameters were measured with a VNA. The following values were derived from these measurements."
+            "The antenna S11 parameters were measured with a VNA. <br>"
+            "The following values were derived from these measurements.<br>"
+            'Details on the measurement method can be found <a href="http://www.positron.ch/rf/vna_to_measure_loop_antenna/pdf/measure_a_magnetic_loop.pdf">here</a>.<br>'
             f"{vna_calibration_html}"
             '<table class="compact">\n'
             "    <thead>\n"
             "        <tr>\n"
             "            <th>File</th>\n"
             "            <th>model_f0<br>MHz</th>\n"
-            "            <th>model_BSWR2_62<br>Hz</th>\n"
+            "            <th>model_BSWR2_62<br>kHz</th>\n"
             "            <th>model_alpha<br>db</th>\n"
             "            <th>model_tau<br>ns</th>\n"
+            "            <th>SWR_min</th>\n"
             "            <th>eta_SWR_ant</th>\n"
             "        </tr>\n"
             "    </thead>\n"
@@ -1008,7 +1012,7 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
 
     doc = f"""<!-- Automatically generated file by run_2_html.py. Do not edit manually. -->
 <!doctype html>
-<html lang=\"de\"> 
+<html lang=\"de\">
 <head>
     <meta charset=\"utf-8\">
     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
@@ -1157,7 +1161,7 @@ _ROWS: list[tuple[str, str, str, RowFormatter]] = [
         "Bandwidth <i>B</i><sub>SWR=2.62</sub>",
         "kHz",
         "Bandbreite am Antenneneingang beim Kriterium SWR = 2.62.",
-        lambda c: f"{c.bw262_Hz / 1e3:.1f}",
+        lambda c: f"{c.bw262_Hz / 1e3:.2f}",
     ),
     (
         "Power into antenna <i>P</i>",
