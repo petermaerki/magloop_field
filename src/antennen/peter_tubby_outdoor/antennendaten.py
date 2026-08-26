@@ -13,6 +13,7 @@ ANTENNENDATEN = Antenna(
     d_m=PETER_TUBBY.d_m,
     n=PETER_TUBBY.n,
     p_m=PETER_TUBBY.p_m,
+    powerP_W=PETER_TUBBY.powerP_W,
     info_str=PETER_TUBBY.info_str,
     overview_pictures=("images/tubby_outdoor.png",),
     enviroment_html=("enviroment.html",),

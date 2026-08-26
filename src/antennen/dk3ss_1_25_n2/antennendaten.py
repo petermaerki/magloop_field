@@ -42,6 +42,7 @@ ANTENNENDATEN = Antenna(
     d_m=DK3SS.d_m,
     n=DK3SS.n,
     p_m=DK3SS.p_m,
+    powerP_W=DK3SS.powerP_W,
     info_str=DK3SS.info_str,
     info_thanks_str=DK3SS.info_thanks_str,
     info_enviroment_str=DK3SS.info_enviroment_str,
@@ -116,7 +117,7 @@ def _build_summary_lines() -> list[str]:
             swr_min=band.swr_min.value,
             f_Hz=band.f_Hz.value,
             bw262_Hz=band.bw262_Hz.value,
-            P_W=100.0,
+            powerP_W=ANTENNENDATEN.powerP_W.value,
         )
         lines.append(
             f"{band_name}: f={_fmt_sig(calc.f_Hz)} Hz, "
@@ -137,7 +138,7 @@ def _write_cross_check_capacity_html() -> None:
             swr_min=band.swr_min.value,
             f_Hz=band.f_Hz.value,
             bw262_Hz=band.bw262_Hz.value,
-            P_W=100.0,
+            powerP_W=ANTENNENDATEN.powerP_W.value,
         )
         website_c_f = {
             "160m": 500e-12 + 150e-12,

@@ -14,6 +14,8 @@ if not IS_PYODIDE:
 
 ANTENNENDATEN_FILENAME = "antennendaten.py"
 
+
+
 BANDS = SimpleNamespace(
     f_hz_by_band_name={
         "10m": 28_500_000,
@@ -29,6 +31,7 @@ BANDS = SimpleNamespace(
     },
 )
 
+_power_standard_P_W = 100.0
 
 PETER_TUBBY = ANTENNENDATEN = Antenna(
     name="Tubby Peter Outdoor",
@@ -42,6 +45,7 @@ PETER_TUBBY = ANTENNENDATEN = Antenna(
     ),
     n=IntText(1, ""),
     p_m=FloatText(0.0, ""),
+    powerP_W=FloatText(_power_standard_P_W, "typical power"),
     info_str="Homebrew rectangular loop made of thick copper tubing with vacuum capacitors, 10 m to 160 m.",
     info_enviroment_str="",
     info_conductor_str="Copper tube 100mm",
@@ -70,6 +74,7 @@ MAZZONI_STEALTH = SimpleNamespace(
     ),
     n=IntText(1, ""),
     p_m=FloatText(0.0, ""),
+    powerP_W=FloatText(_power_standard_P_W, "typical power"),
     info_str=_MAZZONI_INFO,
     info_enviroment_str=_MAZZONI_ENVIROMENT,
     info_conductor_str="Aluminium rectangular tube, painted gray.",
@@ -94,6 +99,7 @@ MAZZONI_MIDI = SimpleNamespace(
     ),
     n=IntText(1, ""),
     p_m=FloatText(0.0, ""),
+    powerP_W=FloatText(_power_standard_P_W, "typical power"),
     info_str=_MAZZONI_INFO,
     info_enviroment_str=_MAZZONI_ENVIROMENT,
     info_conductor_str=_MAZZONI_CONDUCTOR_BABY_MIDI,
@@ -107,6 +113,7 @@ MAZZONI_BABY = SimpleNamespace(
     d_m=FloatText(0.0494, "20260820 measured at baby loop HB0SM"),
     n=IntText(1, ""),
     p_m=FloatText(0.0, ""),
+    powerP_W=FloatText(_power_standard_P_W, "typical power"),
     info_str=_MAZZONI_INFO,
     info_enviroment_str=_MAZZONI_ENVIROMENT,
     info_conductor_str=_MAZZONI_CONDUCTOR_BABY_MIDI,
@@ -117,6 +124,7 @@ DK3SS = SimpleNamespace(
     d_m=FloatText(0.01, "qrz_com_db_DK3SS.pdf"),
     n=IntText(2, "Fotos und Text, 20260808b_email_*.md "),
     p_m=FloatText(0.05, "EMail 20260809"),
+    powerP_W=FloatText(10.0, "typical power"),
     info_str="Homebrew copper loop by DK3SS. Two turns; frequency is adjusted by varying the spacing between the turns.",
     info_enviroment_str="On a table in the middle of an attic apartment room, non-conductive building materials.",
     info_conductor_str="Copper tube 10mm",

@@ -161,7 +161,7 @@ class AntennaCalculator:
     bandwidth B_SWR2.62 [Hz]
     """
 
-    P_W: float
+    powerP_W: float
     """
     power into antenna [W]
     """
@@ -274,7 +274,7 @@ class AntennaCalculator:
     @property
     def I_main_loop_A(self) -> float:
         """Loop current [A]"""
-        return math.sqrt(self.P_W / self.RT_Ohm)
+        return math.sqrt(self.powerP_W / self.RT_Ohm)
 
     @property
     def U_loop_V(self) -> float:

@@ -16,8 +16,8 @@ FOOTNOTES = {
 }
 
 ANTENNENDATEN = Antenna(
-    #name="Mazzoni Stealth Loop",
-    #call="Datasheet",
+    # name="Mazzoni Stealth Loop",
+    # call="Datasheet",
     selection_brand="Mazzoni",
     selection_location="Datasheet",
     selection_name="Stealth",
@@ -25,6 +25,7 @@ ANTENNENDATEN = Antenna(
     d_m=MAZZONI_STEALTH.d_m,
     n=MAZZONI_STEALTH.n,
     p_m=MAZZONI_STEALTH.p_m,
+    powerP_W=MAZZONI_STEALTH.powerP_W,
     info_str=MAZZONI_STEALTH.info_str,
     overview_pictures=("images/overview_stealth.jpg",),
     info_enviroment_str=MAZZONI_STEALTH.info_enviroment_str,

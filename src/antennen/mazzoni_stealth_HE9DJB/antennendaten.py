@@ -18,6 +18,7 @@ ANTENNENDATEN = Antenna(
     d_m=MAZZONI_STEALTH.d_m,
     n=MAZZONI_STEALTH.n,
     p_m=MAZZONI_STEALTH.p_m,
+    powerP_W=MAZZONI_STEALTH.powerP_W,
     info_str=MAZZONI_STEALTH.info_str,
     overview_pictures=("images/stealth_antenne_2021_02.jpg",),
     info_enviroment_str="In the garden on the ground on patio slabs.",

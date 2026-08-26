@@ -92,6 +92,7 @@ class Antenna:
     info_enviroment_str: str
     info_conductor_str: str
     info_capacitor_str: str
+    powerP_W: FloatText
     name: str = ""
     call: str = ""
     selection_brand: str = ""

@@ -2,8 +2,8 @@ from antennenvergleich.constants import MAZZONI_MIDI, HB9SM
 from antennenvergleich.datatypes import Antenna, FloatText, IntText, VnaCalibration
 
 ANTENNENDATEN = Antenna(
-    #name="Mazzoni Midi Loop",
-    #call="HB0SM",
+    # name="Mazzoni Midi Loop",
+    # call="HB0SM",
     selection_brand="Mazzoni",
     selection_location="HB0SM",
     selection_name="Midi",
@@ -11,6 +11,7 @@ ANTENNENDATEN = Antenna(
     d_m=MAZZONI_MIDI.d_m,
     n=MAZZONI_MIDI.n,
     p_m=MAZZONI_MIDI.p_m,
+    powerP_W=MAZZONI_MIDI.powerP_W,
     info_str=MAZZONI_MIDI.info_str,
     overview_pictures=("images/overview_midi.jpg",),
     inductivity_pictures=("images/20260820_164701101_2_induktivitaet_midi.jpg",),

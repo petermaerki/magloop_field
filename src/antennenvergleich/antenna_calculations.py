@@ -4,8 +4,6 @@ from magloop_field.calculations import AntennaCalculator
 
 from antennenvergleich.datatypes import Antenna, BandData
 
-P_W = 100.0  # reference transmit power into antenna (W)
-
 
 def _make_calc(antenna: Antenna, bd: BandData) -> AntennaCalculator:
     return AntennaCalculator(
@@ -16,5 +14,5 @@ def _make_calc(antenna: Antenna, bd: BandData) -> AntennaCalculator:
         swr_min=bd.swr_min.value,
         f_Hz=bd.f_Hz.value,
         bw262_Hz=bd.bw262_Hz.value,
-        P_W=P_W,
+        powerP_W=antenna.powerP_W.value,
     )

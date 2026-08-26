@@ -133,7 +133,7 @@ class HFieldData:
                 swr_min=antenna_swr_min,
                 f_Hz=messpunkt.f_Hz,
                 bw262_Hz=antenna_bw262_hz,
-                P_W=tx_after_cable_w,
+                powerP_W=tx_after_cable_w,
             )
 
             print("--- debug_h_field_inputs ---")

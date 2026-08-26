@@ -60,7 +60,7 @@ def do_calculate_inductance(e=None):
         swr_min=2.62,
         f_Hz=f_Hz,
         bw262_Hz=bw_Hz,
-        P_W=P_W,
+        powerP_W=P_W,
         p_m=p_m,
     )
 

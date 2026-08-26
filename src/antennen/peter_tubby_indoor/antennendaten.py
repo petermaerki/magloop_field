@@ -4,8 +4,8 @@ from antennenvergleich.constants import PETER_TUBBY
 from antennenvergleich.datatypes import Antenna, BandData, FloatText, IntText
 
 ANTENNENDATEN = Antenna(
-    #name="Selfmade Tubby Indoor",
-    #call="HB9ISP",
+    # name="Selfmade Tubby Indoor",
+    # call="HB9ISP",
     selection_brand="Selfmade",
     selection_location="HB9ISP",
     selection_name="Tubby indoor",
@@ -13,6 +13,7 @@ ANTENNENDATEN = Antenna(
     d_m=PETER_TUBBY.d_m,
     n=PETER_TUBBY.n,
     p_m=PETER_TUBBY.p_m,
+    powerP_W=PETER_TUBBY.powerP_W,
     info_str=PETER_TUBBY.info_str,
     overview_pictures=("images/tubby_indoor.png",),
     enviroment_html=("enviroment.html",),

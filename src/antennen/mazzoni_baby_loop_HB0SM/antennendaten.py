@@ -2,8 +2,8 @@ from antennenvergleich.constants import MAZZONI_BABY, HB9SM
 from antennenvergleich.datatypes import Antenna, FloatText, IntText
 
 ANTENNENDATEN = Antenna(
-    #name="Mazzoni Baby Loop",
-    #call="HB0SM",
+    # name="Mazzoni Baby Loop",
+    # call="HB0SM",
     selection_brand="Mazzoni",
     selection_location="HB0SM",
     selection_name="Baby",
@@ -11,6 +11,7 @@ ANTENNENDATEN = Antenna(
     d_m=MAZZONI_BABY.d_m,
     n=MAZZONI_BABY.n,
     p_m=MAZZONI_BABY.p_m,
+    powerP_W=MAZZONI_BABY.powerP_W,
     info_str=MAZZONI_BABY.info_str,
     overview_pictures=("images/overview_baby.jpg",),
     inductivity_pictures=("images/20260820_161035446_induktivitaet_baby.jpg",),

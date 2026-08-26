@@ -375,7 +375,7 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
                 swr_min=float(swr_min),
                 f_Hz=float(f0_mhz) * 1e6,
                 bw262_Hz=float(bw_hz),
-                P_W=100.0,
+                powerP_W=antenna_data.powerP_W.value,
             )
         except Exception:
             return None
@@ -490,7 +490,11 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
             return str(item.get("source_swr") or file_name)
         if key == "eta_swr":
             return f"[{file_name}] Berechnet aus swr_min: eta = 4*SWR/(1+SWR)^2."
-        if key in {"P", "L", "C", "Q0", "RT", "RR", "RLoss", "eta", "I", "U", "m"}:
+        if key == "P":
+            if antenna_data is None:
+                return file_name
+            return str(getattr(antenna_data.powerP_W, "source", "") or file_name)
+        if key in {"L", "C", "Q0", "RT", "RR", "RLoss", "eta", "I", "U", "m"}:
             return (
                 f"[{file_name}] Berechnet aus Geometrie- und Messdaten."
                 if calc is not None
@@ -512,7 +516,7 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
         if key == "bw":
             return f"{calc.bw262_Hz / 1e3:.1f}"
         if key == "P":
-            return f"{calc.P_W:.0f}"
+            return f"{calc.powerP_W:.0f}"
         if key == "L":
             return f"{calc.L_H:.2e}"
         if key == "C":
@@ -669,7 +673,7 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
                 swr_min=first_values_with_model.swr_values.swr_min,
                 f_Hz=first_values_with_model.model.f0_Hz,
                 bw262_Hz=first_values_with_model.model.BSWR2_62_Hz,
-                P_W=100.0,
+                powerP_W=100.0,
             )
             l_h_geometry_value = float(calc.L_H)
             l_h_geometry_str = f"{calc.L_H:.4g}"
@@ -1098,6 +1102,8 @@ def _value_source(label: str, antenna: Antenna, bd: BandData) -> str | None:
         return antenna.d_m.source
     if label.startswith("Loop count"):
         return antenna.n.source
+    if label.startswith("Power into antenna"):
+        return antenna.powerP_W.source
     if label.startswith("Frequency"):
         return bd.f_Hz.source
     if label.startswith("Bandwidth"):
@@ -1177,7 +1183,7 @@ _ROWS: list[tuple[str, str, str, RowFormatter]] = [
         "Power into antenna <i>P</i>",
         "W",
         "Eingespeiste Leistung in die Antenne.",
-        lambda c: f"{c.P_W:.0f}",
+        lambda c: f"{c.powerP_W:.0f}",
     ),
     (
         "Inductance <i>L</i>",
