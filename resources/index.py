@@ -1,7 +1,7 @@
 import base64
 import math
 
-from js import document
+from js import document, window
 from pyodide.ffi import JsNull, create_proxy
 from pyscript import when
 from pyscript.web import page
@@ -17,6 +17,85 @@ try:
     from magloop_field import calculations, diagram
 except ModuleNotFoundError:
     pass
+
+
+def load_params_from_url():
+    """Load calculator parameters from URL query string and populate form fields."""
+    try:
+        # Get URL search params
+        search_params = str(window.location.search)
+        print(f"URL search params: {search_params}")
+        
+        if not search_params or search_params == "":
+            print("No URL parameters found")
+            return
+        
+        # Parse query string manually (remove leading '?')
+        if search_params.startswith("?"):
+            search_params = search_params[1:]
+        
+        # Parse key=value pairs
+        params = {}
+        for pair in search_params.split("&"):
+            if "=" in pair:
+                key, value = pair.split("=", 1)
+                params[key] = value
+        
+        print(f"Parsed parameters: {params}")
+        
+        # Set values from URL parameters
+        params_set = 0
+        
+        # Simple direct mapping (no conversion needed)
+        direct_mapping = {
+            "D_m": "antenna_D_m",
+            "d_m": "d_m",
+            "n": "n",
+            "p_m": "p_m",
+            "P_W": "P_W",
+        }
+        
+        for param_name, field_id in direct_mapping.items():
+            if param_name in params:
+                input_element = document.getElementById(field_id)
+                if input_element is not None:
+                    input_element.value = params[param_name]
+                    params_set += 1
+                    print(f"Set {field_id} = {params[param_name]}")
+                else:
+                    print(f"Field {field_id} not found")
+        
+        # Frequency conversion: f_Hz -> MHz (for form field)
+        if "f_Hz" in params:
+            try:
+                f_hz = float(params["f_Hz"])
+                f_mhz = f_hz / 1_000_000
+                input_element = document.getElementById("f_L_MHz")
+                if input_element is not None:
+                    input_element.value = str(f_mhz)
+                    params_set += 1
+                    print(f"Set f_L_MHz = {f_mhz} (converted from {f_hz} Hz)")
+            except (ValueError, TypeError) as e:
+                print(f"Error converting f_Hz: {e}")
+        
+        # Bandwidth conversion: bw_Hz -> kHz (for form field)
+        if "bw_Hz" in params:
+            try:
+                bw_hz = float(params["bw_Hz"])
+                bw_khz = bw_hz / 1_000
+                input_element = document.getElementById("bw_kHz")
+                if input_element is not None:
+                    input_element.value = str(bw_khz)
+                    params_set += 1
+                    print(f"Set bw_kHz = {bw_khz} (converted from {bw_hz} Hz)")
+            except (ValueError, TypeError) as e:
+                print(f"Error converting bw_Hz: {e}")
+        
+        print(f"Set {params_set} parameters from URL")
+        # Note: calculation will be triggered by the initialization code below
+                
+    except Exception as e:
+        print(f"Error loading URL parameters: {e}")
 
 
 #
@@ -271,10 +350,12 @@ if True:
 
 if True:
     # Render initial values on page load:
+    # 0) load URL parameters if provided
     # 1) calculate antenna
     # 2) copy from above
     # 3) calculate H-field
     try:
+        load_params_from_url()
         do_calculate_inductance(None)
         copy_values_from_above(None)
         do_calculate(None)
