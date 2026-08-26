@@ -1281,18 +1281,6 @@ _ROWS: list[tuple[str, str, str, RowFormatter]] = [
 
 
 # ── HTML generation ────────────────────────────────────────────────────────────
-_CSS = """
-body { font-family: Arial, sans-serif; }
-table { border-collapse: collapse; }
-td, th { border: 1px solid #ccc; vertical-align: top; padding-left: 6px; padding-right: 6px; text-align: left; }
-td.unit { white-space: nowrap; }
-td.val { text-align: right; }
-td.miss { color: #999; }
-td.neg { background: #ffcccc; }
-img.overview-picture { width: auto; max-width: 110px; height: auto; max-height: 120px; display: block; }
-div.overview-pictures { display: grid; gap: 6px; }
-"""
-
 
 class HtmlRenderer:
     def __init__(self, html_root_directory=constants.DIRECTORY_REPO) -> None:
@@ -1305,12 +1293,42 @@ class HtmlRenderer:
 <head>
     <meta charset=\"utf-8\">
     <title>Magnetic Loop Antenna Compare</title>
-    <style>{_CSS}</style>
+    <link rel="stylesheet" href="static/css/style_compare.css">
 </head>
 <body>
 <h2>Magnetic Loop Antenna Compare</h2>
-<img src="{FILENAME_SVG_ETA_F}" id="{ID_SVG_ETA_F}" alt="Antenna efficiency eta over frequency" style="max-width: 100%; height: auto; display: block; margin-bottom: 12px;">
+<img src="{FILENAME_SVG_ETA_F}" id="{ID_SVG_ETA_F}" alt="Antenna efficiency eta over frequency">
 """
+
+    def _build_calculator_url(self, item: "BandAntenna") -> str:
+        """Build calculator URL with parameters from antenna and band data."""
+        # Use relative path so it works both locally and on GitHub Pages
+        base_url = "index.html"
+        params = []
+        
+        # Extract geometry parameters from antenna
+        if item.antenna.D_m.value is not None:
+            params.append(f"D_m={item.antenna.D_m.value}")
+        if item.antenna.d_m.value is not None:
+            params.append(f"d_m={item.antenna.d_m.value}")
+        if item.antenna.n.value is not None:
+            params.append(f"n={item.antenna.n.value}")
+        if item.antenna.p_m.value is not None:
+            params.append(f"p_m={item.antenna.p_m.value}")
+        
+        # Extract band-specific parameters
+        if item.band_data.f_Hz.value is not None:
+            params.append(f"f_Hz={item.band_data.f_Hz.value}")
+        if item.band_data.bw262_Hz.value is not None:
+            params.append(f"bw_Hz={item.band_data.bw262_Hz.value}")
+        
+        # Extract power parameter
+        if item.antenna.powerP_W.value is not None:
+            params.append(f"P_W={item.antenna.powerP_W.value}")
+        
+        if params:
+            return f"{base_url}?{'&'.join(params)}"
+        return base_url
 
     def _overview_pictures_from_field(self, item: "BandAntenna") -> list[str]:
         files: list[str] = []
@@ -1361,10 +1379,11 @@ class HtmlRenderer:
                 item.antenna_dir / "generated_antenna.html"
             ).resolve()
             filename_relative = self._get_relative_path(filename_html_antenna)
+            calculator_url = self._build_calculator_url(item)
             link_html = (
                 f"<a href='{html.escape(filename_relative, quote=True)}'>description</a>"
                 "<br>"
-                "<a href='https://petermaerki.github.io/magloop_field/'>calculator</a>"
+                f"<a href='{html.escape(calculator_url, quote=True)}' style='text-decoration: underline;'>calculator</a>"
             )
             header_overview_links += (
                 f"<th style='font-weight: normal;'>{link_html}</th>"
@@ -1402,7 +1421,8 @@ class HtmlRenderer:
             is_efficiency_row = "Antenna efficiency" in label
             unit_html = f"<b>{unit}</b>" if is_efficiency_row else unit
             tooltip_attr = html.escape(tooltip, quote=True)
-            row = f"<td title='{tooltip_attr}'>{label}</td><td class='unit'>{unit_html}</td>"
+            row_class = " class='efficiency-row'" if is_efficiency_row else ""
+            row = f"<tr{row_class}><td title='{tooltip_attr}'>{label}</td><td class='unit'>{unit_html}</td>"
             for item in antennas_in_band:
                 calc = _make_calc(item.antenna, item.band_data)
                 val = fmt(calc)
@@ -1418,10 +1438,11 @@ class HtmlRenderer:
                 source_text = _value_source(label, item.antenna, item.band_data) or ""
                 source_attr = html.escape(source_text, quote=True)
                 row += f"<td class='val{extra}' title='{source_attr}'>{val}</td>"
-            body += f"<tr>{row}</tr>\n"
+            row += "</tr>\n"
+            body += row
 
         section = (
-            f"<h2>{band} Band</h2>\n"
+            f"<h2 class='band-title'>{band} Band</h2>\n"
             f"<table>\n"
             f"<thead>{header}</thead>\n"
             f"<tbody>{body}</tbody>\n"

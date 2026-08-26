@@ -1,0 +1,73 @@
+/* Styles for generated_compare.html */
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+h2 {
+    margin: 4px 0 2px 0;
+}
+
+#id_svg_eta_f {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 0 4px 0;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td, th {
+    border: 1px solid #ccc;
+    vertical-align: top;
+    padding: 1px 1px;
+    text-align: left;
+    line-height: 1.0;
+}
+
+td.unit {
+    white-space: nowrap;
+}
+
+td.val {
+    text-align: right;
+}
+
+td.miss {
+    color: #999;
+}
+
+td.neg {
+    background: #ffcccc;
+}
+
+img.overview-picture {
+    width: auto;
+    max-width: 110px;
+    height: auto;
+    max-height: 120px;
+    display: block;
+}
+
+div.overview-pictures {
+    display: grid;
+    gap: 6px;
+}
+
+h2.band-title {
+    background: #fff59d;
+    display: inline-block;
+    padding: 8px 8px;
+    font-weight: bold;
+    margin-top: 12px;
+}
+
+tr.efficiency-row td {
+    background: #fff59d !important;
+}
+
+tr.efficiency-row td.neg {
+    background: #ffcccc !important;
+}
