@@ -387,6 +387,14 @@ def load_compare() -> None:
             elem_input.onchange = create_proxy(make_handler(checkbox, elem_input))
             label.appendChild(elem_input)
             label.appendChild(document.createTextNode(elem_input.name))
+            # TODO: Peter
+            # Neuer member 'element'. Darüber kann gesteuert werden:
+            # if has_match:
+            #    label.classList.remove("filter-option-empty")
+            # else:
+            #    label.classList.add("filter-option-empty")
+
+            checkbox.element = elem_input
             filter_widgets.append((category_stat.category, checkbox, label, elem_input))
 
     update_filter_option_styles()

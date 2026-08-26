@@ -75,6 +75,10 @@ class CheckboxState(enum.StrEnum):
 class Checkbox:
     name: str
     state: CheckboxState = CheckboxState.CHECKED
+    # TODO Peter
+    # Remove state
+    # Add: checked: bool
+    # Add: grayed: bool
 
     def reset(self) -> None:
         self.state = CheckboxState.CHECKED
@@ -112,9 +116,6 @@ class CategoryStats:
     def reset(self) -> None:
         for c in self.checkboxes:
             c.reset()
-
-    def is_checkable(self, antenna_join: AntennaJoin) -> None:
-        return antenna_join.value(category=self.category) in self.checked
 
     def dump(self) -> None:
         values = [c.text for c in self.checkboxes]
@@ -184,72 +185,19 @@ class Filter:
                 return True
         return False
 
-    def _find_category(self, category: EnumCategory) -> CategoryStats:
+    def find_category(self, category: EnumCategory) -> CategoryStats:
         assert isinstance(category, EnumCategory)
         for l in self.category_stats:
             if l.category == category:
                 return l
         else:
             raise ValueError(f"Programming error: {category.level.name} not found!")
-
-    def update_level(self, category: EnumCategory, set_checked: set[str]) -> None:
-        """
-        Given level BRAND with all selected brands: All other Levels:
-        """
-        assert isinstance(set_checked, set)
-
-        # Initial pass: Set the checkboxes of the current category
-        current_category = self._find_category(category=category)
-        current_category.updated_checked(set_checked=set_checked)
-
-        def aj_dump():
-            for aj in aj_remaining:
-                print(aj.text)
-
-        # First pass: Collect remaining antenna_joins for current category
-        aj_remaining = self.antenna_joins.copy()
-        print(f" Start:      aj_remaining={len(aj_remaining)}")
-        set_checked = current_category.set_checked
-
-        aj_remaining = [
-            aj
-            for aj in aj_remaining
-            if aj.value(category=current_category.category) in set_checked
-        ]
-
-        print(f" First pass: aj_remaining={len(aj_remaining)}")
-
-        for c in self.category_stats:
-            set_category_checked = c.set_checked
-            aj_remaining = [
-                aj
-                for aj in aj_remaining
-                if aj.value(category=c.category) in set_category_checked
-            ]
-
-        print(f" Second pass: aj_remaining={len(aj_remaining)}")
-
-        # Third pass: Make checkboxes invisible
-        for c in self.category_stats:
-            if c.category == category:
-                continue
-
-            set_remaining = {aj.value(category=c.category) for aj in aj_remaining}
-            for checkbox in c.checkboxes:
-                visible = checkbox.name in set_remaining
-                checkbox.set_visible(visible=visible)
-
     @property
-    def aj_filtered(self) -> list[AntennaJoin]:
+    def set_antenna_dir(self) -> set[pathlib.Path]:
         aj_remaining = self.antenna_joins.copy()
         for c in self.category_stats:
             aj_remaining = c.filter(antenna_joins=aj_remaining)
-        return aj_remaining
-
-    @property
-    def set_antenna_dir(self) -> set[pathlib.Path]:
-        aj_filtered = self.aj_filtered
-        return {aj.directory for aj in aj_filtered}
+        return {aj.directory for aj in aj_remaining}
 
     def dump(self) -> None:
         print("---------------")

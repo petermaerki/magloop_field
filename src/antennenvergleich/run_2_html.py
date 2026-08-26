@@ -14,9 +14,10 @@ def main() -> None:
         antenna_joins = webui_filter.get_antenna_joins(antenna_entries=antenna_entries)
         filter = webui_filter.Filter(antenna_joins=antenna_joins)
         filter.dump()
-        # filter.update_level(webui_filter.EnumCategory.NAME, {"Baby", "Tubby indoor", "Tubby outdoor"})
-        filter.update_level(webui_filter.EnumCategory.LOCATION, {"HB9ISP"})
-        # filter.update_level(webui_filter.EnumCategory.BAND, {"160m"})
+        # Peter TODO:
+        brand = filter.find_category(EnumCategory.BRAND)
+        checkbox = brand.find_checkbox('Manzoni')
+        checkbox.checked = False
         filter.dump()
         antenna_entries = [
             a for a in antenna_entries if a.directory in filter.set_antenna_dir
