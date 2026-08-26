@@ -1,9 +1,9 @@
 #page-card {
     /* max-width: 42rem; */
-    margin-bottom: 1rem;
+    margin-bottom: 0.2rem;
     overflow: hidden;
     border: 1px solid rgb(226 232 240);
-    border-radius: 0.5rem;
+    border-radius: 1rem;
     background-color: white;
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 }
@@ -18,7 +18,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.1rem;
     flex: 1;
     padding: 0.75rem 1rem;
     text-align: center;
@@ -26,7 +26,7 @@
 
 #page-card [role="tab"][aria-selected="true"] {
     border-bottom: 2px solid rgb(37 99 235);
-    background-color: lightgray;
+    background-color: rgb(147 197 253);
     font-weight: 600;
 }
 

@@ -1296,7 +1296,6 @@ class HtmlRenderer:
     <link rel="stylesheet" href="static/css/style_compare.css">
 </head>
 <body>
-<h2>Magnetic Loop Antenna Compare</h2>
 <img src="{FILENAME_SVG_ETA_F}" id="{ID_SVG_ETA_F}" alt="Antenna efficiency eta over frequency">
 """
 
@@ -1452,6 +1451,7 @@ class HtmlRenderer:
 
     def close(self) -> str:
         html_suffix = """
+<p style='margin-top: 2rem; font-size: 0.9rem; color: #666;'>No guarantee for correctness! Feedback is welcome.</p>
 </body>
 </html>
 """
