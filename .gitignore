@@ -4,4 +4,4 @@ __pycache__/
 magloop_field.egg-info/*
 **/s1p_results/*
 .ninja_log
-*_generated.*
+*generated*
