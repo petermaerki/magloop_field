@@ -43,7 +43,7 @@ ANTENNENDATEN = Antenna(
     info_enviroment_str=f"In the garden, on a Styrofoam box on a wooden table. Center loop {_hoehe_ueber_boden_zentrum_m:0.2f} m above ground.",
     info_conductor_str="Copper tube OD 12 mm, ID 10 mm, bare surface.",
     info_capacitor_str="Air variable capacitor, self-made, CNC-milled from aluminum sheet.",
-    info_thanks_str="Many thanks to HB9BPO for the support, the fun conversations, and the catering.",
+    info_thanks_str="Many thanks to Peter HB9BPO for the support, the fun conversations, and the catering.",
     measurement_html=("measurement.html",),
     bands=[],
 )
