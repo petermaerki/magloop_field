@@ -29,9 +29,14 @@ from .constants_s1p import (
     VALUES_SUFFIX,
 )
 
-FILENAME_SVG_ETA_F = "generated_magnetic_loops_compare_eta_f.svg"
+FILENAME_SVG_ETA_F = "magnetic_loops_compare_eta_f_generated.svg"
 ID_SVG_ETA_F = "id_svg_eta_f"
-FILENAME_SVG_ETA_DL = "generated_magnetic_loops_compare_eta_DL.svg"
+FILENAME_SVG_ETA_DL = "magnetic_loops_compare_eta_DL_generated.svg"
+FILENAME_ANTENNA_PAGE = "antenna_generated.html"
+FILENAME_ANTENNA_EFFICIENCY_TABLE = "antenna_efficiency_table_generated.html"
+FILENAME_ENVIRONMENT_FRAGMENT = "enviroment_generated.html"
+FILENAME_VNA_MEASUREMENTS_FRAGMENT = "vna_measurements_generated.html"
+FILENAME_H_FIELD_FRAGMENT = "h_field_generated.html"
 
 # ── Constants (same as calculations.py) ───────────────────────────────────────
 _C_LIGHT = 299_792_458.0  # m/s
@@ -816,6 +821,18 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
             f"<tr{row_class}><td title='{tooltip_attr}'>{label_html}</td><td class='unit'>{unit_html}</td>{''.join(row_cells)}</tr>"
         )
     pivot_rows = "\n".join(pivot_row_list)
+    efficiency_overview_html = (
+        "<h2>Antenna Efficiency Overview</h2>\n"
+        '    <table class="compact">\n'
+        "        <tbody>\n"
+        f"{pivot_rows}\n"
+        "        </tbody>\n"
+        "    </table>"
+    )
+    (antenna_dir / FILENAME_ANTENNA_EFFICIENCY_TABLE).write_text(
+        efficiency_overview_html,
+        encoding="utf-8",
+    )
 
     inductivity_section_html = _generate_inductivity_section(
         output_subdir=output_subdir,
@@ -828,6 +845,10 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
     environment_section_html = ""
     if environment_html_block.strip():
         environment_section_html = f"<h2>Enviroment</h2>\n{environment_html_block}"
+    (antenna_dir / FILENAME_ENVIRONMENT_FRAGMENT).write_text(
+        environment_html_block,
+        encoding="utf-8",
+    )
 
     measurement_section_html = ""
     if measurement_html_block.strip():
@@ -876,10 +897,9 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
             else:
                 vna_calibration_html = f"<p>{calibration_text_html}</p>"
 
-    measurements_section_html = ""
+    vna_measurements_body_html = ""
     if table_rows:
-        measurements_section_html = (
-            "<h2>VNA-measurements</h2>\n"
+        vna_measurements_body_html = (
             "The antenna S11 parameters were measured with a VNA. <br>"
             "The following values were derived from these measurements.<br>"
             'Details on the measurement method can be found <a href="http://www.positron.ch/rf/vna_to_measure_loop_antenna/pdf/measure_a_magnetic_loop.pdf">here</a>.<br>'
@@ -901,6 +921,15 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
             "    </tbody>\n"
             "</table>"
         )
+    measurements_section_html = ""
+    if vna_measurements_body_html:
+        measurements_section_html = (
+            "<h2>VNA-measurements</h2>\n" + vna_measurements_body_html
+        )
+    (antenna_dir / FILENAME_VNA_MEASUREMENTS_FRAGMENT).write_text(
+        vna_measurements_body_html,
+        encoding="utf-8",
+    )
 
     h_field_section_html = ""
     h_field_html_file = output_subdir.parent / "h_field" / "h_field.html"
@@ -953,6 +982,10 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
             print(
                 f"Warnung: H-field-HTML konnte nicht geladen werden ({h_field_html_file}): {exc}"
             )
+    (antenna_dir / FILENAME_H_FIELD_FRAGMENT).write_text(
+        h_field_section_html,
+        encoding="utf-8",
+    )
 
     diagrams_section_html = ""
     if chart_table_rows:
@@ -1057,12 +1090,7 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
     <h1>{html.escape(header_title)}</h1>
     {antenna_image_html}
     {info_block_html}
-    <h2>Antenna Efficiency Overview</h2>
-    <table class=\"compact\">
-        <tbody>
-{pivot_rows}
-        </tbody>
-    </table>
+    {efficiency_overview_html}
     {measurement_section_html}
     {environment_section_html}
     {measurements_section_html}
@@ -1073,7 +1101,7 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
 </body>
 </html>
 """
-    (antenna_dir / "generated_antenna.html").write_text(doc)
+    (antenna_dir / FILENAME_ANTENNA_PAGE).write_text(doc)
 
 
 def _generate_antenna_html_files() -> int:
@@ -1455,7 +1483,7 @@ class HtmlRenderer:
             )
             for entry in antenna_entries:
                 filename_html_antenna = (
-                    entry.directory / "generated_antenna.html"
+                    entry.directory / FILENAME_ANTENNA_PAGE
                 ).resolve()
                 filename_relative = self._get_relative_path(filename_html_antenna)
                 band_data = band_data_by_dir[entry.directory].get(band)

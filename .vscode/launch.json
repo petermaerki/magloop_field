@@ -25,6 +25,21 @@
             "justMyCode": false
         },
         {
+            "name": "run_3_ninja (all)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "antennenvergleich.run_3_ninja",
+            "justMyCode": false
+        },
+        {
+            "name": "run_3_ninja (single antenna)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "antennenvergleich.run_3_ninja",
+            "args": ["--antenna-dir", "peter_tubby_outdoor"],
+            "justMyCode": false
+        },
+        {
             "name": "debug_loop_directories",
             "type": "debugpy",
             "request": "launch",

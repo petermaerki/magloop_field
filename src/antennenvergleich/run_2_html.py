@@ -91,7 +91,7 @@ def main() -> None:
     html_renderer.render(antenna_entries)
 
     html = html_renderer.close()
-    filename = constants.DIRECTORY_REPO / "generated_compare.html"
+    filename = constants.DIRECTORY_REPO / "compare_generated.html"
     filename.write_text(html, encoding="utf-8")
     print(f"Written: {filename}")
 

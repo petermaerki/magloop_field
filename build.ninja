@@ -1,0 +1,59 @@
+# Generated manually for magloop_field pipeline.
+
+python = .venv/bin/python
+
+rule run_module_stamp
+  command = mkdir -p .ninja && $python -m $module && touch $out
+  description = RUN $module
+
+rule run_ninja_page
+  command = $python -m antennenvergleich.run_3_ninja --antenna-dir $antenna_dir
+  description = NINJA_PAGE $antenna_dir
+  restat = 1
+
+build .ninja/run_0_s1p.stamp: run_module_stamp src/antennenvergleich/run_0_s1p.py
+  module = antennenvergleich.run_0_s1p
+
+build .ninja/run_2_html.stamp: run_module_stamp src/antennenvergleich/run_2_html.py .ninja/run_0_s1p.stamp
+  module = antennenvergleich.run_2_html
+
+build src/antennen/dk3ss_0_86_n2/antenna_ninja_generated.html: run_ninja_page src/antennen/dk3ss_0_86_n2/antennendaten.py src/antennen/dk3ss_0_86_n2/antenna_efficiency_table_generated.html src/antennen/dk3ss_0_86_n2/enviroment_generated.html src/antennen/dk3ss_0_86_n2/vna_measurements_generated.html src/antennen/dk3ss_0_86_n2/h_field_generated.html .ninja/run_2_html.stamp
+  antenna_dir = dk3ss_0_86_n2
+
+build src/antennen/dk3ss_1_25_n2/antenna_ninja_generated.html: run_ninja_page src/antennen/dk3ss_1_25_n2/antennendaten.py src/antennen/dk3ss_1_25_n2/antenna_efficiency_table_generated.html src/antennen/dk3ss_1_25_n2/enviroment_generated.html src/antennen/dk3ss_1_25_n2/vna_measurements_generated.html src/antennen/dk3ss_1_25_n2/h_field_generated.html .ninja/run_2_html.stamp
+  antenna_dir = dk3ss_1_25_n2
+
+build src/antennen/epicenter_W6NBC/antenna_ninja_generated.html: run_ninja_page src/antennen/epicenter_W6NBC/antennendaten.py src/antennen/epicenter_W6NBC/antenna_efficiency_table_generated.html src/antennen/epicenter_W6NBC/enviroment_generated.html src/antennen/epicenter_W6NBC/vna_measurements_generated.html src/antennen/epicenter_W6NBC/h_field_generated.html .ninja/run_2_html.stamp
+  antenna_dir = epicenter_W6NBC
+
+build src/antennen/mazzoni_baby_loop/antenna_ninja_generated.html: run_ninja_page src/antennen/mazzoni_baby_loop/antennendaten.py src/antennen/mazzoni_baby_loop/antenna_efficiency_table_generated.html src/antennen/mazzoni_baby_loop/enviroment_generated.html src/antennen/mazzoni_baby_loop/vna_measurements_generated.html src/antennen/mazzoni_baby_loop/h_field_generated.html .ninja/run_2_html.stamp
+  antenna_dir = mazzoni_baby_loop
+
+build src/antennen/mazzoni_baby_loop_HB0SM/antenna_ninja_generated.html: run_ninja_page src/antennen/mazzoni_baby_loop_HB0SM/antennendaten.py src/antennen/mazzoni_baby_loop_HB0SM/antenna_efficiency_table_generated.html src/antennen/mazzoni_baby_loop_HB0SM/enviroment_generated.html src/antennen/mazzoni_baby_loop_HB0SM/vna_measurements_generated.html src/antennen/mazzoni_baby_loop_HB0SM/h_field_generated.html .ninja/run_2_html.stamp
+  antenna_dir = mazzoni_baby_loop_HB0SM
+
+build src/antennen/mazzoni_midi_loop/antenna_ninja_generated.html: run_ninja_page src/antennen/mazzoni_midi_loop/antennendaten.py src/antennen/mazzoni_midi_loop/antenna_efficiency_table_generated.html src/antennen/mazzoni_midi_loop/enviroment_generated.html src/antennen/mazzoni_midi_loop/vna_measurements_generated.html src/antennen/mazzoni_midi_loop/h_field_generated.html .ninja/run_2_html.stamp
+  antenna_dir = mazzoni_midi_loop
+
+build src/antennen/mazzoni_midi_loop_HB0SM/antenna_ninja_generated.html: run_ninja_page src/antennen/mazzoni_midi_loop_HB0SM/antennendaten.py src/antennen/mazzoni_midi_loop_HB0SM/antenna_efficiency_table_generated.html src/antennen/mazzoni_midi_loop_HB0SM/enviroment_generated.html src/antennen/mazzoni_midi_loop_HB0SM/vna_measurements_generated.html src/antennen/mazzoni_midi_loop_HB0SM/h_field_generated.html .ninja/run_2_html.stamp
+  antenna_dir = mazzoni_midi_loop_HB0SM
+
+build src/antennen/mazzoni_stealth/antenna_ninja_generated.html: run_ninja_page src/antennen/mazzoni_stealth/antennendaten.py src/antennen/mazzoni_stealth/antenna_efficiency_table_generated.html src/antennen/mazzoni_stealth/enviroment_generated.html src/antennen/mazzoni_stealth/vna_measurements_generated.html src/antennen/mazzoni_stealth/h_field_generated.html .ninja/run_2_html.stamp
+  antenna_dir = mazzoni_stealth
+
+build src/antennen/mazzoni_stealth_HE9DJB/antenna_ninja_generated.html: run_ninja_page src/antennen/mazzoni_stealth_HE9DJB/antennendaten.py src/antennen/mazzoni_stealth_HE9DJB/antenna_efficiency_table_generated.html src/antennen/mazzoni_stealth_HE9DJB/enviroment_generated.html src/antennen/mazzoni_stealth_HE9DJB/vna_measurements_generated.html src/antennen/mazzoni_stealth_HE9DJB/h_field_generated.html .ninja/run_2_html.stamp
+  antenna_dir = mazzoni_stealth_HE9DJB
+
+build src/antennen/peter_tubby_indoor/antenna_ninja_generated.html: run_ninja_page src/antennen/peter_tubby_indoor/antennendaten.py src/antennen/peter_tubby_indoor/antenna_efficiency_table_generated.html src/antennen/peter_tubby_indoor/enviroment_generated.html src/antennen/peter_tubby_indoor/vna_measurements_generated.html src/antennen/peter_tubby_indoor/h_field_generated.html .ninja/run_2_html.stamp
+  antenna_dir = peter_tubby_indoor
+
+build src/antennen/peter_tubby_outdoor/antenna_ninja_generated.html: run_ninja_page src/antennen/peter_tubby_outdoor/antennendaten.py src/antennen/peter_tubby_outdoor/antenna_efficiency_table_generated.html src/antennen/peter_tubby_outdoor/enviroment_generated.html src/antennen/peter_tubby_outdoor/vna_measurements_generated.html src/antennen/peter_tubby_outdoor/h_field_generated.html .ninja/run_2_html.stamp
+  antenna_dir = peter_tubby_outdoor
+
+build ninja_pages: phony src/antennen/dk3ss_0_86_n2/antenna_ninja_generated.html src/antennen/dk3ss_1_25_n2/antenna_ninja_generated.html src/antennen/epicenter_W6NBC/antenna_ninja_generated.html src/antennen/mazzoni_baby_loop/antenna_ninja_generated.html src/antennen/mazzoni_baby_loop_HB0SM/antenna_ninja_generated.html src/antennen/mazzoni_midi_loop/antenna_ninja_generated.html src/antennen/mazzoni_midi_loop_HB0SM/antenna_ninja_generated.html src/antennen/mazzoni_stealth/antenna_ninja_generated.html src/antennen/mazzoni_stealth_HE9DJB/antenna_ninja_generated.html src/antennen/peter_tubby_indoor/antenna_ninja_generated.html src/antennen/peter_tubby_outdoor/antenna_ninja_generated.html
+
+build html_pipeline: phony .ninja/run_0_s1p.stamp .ninja/run_2_html.stamp
+
+build all: phony html_pipeline ninja_pages
+
+default all

@@ -21,6 +21,7 @@ dev = [
     "pytest>=7.0",
     "mypy",
     "ruff",
+    "ninja>=1.13",
 ]
 
 # [tool.setuptools]
