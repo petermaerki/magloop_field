@@ -45,5 +45,12 @@
             "module": "antennen.mazzoni_midi_loop_HB0SM.h_field.h_field_data",
             "justMyCode": false
         },
+        {
+            "name": "3p_HB9BPO.h_field.h_field_data",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "antennen.3p_HB9BPO.h_field.h_field_data",
+            "justMyCode": false
+        },
     ]
 }

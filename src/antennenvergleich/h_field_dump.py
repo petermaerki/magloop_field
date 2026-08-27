@@ -26,6 +26,13 @@ class HFieldMesspunkt:
     P_dbm: float
 
 
+@dataclasses.dataclass
+class _FrequencyTables:
+    f_hz: float
+    summary_rows: list[tuple[str, str]]
+    point_rows: list[dict[str, float | str]]
+
+
 @dataclasses.dataclass(frozen=True)
 class HFieldData:
     this_antenna_dir: pathlib.Path
@@ -91,8 +98,8 @@ class HFieldData:
                 "No band data found in antennendaten.py and s1p_results"
             )
 
-        summary_rows: list[tuple[str, str]] | None = None
-        point_rows: list[dict[str, float | str]] = []
+        sections_by_frequency: dict[float, _FrequencyTables] = {}
+        frequency_sections: list[_FrequencyTables] = []
 
         for messpunkt in self._iter_messpunkte():
             print(f"=== Messpunkt {messpunkt.punkt_str} ===")
@@ -185,8 +192,18 @@ class HFieldData:
                 f"h_field_factor_measured_to_expected: {h_field_factor_measured_to_expected:.3f}"
             )
 
-            if summary_rows is None:
-                summary_rows = [
+            section = sections_by_frequency.get(messpunkt.f_Hz)
+            if section is None:
+                section = _FrequencyTables(
+                    f_hz=messpunkt.f_Hz,
+                    summary_rows=[],
+                    point_rows=[],
+                )
+                sections_by_frequency[messpunkt.f_Hz] = section
+                frequency_sections.append(section)
+
+            if not section.summary_rows:
+                section.summary_rows = [
                     ("tx_power_w", f"{messpunkt.tx_power_w:.1f}"),
                     ("f_Hz", f"{messpunkt.f_Hz:.0f}"),
                     (
@@ -198,7 +215,7 @@ class HFieldData:
                     ("magnetic dipole moment m (Am2)", f"{debug_calc.m_Am2:.1f}"),
                 ]
 
-            point_rows.append(
+            section.point_rows.append(
                 {
                     "punkt": messpunkt.punkt_str,
                     "x_m": messpunkt.X_m,
@@ -210,56 +227,60 @@ class HFieldData:
                 }
             )
 
-        if summary_rows is None:
-            summary_rows = []
-        self._write_measurements_html(summary_rows=summary_rows, point_rows=point_rows)
+        self._write_measurements_html(frequency_sections=frequency_sections)
 
     def _write_measurements_html(
         self,
-        summary_rows: list[tuple[str, str]],
-        point_rows: list[dict[str, float | str]],
+        frequency_sections: list[_FrequencyTables],
     ) -> None:
         out_path = self.this_antenna_dir / "h_field" / "h_field_measurements.html"
 
-        summary_html = "".join(
-            (
-                "<tr>"
-                f"<td>{html.escape(label)}</td>"
-                f"<td>{html.escape(value)}</td>"
-                "</tr>"
+        sections_html = ""
+        for section in frequency_sections:
+            summary_html = "".join(
+                (
+                    "<tr>"
+                    f"<td>{html.escape(label)}</td>"
+                    f"<td>{html.escape(value)}</td>"
+                    "</tr>"
+                )
+                for label, value in section.summary_rows
             )
-            for label, value in summary_rows
-        )
 
-        points_html = "".join(
-            (
-                "<tr>"
-                f"<td class='point-col'>{html.escape(str(row['punkt']))}</td>"
-                f"<td>{float(row['x_m']):.1f}</td>"
-                f"<td>{float(row['y_m']):.1f}</td>"
-                f"<td>{float(row['z_m']):.1f}</td>"
-                f"<td>{float(row['expected_a_m']):.4f}</td>"
-                f"<td>{float(row['measured_a_m']):.4f}</td>"
-                f"<td class='hl-factor'>{float(row['factor']):.3f}</td>"
-                "</tr>"
+            points_html = "".join(
+                (
+                    "<tr>"
+                    f"<td class='point-col'>{html.escape(str(row['punkt']))}</td>"
+                    f"<td>{float(row['x_m']):.1f}</td>"
+                    f"<td>{float(row['y_m']):.1f}</td>"
+                    f"<td>{float(row['z_m']):.1f}</td>"
+                    f"<td>{float(row['expected_a_m']):.4f}</td>"
+                    f"<td>{float(row['measured_a_m']):.4f}</td>"
+                    f"<td class='hl-factor'>{float(row['factor']):.3f}</td>"
+                    "</tr>"
+                )
+                for row in section.point_rows
             )
-            for row in point_rows
-        )
+
+            sections_html += (
+                f"<h4>f = {section.f_hz / 1e6:.3f} MHz</h4>\n"
+                "<table class='h-field-summary'>"
+                f"{summary_html}"
+                "</table>\n"
+                "<table class='measure-table'>"
+                "<thead>"
+                "<tr class='head-row'><th class='point-col'></th><th>X</th><th>Y</th><th>Z</th><th>expected</th><th>measured</th><th>factor</th></tr>"
+                "<tr class='head-row'><th class='point-col'></th><th>m</th><th>m</th><th>m</th><th>A/m</th><th>A/m</th><th></th></tr>"
+                "</thead>"
+                "<tbody>"
+                f"{points_html}"
+                "</tbody>"
+                "</table>\n"
+            )
 
         doc = (
             "<!-- Automatically generated file by h_field_dump.py. Do not edit manually. -->\n"
-            "<table class='h-field-summary'>"
-            f"{summary_html}"
-            "</table>\n"
-            "<table class='measure-table'>"
-            "<thead>"
-            "<tr class='head-row'><th class='point-col'></th><th>X</th><th>Y</th><th>Z</th><th>expected</th><th>measured</th><th>factor</th></tr>"
-            "<tr class='head-row'><th class='point-col'></th><th>m</th><th>m</th><th>m</th><th>A/m</th><th>A/m</th><th></th></tr>"
-            "</thead>"
-            "<tbody>"
-            f"{points_html}"
-            "</tbody>"
-            "</table>\n"
+            f"{sections_html}"
         )
         out_path.write_text(doc, encoding="utf-8")
 

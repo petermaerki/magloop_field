@@ -328,7 +328,7 @@ def _generate_inductivity_section(
                 "<td>C<sub>NIX</sub></td>"
                 "<td class='unit'>As/V</td>"
                 f"<td class='val'>{html.escape(fmt_sig4(cap_nix_f_value))}</td>"
-                "<td>derived from using L<sub>100</sub>, f<sub>OFF</sub>, and f<sub>NIX</sub><br>estimated parasitic capacitance of switches and wiring; expected value 1 ... 2 pF</td>"
+                "<td>derived from using L<sub>100</sub>, f<sub>OFF</sub>, and f<sub>NIX</sub><br>estimated parasitic capacitance of switches and wiring; expected value 1 ... 5 pF</td>"
                 "</tr>"
             )
 
