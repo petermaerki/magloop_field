@@ -1,6 +1,7 @@
 """Generates compare.html — comparison table for magnetic loop antennas."""
 
 from . import constants, loop_directories, renderer_html, webui_filter
+from .output_filenames import FILENAME_SVG_ETA_DL, FILENAME_SVG_ETA_F
 
 
 def _assert_unique_antenna_colors(
@@ -96,12 +97,12 @@ def main() -> None:
     print(f"Written: {filename}")
 
     svg = renderer_html.Diagramm_eta_f_svg().render(antennas)
-    filename_svg = constants.DIRECTORY_REPO / renderer_html.FILENAME_SVG_ETA_F
+    filename_svg = constants.DIRECTORY_REPO / FILENAME_SVG_ETA_F
     filename_svg.write_text(svg, encoding="utf-8")
     print(f"Written: {filename_svg}")
 
     svg = renderer_html.Diagramm_eta_D_lambda_svg().render(antennas)
-    filename_svg = constants.DIRECTORY_REPO / renderer_html.FILENAME_SVG_ETA_DL
+    filename_svg = constants.DIRECTORY_REPO / FILENAME_SVG_ETA_DL
     filename_svg.write_text(svg, encoding="utf-8")
     print(f"Written: {filename_svg}")
 

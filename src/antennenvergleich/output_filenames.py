@@ -1,0 +1,12 @@
+"""Shared filenames and DOM IDs for generated outputs."""
+
+FILENAME_SVG_ETA_F = "magnetic_loops_compare_eta_f_generated.svg"
+ID_SVG_ETA_F = "id_svg_eta_f"
+FILENAME_SVG_ETA_DL = "magnetic_loops_compare_eta_DL_generated.svg"
+FILENAME_ANTENNA_PAGE = "antenna_generated.html"
+FILENAME_ANTENNA_EFFICIENCY_TABLE = "antenna_efficiency_table_generated.html"
+FILENAME_ENVIRONMENT_FRAGMENT = "enviroment_generated.html"
+FILENAME_VNA_MEASUREMENTS_FRAGMENT = "vna_measurements_generated.html"
+FILENAME_H_FIELD_FRAGMENT = "h_field_generated.html"
+FILENAME_DIAGRAMS_FRAGMENT = "diagrams_generated.html"
+FILENAME_INDUCTANCE_FRAGMENT = "inductance_generated.html"

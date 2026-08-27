@@ -7,6 +7,7 @@ from pyscript import when
 from pyscript.web import page
 
 from antennenvergleich import renderer_html, webui_filter
+from antennenvergleich.output_filenames import ID_SVG_ETA_F
 from webui import util_compare
 
 try:
@@ -334,7 +335,7 @@ def load_compare() -> None:
         page["div#compare_results"].innerHTML = fw.render_results_html()
         setup_compare_scrollbars()
         svg = fw.render_eta_f_svg()
-        update_svg(selector=f"img#{renderer_html.ID_SVG_ETA_F}", svg=svg)
+        update_svg(selector=f"img#{ID_SVG_ETA_F}", svg=svg)
 
     redraw()
 
