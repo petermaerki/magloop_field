@@ -28,7 +28,7 @@ ANTENNENDATEN = Antenna(
     color="#5900a3",  # color from compare_colors.py
     selection_brand="Selfmade",
     selection_location="HB9BPO",
-    selection_name="3p",
+    selection_name="3P",
     D_m=FloatText(
         _D_m,
         "Peter: Measurement Doppelmeter",
