@@ -3,3 +3,5 @@ __pycache__/
 *.pyc
 magloop_field.egg-info/*
 **/s1p_results/*
+.ninja_log
+*_generated.*
