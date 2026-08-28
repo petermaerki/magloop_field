@@ -1,4 +1,3 @@
-import dataclasses
 import html
 import importlib
 import math
@@ -7,13 +6,14 @@ import pathlib
 import re
 from urllib.parse import urlsplit, urlunsplit
 
-from antennenvergleich.datatypes import VnaCalibration, AntennaPlusDirectory
+from antennenvergleich import loop_directories
+from antennenvergleich.datatypes import AntennaPlusDirectory, VnaCalibration
 from antennenvergleich.datatypes_s1p import AntennaModelFit, SwrValues, ValuesDataFile
 from magloop_field.calculations import AntennaCalculator as FieldAntennaCalculator
+import jinja2
 
 from . import constants
-from antennenvergleich import loop_directories
-from .constants import BANDS, DIRECTORY_SRC, ANTENNENDATEN_FILENAME
+from .constants import BANDS, DIRECTORY_SRC
 from .constants_s1p import (
     CAP_VALUES_TAGS,
     DIRECTORY_S1P_RESULTS,
@@ -24,6 +24,94 @@ from .constants_s1p import (
 )
 
 DIRECTORY_OF_THIS_FILE = pathlib.Path(__file__).parent
+
+
+ROW_SPECS: list[tuple[str, str, str, str]] = [
+    ("Frequency <i>f</i>", "MHz", "f", "Mittenfrequenz des betrachteten Bandes."),
+    (
+        "Bandwidth <i>B</i><sub>SWR=2.62</sub>",
+        "kHz",
+        "bw",
+        "Bandbreite am Antenneneingang beim Kriterium SWR = 2.62.",
+    ),
+    ("Loop diameter <i>D</i>", "m", "D", "Äquivalenter Durchmesser der Loop."),
+    (
+        "Conductor diameter <i>d</i>",
+        "m",
+        "d",
+        "Äquivalenter Leiterdurchmesser der Loop.",
+    ),
+    ("Loop count <i>n</i>", "1", "n", "Anzahl der Windungen der Schleife."),
+    (
+        "Power into antenna <i>P</i>",
+        "W",
+        "P",
+        "Eingespeiste Leistung in die Antenne.",
+    ),
+    ("Inductance <i>L</i>", "H", "L", "Berechnete Induktivität der Loop."),
+    (
+        "Capacitance <i>C</i>",
+        "F",
+        "C",
+        "Erforderliche Resonanzkapazität bei der Bandfrequenz.",
+    ),
+    (
+        "Unloaded Q<sub>0</sub>",
+        "1",
+        "Q0",
+        "Unbelastete Güte, aus f / Bandbreite abgeschätzt.",
+    ),
+    (
+        "Damping resistance <i>R</i><sub>T</sub>",
+        "Ohm",
+        "RT",
+        "Gesamter Dämpfungswiderstand des Resonanzkreises.",
+    ),
+    (
+        "Radiation resistance <i>R</i><sub>R</sub>",
+        "Ohm",
+        "RR",
+        "Äquivalenter Strahlungswiderstand der Antenne.",
+    ),
+    (
+        "Loss resistance <i>R</i><sub>Loss</sub>",
+        "Ohm",
+        "RLoss",
+        "Verlustwiderstand: R_T - R_R.",
+    ),
+    ("swr_min", "1", "swr_min", "Minimales SWR am Antenneneingang."),
+    (
+        "eta<sub>SWR_ant</sub>",
+        "%",
+        "eta_swr",
+        "Anpassungswirkungsgrad aus swr_min: eta = 4*SWR/(1+SWR)^2.",
+    ),
+    (
+        "<b>Antenna efficiency <i>η</i></b>",
+        "<b>%</b>",
+        "eta",
+        "Gesamteffizienz: (R_R / R_T) * eta_SWR_ant.",
+    ),
+    (
+        "Loop current <i>I</i>",
+        "A",
+        "I",
+        "Strom im Hauptloop bei der Referenzleistung.",
+    ),
+    (
+        "Loop voltage <i>U</i><sub>loop</sub>",
+        "V",
+        "U",
+        "Spannung über dem Loop bei Resonanz.",
+    ),
+    (
+        "Magnetic dipole moment <i>m</i>",
+        "A m²",
+        "m",
+        "Magnetisches Dipolmoment des Loops.",
+    ),
+]
+
 
 def _is_cap_measurement_name(name: str) -> bool:
     name_u = name.upper()
@@ -164,17 +252,13 @@ def _generate_inductivity_section(
     )
     if inductance_file.exists():
         try:
-            inductivity_text_html = inductivity_text_file.read_text(
-                encoding="utf-8"
-            )
+            inductivity_text_html = inductivity_text_file.read_text(encoding="utf-8")
             inductivity_text_html = _rewrite_local_links_in_html_fragment(
                 inductivity_text_html,
                 fragment_dir=inductivity_text_file.parent,
                 destination_dir=antenna_dir,
             )
-        except (
-            Exception
-        ) as exc:  # pragma: no cover - best effort for optional section
+        except Exception as exc:  # pragma: no cover - best effort for optional section
             print(
                 f"Warnung: Induktivitaets-Text konnte nicht geladen werden ({inductivity_text_file}): {exc}"
             )
@@ -192,9 +276,7 @@ def _generate_inductivity_section(
                 rel_to_antenna = pathlib.Path(
                     os.path.relpath(pic_path, antenna_dir)
                 ).as_posix()
-                alt = html.escape(
-                    f"Inductivity picture: {pic_path.name}", quote=True
-                )
+                alt = html.escape(f"Inductivity picture: {pic_path.name}", quote=True)
                 src = html.escape(rel_to_antenna, quote=True)
                 image_tags.append(
                     f'<a href="{src}"><img class="inductivity-picture" src="{src}" alt="{alt}"></a>'
@@ -224,9 +306,7 @@ def _generate_inductivity_section(
                 powerP_W=100.0,
             )
             l_h_geometry_value = float(calc.L_H)
-        except (
-            Exception
-        ) as exc:  # pragma: no cover - best effort for optional section
+        except Exception as exc:  # pragma: no cover - best effort for optional section
             print(
                 f"Warnung: L_H aus Geometrie konnte nicht berechnet werden ({antenna_dir_name}): {exc}"
             )
@@ -243,9 +323,7 @@ def _generate_inductivity_section(
                 return f"{value:.4g}"
             return "n/a"
 
-        def deviation_percent(
-            measured: float | None, reference: float | None
-        ) -> str:
+        def deviation_percent(measured: float | None, reference: float | None) -> str:
             if measured is None or reference is None or reference == 0:
                 return "n/a"
             return f"{((measured - reference) / reference * 100.0):+.0f}%"
@@ -350,6 +428,25 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
     """Generate one antenna.html page for a given antenna results directory."""
     directory_s1p_results = entry.directory / DIRECTORY_S1P_RESULTS
 
+    directory_templates = pathlib.Path(__file__).with_suffix("")
+    assert directory_templates.is_dir()
+
+    antenna_css_path = constants.DIRECTORY_REPO / "static/css/style_antenna.css"
+    antenna_css_rel = pathlib.Path(
+        os.path.relpath(antenna_css_path.resolve(), entry.directory.resolve())
+    ).as_posix()
+
+    env = jinja2.Environment(
+        loader=jinja2.FileSystemLoader(directory_templates),
+        undefined=jinja2.StrictUndefined,
+    )
+
+    template = env.get_template("antenna.jinja2")
+    jinja_html = template.render(
+        antenna=entry.antenna,
+        antenna_css_rel=antenna_css_rel,
+    )
+
     values_files = sorted(
         p
         for p in directory_s1p_results.glob(f"*{VALUES_SUFFIX}.py")
@@ -405,7 +502,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         smith_name = f"{base_stem}{SMITH_SUFFIX}{SVG_EXTENSION}"
         swr_name = f"{base_stem}{SWR_SUFFIX}{SVG_EXTENSION}"
         smith_rel = pathlib.Path(
-            os.path.relpath(directory_s1p_results / smith_name,entry.directory)
+            os.path.relpath(directory_s1p_results / smith_name, entry.directory)
         ).as_posix()
         swr_rel = pathlib.Path(
             os.path.relpath(directory_s1p_results / swr_name, entry.directory)
@@ -572,92 +669,6 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         except Exception:
             return None
 
-    row_specs: list[tuple[str, str, str, str]] = [
-        ("Frequency <i>f</i>", "MHz", "f", "Mittenfrequenz des betrachteten Bandes."),
-        (
-            "Bandwidth <i>B</i><sub>SWR=2.62</sub>",
-            "kHz",
-            "bw",
-            "Bandbreite am Antenneneingang beim Kriterium SWR = 2.62.",
-        ),
-        ("Loop diameter <i>D</i>", "m", "D", "Äquivalenter Durchmesser der Loop."),
-        (
-            "Conductor diameter <i>d</i>",
-            "m",
-            "d",
-            "Äquivalenter Leiterdurchmesser der Loop.",
-        ),
-        ("Loop count <i>n</i>", "1", "n", "Anzahl der Windungen der Schleife."),
-        (
-            "Power into antenna <i>P</i>",
-            "W",
-            "P",
-            "Eingespeiste Leistung in die Antenne.",
-        ),
-        ("Inductance <i>L</i>", "H", "L", "Berechnete Induktivität der Loop."),
-        (
-            "Capacitance <i>C</i>",
-            "F",
-            "C",
-            "Erforderliche Resonanzkapazität bei der Bandfrequenz.",
-        ),
-        (
-            "Unloaded Q<sub>0</sub>",
-            "1",
-            "Q0",
-            "Unbelastete Güte, aus f / Bandbreite abgeschätzt.",
-        ),
-        (
-            "Damping resistance <i>R</i><sub>T</sub>",
-            "Ohm",
-            "RT",
-            "Gesamter Dämpfungswiderstand des Resonanzkreises.",
-        ),
-        (
-            "Radiation resistance <i>R</i><sub>R</sub>",
-            "Ohm",
-            "RR",
-            "Äquivalenter Strahlungswiderstand der Antenne.",
-        ),
-        (
-            "Loss resistance <i>R</i><sub>Loss</sub>",
-            "Ohm",
-            "RLoss",
-            "Verlustwiderstand: R_T - R_R.",
-        ),
-        ("swr_min", "1", "swr_min", "Minimales SWR am Antenneneingang."),
-        (
-            "eta<sub>SWR_ant</sub>",
-            "%",
-            "eta_swr",
-            "Anpassungswirkungsgrad aus swr_min: eta = 4*SWR/(1+SWR)^2.",
-        ),
-        (
-            "<b>Antenna efficiency <i>η</i></b>",
-            "<b>%</b>",
-            "eta",
-            "Gesamteffizienz: (R_R / R_T) * eta_SWR_ant.",
-        ),
-        (
-            "Loop current <i>I</i>",
-            "A",
-            "I",
-            "Strom im Hauptloop bei der Referenzleistung.",
-        ),
-        (
-            "Loop voltage <i>U</i><sub>loop</sub>",
-            "V",
-            "U",
-            "Spannung über dem Loop bei Resonanz.",
-        ),
-        (
-            "Magnetic dipole moment <i>m</i>",
-            "A m²",
-            "m",
-            "Magnetisches Dipolmoment des Loops.",
-        ),
-    ]
-
     def _value_source(
         item: dict[str, object], key: str, calc: FieldAntennaCalculator | None
     ) -> str:
@@ -748,7 +759,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
             f"<tr><td colspan='3'>Keine Banddaten vorhanden ({html.escape(DIRECTORY_S1P_RESULTS)} fehlt oder ist leer).</td></tr>"
         )
     merged_single_value_keys = {"D", "d", "n", "L"}
-    for label_html, unit_html, key, tooltip in row_specs:
+    for label_html, unit_html, key, tooltip in ROW_SPECS:
         row_cells: list[str] = []
         if key in merged_single_value_keys and sorted_band_items:
             first_item = sorted_band_items[0]
@@ -952,36 +963,36 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
     except Exception:
         antenna_image_html = ""
 
-    info_str_line = "-"
-    info_conductor_line = "-"
-    info_capacitor_line = "-"
-    info_enviroment_line = "-"
-    info_thanks_line = ""
-    if antenna_data is not None:
-        info_str_line = str(getattr(antenna_data, "info_str", "") or "-")
-        info_conductor_line = str(
-            getattr(antenna_data, "info_conductor_str", "") or "-"
-        )
-        info_capacitor_line = str(
-            getattr(antenna_data, "info_capacitor_str", "") or "-"
-        )
-        info_enviroment_line = str(
-            getattr(antenna_data, "info_enviroment_str", "") or "-"
-        )
-        info_thanks_line = str(
-            getattr(antenna_data, "info_thanks_str", "") or ""
-        ).strip()
+    # info_str_line = "-"
+    # info_conductor_line = "-"
+    # info_capacitor_line = "-"
+    # info_enviroment_line = "-"
+    # info_thanks_line = ""
+    # if antenna_data is not None:
+    #     info_str_line = str(getattr(antenna_data, "info_str", "") or "-")
+    #     info_conductor_line = str(
+    #         getattr(antenna_data, "info_conductor_str", "") or "-"
+    #     )
+    #     info_capacitor_line = str(
+    #         getattr(antenna_data, "info_capacitor_str", "") or "-"
+    #     )
+    #     info_enviroment_line = str(
+    #         getattr(antenna_data, "info_enviroment_str", "") or "-"
+    #     )
+    #     info_thanks_line = str(
+    #         getattr(antenna_data, "info_thanks_str", "") or ""
+    #     ).strip()
 
-    info_lines = [
-        f"Info: {html.escape(info_str_line)}",
-        f"Conductor: {html.escape(info_conductor_line)}",
-        f"Capacitor: {html.escape(info_capacitor_line)}",
-        f"Enviroment: {html.escape(info_enviroment_line)}",
-    ]
-    if info_thanks_line:
-        info_lines.append(f"Thanks: {html.escape(info_thanks_line)}")
+    # info_lines = [
+    #     f"Info: {html.escape(info_str_line)}",
+    #     f"Conductor: {html.escape(info_conductor_line)}",
+    #     f"Capacitor: {html.escape(info_capacitor_line)}",
+    #     f"Enviroment: {html.escape(info_enviroment_line)}",
+    # ]
+    # if info_thanks_line:
+    #     info_lines.append(f"Thanks: {html.escape(info_thanks_line)}")
 
-    info_block_html = f"<p>{'<br>'.join(info_lines)}</p>"
+    # info_block_html = f"<p>{'<br>'.join(info_lines)}</p>"
 
     header_title = antenna_dir_name
     if antenna_data is not None:
@@ -1002,10 +1013,11 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         f"compare page</a></p>"
     )
 
-    antenna_css_path = constants.DIRECTORY_REPO / "static/css/style_antenna.css"
-    antenna_css_rel = pathlib.Path(
-        os.path.relpath(antenna_css_path.resolve(), entry.directory.resolve())
-    ).as_posix()
+    # antenna_css_path = constants.DIRECTORY_REPO / "static/css/style_antenna.css"
+    # antenna_css_rel = pathlib.Path(
+    #     os.path.relpath(antenna_css_path.resolve(), entry.directory.resolve())
+    # ).as_posix()
+    antenna_css_rel = "..."
 
     doc = f"""<!-- Automatically generated file by run_2_html.py. Do not edit manually. -->
 <!doctype html>
@@ -1017,9 +1029,11 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
     <link rel="stylesheet" href="{html.escape(antenna_css_rel, quote=True)}">
 </head>
 <body>
+    {jinja_html}
+    <hr/>
     <h1>{html.escape(header_title)}</h1>
     {antenna_image_html}
-    {info_block_html}
+    <info_block_html>
     <h2>Antenna Efficiency Overview</h2>
     <table class=\"compact\">
         <tbody>

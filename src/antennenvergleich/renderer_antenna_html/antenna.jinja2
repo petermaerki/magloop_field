@@ -1,0 +1,41 @@
+<!-- Automatically generated file by run_2_html.py. Do not edit manually. -->
+<!doctype html>
+<html lang=\"de\">
+<head>
+    <meta charset=\"utf-8\">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+    <title>{{antenna.selection_brand}} {{antenna.selection_name}} {{antenna.selection_location}} - antenna</title>
+    <link rel="stylesheet" href="{{antenna_css_rel}}">
+</head>
+<body>
+
+<h1>{{antenna.selection_brand}} {{antenna.selection_name}} {{antenna.selection_location}}</h1>
+
+{% for src in antenna.overview_pictures %}
+<p>
+    <a href="{{src}}"><img class="overview-antenna-picture" src="{{src}}"></a>
+</p>
+{% endfor %}
+
+<p>Info: {{antenna.info_str}}<br>
+Conductor: {{antenna.info_str}}<br>
+Capacitor: {{antenna.info_capacitor_str}}<br>
+Enviroment: {{antenna.info_enviroment_str}}<br>
+{% if antenna.info_thanks_str: %}
+Thanks: {{antenna.info_thanks_str}}<br>
+{% endif %}
+
+<h2>Antenna Efficiency Overview</h2>
+<table class=\"compact\">
+    <tbody>
+            <tr{row_class}>
+            <td title='{tooltip_attr}'>{label_html}</td>
+            <td class='unit'>{unit_html}</td>
+            {''.join(row_cells)}</tr>"
+            </tr>
+            <tr>
+            <td>A</td>
+            <td>B</td>
+            </tr>
+    </tbody>
+</table>
