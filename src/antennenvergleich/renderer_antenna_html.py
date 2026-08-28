@@ -6,11 +6,12 @@ import pathlib
 import re
 from urllib.parse import urlsplit, urlunsplit
 
+import jinja2
+
 from antennenvergleich import loop_directories
 from antennenvergleich.datatypes import AntennaPlusDirectory, VnaCalibration
 from antennenvergleich.datatypes_s1p import AntennaModelFit, SwrValues, ValuesDataFile
 from magloop_field.calculations import AntennaCalculator as FieldAntennaCalculator
-import jinja2
 
 from . import constants
 from .constants import BANDS, DIRECTORY_SRC
@@ -22,95 +23,9 @@ from .constants_s1p import (
     SWR_SUFFIX,
     VALUES_SUFFIX,
 )
+from .renderer_antenna_efficiency_table_html import build_efficiency_table
 
 DIRECTORY_OF_THIS_FILE = pathlib.Path(__file__).parent
-
-
-ROW_SPECS: list[tuple[str, str, str, str]] = [
-    ("Frequency <i>f</i>", "MHz", "f", "Mittenfrequenz des betrachteten Bandes."),
-    (
-        "Bandwidth <i>B</i><sub>SWR=2.62</sub>",
-        "kHz",
-        "bw",
-        "Bandbreite am Antenneneingang beim Kriterium SWR = 2.62.",
-    ),
-    ("Loop diameter <i>D</i>", "m", "D", "Äquivalenter Durchmesser der Loop."),
-    (
-        "Conductor diameter <i>d</i>",
-        "m",
-        "d",
-        "Äquivalenter Leiterdurchmesser der Loop.",
-    ),
-    ("Loop count <i>n</i>", "1", "n", "Anzahl der Windungen der Schleife."),
-    (
-        "Power into antenna <i>P</i>",
-        "W",
-        "P",
-        "Eingespeiste Leistung in die Antenne.",
-    ),
-    ("Inductance <i>L</i>", "H", "L", "Berechnete Induktivität der Loop."),
-    (
-        "Capacitance <i>C</i>",
-        "F",
-        "C",
-        "Erforderliche Resonanzkapazität bei der Bandfrequenz.",
-    ),
-    (
-        "Unloaded Q<sub>0</sub>",
-        "1",
-        "Q0",
-        "Unbelastete Güte, aus f / Bandbreite abgeschätzt.",
-    ),
-    (
-        "Damping resistance <i>R</i><sub>T</sub>",
-        "Ohm",
-        "RT",
-        "Gesamter Dämpfungswiderstand des Resonanzkreises.",
-    ),
-    (
-        "Radiation resistance <i>R</i><sub>R</sub>",
-        "Ohm",
-        "RR",
-        "Äquivalenter Strahlungswiderstand der Antenne.",
-    ),
-    (
-        "Loss resistance <i>R</i><sub>Loss</sub>",
-        "Ohm",
-        "RLoss",
-        "Verlustwiderstand: R_T - R_R.",
-    ),
-    ("swr_min", "1", "swr_min", "Minimales SWR am Antenneneingang."),
-    (
-        "eta<sub>SWR_ant</sub>",
-        "%",
-        "eta_swr",
-        "Anpassungswirkungsgrad aus swr_min: eta = 4*SWR/(1+SWR)^2.",
-    ),
-    (
-        "<b>Antenna efficiency <i>η</i></b>",
-        "<b>%</b>",
-        "eta",
-        "Gesamteffizienz: (R_R / R_T) * eta_SWR_ant.",
-    ),
-    (
-        "Loop current <i>I</i>",
-        "A",
-        "I",
-        "Strom im Hauptloop bei der Referenzleistung.",
-    ),
-    (
-        "Loop voltage <i>U</i><sub>loop</sub>",
-        "V",
-        "U",
-        "Spannung über dem Loop bei Resonanz.",
-    ),
-    (
-        "Magnetic dipole moment <i>m</i>",
-        "A m²",
-        "m",
-        "Magnetisches Dipolmoment des Loops.",
-    ),
-]
 
 
 def _is_cap_measurement_name(name: str) -> bool:
@@ -441,12 +356,6 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         undefined=jinja2.StrictUndefined,
     )
 
-    template = env.get_template("antenna.jinja2")
-    jinja_html = template.render(
-        antenna=entry.antenna,
-        antenna_css_rel=antenna_css_rel,
-    )
-
     values_files = sorted(
         p
         for p in directory_s1p_results.glob(f"*{VALUES_SUFFIX}.py")
@@ -610,186 +519,18 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
                 }
             )
 
-    seen: dict[str, int] = {}
-    band_columns: list[str] = []
-    sorted_band_items = sorted(
-        band_data_rows,
-        key=lambda x: (
-            band_order.index(str(x["band"])) if str(x["band"]) in band_order else 999,
-            float(x["f0_mhz"]) if isinstance(x["f0_mhz"], (int, float)) else 0.0,
-        ),
+    efficency_table = build_efficiency_table(
+        band_data_rows=band_data_rows,
+        band_order=band_order,
+        antenna_data=antenna_data,
     )
-    for item in sorted_band_items:
-        base = str(item["band"])
-        count = seen.get(base, 0) + 1
-        seen[base] = count
-        band_columns.append(base if count == 1 else f"{base} #{count}")
 
-    def _fmt_local_r(v: float) -> str:
-        av = abs(v)
-        if av < 1e-5:
-            return f"{v:.2e}"
-        if av < 1e-3:
-            return f"{v:.6f}"
-        if av < 1e-2:
-            return f"{v:.5f}"
-        if av < 0.1:
-            return f"{v:.4f}"
-        return f"{v:.3f}"
-
-    def _fmt_local_percent(v: float) -> str:
-        av = abs(v)
-        if av >= 100:
-            return f"{v:.0f}"
-        if av >= 10:
-            return f"{v:.1f}"
-        if av >= 1:
-            return f"{v:.2f}"
-        return f"{v:.3f}"
-
-    def _calc_for_item(item: dict[str, object]) -> FieldAntennaCalculator | None:
-        if antenna_data is None:
-            return None
-        f0_mhz = item.get("f0_mhz")
-        bw_hz = item.get("bswr")
-        swr_min = item.get("swr_min")
-        if not all(isinstance(x, (int, float)) for x in (f0_mhz, bw_hz, swr_min)):
-            return None
-        try:
-            return FieldAntennaCalculator(
-                D_m=antenna_data.D_m.value,
-                d_m=antenna_data.d_m.value,
-                n=antenna_data.n.value if antenna_data.n.value is not None else 1,
-                p_m=antenna_data.p_m.value or 0.0,
-                swr_min=float(swr_min),
-                f_Hz=float(f0_mhz) * 1e6,
-                bw262_Hz=float(bw_hz),
-                powerP_W=antenna_data.powerP_W.value,
-            )
-        except Exception:
-            return None
-
-    def _value_source(
-        item: dict[str, object], key: str, calc: FieldAntennaCalculator | None
-    ) -> str:
-        file_name = str(item.get("file") or "")
-        if key == "D":
-            if antenna_data is None:
-                return file_name
-            return str(getattr(antenna_data.D_m, "source", "") or "")
-        if key == "d":
-            if antenna_data is None:
-                return file_name
-            return str(getattr(antenna_data.d_m, "source", "") or "")
-        if key == "n":
-            if antenna_data is None:
-                return file_name
-            return str(getattr(antenna_data.n, "source", "") or "")
-        if key == "f":
-            return str(item.get("source_f") or file_name)
-        if key == "bw":
-            return str(item.get("source_bw") or file_name)
-        if key == "swr_min":
-            return str(item.get("source_swr") or file_name)
-        if key == "eta_swr":
-            return f"[{file_name}] Berechnet aus swr_min: eta = 4*SWR/(1+SWR)^2."
-        if key == "P":
-            if antenna_data is None:
-                return file_name
-            return str(getattr(antenna_data.powerP_W, "source", "") or file_name)
-        if key in {"L", "C", "Q0", "RT", "RR", "RLoss", "eta", "I", "U", "m"}:
-            return (
-                f"[{file_name}] Berechnet aus Geometrie- und Messdaten."
-                if calc is not None
-                else file_name
-            )
-        return file_name
-
-    def _format_value(calc: FieldAntennaCalculator | None, key: str) -> str:
-        if calc is None:
-            return "-"
-        if key == "D":
-            return f"{calc.D_m:.3f}"
-        if key == "d":
-            return f"{calc.d_m:.3f}"
-        if key == "n":
-            return f"{calc.n:.0f}"
-        if key == "f":
-            return f"{calc.f_Hz / 1e6:.3f}"
-        if key == "bw":
-            return f"{calc.bw262_Hz / 1e3:.1f}"
-        if key == "P":
-            return f"{calc.powerP_W:.0f}"
-        if key == "L":
-            return f"{calc.L_H:.2e}"
-        if key == "C":
-            return f"{calc.C_F:.2e}"
-        if key == "Q0":
-            return f"{calc.Q0:.0f}"
-        if key == "RT":
-            return _fmt_local_r(calc.RT_Ohm)
-        if key == "RR":
-            return _fmt_local_r(calc.RR_Ohm)
-        if key == "RLoss":
-            return _fmt_local_r(calc.RLoss_Ohm)
-        if key == "swr_min":
-            return f"{calc.swr_min:.2f}"
-        if key == "eta_swr":
-            return _fmt_local_percent(calc.eta_SWR_ant * 100)
-        if key == "eta":
-            return _fmt_local_percent(calc.eta * 100)
-        if key == "I":
-            return f"{calc.I_main_loop_A:.2f}"
-        if key == "U":
-            return f"{calc.U_loop_V:.0f}"
-        if key == "m":
-            return f"{calc.m_Am2:.3f}"
-        return "-"
-
-    pivot_row_list: list[str] = []
-    if band_columns:
-        band_cells = "".join(
-            f"<td class='val'>{html.escape(label)}</td>" for label in band_columns
-        )
-        pivot_row_list.append(
-            f"<tr class='band-row'><td>Band</td><td class='unit'></td>{band_cells}</tr>"
-        )
-    else:
-        pivot_row_list.append(
-            f"<tr><td colspan='3'>Keine Banddaten vorhanden ({html.escape(DIRECTORY_S1P_RESULTS)} fehlt oder ist leer).</td></tr>"
-        )
-    merged_single_value_keys = {"D", "d", "n", "L"}
-    for label_html, unit_html, key, tooltip in ROW_SPECS:
-        row_cells: list[str] = []
-        if key in merged_single_value_keys and sorted_band_items:
-            first_item = sorted_band_items[0]
-            first_calc = _calc_for_item(first_item)
-            merged_val = _format_value(first_calc, key)
-            merged_source = html.escape(
-                _value_source(first_item, key, first_calc), quote=True
-            )
-            row_cells.append(
-                f"<td class='val merged' colspan='{len(sorted_band_items)}' title='{merged_source}'>{html.escape(merged_val)}</td>"
-            )
-        else:
-            for item in sorted_band_items:
-                calc = _calc_for_item(item)
-                val = _format_value(calc, key)
-                css = "val"
-                if key == "RLoss" and calc is not None and calc.RLoss_Ohm < 0:
-                    css += " neg"
-                if key == "eta" and calc is not None and (calc.eta * 100) > 100:
-                    css += " neg"
-                source_attr = html.escape(_value_source(item, key, calc), quote=True)
-                row_cells.append(
-                    f"<td class='{css}' title='{source_attr}'>{html.escape(val)}</td>"
-                )
-        tooltip_attr = html.escape(tooltip, quote=True)
-        row_class = " class='eff-row'" if key == "eta" else ""
-        pivot_row_list.append(
-            f"<tr{row_class}><td title='{tooltip_attr}'>{label_html}</td><td class='unit'>{unit_html}</td>{''.join(row_cells)}</tr>"
-        )
-    pivot_rows = "\n".join(pivot_row_list)
+    template = env.get_template("antenna.jinja2")
+    jinja_html = template.render(
+        antenna=entry.antenna,
+        antenna_css_rel=antenna_css_rel,
+        efficency_table=efficency_table,
+    )
 
     inductivity_section_html = _generate_inductivity_section(
         output_subdir=directory_s1p_results,
@@ -1034,12 +775,6 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
     <h1>{html.escape(header_title)}</h1>
     {antenna_image_html}
     <info_block_html>
-    <h2>Antenna Efficiency Overview</h2>
-    <table class=\"compact\">
-        <tbody>
-{pivot_rows}
-        </tbody>
-    </table>
     {measurement_section_html}
     {environment_section_html}
     {measurements_section_html}
