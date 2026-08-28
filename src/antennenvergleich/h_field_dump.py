@@ -2,8 +2,7 @@ import dataclasses
 import html
 import pathlib
 
-from magloop_field.calculations import AntennaCalculator
-
+from antennenvergleich.constants import C_LIGHT_MS
 from antennenvergleich.datatypes import Antenna, AntennaPlusDirectory
 from antennenvergleich.h_field_analysis import (
     FeedlineSegment,
@@ -13,6 +12,7 @@ from antennenvergleich.h_field_analysis import (
     power_after_loss_db,
     select_closest_band,
 )
+from magloop_field.calculations import AntennaCalculator
 
 
 @dataclasses.dataclass(frozen=True)
@@ -128,9 +128,8 @@ class HFieldData:
             antenna_swr_min = closest_band.swr_min.value
             antenna_bw262_hz = closest_band.bw262_Hz.value
 
-            _C_LIGHT = 299_792_458.0
             r_m = (messpunkt.X_m**2 + messpunkt.Y_m**2 + messpunkt.Z_m**2) ** 0.5
-            kr = 2.0 * 3.141592653589793 * messpunkt.f_Hz * r_m / _C_LIGHT
+            kr = 2.0 * 3.141592653589793 * messpunkt.f_Hz * r_m / C_LIGHT_MS
 
             debug_calc = AntennaCalculator(
                 D_m=antenna_D_m,

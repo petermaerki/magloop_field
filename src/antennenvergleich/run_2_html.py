@@ -1,6 +1,13 @@
 """Generates compare.html — comparison table for magnetic loop antennas."""
 
-from . import constants, loop_directories, renderer_html, webui_filter
+from . import (
+    constants,
+    loop_directories,
+    renderer_antenna_html,
+    renderer_compare_html,
+    renderer_diagram_svg,
+    webui_filter,
+)
 
 
 def _assert_unique_antenna_colors(
@@ -82,12 +89,12 @@ def main() -> None:
 
     _assert_unique_antenna_colors(antenna_entries)
 
-    generated_antennas = renderer_html._generate_antenna_html_files()
+    generated_antennas = renderer_antenna_html._generate_antenna_html_files()
     print(f"Antenna HTML files generated/updated: {generated_antennas}")
 
     antennas = [entry.antenna for entry in antenna_entries]
 
-    html_renderer = renderer_html.HtmlRenderer()
+    html_renderer = renderer_compare_html.HtmlRenderer()
     html_renderer.render(antenna_entries)
 
     html = html_renderer.close()
@@ -95,13 +102,13 @@ def main() -> None:
     filename.write_text(html, encoding="utf-8")
     print(f"Written: {filename}")
 
-    svg = renderer_html.Diagramm_eta_f_svg().render(antennas)
-    filename_svg = constants.DIRECTORY_REPO / renderer_html.FILENAME_SVG_ETA_F
+    svg = renderer_diagram_svg.Diagramm_eta_f_svg().render(antennas)
+    filename_svg = constants.DIRECTORY_REPO / renderer_diagram_svg.FILENAME_SVG_ETA_F
     filename_svg.write_text(svg, encoding="utf-8")
     print(f"Written: {filename_svg}")
 
-    svg = renderer_html.Diagramm_eta_D_lambda_svg().render(antennas)
-    filename_svg = constants.DIRECTORY_REPO / renderer_html.FILENAME_SVG_ETA_DL
+    svg = renderer_diagram_svg.Diagramm_eta_D_lambda_svg().render(antennas)
+    filename_svg = constants.DIRECTORY_REPO / renderer_diagram_svg.FILENAME_SVG_ETA_DL
     filename_svg.write_text(svg, encoding="utf-8")
     print(f"Written: {filename_svg}")
 

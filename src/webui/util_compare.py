@@ -1,8 +1,13 @@
-from antennenvergleich import loop_directories, renderer_html, webui_filter
+from antennenvergleich import (
+    loop_directories,
+    renderer_compare_html,
+    renderer_diagram_svg,
+    webui_filter,
+)
 
 
 class FilterWrapper:
-    def __init__(self) -> str:
+    def __init__(self) -> None:
         self.antenna_entries = loop_directories.get_antennen_daten()
         self.filtered_antenna_entries = self.antenna_entries
 
@@ -24,7 +29,7 @@ class FilterWrapper:
         print(f"apply_filter() {len(self.filtered_antenna_entries)} remaining")
 
     def render_results_html(self) -> str:
-        html_renderer = renderer_html.HtmlRenderer()
+        html_renderer = renderer_compare_html.HtmlRenderer()
 
         html_renderer.render(self.filtered_antenna_entries)
         html = html_renderer.close()
@@ -34,4 +39,4 @@ class FilterWrapper:
     def render_eta_f_svg(self) -> str:
         antennas = [entry.antenna for entry in self.filtered_antenna_entries]
 
-        return renderer_html.Diagramm_eta_f_svg().render(antennas)
+        return renderer_diagram_svg.Diagramm_eta_f_svg().render(antennas)

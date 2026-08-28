@@ -17,13 +17,8 @@ mpl.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import least_squares
-from smith.smith_swr import (
-    BACKGROUND_COLOR,
-    FIGURE_SIZE_INCHES,
-    draw_smith_chart,
-    draw_swr_chart,
-)
 
+from antennenvergleich.constants import DIRECTORY_SRC
 from antennenvergleich.constants_s1p import (
     DELAY_SUFFIX,
     MEASUREMENTS_SUBDIR,
@@ -39,10 +34,14 @@ from antennenvergleich.datatypes_s1p import (
     SwrValues,
     ValuesDataFile,
 )
+from smith.smith_swr import (
+    BACKGROUND_COLOR,
+    FIGURE_SIZE_INCHES,
+    draw_smith_chart,
+    draw_swr_chart,
+)
 
 DIRECTORY_OF_THIS_FILE = Path(__file__).parent
-DIRECTORY_SRC = DIRECTORY_OF_THIS_FILE.parent
-assert DIRECTORY_SRC.name == "src"
 RUFF_BIN = DIRECTORY_SRC.parent / ".venv" / "bin" / "ruff"
 
 CURVE_COLOR = "#e63946"

@@ -6,7 +6,7 @@ from pyodide.ffi import JsNull, create_proxy
 from pyscript import when
 from pyscript.web import page
 
-from antennenvergleich import renderer_html, webui_filter
+from antennenvergleich import renderer_compare_html, renderer_diagram_svg, webui_filter
 from webui import util_compare
 
 try:
@@ -25,27 +25,27 @@ def load_params_from_url():
         # Get URL search params
         search_params = str(window.location.search)
         print(f"URL search params: {search_params}")
-        
+
         if not search_params or search_params == "":
             print("No URL parameters found")
             return
-        
+
         # Parse query string manually (remove leading '?')
         if search_params.startswith("?"):
             search_params = search_params[1:]
-        
+
         # Parse key=value pairs
         params = {}
         for pair in search_params.split("&"):
             if "=" in pair:
                 key, value = pair.split("=", 1)
                 params[key] = value
-        
+
         print(f"Parsed parameters: {params}")
-        
+
         # Set values from URL parameters
         params_set = 0
-        
+
         # Simple direct mapping (no conversion needed)
         direct_mapping = {
             "D_m": "antenna_D_m",
@@ -54,7 +54,7 @@ def load_params_from_url():
             "p_m": "p_m",
             "P_W": "P_W",
         }
-        
+
         for param_name, field_id in direct_mapping.items():
             if param_name in params:
                 input_element = document.getElementById(field_id)
@@ -64,7 +64,7 @@ def load_params_from_url():
                     print(f"Set {field_id} = {params[param_name]}")
                 else:
                     print(f"Field {field_id} not found")
-        
+
         # Frequency conversion: f_Hz -> MHz (for form field)
         if "f_Hz" in params:
             try:
@@ -77,7 +77,7 @@ def load_params_from_url():
                     print(f"Set f_L_MHz = {f_mhz} (converted from {f_hz} Hz)")
             except (ValueError, TypeError) as e:
                 print(f"Error converting f_Hz: {e}")
-        
+
         # Bandwidth conversion: bw_Hz -> kHz (for form field)
         if "bw_Hz" in params:
             try:
@@ -90,10 +90,10 @@ def load_params_from_url():
                     print(f"Set bw_kHz = {bw_khz} (converted from {bw_hz} Hz)")
             except (ValueError, TypeError) as e:
                 print(f"Error converting bw_Hz: {e}")
-        
+
         print(f"Set {params_set} parameters from URL")
         # Note: calculation will be triggered by the initialization code below
-                
+
     except Exception as e:
         print(f"Error loading URL parameters: {e}")
 
@@ -334,7 +334,7 @@ def load_compare() -> None:
         page["div#compare_results"].innerHTML = fw.render_results_html()
         setup_compare_scrollbars()
         svg = fw.render_eta_f_svg()
-        update_svg(selector=f"img#{renderer_html.ID_SVG_ETA_F}", svg=svg)
+        update_svg(selector=f"img#{renderer_diagram_svg.ID_SVG_ETA_F}", svg=svg)
 
     redraw()
 

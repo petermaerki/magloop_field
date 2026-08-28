@@ -2,10 +2,10 @@ import dataclasses
 import math
 
 import numpy as np
+from antennenvergleich . constants import C_LIGHT_MS
 from scipy import special
 
 _MU0 = 4.0 * math.pi * 1e-7  # H/m
-_C_LIGHT = 299792458.0  # m/s
 _KR_NEAR = 0.3
 _KR_FAR = 1.0
 # Transition tuning for the hybrid model:
@@ -248,8 +248,8 @@ class AntennaCalculator:
     @property
     def RR_Ohm(self) -> float:
         """Radiation resistance [Ohm] — Rayleigh term with King finite-size correction."""
-        rayleigh = 31171.0 * ((self.A_m2 * self.f_Hz**2) / _C_LIGHT**2) ** 2
-        king_correction = 1.0 + 0.5 * ((math.pi * self.D_m * self.f_Hz) / _C_LIGHT) ** 2
+        rayleigh = 31171.0 * ((self.A_m2 * self.f_Hz**2) / C_LIGHT_MS**2) ** 2
+        king_correction = 1.0 + 0.5 * ((math.pi * self.D_m * self.f_Hz) / C_LIGHT_MS) ** 2
         return self.n**2 * rayleigh * king_correction
 
     @property
@@ -350,7 +350,7 @@ class Calculator:
 
     def h_field_retarded_dipole_abs_xyz(self, x_m, y_m, z_m, m_Am2, f_Hz):
         """Retarded magnetic dipole |H| at Cartesian point (x, y, z)."""
-        k = 2.0 * np.pi * f_Hz / _C_LIGHT
+        k = 2.0 * np.pi * f_Hz / C_LIGHT_MS
         fac = m_Am2 / (4.0 * np.pi)
 
         x_m = np.asarray(x_m, dtype=float)
@@ -382,7 +382,7 @@ class Calculator:
         h_ret = self.h_field_retarded_dipole_abs_xyz(x_m, y_m, z_m, m_Am2, f_Hz)
 
         r = np.sqrt(x_m**2 + y_m**2 + z_m**2)
-        kr = 2.0 * np.pi * f_Hz * r / _C_LIGHT
+        kr = 2.0 * np.pi * f_Hz * r / C_LIGHT_MS
 
         # Near: pure elliptic. Mid: smooth blend. Far: pure retarded.
         t = np.clip((kr - _KR_NEAR) / (_KR_FAR - _KR_NEAR), 0.0, 1.0)

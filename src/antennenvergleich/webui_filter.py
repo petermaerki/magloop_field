@@ -4,7 +4,7 @@ import pathlib
 
 from antennenvergleich import datatypes
 
-from . import renderer_html
+from . import renderer_compare_html
 
 
 class EnumCategory(enum.StrEnum):
@@ -51,7 +51,7 @@ def get_antenna_joins(
         antenna = antenna_entry.antenna
         assert isinstance(antenna.bands, list)
         for band in antenna.bands:
-            band_str = renderer_html._band_from_frequency(f_Hz=band.f_Hz.value)
+            band_str = renderer_compare_html._band_from_frequency(f_Hz=band.f_Hz.value)
             print(antenna.selection_location)
             antenna_joins.append(
                 AntennaJoin(

@@ -11,10 +11,17 @@ DIRECTORY_OF_THIS_FILE = pathlib.Path(__file__).parent
 DIRECTORY_REPO = DIRECTORY_OF_THIS_FILE.parent.parent
 if not IS_PYODIDE:
     assert (DIRECTORY_REPO / "README.md").is_file(), str(DIRECTORY_REPO)
+DIRECTORY_SRC = DIRECTORY_OF_THIS_FILE.parent
+if not IS_PYODIDE:
+    assert DIRECTORY_SRC.name == "src"
 
 ANTENNENDATEN_FILENAME = "antennendaten.py"
 
 
+C_LIGHT_MS = 299792458.0
+"""
+m/s
+"""
 
 BANDS = SimpleNamespace(
     f_hz_by_band_name={
