@@ -7,7 +7,7 @@ from pathlib import Path
 
 from antennenvergleich.constants_s1p import (
     CAP_VALUES_TAGS,
-    RESULTS_SUBDIR,
+    DIRECTORY_S1P_RESULTS,
     SKIP_VALUES_FILENAME_SUFFIX,
     VALUES_SUFFIX,
 )
@@ -69,7 +69,7 @@ class AntennaPlusDirectory:
 
     @staticmethod
     def _iter_values_files(antenna_dir: Path):
-        results_dir = antenna_dir / RESULTS_SUBDIR
+        results_dir = antenna_dir / DIRECTORY_S1P_RESULTS
         if not results_dir.is_dir():
             return
 

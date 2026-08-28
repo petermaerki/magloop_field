@@ -89,7 +89,7 @@ def main() -> None:
 
     _assert_unique_antenna_colors(antenna_entries)
 
-    generated_antennas = renderer_antenna_html._generate_antenna_html_files()
+    generated_antennas = renderer_antenna_html.generate_antenna_html_files()
     print(f"Antenna HTML files generated/updated: {generated_antennas}")
 
     antennas = [entry.antenna for entry in antenna_entries]

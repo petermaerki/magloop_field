@@ -22,7 +22,7 @@ from antennenvergleich.constants import DIRECTORY_SRC
 from antennenvergleich.constants_s1p import (
     DELAY_SUFFIX,
     MEASUREMENTS_SUBDIR,
-    RESULTS_SUBDIR,
+    DIRECTORY_S1P_RESULTS,
     S1P_EXTENSION,
     SMITH_SUFFIX,
     SVG_EXTENSION,
@@ -690,7 +690,7 @@ def main() -> None:
         if not s1p_files:
             continue
 
-        results_dir = s1p_dir.parent / RESULTS_SUBDIR
+        results_dir = s1p_dir.parent / DIRECTORY_S1P_RESULTS
         if results_dir.exists():
             shutil.rmtree(results_dir)
         results_dir.mkdir(parents=True, exist_ok=True)

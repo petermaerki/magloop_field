@@ -7,15 +7,16 @@ import pathlib
 import re
 from urllib.parse import urlsplit, urlunsplit
 
-from antennenvergleich.datatypes import VnaCalibration
+from antennenvergleich.datatypes import VnaCalibration, AntennaPlusDirectory
 from antennenvergleich.datatypes_s1p import AntennaModelFit, SwrValues, ValuesDataFile
 from magloop_field.calculations import AntennaCalculator as FieldAntennaCalculator
 
 from . import constants
-from .constants import BANDS, DIRECTORY_SRC
+from antennenvergleich import loop_directories
+from .constants import BANDS, DIRECTORY_SRC, ANTENNENDATEN_FILENAME
 from .constants_s1p import (
     CAP_VALUES_TAGS,
-    RESULTS_SUBDIR,
+    DIRECTORY_S1P_RESULTS,
     SMITH_SUFFIX,
     SVG_EXTENSION,
     SWR_SUFFIX,
@@ -345,12 +346,13 @@ def _generate_inductivity_section(
     return ""
 
 
-def write_antenna_html(output_subdir: pathlib.Path) -> None:
+def write_antenna_html(entry: AntennaPlusDirectory) -> None:
     """Generate one antenna.html page for a given antenna results directory."""
-    antenna_dir = output_subdir.parent
+    directory_s1p_results = entry.directory / DIRECTORY_S1P_RESULTS
+
     values_files = sorted(
         p
-        for p in output_subdir.glob(f"*{VALUES_SUFFIX}.py")
+        for p in directory_s1p_results.glob(f"*{VALUES_SUFFIX}.py")
         if not _is_cap_measurement_name(p.stem)
     )
 
@@ -403,10 +405,10 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
         smith_name = f"{base_stem}{SMITH_SUFFIX}{SVG_EXTENSION}"
         swr_name = f"{base_stem}{SWR_SUFFIX}{SVG_EXTENSION}"
         smith_rel = pathlib.Path(
-            os.path.relpath(output_subdir / smith_name, antenna_dir)
+            os.path.relpath(directory_s1p_results / smith_name,entry.directory)
         ).as_posix()
         swr_rel = pathlib.Path(
-            os.path.relpath(output_subdir / swr_name, antenna_dir)
+            os.path.relpath(directory_s1p_results / swr_name, entry.directory)
         ).as_posix()
 
         band_data_rows.append(
@@ -450,18 +452,9 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
 
     table_rows = "\n".join(rows)
     chart_table_rows = "\n".join(chart_rows)
-    antenna_dir_name = output_subdir.parent.name
+    antenna_dir_name = directory_s1p_results.parent.name
 
-    antenna_data = None
-    try:
-        antenna_module = importlib.import_module(
-            f"antennen.{antenna_dir_name}.antennendaten"
-        )
-        antenna_data = getattr(antenna_module, "ANTENNENDATEN", None)
-    except Exception as exc:  # pragma: no cover - best effort for optional section
-        print(
-            f"Warnung: Antennendaten konnten nicht geladen werden ({antenna_dir_name}): {exc}"
-        )
+    antenna_data = entry.antenna
 
     environment_html_block = ""
     measurement_html_block = ""
@@ -469,15 +462,15 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
         measurement_html_block = _load_html_fragments(
             antenna_data=antenna_data,
             attribute_name="measurement_html",
-            base_dir=output_subdir.parent,
-            destination_dir=antenna_dir,
+            base_dir=directory_s1p_results.parent,
+            destination_dir=entry.directory,
             warning_label="measurement_html",
         )
         environment_html_block = _load_html_fragments(
             antenna_data=antenna_data,
             attribute_name="enviroment_html",
-            base_dir=output_subdir.parent,
-            destination_dir=antenna_dir,
+            base_dir=directory_s1p_results.parent,
+            destination_dir=entry.directory,
             warning_label="enviroment_html",
         )
 
@@ -752,7 +745,7 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
         )
     else:
         pivot_row_list.append(
-            f"<tr><td colspan='3'>Keine Banddaten vorhanden ({html.escape(RESULTS_SUBDIR)} fehlt oder ist leer).</td></tr>"
+            f"<tr><td colspan='3'>Keine Banddaten vorhanden ({html.escape(DIRECTORY_S1P_RESULTS)} fehlt oder ist leer).</td></tr>"
         )
     merged_single_value_keys = {"D", "d", "n", "L"}
     for label_html, unit_html, key, tooltip in row_specs:
@@ -788,8 +781,8 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
     pivot_rows = "\n".join(pivot_row_list)
 
     inductivity_section_html = _generate_inductivity_section(
-        output_subdir=output_subdir,
-        antenna_dir=antenna_dir,
+        output_subdir=directory_s1p_results,
+        antenna_dir=entry.directory,
         antenna_data=antenna_data,
         first_values_with_model=first_values_with_model,
         antenna_dir_name=antenna_dir_name,
@@ -835,7 +828,7 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
             )
             if calibration_path.is_file():
                 rel_to_antenna = pathlib.Path(
-                    os.path.relpath(calibration_path, antenna_dir)
+                    os.path.relpath(calibration_path, entry.directory)
                 ).as_posix()
                 src = html.escape(rel_to_antenna, quote=True)
                 alt = html.escape(f"VNA calibration: {calibration_img}", quote=True)
@@ -873,7 +866,7 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
         )
 
     h_field_section_html = ""
-    h_field_html_file = output_subdir.parent / "h_field" / "h_field.html"
+    h_field_html_file = directory_s1p_results.parent / "h_field" / "h_field.html"
     if h_field_html_file.is_file():
         try:
             h_field_section_html = h_field_html_file.read_text(encoding="utf-8")
@@ -917,7 +910,7 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
             h_field_section_html = _rewrite_local_links_in_html_fragment(
                 h_field_section_html,
                 fragment_dir=h_field_html_file.parent,
-                destination_dir=antenna_dir,
+                destination_dir=entry.directory,
             )
         except Exception as exc:  # pragma: no cover - optional section best effort
             print(
@@ -946,11 +939,11 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
     try:
         antenna_pictures = tuple(getattr(antenna_data, "overview_pictures", ()) or ())
         for picture_rel in antenna_pictures:
-            pic_path = output_subdir.parent / picture_rel
+            pic_path = directory_s1p_results.parent / picture_rel
             if not pic_path.is_file():
                 continue
             rel_to_antenna = pathlib.Path(
-                os.path.relpath(pic_path, antenna_dir)
+                os.path.relpath(pic_path, entry.directory)
             ).as_posix()
             src = html.escape(rel_to_antenna, quote=True)
             alt = html.escape(f"Overview picture: {pic_path.name}", quote=True)
@@ -1001,7 +994,7 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
 
     compare_overview_path = constants.DIRECTORY_REPO / "index.html"
     compare_overview_rel = pathlib.Path(
-        os.path.relpath(compare_overview_path.resolve(), antenna_dir.resolve())
+        os.path.relpath(compare_overview_path.resolve(), entry.directory.resolve())
     ).as_posix()
     compare_overview_link_html = (
         f"<p>All antennas overview: "
@@ -1011,7 +1004,7 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
 
     antenna_css_path = constants.DIRECTORY_REPO / "static/css/style_antenna.css"
     antenna_css_rel = pathlib.Path(
-        os.path.relpath(antenna_css_path.resolve(), antenna_dir.resolve())
+        os.path.relpath(antenna_css_path.resolve(), entry.directory.resolve())
     ).as_posix()
 
     doc = f"""<!-- Automatically generated file by run_2_html.py. Do not edit manually. -->
@@ -1043,17 +1036,14 @@ def write_antenna_html(output_subdir: pathlib.Path) -> None:
 </body>
 </html>
 """
-    (antenna_dir / "generated_antenna.html").write_text(doc)
+    (entry.directory / "generated_antenna.html").write_text(doc)
 
 
-def _generate_antenna_html_files() -> int:
+def generate_antenna_html_files() -> int:
     """Generate antenna.html files for all antennas."""
     generated = 0
-    src_dir = DIRECTORY_OF_THIS_FILE.parent
-    antenna_data_files = sorted(src_dir.rglob("antennendaten.py"))
-    for antenna_data_file in antenna_data_files:
-        antenna_dir = antenna_data_file.parent
-        results_dir = antenna_dir / RESULTS_SUBDIR
-        write_antenna_html(results_dir)
+
+    for entry in loop_directories.get_antennen_daten():
+        write_antenna_html(entry)
         generated += 1
     return generated
