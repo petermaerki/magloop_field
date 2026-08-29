@@ -1,4 +1,3 @@
-import importlib
 import os
 import pathlib
 import re
@@ -7,8 +6,8 @@ from urllib.parse import urlsplit, urlunsplit
 import jinja2
 
 from antennenvergleich import loop_directories
-from antennenvergleich.datatypes import AntennaPlusDirectory, VnaCalibration
-from antennenvergleich.datatypes_s1p import AntennaModelFit, SwrValues, ValuesDataFile
+from antennenvergleich.datatypes import Antenna, AntennaPlusDirectory, VnaCalibration
+from antennenvergleich.datatypes_s1p import S1pValues
 
 from . import constants
 from .constants import BANDS, DIRECTORY_SRC
@@ -32,30 +31,6 @@ DIRECTORY_OF_THIS_FILE = pathlib.Path(__file__).parent
 def _is_cap_measurement_name(name: str) -> bool:
     name_u = name.upper()
     return any(tag in name_u for tag in CAP_VALUES_TAGS)
-
-
-def _read_values_file(filename_values_py: pathlib.Path) -> ValuesDataFile:
-    """Load swr_values and model from a generated *_values.py file."""
-    try:
-        relative_py = filename_values_py.resolve().relative_to(DIRECTORY_SRC)
-    except ValueError as exc:
-        raise RuntimeError(
-            f"{filename_values_py} liegt nicht unter {DIRECTORY_SRC}"
-        ) from exc
-
-    module_name = ".".join(relative_py.with_suffix("").parts)
-    module = importlib.import_module(module_name)
-    module = importlib.reload(module)
-
-    swr_values = getattr(module, "swr_values", None)
-    model = getattr(module, "model", None)
-
-    if not isinstance(swr_values, SwrValues):
-        raise TypeError(f"{filename_values_py.name}: swr_values hat unerwarteten Typ")
-    if model is not None and not isinstance(model, AntennaModelFit):
-        raise TypeError(f"{filename_values_py.name}: model hat unerwarteten Typ")
-
-    return ValuesDataFile(swr_values=swr_values, model=model)
 
 
 def _rewrite_local_links_in_html_fragment(
@@ -92,13 +67,17 @@ def _rewrite_local_links_in_html_fragment(
 
 
 def _load_html_fragments(
-    antenna_data: object,
-    attribute_name: str,
+    antenna_data: Antenna,
+    filename_html: str | None,
     base_dir: pathlib.Path,
     destination_dir: pathlib.Path,
-    warning_label: str,
     template_vars: dict[str, str] | None = None,
 ) -> str:
+    assert isinstance(filename_html, str | None)
+
+    if filename_html is None:
+        return "\n"
+
     def _render_fragment_template(
         fragment: str,
         fragment_dir: pathlib.Path,
@@ -107,33 +86,29 @@ def _load_html_fragments(
         env = jinja2.Environment(
             loader=jinja2.FileSystemLoader(
                 [fragment_dir.as_posix(), DIRECTORY_SRC.as_posix()]
-            )
+            ),
+            undefined=jinja2.StrictUndefined,
         )
-        return env.from_string(fragment).render(**(variables or {}))
-
-    rel_paths = tuple(getattr(antenna_data, attribute_name, ()) or ())
-    fragments: list[str] = []
-    for rel_path in rel_paths:
-        path = (base_dir / rel_path).resolve()
-        assert path.is_file(), f"{warning_label} not found: {path}"
         try:
-            fragment = path.read_text(encoding="utf-8")
-            fragment = _render_fragment_template(
-                fragment,
-                fragment_dir=path.parent,
-                variables=template_vars,
-            )
-            fragment = _rewrite_local_links_in_html_fragment(
-                fragment,
-                fragment_dir=path.parent,
-                destination_dir=destination_dir,
-            )
-            fragments.append(fragment)
-        except Exception as exc:  # pragma: no cover - best effort for optional section
-            print(
-                f"Warnung: {warning_label} konnte nicht geladen werden ({path}): {exc}"
-            )
-    return "\n".join(fragments)
+            return env.from_string(fragment).render(**(variables or {}))
+        except jinja2.exceptions.UndefinedError as e:
+            raise ValueError(f"{fragment_dir}/{filename_html}: {e}") from e
+
+    path = (base_dir / filename_html).resolve()
+    assert path.is_file(), f"{filename_html} not found: {path}"
+
+    fragment = path.read_text(encoding="utf-8")
+    fragment = _render_fragment_template(
+        fragment,
+        fragment_dir=path.parent,
+        variables=template_vars,
+    )
+    fragment = _rewrite_local_links_in_html_fragment(
+        fragment,
+        fragment_dir=path.parent,
+        destination_dir=destination_dir,
+    )
+    return fragment
 
 
 def _generate_inductance_section(
@@ -202,7 +177,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
     band_data_rows: list[dict[str, object]] = []
     first_values_with_model: ValuesDataFile | None = None
     for values_path in values_files:
-        values = _read_values_file(values_path)
+        values = S1pValues.read_values_file(values_path)
         if first_values_with_model is None and values.model is not None:
             first_values_with_model = values
         bswr = values.model.BSWR2_62_Hz if values.model else None
@@ -265,58 +240,56 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         )
     antenna_dir_name = directory_s1p_results.parent.name
 
-    antenna_data = entry.antenna
+    antenna = entry.antenna
 
     environment_html_block = ""
     measurement_html_block = ""
     build_html_block = ""
     final_remarks_html_block = ""
-    template_vars_dict: dict[str, str] = {"vna_info": constants.VNA_INFO}
-    if antenna_data is not None:
-        raw_template_vars_dict = (
-            getattr(antenna_data, "template_vars_dict", {}) or {}
-        )
-        template_vars_dict.update(
-            {str(key): str(value) for key, value in raw_template_vars_dict.items()}
-        )
-        measurement_html_block = _load_html_fragments(
-            antenna_data=antenna_data,
-            attribute_name="measurement_html",
-            base_dir=directory_s1p_results.parent,
-            destination_dir=entry.directory,
-            warning_label="measurement_html",
-            template_vars=template_vars_dict,
-        )
-        environment_html_block = _load_html_fragments(
-            antenna_data=antenna_data,
-            attribute_name="enviroment_html",
-            base_dir=directory_s1p_results.parent,
-            destination_dir=entry.directory,
-            warning_label="enviroment_html",
-            template_vars=template_vars_dict,
-        )
-        build_html_block = _load_html_fragments(
-            antenna_data=antenna_data,
-            attribute_name="antenna_build_html",
-            base_dir=directory_s1p_results.parent,
-            destination_dir=entry.directory,
-            warning_label="build_html",
-            template_vars=template_vars_dict,
-        )
-        final_remarks_html_block = _load_html_fragments(
-            antenna_data=antenna_data,
-            attribute_name="final_remarks_html",
-            base_dir=directory_s1p_results.parent,
-            destination_dir=entry.directory,
-            warning_label="final_remarks_html",
-            template_vars=template_vars_dict,
-        )
+    template_vars_dict: dict[str, str] = {
+        "constants": constants,
+        "antenna": antenna,
+    }
 
-    if not band_data_rows and antenna_data is not None:
-        for idx, band in enumerate(getattr(antenna_data, "bands", ()) or (), start=1):
-            f_hz = getattr(getattr(band, "f_Hz", None), "value", None)
-            bw_hz = getattr(getattr(band, "bw262_Hz", None), "value", None)
-            swr_min = getattr(getattr(band, "swr_min", None), "value", None)
+    measurement_html_block = _load_html_fragments(
+        antenna_data=antenna,
+        filename_html=antenna.measurement_html,
+        base_dir=directory_s1p_results.parent,
+        destination_dir=entry.directory,
+        template_vars=template_vars_dict,
+    )
+    environment_html_block = _load_html_fragments(
+        antenna_data=antenna,
+        filename_html=antenna.enviroment_html,
+        base_dir=directory_s1p_results.parent,
+        destination_dir=entry.directory,
+        template_vars=template_vars_dict,
+    )
+    build_html_block = _load_html_fragments(
+        antenna_data=antenna,
+        filename_html=antenna.antenna_build_html,
+        base_dir=directory_s1p_results.parent,
+        destination_dir=entry.directory,
+        template_vars=template_vars_dict,
+    )
+    final_remarks_html_block = _load_html_fragments(
+        antenna_data=antenna,
+        filename_html=antenna.final_remarks_html,
+        base_dir=directory_s1p_results.parent,
+        destination_dir=entry.directory,
+        template_vars=template_vars_dict,
+    )
+
+    if not band_data_rows and antenna is not None:
+        for idx, band in enumerate(antenna.bands or (), start=1):
+            f_hz_obj = band.f_Hz
+            bw_hz_obj = band.bw262_Hz
+            swr_min_obj = band.swr_min
+
+            f_hz = f_hz_obj.value if f_hz_obj is not None else None
+            bw_hz = bw_hz_obj.value if bw_hz_obj is not None else None
+            swr_min = swr_min_obj.value if swr_min_obj is not None else None
+
             band_label = infer_band_label_from_f_hz(
                 float(f_hz) if isinstance(f_hz, (int, float)) else None,
                 f"band_{idx}",
@@ -339,22 +312,18 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
                     if isinstance(swr_min, (int, float))
                     else None,
                     "eta_ant": eta_ant,
-                    "source_f": str(
-                        getattr(getattr(band, "f_Hz", None), "source", "") or ""
-                    ),
-                    "source_bw": str(
-                        getattr(getattr(band, "bw262_Hz", None), "source", "") or ""
-                    ),
-                    "source_swr": str(
-                        getattr(getattr(band, "swr_min", None), "source", "") or ""
-                    ),
+                    "source_f": str(f_hz_obj.source) if f_hz_obj is not None else "",
+                    "source_bw": str(bw_hz_obj.source) if bw_hz_obj is not None else "",
+                    "source_swr": str(swr_min_obj.source)
+                    if swr_min_obj is not None
+                    else "",
                 }
             )
 
     efficiency_table = build_efficiency_table(
         band_data_rows=band_data_rows,
         band_order=band_order,
-        antenna_data=antenna_data,
+        antenna_data=antenna,
     )
 
     measurement_section_html = ""
@@ -369,12 +338,14 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
 
     final_remarks_section_html = ""
     if final_remarks_html_block.strip():
-        final_remarks_section_html = f"<h2>Final Remarks</h2>\n{final_remarks_html_block}"
+        final_remarks_section_html = (
+            f"<h2>Final Remarks</h2>\n{final_remarks_html_block}"
+        )
 
     inductance_section_html = _generate_inductance_section(
         output_subdir=directory_s1p_results,
         antenna_dir=entry.directory,
-        antenna_data=antenna_data,
+        antenna_data=antenna,
         first_values_with_model=first_values_with_model,
         antenna_dir_name=antenna_dir_name,
     )
@@ -385,8 +356,8 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
 
     vna_calibration_mode = ""
     vna_calibration_href = ""
-    if antenna_data is not None:
-        calibration_value = getattr(antenna_data, "vna_calibration", None)
+    if antenna is not None:
+        calibration_value = antenna.vna_calibration
         calibration_img = ""
         if calibration_value == VnaCalibration.ANTENNA_FEED_POINT:
             vna_calibration_mode = VnaCalibration.ANTENNA_FEED_POINT.value
@@ -396,7 +367,9 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
             calibration_img = "kabel_vna.svg"
 
         if calibration_img:
-            calibration_path = DIRECTORY_SRC / "shared" / "vna_schematic" / calibration_img
+            calibration_path = (
+                DIRECTORY_SRC / "shared" / "vna_schematic" / calibration_img
+            )
             if calibration_path.is_file():
                 vna_calibration_href = pathlib.Path(
                     os.path.relpath(calibration_path, entry.directory)
@@ -414,37 +387,6 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
     h_field_section_before_html = h_field_section.html_before_measurements
     h_field_section_after_html = h_field_section.html_after_measurements
     h_field_measurements: HFieldMeasurements = h_field_section.measurements
-
-    # info_str_line = "-"
-    # info_conductor_line = "-"
-    # info_capacitor_line = "-"
-    # info_enviroment_line = "-"
-    # info_thanks_line = ""
-    # if antenna_data is not None:
-    #     info_str_line = str(getattr(antenna_data, "info_str", "") or "-")
-    #     info_conductor_line = str(
-    #         getattr(antenna_data, "info_conductor_str", "") or "-"
-    #     )
-    #     info_capacitor_line = str(
-    #         getattr(antenna_data, "info_capacitor_str", "") or "-"
-    #     )
-    #     info_enviroment_line = str(
-    #         getattr(antenna_data, "info_enviroment_str", "") or "-"
-    #     )
-    #     info_thanks_line = str(
-    #         getattr(antenna_data, "info_thanks_str", "") or ""
-    #     ).strip()
-
-    # info_lines = [
-    #     f"Info: {html.escape(info_str_line)}",
-    #     f"Conductor: {html.escape(info_conductor_line)}",
-    #     f"Capacitor: {html.escape(info_capacitor_line)}",
-    #     f"Enviroment: {html.escape(info_enviroment_line)}",
-    # ]
-    # if info_thanks_line:
-    #     info_lines.append(f"Thanks: {html.escape(info_thanks_line)}")
-
-    # info_block_html = f"<p>{'<br>'.join(info_lines)}</p>"
 
     compare_overview_path = constants.DIRECTORY_REPO / "index.html"
     compare_overview_rel = pathlib.Path(

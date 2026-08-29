@@ -15,6 +15,8 @@ DIRECTORY_SRC = DIRECTORY_OF_THIS_FILE.parent
 if not IS_PYODIDE:
     assert DIRECTORY_SRC.name == "src"
 
+RUFF_BIN = DIRECTORY_SRC.parent / ".venv" / "bin" / "ruff"
+
 ANTENNENDATEN_FILENAME = "antennendaten.py"
 
 VNA_INFO = "NanoVNA V2 Plus4"

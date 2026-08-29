@@ -1,8 +1,10 @@
 import dataclasses
 import html
+import importlib
+import io
 import pathlib
 
-from antennenvergleich.constants import C_LIGHT_MS
+from antennenvergleich.constants import C_LIGHT_MS, DIRECTORY_SRC
 from antennenvergleich.datatypes import Antenna, AntennaPlusDirectory
 from antennenvergleich.h_field_analysis import (
     FeedlineSegment,
@@ -81,7 +83,32 @@ class HFieldData:
             ),
         )
 
-    def print(self) -> None:
+
+    @staticmethod
+    def read_values_file(filename: pathlib.Path) -> "HFieldData":
+        try:
+            relative_py = filename.resolve().relative_to(DIRECTORY_SRC)
+        except ValueError as exc:
+            raise RuntimeError(f"{filename} liegt nicht unter {DIRECTORY_SRC}") from exc
+
+        module_name = ".".join(relative_py.with_suffix("").parts)
+        module = importlib.import_module(module_name)
+        module = importlib.reload(module)
+
+        h_field_data = getattr(module, "h_field_data", None)
+
+        if h_field_data is None:
+            raise TypeError(f"{filename.name}: h_field_data does not exist!")
+
+        if not isinstance(h_field_data, HFieldData):
+            raise TypeError(f"{filename.name}: h_field_data hat unerwarteten Typ")
+
+        return h_field_data
+
+
+    def print(self, out: io.TextIOWrapper) -> None:
+        assert isinstance(out,io.TextIOWrapper)
+
         # Antenna data from project files (geometry from HB0SM, band data from datasheet).
         # Same mechanism as run_2_html.py: enrich local antenna with fitted s1p_results.
         entry = AntennaPlusDirectory(antenna=self.antennendaten, directory=self.this_antenna_dir)
@@ -102,7 +129,7 @@ class HFieldData:
         frequency_sections: list[_FrequencyTables] = []
 
         for messpunkt in self._iter_messpunkte():
-            print(f"=== Messpunkt {messpunkt.punkt_str} ===")
+            print(f"=== Messpunkt {messpunkt.punkt_str} ===", file=out)
 
             losses_db, attenuation_cables_connectors_total_dbm = calculate_feedline_losses(
                 f_hz=messpunkt.f_Hz,
@@ -112,17 +139,18 @@ class HFieldData:
             )
 
             for cable in self.cables:
-                print(f"cable_a_loss_db: {losses_db[cable.name]:.4f} dB")
-            print(f"connectors_loss_db: {losses_db['connectors']:.4f} dB")
+                print(f"cable_a_loss_db: {losses_db[cable.name]:.4f} dB", file=out)
+            print(f"connectors_loss_db: {losses_db['connectors']:.4f} dB", file=out)
             print(
-                f"attenuation_cables_connectors_total_dbm: {attenuation_cables_connectors_total_dbm:.4f} dB"
+                f"attenuation_cables_connectors_total_dbm: {attenuation_cables_connectors_total_dbm:.4f} dB",
+                file=out,
             )
 
             tx_after_cable_w = power_after_loss_db(
                 tx_power_w=messpunkt.tx_power_w,
                 total_loss_db=attenuation_cables_connectors_total_dbm,
             )
-            print(f"tx_after_cable_w: {tx_after_cable_w:.3f} W")
+            print(f"tx_after_cable_w: {tx_after_cable_w:.3f} W", file=out)
 
             closest_band = select_closest_band(antenna=ant_datasheet, f_hz=messpunkt.f_Hz)
             antenna_swr_min = closest_band.swr_min.value
@@ -142,27 +170,33 @@ class HFieldData:
                 powerP_W=tx_after_cable_w,
             )
 
-            print("--- debug_h_field_inputs ---")
+            print("--- debug_h_field_inputs ---", file=out)
             print(
-                f"closest_band_f_Hz: {closest_band.f_Hz.value:.1f} (source: {closest_band.f_Hz.source})"
+                f"closest_band_f_Hz: {closest_band.f_Hz.value:.1f} (source: {closest_band.f_Hz.source})",
+                file=out,
             )
             print(
-                f"closest_band_bw262_Hz: {closest_band.bw262_Hz.value:.6f} (source: {closest_band.bw262_Hz.source})"
+                f"closest_band_bw262_Hz: {closest_band.bw262_Hz.value:.6f} (source: {closest_band.bw262_Hz.source})",
+                file=out,
             )
             print(
-                f"closest_band_swr_min: {closest_band.swr_min.value:.6f} (source: {closest_band.swr_min.source})"
+                f"closest_band_swr_min: {closest_band.swr_min.value:.6f} (source: {closest_band.swr_min.source})",
+                file=out,
             )
             print(
-                f"antenna_D_m: {antenna_D_m:.6f}, antenna_d_m: {antenna_d_m:.6f}, n: {antenna_n}, p_m: {antenna_p_m:.6f}"
+                f"antenna_D_m: {antenna_D_m:.6f}, antenna_d_m: {antenna_d_m:.6f}, n: {antenna_n}, p_m: {antenna_p_m:.6f}",
+                file=out,
             )
             print(
-                f"point_xyz_m: ({messpunkt.X_m:.6f}, {messpunkt.Y_m:.6f}, {messpunkt.Z_m:.6f}), r_m: {r_m:.6f}, kr: {kr:.6f}"
+                f"point_xyz_m: ({messpunkt.X_m:.6f}, {messpunkt.Y_m:.6f}, {messpunkt.Z_m:.6f}), r_m: {r_m:.6f}, kr: {kr:.6f}",
+                file=out,
             )
-            print(f"tx_after_cable_w: {tx_after_cable_w:.6f}")
+            print(f"tx_after_cable_w: {tx_after_cable_w:.6f}", file=out)
             print(
-                f"I_main_loop_A: {debug_calc.I_main_loop_A:.6f}, m_Am2: {debug_calc.m_Am2:.6f}"
+                f"I_main_loop_A: {debug_calc.I_main_loop_A:.6f}, m_Am2: {debug_calc.m_Am2:.6f}",
+                file=out,
             )
-            print("--- /debug_h_field_inputs ---")
+            print("--- /debug_h_field_inputs ---", file=out)
 
             h_field_expected_A_m = expected_h_field_at_point(
                 antenna_D_m=antenna_D_m,
@@ -177,7 +211,7 @@ class HFieldData:
                 y_m=messpunkt.Y_m,
                 z_m=messpunkt.Z_m,
             )
-            print(f"h_field_expected_A_m: {h_field_expected_A_m:.6f} A/m")
+            print(f"h_field_expected_A_m: {h_field_expected_A_m:.6f} A/m", file=out)
 
             h_field_measured_A_m, h_field_factor_measured_to_expected = (
                 measured_h_field_and_factor(
@@ -186,9 +220,10 @@ class HFieldData:
                     expected_h_field_a_m=h_field_expected_A_m,
                 )
             )
-            print(f"h_field_measured_A_m: {h_field_measured_A_m:.6f} A/m")
+            print(f"h_field_measured_A_m: {h_field_measured_A_m:.6f} A/m", file=out)
             print(
-                f"h_field_factor_measured_to_expected: {h_field_factor_measured_to_expected:.3f}"
+                f"h_field_factor_measured_to_expected: {h_field_factor_measured_to_expected:.3f}",
+                file=out,
             )
 
             section = sections_by_frequency.get(messpunkt.f_Hz)

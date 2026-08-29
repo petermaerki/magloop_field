@@ -5,3 +5,4 @@ magloop_field.egg-info/*
 **/s1p_results/*
 .ninja_log
 *generated*
+uv.lock

@@ -1,6 +1,5 @@
 """Shared antenna data structures and discovery logic."""
 
-import importlib
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
@@ -61,8 +60,10 @@ class AntennaPlusDirectory:
         """
         Append fitted S1P band data from this antenna's s1p_results files.
         """
+        from antennenvergleich.datatypes_s1p import S1pValues
+
         for values_path in self._iter_values_files(self.directory):
-            values = Antenna._read_values_file(values_path)
+            values = S1pValues.read_values_file(values_path)
             if values.model is None:
                 continue
             self.antenna.bands.append(values.band_data)
@@ -102,10 +103,10 @@ class Antenna:
     selection_name: str = "-"
     info_thanks_str: str = ""
     vna_calibration: VnaCalibration = VnaCalibration.AT_VNA
-    measurement_html: tuple[str, ...] = field(default_factory=tuple)
-    enviroment_html: tuple[str, ...] = field(default_factory=tuple)
-    antenna_build_html: tuple[str, ...] = field(default_factory=tuple)
-    final_remarks_html: tuple[str, ...] = field(default_factory=tuple)
+    measurement_html: str | None = None
+    enviroment_html: str | None = None
+    antenna_build_html: str | None = None
+    final_remarks_html: str | None = None
     template_vars_dict: dict[str, str] = field(default_factory=dict)
     overview_pictures: tuple[str, ...] = field(default_factory=tuple)
     inductivity_pictures: tuple[str, ...] = field(default_factory=tuple)
@@ -122,6 +123,11 @@ class Antenna:
         assert_selection(self.selection_brand)
         assert_selection(self.selection_name)
         assert_selection(self.selection_location)
+
+        assert isinstance(self.measurement_html, str | None)
+        assert isinstance(self.enviroment_html, str | None)
+        assert isinstance(self.antenna_build_html, str | None)
+        assert isinstance(self.final_remarks_html, str | None)
 
         if isinstance(value, str):
             try:
@@ -142,33 +148,3 @@ class Antenna:
                 self.selection_location,
             )
         )
-
-    @staticmethod
-    def _read_values_file(values_file: Path):
-        from antennenvergleich.datatypes_s1p import (
-            AntennaModelFit,
-            SwrValues,
-            ValuesDataFile,
-        )
-
-        directory_src = Path(__file__).resolve().parent.parent
-        try:
-            relative_py = values_file.resolve().relative_to(directory_src)
-        except ValueError as exc:
-            raise RuntimeError(
-                f"{values_file} liegt nicht unter {directory_src}"
-            ) from exc
-
-        module_name = ".".join(relative_py.with_suffix("").parts)
-        module = importlib.import_module(module_name)
-        module = importlib.reload(module)
-
-        swr_values = getattr(module, "swr_values", None)
-        model = getattr(module, "model", None)
-
-        if not isinstance(swr_values, SwrValues):
-            raise TypeError(f"{values_file.name}: swr_values hat unerwarteten Typ")
-        if model is not None and not isinstance(model, AntennaModelFit):
-            raise TypeError(f"{values_file.name}: model hat unerwarteten Typ")
-
-        return ValuesDataFile(swr_values=swr_values, model=model)

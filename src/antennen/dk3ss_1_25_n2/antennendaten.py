@@ -49,10 +49,10 @@ ANTENNENDATEN = Antenna(
     info_enviroment_str=DK3SS.info_enviroment_str,
     info_conductor_str=DK3SS.info_conductor_str,
     info_capacitor_str=DK3SS.info_capacitor_str,
-    measurement_html=("../../shared/DK3SS/measurement.html",),
-    enviroment_html=("../../shared/DK3SS/enviroment.html",),
-    antenna_build_html=("../../shared/DK3SS/antenna_build.html",),
-    final_remarks_html=("../../shared/DK3SS/final_remarks.html",),
+    measurement_html="../../shared/DK3SS/measurement.html",
+    enviroment_html="../../shared/DK3SS/enviroment.html",
+    antenna_build_html="../../shared/DK3SS/antenna_build.html",
+    final_remarks_html="../../shared/DK3SS/final_remarks.html",
     bands=[
         BandData(
             f_Hz=FloatText(

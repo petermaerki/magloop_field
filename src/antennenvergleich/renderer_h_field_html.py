@@ -115,32 +115,27 @@ def build_h_field_section_html(
     h_field_measurements = HFieldMeasurements(sections=[])
     h_field_html_file = antenna_root_dir / "h_field" / "h_field.html"
     if h_field_html_file.is_file():
-        try:
-            h_field_html = h_field_html_file.read_text(encoding="utf-8")
-            h_field_measurements_file = (
-                h_field_html_file.parent / "h_field_measurements_generated.html"
+        h_field_html = h_field_html_file.read_text(encoding="utf-8")
+        h_field_measurements_file = (
+            h_field_html_file.parent / "h_field_measurements_generated.html"
+        )
+        if h_field_measurements_file.is_file():
+            h_field_measurements = _parse_h_field_measurements_html(
+                h_field_measurements_file.read_text(encoding="utf-8")
             )
-            if h_field_measurements_file.is_file():
-                h_field_measurements = _parse_h_field_measurements_html(
-                    h_field_measurements_file.read_text(encoding="utf-8")
-                )
 
-            render_context: dict[str, object] = {
-                "h_field_measurements_table_marker": _H_FIELD_MEASUREMENTS_MARKER,
-            }
-            if template_vars:
-                render_context.update(template_vars)
-            h_field_html = jinja2.Template(h_field_html).render(**render_context)
+        render_context: dict[str, object] = {
+            "h_field_measurements_table_marker": _H_FIELD_MEASUREMENTS_MARKER,
+        }
+        if template_vars:
+            render_context.update(template_vars)
+        h_field_html = jinja2.Template(h_field_html).render(**render_context)
 
-            h_field_html = rewrite_local_links(
-                h_field_html,
-                fragment_dir=h_field_html_file.parent,
-                destination_dir=antenna_dir,
-            )
-        except Exception as exc:  # pragma: no cover - optional section best effort
-            print(
-                f"Warnung: H-field-HTML konnte nicht geladen werden ({h_field_html_file}): {exc}"
-            )
+        h_field_html = rewrite_local_links(
+            h_field_html,
+            fragment_dir=h_field_html_file.parent,
+            destination_dir=antenna_dir,
+        )
 
     before, marker, after = h_field_html.partition(_H_FIELD_MEASUREMENTS_MARKER)
     if marker:

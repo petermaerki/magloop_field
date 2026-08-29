@@ -59,7 +59,7 @@ ANTENNENDATEN = Antenna(
     info_conductor_str="PVC pipe wrapped with aluminum foil.",
     info_capacitor_str="Variable capacitor made from telescoping PVC pipes wrapped with aluminum foil.",
     info_thanks_str="Many thanks to W6NBC (Silent Key) for the many publicly available contributions.",
-    measurement_html=("measurement.html",),
+    measurement_html="measurement.html",
     bands=[
         BandData(
             f_Hz=FloatText(31_870_000, "screenshot"),

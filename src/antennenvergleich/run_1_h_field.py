@@ -6,6 +6,8 @@ import contextlib
 import importlib
 from pathlib import Path
 
+from antennenvergleich . h_field_dump import HFieldData
+
 from antennenvergleich import loop_directories
 
 
@@ -28,13 +30,11 @@ def main() -> None:
     assert h_field_files, "no h_field_data.py files found"
 
     for h_field_data_file in h_field_files:
-        module_name = ".".join(h_field_data_file.relative_to(Path(__file__).resolve().parent.parent).with_suffix("").parts)
+        h_field_data= HFieldData.read_values_file(filename= h_field_data_file)
         print(f"run_1_h_field.py {h_field_data_file.parent.parent.name}", flush=True)
-        module = importlib.import_module(module_name)
         log_path = _log_path_for_h_field_file(h_field_data_file)
-        with log_path.open("w", encoding="utf-8") as log_stream:
-            with contextlib.redirect_stdout(log_stream):
-                module.h_field_data.print()
+        with log_path.open("w", encoding="utf-8") as out:
+            h_field_data.print(out=out)
 
 
 if __name__ == "__main__":
