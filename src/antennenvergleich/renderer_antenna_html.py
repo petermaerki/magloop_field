@@ -1,6 +1,4 @@
-import html
 import importlib
-import math
 import os
 import pathlib
 import re
@@ -11,7 +9,6 @@ import jinja2
 from antennenvergleich import loop_directories
 from antennenvergleich.datatypes import AntennaPlusDirectory, VnaCalibration
 from antennenvergleich.datatypes_s1p import AntennaModelFit, SwrValues, ValuesDataFile
-from magloop_field.calculations import AntennaCalculator as FieldAntennaCalculator
 
 from . import constants
 from .constants import BANDS, DIRECTORY_SRC
@@ -24,6 +21,7 @@ from .constants_s1p import (
     VALUES_SUFFIX,
 )
 from .renderer_antenna_efficiency_table_html import build_efficiency_table
+from .renderer_h_field_html import build_h_field_section_html
 from .renderer_inductance_html import build_inductance_section_html
 from .renderer_vna_filelist_html import build_vna_filelist_section
 from .renderer_vna_smith_html import build_vna_smith_section
@@ -122,7 +120,7 @@ def _load_html_fragments(
     return "\n".join(fragments)
 
 
-def _generate_inductivity_section(
+def _generate_inductance_section(
     output_subdir: pathlib.Path,
     antenna_dir: pathlib.Path,
     antenna_data: object | None,
@@ -161,15 +159,6 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         for p in directory_s1p_results.glob(f"*{VALUES_SUFFIX}.py")
         if not _is_cap_measurement_name(p.stem)
     )
-
-    def fmt(value: object, decimals: int | None) -> str:
-        if value is None:
-            return "-"
-        if isinstance(value, (int, float)):
-            if decimals is None:
-                return f"{value:.0f}"
-            return f"{value:.{decimals}f}"
-        return str(value)
 
     band_centers_mhz: list[tuple[str, float]] = sorted(
         ((name, f_hz / 1e6) for name, f_hz in BANDS.f_hz_by_band_name.items()),
@@ -313,7 +302,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
                 }
             )
 
-    efficency_table = build_efficiency_table(
+    efficiency_table = build_efficiency_table(
         band_data_rows=band_data_rows,
         band_order=band_order,
         antenna_data=antenna_data,
@@ -325,7 +314,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
             f"<h2>Measurement Info</h2>\n{measurement_html_block}"
         )
 
-    inductivity_section_html = _generate_inductivity_section(
+    inductance_section_html = _generate_inductance_section(
         output_subdir=directory_s1p_results,
         antenna_dir=entry.directory,
         antenna_data=antenna_data,
@@ -337,118 +326,33 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
     if environment_html_block.strip():
         environment_section_html = f"<h2>Enviroment</h2>\n{environment_html_block}"
 
-    vna_calibration_html = ""
+    vna_calibration_mode = ""
+    vna_calibration_href = ""
     if antenna_data is not None:
         calibration_value = getattr(antenna_data, "vna_calibration", None)
         calibration_img = ""
-        calibration_text_html = ""
         if calibration_value == VnaCalibration.ANTENNA_FEED_POINT:
+            vna_calibration_mode = VnaCalibration.ANTENNA_FEED_POINT.value
             calibration_img = "fusspunkt_vna.svg"
-            calibration_text_html = (
-                "The VNA calibration was done at the antenna feed point: green line.<br>"
-                "Common-mode choke at the antenna: "
-                '<a href="http://www.positron.ch/rf/choke_simple">'
-                "positron.ch/rf/choke_simple"
-                "</a>.<br>"
-                "Used cables: 80 cm RG400 (including the choke) and 10 m LMR195.<br>"
-                "The cable attenuation alpha and the cable delay tau in the following table should therefore be small."
-            )
         elif calibration_value == VnaCalibration.AT_VNA:
+            vna_calibration_mode = VnaCalibration.AT_VNA.value
             calibration_img = "kabel_vna.svg"
-            calibration_text_html = (
-                "The VNA calibration was done directly at the VNA: green line. "
-                "The cable influence was measured and removed.<br>"
-                "The cable attenuation alpha and the cable delay tau in the following table show the estimated cable values based on the VNA measurement."
-            )
 
-        if calibration_img and calibration_text_html:
-            calibration_path = (
-                DIRECTORY_SRC / "shared" / "vna_schematic" / calibration_img
-            )
+        if calibration_img:
+            calibration_path = DIRECTORY_SRC / "shared" / "vna_schematic" / calibration_img
             if calibration_path.is_file():
-                rel_to_antenna = pathlib.Path(
+                vna_calibration_href = pathlib.Path(
                     os.path.relpath(calibration_path, entry.directory)
                 ).as_posix()
-                src = html.escape(rel_to_antenna, quote=True)
-                alt = html.escape(f"VNA calibration: {calibration_img}", quote=True)
-                vna_calibration_html = (
-                    f'<p><a href="{src}"><img class="vna-calibration-picture" src="{src}" alt="{alt}"></a><br>'
-                    f"{calibration_text_html}</p>"
-                )
-            else:
-                vna_calibration_html = f"<p>{calibration_text_html}</p>"
 
     vna_filelist_section = build_vna_filelist_section(vna_values_rows)
     vna_smith_section = build_vna_smith_section(vna_chart_rows)
 
-    h_field_section_html = ""
-    h_field_html_file = directory_s1p_results.parent / "h_field" / "h_field.html"
-    if h_field_html_file.is_file():
-        try:
-            h_field_section_html = h_field_html_file.read_text(encoding="utf-8")
-            h_field_measurements_file = (
-                h_field_html_file.parent / "h_field_measurements.html"
-            )
-            if h_field_measurements_file.is_file():
-                h_field_measurements_html = h_field_measurements_file.read_text(
-                    encoding="utf-8"
-                )
-                # Preferred: replace explicit placeholder tag in h_field.html.
-                # Accept any existing placeholder text between start/end tag.
-                placeholder_pattern = (
-                    r"<h-field-measurements\b[^>]*>[\s\S]*?</h-field-measurements>"
-                )
-                replaced = re.sub(
-                    placeholder_pattern,
-                    h_field_measurements_html,
-                    h_field_section_html,
-                    count=1,
-                    flags=re.IGNORECASE,
-                )
-                if replaced != h_field_section_html:
-                    h_field_section_html = replaced
-                else:
-                    # Backward-compatible fallback: replace old iframe/script include.
-                    iframe_script_pattern = (
-                        r"<iframe[^>]*id=[\"']h-field-measurements[\"'][^>]*>\s*</iframe>\s*"
-                        r"<script>[\s\S]*?</script>"
-                    )
-                    replaced = re.sub(
-                        iframe_script_pattern,
-                        h_field_measurements_html,
-                        h_field_section_html,
-                        count=1,
-                    )
-                    if replaced != h_field_section_html:
-                        h_field_section_html = replaced
-                    else:
-                        h_field_section_html += "\n" + h_field_measurements_html
-            h_field_section_html = _rewrite_local_links_in_html_fragment(
-                h_field_section_html,
-                fragment_dir=h_field_html_file.parent,
-                destination_dir=entry.directory,
-            )
-        except Exception as exc:  # pragma: no cover - optional section best effort
-            print(
-                f"Warnung: H-field-HTML konnte nicht geladen werden ({h_field_html_file}): {exc}"
-            )
-
-    antenna_image_html = ""
-    try:
-        antenna_pictures = tuple(getattr(antenna_data, "overview_pictures", ()) or ())
-        for picture_rel in antenna_pictures:
-            pic_path = directory_s1p_results.parent / picture_rel
-            if not pic_path.is_file():
-                continue
-            rel_to_antenna = pathlib.Path(
-                os.path.relpath(pic_path, entry.directory)
-            ).as_posix()
-            src = html.escape(rel_to_antenna, quote=True)
-            alt = html.escape(f"Overview picture: {pic_path.name}", quote=True)
-            antenna_image_html = f'<p><a href="{src}"><img class="overview-antenna-picture" src="{src}" alt="{alt}"></a></p>'
-            break
-    except Exception:
-        antenna_image_html = ""
+    h_field_section_html = build_h_field_section_html(
+        antenna_dir=entry.directory,
+        antenna_root_dir=directory_s1p_results.parent,
+        rewrite_local_links=_rewrite_local_links_in_html_fragment,
+    )
 
     # info_str_line = "-"
     # info_conductor_line = "-"
@@ -481,59 +385,31 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
 
     # info_block_html = f"<p>{'<br>'.join(info_lines)}</p>"
 
-    header_title = antenna_dir_name
-    if antenna_data is not None:
-        brand = str(getattr(antenna_data, "selection_brand", "") or "").strip()
-        name = str(getattr(antenna_data, "selection_name", "") or "").strip()
-        location = str(getattr(antenna_data, "selection_location", "") or "").strip()
-        header_parts = [part for part in (brand, name, location) if part]
-        if header_parts:
-            header_title = " ".join(header_parts)
-
     compare_overview_path = constants.DIRECTORY_REPO / "index.html"
     compare_overview_rel = pathlib.Path(
         os.path.relpath(compare_overview_path.resolve(), entry.directory.resolve())
     ).as_posix()
-    compare_overview_link_html = (
-        f"<p>All antennas overview: "
-        f'<a href="{html.escape(compare_overview_rel, quote=True)}?page=compare">'
-        f"compare page</a></p>"
-    )
+    compare_overview_href = f"{compare_overview_rel}?page=compare"
 
     template = env.get_template("antenna.jinja2")
     jinja_html = template.render(
         antenna=entry.antenna,
         antenna_css_rel=antenna_css_rel,
-        efficency_table=efficency_table,
+        efficiency_table=efficiency_table,
         measurement_section_html=measurement_section_html,
         environment_section_html=environment_section_html,
-        vna_calibration_html=vna_calibration_html,
+        vna_calibration_mode=vna_calibration_mode,
+        vna_calibration_href=vna_calibration_href,
         vna_filelist_section=vna_filelist_section,
         vna_smith_section=vna_smith_section,
-        inductance_section_html=inductivity_section_html,
+        inductance_section_html=inductance_section_html,
+        h_field_section_html=h_field_section_html,
+        compare_overview_href=compare_overview_href,
     )
-
-    doc = f"""<!-- Automatically generated file by run_2_html.py. Do not edit manually. -->
-<!doctype html>
-<html lang=\"de\">
-<head>
-    <meta charset=\"utf-8\">
-    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
-    <title>{html.escape(antenna_dir_name)} - antenna</title>
-    <link rel="stylesheet" href="{html.escape(antenna_css_rel, quote=True)}">
-</head>
-<body>
-    {jinja_html}
-    <hr/>
-    <h1>{html.escape(header_title)}</h1>
-    {antenna_image_html}
-    <info_block_html>
-    {h_field_section_html}
-    {compare_overview_link_html}
-</body>
-</html>
-"""
-    (entry.directory / "generated_antenna.html").write_text(doc)
+    (entry.directory / "generated_antenna.html").write_text(
+        jinja_html,
+        encoding="utf-8",
+    )
 
 
 def generate_antenna_html_files() -> int:

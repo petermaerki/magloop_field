@@ -1,9 +1,9 @@
 <!-- Automatically generated file by run_2_html.py. Do not edit manually. -->
 <!doctype html>
-<html lang=\"de\">
+<html lang="de">
 <head>
-    <meta charset=\"utf-8\">
-    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{antenna.selection_brand}} {{antenna.selection_name}} {{antenna.selection_location}} - antenna</title>
     <link rel="stylesheet" href="{{antenna_css_rel}}">
 </head>
@@ -18,7 +18,7 @@
 {% endfor %}
 
 <p>Info: {{antenna.info_str}}<br>
-Conductor: {{antenna.info_str}}<br>
+Conductor: {{antenna.info_conductor_str}}<br>
 Capacitor: {{antenna.info_capacitor_str}}<br>
 Enviroment: {{antenna.info_enviroment_str}}<br>
 {% if antenna.info_thanks_str: %}
@@ -28,21 +28,21 @@ Thanks: {{antenna.info_thanks_str}}<br>
 <h2>Antenna Efficiency Overview</h2>
 <table class="compact">
     <tbody>
-        {% if efficency_table.columns %}
+        {% if efficiency_table.columns %}
         <tr class="band-row">
             <td>Band</td>
             <td class="unit"></td>
-            {% for column in efficency_table.columns %}
+            {% for column in efficiency_table.columns %}
             <td class="val">{{ column|e }}</td>
             {% endfor %}
         </tr>
         {% else %}
         <tr>
-            <td colspan="3">{{ efficency_table.empty_message|e }}</td>
+            <td colspan="3">{{ efficiency_table.empty_message|e }}</td>
         </tr>
         {% endif %}
 
-        {% for row in efficency_table.rows %}
+        {% for row in efficiency_table.rows %}
             <tr{% if row.css_class %} class="{{ row.css_class }}"{% endif %}>
                 <td title="{{ row.tooltip|e }}">{{ row.label_html }}</td>
                 <td class="unit">{{ row.unit_html }}</td>
@@ -64,7 +64,17 @@ Thanks: {{antenna.info_thanks_str}}<br>
 The antenna S11 parameters were measured with a VNA. <br>
 The following values were derived from these measurements.<br>
 Details on the measurement method can be found <a href="http://www.positron.ch/rf/vna_to_measure_loop_antenna/pdf/measure_a_magnetic_loop.pdf">here</a>.<br>
-{{ vna_calibration_html }}
+{% if vna_calibration_mode == "antenna_feed_point" %}
+<p>{% if vna_calibration_href %}<a href="{{ vna_calibration_href|e }}"><img class="vna-calibration-picture" src="{{ vna_calibration_href|e }}" alt="VNA calibration: fusspunkt_vna.svg"></a><br>{% endif %}
+The VNA calibration was done at the antenna feed point: green line.<br>
+Common-mode choke at the antenna: <a href="http://www.positron.ch/rf/choke_simple">positron.ch/rf/choke_simple</a>.<br>
+Used cables: 80 cm RG400 (including the choke) and 10 m LMR195.<br>
+The cable attenuation alpha and the cable delay tau in the following table should therefore be small.</p>
+{% elif vna_calibration_mode == "at_vna" %}
+<p>{% if vna_calibration_href %}<a href="{{ vna_calibration_href|e }}"><img class="vna-calibration-picture" src="{{ vna_calibration_href|e }}" alt="VNA calibration: kabel_vna.svg"></a><br>{% endif %}
+The VNA calibration was done directly at the VNA: green line. The cable influence was measured and removed.<br>
+The cable attenuation alpha and the cable delay tau in the following table show the estimated cable values based on the VNA measurement.</p>
+{% endif %}
 <table class="compact">
     <thead>
         <tr>
@@ -116,4 +126,9 @@ Details on the measurement method can be found <a href="http://www.positron.ch/r
 {% if inductance_section_html %}
 {{ inductance_section_html }}
 {% endif %}
+{% if h_field_section_html %}
+{{ h_field_section_html }}
+{% endif %}
+<p>All antennas overview: <a href="{{ compare_overview_href|e }}">compare page</a></p>
 </body>
+</html>

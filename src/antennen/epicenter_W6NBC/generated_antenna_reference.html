@@ -4,45 +4,228 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>epicenter_W6NBC - antenna</title>
+    <title>Selfmade epicenter W6NBC - antenna</title>
     <link rel="stylesheet" href="../../../static/css/style_antenna.css">
 </head>
 <body>
-    <h1>Selfmade epicenter W6NBC</h1>
-    <p><a href="images/epicenter_overview.png"><img class="overview-antenna-picture" src="images/epicenter_overview.png" alt="Overview picture: epicenter_overview.png"></a></p>
-    <p>Info: Rectangular loop, PVC pipe wrapped with aluminum foil. The frequency is tuned by sliding an aluminum-foil-covered tube back and forth in the upper segment.<br>Conductor: PVC pipe wrapped with aluminum foil.<br>Capacitor: Variable capacitor made from telescoping PVC pipes wrapped with aluminum foil.<br>Enviroment: Outdoor, details unknown.<br>Thanks: Many thanks to W6NBC (Silent Key) for the many publicly available contributions.</p>
-    <h2>Antenna Efficiency Overview</h2>
-    <table class="compact">
-        <tbody>
-<tr class='band-row'><td>Band</td><td class='unit'></td><td class='val'>40m</td><td class='val'>10m</td></tr>
-<tr><td title='Mittenfrequenz des betrachteten Bandes.'>Frequency <i>f</i></td><td class='unit'>MHz</td><td class='val' title='screenshot'>6.940</td><td class='val' title='screenshot'>31.870</td></tr>
-<tr><td title='Bandbreite am Antenneneingang beim Kriterium SWR = 2.62.'>Bandwidth <i>B</i><sub>SWR=2.62</sub></td><td class='unit'>kHz</td><td class='val' title='rough estimate from the screenshot, '>200.0</td><td class='val' title='screenshot'>700.0</td></tr>
-<tr><td title='Äquivalenter Durchmesser der Loop.'>Loop diameter <i>D</i></td><td class='unit'>m</td><td class='val merged' colspan='2' title='YouTube: square loop 4 ft x 4 ft -&gt; equivalent D = 2*sqrt(A/pi)'>1.376</td></tr>
-<tr><td title='Äquivalenter Leiterdurchmesser der Loop.'>Conductor diameter <i>d</i></td><td class='unit'>m</td><td class='val merged' colspan='2' title='youtube, OD1.9 Inch'>0.048</td></tr>
-<tr><td title='Anzahl der Windungen der Schleife.'>Loop count <i>n</i></td><td class='unit'>1</td><td class='val merged' colspan='2' title=''>1</td></tr>
-<tr><td title='Eingespeiste Leistung in die Antenne.'>Power into antenna <i>P</i></td><td class='unit'>W</td><td class='val' title='estimated reference power; not documented in the available sources'>50</td><td class='val' title='estimated reference power; not documented in the available sources'>50</td></tr>
-<tr><td title='Berechnete Induktivität der Loop.'>Inductance <i>L</i></td><td class='unit'>H</td><td class='val merged' colspan='2' title='[antennendaten.py] Berechnet aus Geometrie- und Messdaten.'>2.96e-06</td></tr>
-<tr><td title='Erforderliche Resonanzkapazität bei der Bandfrequenz.'>Capacitance <i>C</i></td><td class='unit'>F</td><td class='val' title='[antennendaten.py] Berechnet aus Geometrie- und Messdaten.'>1.77e-10</td><td class='val' title='[antennendaten.py] Berechnet aus Geometrie- und Messdaten.'>8.41e-12</td></tr>
-<tr><td title='Unbelastete Güte, aus f / Bandbreite abgeschätzt.'>Unloaded Q<sub>0</sub></td><td class='unit'>1</td><td class='val' title='[antennendaten.py] Berechnet aus Geometrie- und Messdaten.'>35</td><td class='val' title='[antennendaten.py] Berechnet aus Geometrie- und Messdaten.'>46</td></tr>
-<tr><td title='Gesamter Dämpfungswiderstand des Resonanzkreises.'>Damping resistance <i>R</i><sub>T</sub></td><td class='unit'>Ohm</td><td class='val' title='[antennendaten.py] Berechnet aus Geometrie- und Messdaten.'>3.725</td><td class='val' title='[antennendaten.py] Berechnet aus Geometrie- und Messdaten.'>13.038</td></tr>
-<tr><td title='Äquivalenter Strahlungswiderstand der Antenne.'>Radiation resistance <i>R</i><sub>R</sub></td><td class='unit'>Ohm</td><td class='val' title='[antennendaten.py] Berechnet aus Geometrie- und Messdaten.'>0.0199</td><td class='val' title='[antennendaten.py] Berechnet aus Geometrie- und Messdaten.'>9.725</td></tr>
-<tr><td title='Verlustwiderstand: R_T - R_R.'>Loss resistance <i>R</i><sub>Loss</sub></td><td class='unit'>Ohm</td><td class='val' title='[antennendaten.py] Berechnet aus Geometrie- und Messdaten.'>3.705</td><td class='val' title='[antennendaten.py] Berechnet aus Geometrie- und Messdaten.'>3.314</td></tr>
-<tr><td title='Minimales SWR am Antenneneingang.'>swr_min</td><td class='unit'>1</td><td class='val' title='antennendaten.py'>2.70</td><td class='val' title='screenshot'>1.10</td></tr>
-<tr><td title='Anpassungswirkungsgrad aus swr_min: eta = 4*SWR/(1+SWR)^2.'>eta<sub>SWR_ant</sub></td><td class='unit'>%</td><td class='val' title='[antennendaten.py] Berechnet aus swr_min: eta = 4*SWR/(1+SWR)^2.'>78.9</td><td class='val' title='[antennendaten.py] Berechnet aus swr_min: eta = 4*SWR/(1+SWR)^2.'>99.8</td></tr>
-<tr class='eff-row'><td title='Gesamteffizienz: (R_R / R_T) * eta_SWR_ant.'><b>Antenna efficiency <i>η</i></b></td><td class='unit'><b>%</b></td><td class='val' title='[antennendaten.py] Berechnet aus Geometrie- und Messdaten.'>0.421</td><td class='val' title='[antennendaten.py] Berechnet aus Geometrie- und Messdaten.'>74.4</td></tr>
-<tr><td title='Strom im Hauptloop bei der Referenzleistung.'>Loop current <i>I</i></td><td class='unit'>A</td><td class='val' title='[antennendaten.py] Berechnet aus Geometrie- und Messdaten.'>3.66</td><td class='val' title='[antennendaten.py] Berechnet aus Geometrie- und Messdaten.'>1.96</td></tr>
-<tr><td title='Spannung über dem Loop bei Resonanz.'>Loop voltage <i>U</i><sub>loop</sub></td><td class='unit'>V</td><td class='val' title='[antennendaten.py] Berechnet aus Geometrie- und Messdaten.'>474</td><td class='val' title='[antennendaten.py] Berechnet aus Geometrie- und Messdaten.'>1162</td></tr>
-<tr><td title='Magnetisches Dipolmoment des Loops.'>Magnetic dipole moment <i>m</i></td><td class='unit'>A m²</td><td class='val' title='[antennendaten.py] Berechnet aus Geometrie- und Messdaten.'>5.446</td><td class='val' title='[antennendaten.py] Berechnet aus Geometrie- und Messdaten.'>2.911</td></tr>
-        </tbody>
-    </table>
-    <h2>Measurement Info</h2>
+
+<h1>Selfmade epicenter W6NBC</h1>
+
+
+<p>
+    <a href="images/epicenter_overview.png"><img class="overview-antenna-picture" src="images/epicenter_overview.png"></a>
+</p>
+
+
+<p>Info: Rectangular loop, PVC pipe wrapped with aluminum foil. The frequency is tuned by sliding an aluminum-foil-covered tube back and forth in the upper segment.<br>
+Conductor: PVC pipe wrapped with aluminum foil.<br>
+Capacitor: Variable capacitor made from telescoping PVC pipes wrapped with aluminum foil.<br>
+Enviroment: Outdoor, details unknown.<br>
+
+Thanks: Many thanks to W6NBC (Silent Key) for the many publicly available contributions.<br>
+
+
+<h2>Antenna Efficiency Overview</h2>
+<table class="compact">
+    <tbody>
+        
+        <tr class="band-row">
+            <td>Band</td>
+            <td class="unit"></td>
+            
+            <td class="val">40m</td>
+            
+            <td class="val">10m</td>
+            
+        </tr>
+        
+
+        
+            <tr>
+                <td title="Mittenfrequenz des betrachteten Bandes.">Frequency <i>f</i></td>
+                <td class="unit">MHz</td>
+                
+                    <td class="val" title="screenshot">6.940</td>
+                
+                    <td class="val" title="screenshot">31.870</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Bandbreite am Antenneneingang beim Kriterium SWR = 2.62.">Bandwidth <i>B</i><sub>SWR=2.62</sub></td>
+                <td class="unit">kHz</td>
+                
+                    <td class="val" title="rough estimate from the screenshot, ">200.0</td>
+                
+                    <td class="val" title="screenshot">700.0</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Äquivalenter Durchmesser der Loop.">Loop diameter <i>D</i></td>
+                <td class="unit">m</td>
+                
+                    <td class="val merged" colspan="2" title="YouTube: square loop 4 ft x 4 ft -&gt; equivalent D = 2*sqrt(A/pi)">1.376</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Äquivalenter Leiterdurchmesser der Loop.">Conductor diameter <i>d</i></td>
+                <td class="unit">m</td>
+                
+                    <td class="val merged" colspan="2" title="youtube, OD1.9 Inch">0.048</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Anzahl der Windungen der Schleife.">Loop count <i>n</i></td>
+                <td class="unit">1</td>
+                
+                    <td class="val merged" colspan="2" title="">1</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Eingespeiste Leistung in die Antenne.">Power into antenna <i>P</i></td>
+                <td class="unit">W</td>
+                
+                    <td class="val" title="estimated reference power; not documented in the available sources">50</td>
+                
+                    <td class="val" title="estimated reference power; not documented in the available sources">50</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Berechnete Induktivität der Loop.">Inductance <i>L</i></td>
+                <td class="unit">H</td>
+                
+                    <td class="val merged" colspan="2" title="[antennendaten.py] Berechnet aus Geometrie- und Messdaten.">2.96e-06</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Erforderliche Resonanzkapazität bei der Bandfrequenz.">Capacitance <i>C</i></td>
+                <td class="unit">F</td>
+                
+                    <td class="val" title="[antennendaten.py] Berechnet aus Geometrie- und Messdaten.">1.77e-10</td>
+                
+                    <td class="val" title="[antennendaten.py] Berechnet aus Geometrie- und Messdaten.">8.41e-12</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Unbelastete Güte, aus f / Bandbreite abgeschätzt.">Unloaded Q<sub>0</sub></td>
+                <td class="unit">1</td>
+                
+                    <td class="val" title="[antennendaten.py] Berechnet aus Geometrie- und Messdaten.">35</td>
+                
+                    <td class="val" title="[antennendaten.py] Berechnet aus Geometrie- und Messdaten.">46</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Gesamter Dämpfungswiderstand des Resonanzkreises.">Damping resistance <i>R</i><sub>T</sub></td>
+                <td class="unit">Ohm</td>
+                
+                    <td class="val" title="[antennendaten.py] Berechnet aus Geometrie- und Messdaten.">3.725</td>
+                
+                    <td class="val" title="[antennendaten.py] Berechnet aus Geometrie- und Messdaten.">13.038</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Äquivalenter Strahlungswiderstand der Antenne.">Radiation resistance <i>R</i><sub>R</sub></td>
+                <td class="unit">Ohm</td>
+                
+                    <td class="val" title="[antennendaten.py] Berechnet aus Geometrie- und Messdaten.">0.0199</td>
+                
+                    <td class="val" title="[antennendaten.py] Berechnet aus Geometrie- und Messdaten.">9.725</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Verlustwiderstand: R_T - R_R.">Loss resistance <i>R</i><sub>Loss</sub></td>
+                <td class="unit">Ohm</td>
+                
+                    <td class="val" title="[antennendaten.py] Berechnet aus Geometrie- und Messdaten.">3.705</td>
+                
+                    <td class="val" title="[antennendaten.py] Berechnet aus Geometrie- und Messdaten.">3.314</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Minimales SWR am Antenneneingang.">swr_min</td>
+                <td class="unit">1</td>
+                
+                    <td class="val" title="antennendaten.py">2.70</td>
+                
+                    <td class="val" title="screenshot">1.10</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Anpassungswirkungsgrad aus swr_min: eta = 4*SWR/(1+SWR)^2.">eta<sub>SWR_ant</sub></td>
+                <td class="unit">%</td>
+                
+                    <td class="val" title="[antennendaten.py] Berechnet aus swr_min: eta = 4*SWR/(1+SWR)^2.">78.9</td>
+                
+                    <td class="val" title="[antennendaten.py] Berechnet aus swr_min: eta = 4*SWR/(1+SWR)^2.">99.8</td>
+                
+            </tr>
+        
+            <tr class="eff-row">
+                <td title="Gesamteffizienz: (R_R / R_T) * eta_SWR_ant."><b>Antenna efficiency <i>η</i></b></td>
+                <td class="unit"><b>%</b></td>
+                
+                    <td class="val" title="[antennendaten.py] Berechnet aus Geometrie- und Messdaten.">0.421</td>
+                
+                    <td class="val" title="[antennendaten.py] Berechnet aus Geometrie- und Messdaten.">74.4</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Strom im Hauptloop bei der Referenzleistung.">Loop current <i>I</i></td>
+                <td class="unit">A</td>
+                
+                    <td class="val" title="[antennendaten.py] Berechnet aus Geometrie- und Messdaten.">3.66</td>
+                
+                    <td class="val" title="[antennendaten.py] Berechnet aus Geometrie- und Messdaten.">1.96</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Spannung über dem Loop bei Resonanz.">Loop voltage <i>U</i><sub>loop</sub></td>
+                <td class="unit">V</td>
+                
+                    <td class="val" title="[antennendaten.py] Berechnet aus Geometrie- und Messdaten.">474</td>
+                
+                    <td class="val" title="[antennendaten.py] Berechnet aus Geometrie- und Messdaten.">1162</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Magnetisches Dipolmoment des Loops.">Magnetic dipole moment <i>m</i></td>
+                <td class="unit">A m²</td>
+                
+                    <td class="val" title="[antennendaten.py] Berechnet aus Geometrie- und Messdaten.">5.446</td>
+                
+                    <td class="val" title="[antennendaten.py] Berechnet aus Geometrie- und Messdaten.">2.911</td>
+                
+            </tr>
+        
+    </tbody>
+</table>
+
+<h2>Measurement Info</h2>
 <p>A video showed measured SWR versus frequency diagrams. I tried to estimate the corresponding bandwidths. This was reasonably possible for the 10 m band, but for the 40 m band it is only a rough estimate because the SWR was not tuned to 1.0, and from the measured values it is not clear whether the coupling is too strong or too weak.</p>
 <p><a href="images/bandwith.png"><img src="images/bandwith.png" style="max-width: 400px; width: 100%; height: auto;"></a></p>
-    
-    
-    
-    
-    
-    <p>All antennas overview: <a href="../../../index.html?page=compare">compare page</a></p>
+
+
+
+
+
+
+
+<p>All antennas overview: <a href="../../../index.html?page=compare">compare page</a></p>
 </body>
 </html>
