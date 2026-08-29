@@ -7,6 +7,7 @@ def build_h_field_section_html(
     antenna_dir: pathlib.Path,
     antenna_root_dir: pathlib.Path,
     rewrite_local_links: Callable[[str, pathlib.Path, pathlib.Path], str],
+    template_vars: dict[str, str] | None = None,
 ) -> str:
     h_field_section_html = ""
     h_field_html_file = antenna_root_dir / "h_field" / "h_field.html"
@@ -55,6 +56,11 @@ def build_h_field_section_html(
                 fragment_dir=h_field_html_file.parent,
                 destination_dir=antenna_dir,
             )
+            if template_vars:
+                for key, value in template_vars.items():
+                    h_field_section_html = h_field_section_html.replace(
+                        f"{{{{{key}}}}}", value
+                    )
         except Exception as exc:  # pragma: no cover - optional section best effort
             print(
                 f"Warnung: H-field-HTML konnte nicht geladen werden ({h_field_html_file}): {exc}"

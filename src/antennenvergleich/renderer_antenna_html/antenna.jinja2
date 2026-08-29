@@ -53,27 +53,30 @@ Thanks: {{antenna.info_thanks_str}}<br>
         {% endfor %}
     </tbody>
 </table>
-{% if measurement_section_html %}
-{{ measurement_section_html }}
+{% if build_details_section_html %}
+{{ build_details_section_html }}
 {% endif %}
 {% if environment_section_html %}
 {{ environment_section_html }}
 {% endif %}
+{% if measurement_section_html %}
+{{ measurement_section_html }}
+{% endif %}
 {% if vna_filelist_section.rows %}
-<h2>VNA-measurements</h2>
-The antenna S11 parameters were measured with a VNA. <br>
+<h2>VNA measurements ({{ vna_info|e }})</h2>
+The antenna S11 parameters were measured with {{ vna_info|e }}. <br>
 The following values were derived from these measurements.<br>
 Details on the measurement method can be found <a href="http://www.positron.ch/rf/vna_to_measure_loop_antenna/pdf/measure_a_magnetic_loop.pdf">here</a>.<br>
 {% if vna_calibration_mode == "antenna_feed_point" %}
 <p>{% if vna_calibration_href %}<a href="{{ vna_calibration_href|e }}"><img class="vna-calibration-picture" src="{{ vna_calibration_href|e }}" alt="VNA calibration: fusspunkt_vna.svg"></a><br>{% endif %}
-The VNA calibration was done at the antenna feed point: green line.<br>
+The calibration of {{ vna_info|e }} was done at the antenna feed point: green line.<br>
 Common-mode choke at the antenna: <a href="http://www.positron.ch/rf/choke_simple">positron.ch/rf/choke_simple</a>.<br>
 Used cables: 80 cm RG400 (including the choke) and 10 m LMR195.<br>
 The cable attenuation alpha and the cable delay tau in the following table should therefore be small.</p>
 {% elif vna_calibration_mode == "at_vna" %}
 <p>{% if vna_calibration_href %}<a href="{{ vna_calibration_href|e }}"><img class="vna-calibration-picture" src="{{ vna_calibration_href|e }}" alt="VNA calibration: kabel_vna.svg"></a><br>{% endif %}
-The VNA calibration was done directly at the VNA: green line. The cable influence was measured and removed.<br>
-The cable attenuation alpha and the cable delay tau in the following table show the estimated cable values based on the VNA measurement.</p>
+The calibration was done directly at {{ vna_info|e }}: green line. The cable influence was measured and removed.<br>
+The cable attenuation alpha and the cable delay tau in the following table show the estimated cable values based on the {{ vna_info|e }} measurement.</p>
 {% endif %}
 <table class="compact">
     <thead>

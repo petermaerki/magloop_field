@@ -17,6 +17,8 @@ if not IS_PYODIDE:
 
 ANTENNENDATEN_FILENAME = "antennendaten.py"
 
+VNA_INFO = "NanoVNA V2 Plus4"
+
 
 C_LIGHT_MS = 299792458.0
 """

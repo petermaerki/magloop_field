@@ -97,6 +97,7 @@ def _load_html_fragments(
     base_dir: pathlib.Path,
     destination_dir: pathlib.Path,
     warning_label: str,
+    template_vars: dict[str, str] | None = None,
 ) -> str:
     rel_paths = tuple(getattr(antenna_data, attribute_name, ()) or ())
     fragments: list[str] = []
@@ -112,6 +113,9 @@ def _load_html_fragments(
                 fragment_dir=path.parent,
                 destination_dir=destination_dir,
             )
+            if template_vars:
+                for key, value in template_vars.items():
+                    fragment = fragment.replace(f"{{{{{key}}}}}", value)
             fragments.append(fragment)
         except Exception as exc:  # pragma: no cover - best effort for optional section
             print(
@@ -247,13 +251,22 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
 
     environment_html_block = ""
     measurement_html_block = ""
+    build_html_block = ""
+    template_vars_dict: dict[str, str] = {"vna_info": constants.VNA_INFO}
     if antenna_data is not None:
+        raw_template_vars_dict = (
+            getattr(antenna_data, "template_vars_dict", {}) or {}
+        )
+        template_vars_dict.update(
+            {str(key): str(value) for key, value in raw_template_vars_dict.items()}
+        )
         measurement_html_block = _load_html_fragments(
             antenna_data=antenna_data,
             attribute_name="measurement_html",
             base_dir=directory_s1p_results.parent,
             destination_dir=entry.directory,
             warning_label="measurement_html",
+            template_vars=template_vars_dict,
         )
         environment_html_block = _load_html_fragments(
             antenna_data=antenna_data,
@@ -261,6 +274,15 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
             base_dir=directory_s1p_results.parent,
             destination_dir=entry.directory,
             warning_label="enviroment_html",
+            template_vars=template_vars_dict,
+        )
+        build_html_block = _load_html_fragments(
+            antenna_data=antenna_data,
+            attribute_name="build_html",
+            base_dir=directory_s1p_results.parent,
+            destination_dir=entry.directory,
+            warning_label="build_html",
+            template_vars=template_vars_dict,
         )
 
     if not band_data_rows and antenna_data is not None:
@@ -314,6 +336,10 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
             f"<h2>Measurement Info</h2>\n{measurement_html_block}"
         )
 
+    build_details_section_html = ""
+    if build_html_block.strip():
+        build_details_section_html = f"<h2>Build Details</h2>\n{build_html_block}"
+
     inductance_section_html = _generate_inductance_section(
         output_subdir=directory_s1p_results,
         antenna_dir=entry.directory,
@@ -352,6 +378,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         antenna_dir=entry.directory,
         antenna_root_dir=directory_s1p_results.parent,
         rewrite_local_links=_rewrite_local_links_in_html_fragment,
+        template_vars=template_vars_dict,
     )
 
     # info_str_line = "-"
@@ -396,6 +423,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         antenna=entry.antenna,
         antenna_css_rel=antenna_css_rel,
         efficiency_table=efficiency_table,
+        build_details_section_html=build_details_section_html,
         measurement_section_html=measurement_section_html,
         environment_section_html=environment_section_html,
         vna_calibration_mode=vna_calibration_mode,
@@ -404,6 +432,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         vna_smith_section=vna_smith_section,
         inductance_section_html=inductance_section_html,
         h_field_section_html=h_field_section_html,
+        vna_info=constants.VNA_INFO,
         compare_overview_href=compare_overview_href,
     )
     (entry.directory / "generated_antenna.html").write_text(
