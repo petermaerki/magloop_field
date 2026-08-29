@@ -21,7 +21,7 @@ from .constants_s1p import (
     VALUES_SUFFIX,
 )
 from .renderer_antenna_efficiency_table_html import build_efficiency_table
-from .renderer_h_field_html import build_h_field_section_html
+from .renderer_h_field_html import HFieldMeasurements, build_h_field_section_html
 from .renderer_inductance_html import build_inductance_section_html
 from .renderer_vna_filelist_html import build_vna_filelist_section
 from .renderer_vna_smith_html import build_vna_smith_section
@@ -374,12 +374,15 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
     vna_filelist_section = build_vna_filelist_section(vna_values_rows)
     vna_smith_section = build_vna_smith_section(vna_chart_rows)
 
-    h_field_section_html = build_h_field_section_html(
+    h_field_section = build_h_field_section_html(
         antenna_dir=entry.directory,
         antenna_root_dir=directory_s1p_results.parent,
         rewrite_local_links=_rewrite_local_links_in_html_fragment,
         template_vars=template_vars_dict,
     )
+    h_field_section_before_html = h_field_section.html_before_measurements
+    h_field_section_after_html = h_field_section.html_after_measurements
+    h_field_measurements: HFieldMeasurements = h_field_section.measurements
 
     # info_str_line = "-"
     # info_conductor_line = "-"
@@ -431,7 +434,9 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         vna_filelist_section=vna_filelist_section,
         vna_smith_section=vna_smith_section,
         inductance_section_html=inductance_section_html,
-        h_field_section_html=h_field_section_html,
+        h_field_section_before_html=h_field_section_before_html,
+        h_field_section_after_html=h_field_section_after_html,
+        h_field_measurements=h_field_measurements,
         vna_info=constants.VNA_INFO,
         compare_overview_href=compare_overview_href,
     )

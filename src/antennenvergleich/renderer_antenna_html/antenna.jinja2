@@ -63,13 +63,13 @@ Thanks: {{antenna.info_thanks_str}}<br>
 {{ measurement_section_html }}
 {% endif %}
 {% if vna_filelist_section.rows %}
-<h2>VNA measurements ({{ vna_info|e }})</h2>
+<h2>VNA measurements</h2>
 The antenna S11 parameters were measured with {{ vna_info|e }}. <br>
 The following values were derived from these measurements.<br>
 Details on the measurement method can be found <a href="http://www.positron.ch/rf/vna_to_measure_loop_antenna/pdf/measure_a_magnetic_loop.pdf">here</a>.<br>
 {% if vna_calibration_mode == "antenna_feed_point" %}
 <p>{% if vna_calibration_href %}<a href="{{ vna_calibration_href|e }}"><img class="vna-calibration-picture" src="{{ vna_calibration_href|e }}" alt="VNA calibration: fusspunkt_vna.svg"></a><br>{% endif %}
-The calibration of {{ vna_info|e }} was done at the antenna feed point: green line.<br>
+The calibration of the VNA was done at the antenna feed point: green line.<br>
 Common-mode choke at the antenna: <a href="http://www.positron.ch/rf/choke_simple">positron.ch/rf/choke_simple</a>.<br>
 Used cables: 80 cm RG400 (including the choke) and 10 m LMR195.<br>
 The cable attenuation alpha and the cable delay tau in the following table should therefore be small.</p>
@@ -129,8 +129,41 @@ The cable attenuation alpha and the cable delay tau in the following table show 
 {% if inductance_section_html %}
 {{ inductance_section_html }}
 {% endif %}
-{% if h_field_section_html %}
-{{ h_field_section_html }}
+{% if h_field_section_before_html or h_field_section_after_html or h_field_measurements.sections %}
+<h2>Cross-check H-field</h2>
+<p>The H-field can be calculated under free-space conditions. In practice, however, the building contains numerous conductive objects that distort the field.
+To quantify the extent of this distortion, the H-field was measured and compared with the theoretical predictions.</p>
+
+<p>The H-field is measured with a small measurement loop. The measuring setup is described in <a href="https://arxiv.org/abs/2607.10828">https://arxiv.org/abs/2607.10828</a>.</p>
+{{ h_field_section_before_html }}
+{% for section in h_field_measurements.sections %}
+<h4>f = {{ section.f_mhz|e }} MHz</h4>
+<table class="h-field-summary">
+    {% for row in section.summary_rows %}
+    <tr><td>{{ row.label|e }}</td><td>{{ row.value|e }}</td></tr>
+    {% endfor %}
+</table>
+<table class="measure-table">
+    <thead>
+        <tr class="head-row"><th class="point-col"></th><th>X</th><th>Y</th><th>Z</th><th>expected</th><th>measured</th><th>factor</th></tr>
+        <tr class="head-row"><th class="point-col"></th><th>m</th><th>m</th><th>m</th><th>A/m</th><th>A/m</th><th></th></tr>
+    </thead>
+    <tbody>
+        {% for row in section.point_rows %}
+        <tr>
+            <td class="point-col">{{ row.point|e }}</td>
+            <td>{{ row.x_m|e }}</td>
+            <td>{{ row.y_m|e }}</td>
+            <td>{{ row.z_m|e }}</td>
+            <td>{{ row.expected_a_m|e }}</td>
+            <td>{{ row.measured_a_m|e }}</td>
+            <td class="hl-factor">{{ row.factor|e }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endfor %}
+{{ h_field_section_after_html }}
 {% endif %}
 <p>All antennas overview: <a href="{{ compare_overview_href|e }}">compare page</a></p>
 </body>
