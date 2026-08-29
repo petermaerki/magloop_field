@@ -99,6 +99,18 @@ def _load_html_fragments(
     warning_label: str,
     template_vars: dict[str, str] | None = None,
 ) -> str:
+    def _render_fragment_template(
+        fragment: str,
+        fragment_dir: pathlib.Path,
+        variables: dict[str, str] | None,
+    ) -> str:
+        env = jinja2.Environment(
+            loader=jinja2.FileSystemLoader(
+                [fragment_dir.as_posix(), DIRECTORY_SRC.as_posix()]
+            )
+        )
+        return env.from_string(fragment).render(**(variables or {}))
+
     rel_paths = tuple(getattr(antenna_data, attribute_name, ()) or ())
     fragments: list[str] = []
     for rel_path in rel_paths:
@@ -108,14 +120,16 @@ def _load_html_fragments(
             continue
         try:
             fragment = path.read_text(encoding="utf-8")
+            fragment = _render_fragment_template(
+                fragment,
+                fragment_dir=path.parent,
+                variables=template_vars,
+            )
             fragment = _rewrite_local_links_in_html_fragment(
                 fragment,
                 fragment_dir=path.parent,
                 destination_dir=destination_dir,
             )
-            if template_vars:
-                for key, value in template_vars.items():
-                    fragment = fragment.replace(f"{{{{{key}}}}}", value)
             fragments.append(fragment)
         except Exception as exc:  # pragma: no cover - best effort for optional section
             print(
@@ -186,7 +200,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         return infer_band_label_from_f_hz(f_hz, base_stem)
 
     vna_values_rows: list[dict[str, object]] = []
-    vna_chart_rows: list[dict[str, str]] = []
+    vna_chart_rows: list[dict[str, object]] = []
     band_data_rows: list[dict[str, object]] = []
     first_values_with_model: ValuesDataFile | None = None
     for values_path in values_files:
@@ -243,6 +257,12 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
                 "label": base_stem,
                 "smith_rel": smith_rel,
                 "swr_rel": swr_rel,
+                "f0_mhz": (f0_hz / 1e6) if isinstance(f0_hz, (int, float)) else None,
+                "bswr_khz": (bswr / 1e3) if isinstance(bswr, (int, float)) else None,
+                "alpha_db": alpha,
+                "tau_ns": tau_ns,
+                "swr_min": swr_min,
+                "eta_swr_ant": eta_ant,
             }
         )
     antenna_dir_name = directory_s1p_results.parent.name
@@ -252,6 +272,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
     environment_html_block = ""
     measurement_html_block = ""
     build_html_block = ""
+    final_remarks_html_block = ""
     template_vars_dict: dict[str, str] = {"vna_info": constants.VNA_INFO}
     if antenna_data is not None:
         raw_template_vars_dict = (
@@ -284,6 +305,28 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
             warning_label="build_html",
             template_vars=template_vars_dict,
         )
+
+        final_remarks_path = (directory_s1p_results.parent / "final_remarks.html").resolve()
+        if final_remarks_path.is_file():
+            try:
+                final_remarks_html_block = final_remarks_path.read_text(encoding="utf-8")
+                final_remarks_html_block = jinja2.Environment(
+                    loader=jinja2.FileSystemLoader(
+                        [
+                            final_remarks_path.parent.as_posix(),
+                            DIRECTORY_SRC.as_posix(),
+                        ]
+                    )
+                ).from_string(final_remarks_html_block).render(**template_vars_dict)
+                final_remarks_html_block = _rewrite_local_links_in_html_fragment(
+                    final_remarks_html_block,
+                    fragment_dir=final_remarks_path.parent,
+                    destination_dir=entry.directory,
+                )
+            except Exception as exc:  # pragma: no cover - optional section best effort
+                print(
+                    f"Warnung: final_remarks.html konnte nicht geladen werden ({final_remarks_path}): {exc}"
+                )
 
     if not band_data_rows and antenna_data is not None:
         for idx, band in enumerate(getattr(antenna_data, "bands", ()) or (), start=1):
@@ -339,6 +382,10 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
     build_details_section_html = ""
     if build_html_block.strip():
         build_details_section_html = f"<h2>Build Details</h2>\n{build_html_block}"
+
+    final_remarks_section_html = ""
+    if final_remarks_html_block.strip():
+        final_remarks_section_html = f"<h2>Final Remarks</h2>\n{final_remarks_html_block}"
 
     inductance_section_html = _generate_inductance_section(
         output_subdir=directory_s1p_results,
@@ -437,6 +484,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         h_field_section_before_html=h_field_section_before_html,
         h_field_section_after_html=h_field_section_after_html,
         h_field_measurements=h_field_measurements,
+        final_remarks_section_html=final_remarks_section_html,
         vna_info=constants.VNA_INFO,
         compare_overview_href=compare_overview_href,
     )

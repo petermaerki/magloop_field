@@ -114,6 +114,7 @@ The cable attenuation alpha and the cable delay tau in the following table show 
         <tr>
             <th>Smith</th>
             <th>SWR</th>
+            <th>Values</th>
         </tr>
     </thead>
     <tbody>
@@ -121,6 +122,19 @@ The cable attenuation alpha and the cable delay tau in the following table show 
         <tr>
             <td><h3>{{ row.label|e }}</h3><a href="{{ row.smith_rel|e }}"><img src="{{ row.smith_rel|e }}" alt="{{ row.label|e }} smith"></a></td>
             <td><h3>{{ row.label|e }}</h3><a href="{{ row.swr_rel|e }}"><img src="{{ row.swr_rel|e }}" alt="{{ row.label|e }} swr"></a></td>
+            <td class="values-cell">
+                <h3>{{ row.label|e }}</h3>
+                <table class="chart-values">
+                    <tbody>
+                        <tr><td>model_f0</td><td class="value">{{ row.f0_mhz|e }}</td><td class="unit">MHz</td></tr>
+                        <tr><td>model_BSWR2_62</td><td class="value">{{ row.bswr_khz|e }}</td><td class="unit">kHz</td></tr>
+                        <tr><td>model_alpha</td><td class="value">{{ row.alpha_db|e }}</td><td class="unit">db</td></tr>
+                        <tr><td>model_tau</td><td class="value">{{ row.tau_ns|e }}</td><td class="unit">ns</td></tr>
+                        <tr><td>SWR_min</td><td class="value">{{ row.swr_min|e }}</td><td class="unit"></td></tr>
+                        <tr><td>eta_SWR_ant</td><td class="value">{{ row.eta_swr_ant|e }}</td><td class="unit"></td></tr>
+                    </tbody>
+                </table>
+            </td>
         </tr>
         {% endfor %}
     </tbody>
@@ -164,6 +178,9 @@ To quantify the extent of this distortion, the H-field was measured and compared
 </table>
 {% endfor %}
 {{ h_field_section_after_html }}
+{% endif %}
+{% if final_remarks_section_html %}
+{{ final_remarks_section_html }}
 {% endif %}
 <p>All antennas overview: <a href="{{ compare_overview_href|e }}">compare page</a></p>
 </body>

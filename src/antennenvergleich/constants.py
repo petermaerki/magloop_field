@@ -136,8 +136,8 @@ DK3SS = SimpleNamespace(
     powerP_W=FloatText(10.0, "typical power"),
     info_str="Homebrew copper loop by DK3SS. Two turns; frequency is adjusted by varying the spacing between the turns.",
     info_enviroment_str="On a table in the middle of an attic apartment room, non-conductive building materials.",
-    info_conductor_str="Copper tube 10mm",
-    info_capacitor_str="Ceramic Disc Capacitors",
+    info_conductor_str="Copper tube 10mm.",
+    info_capacitor_str="Ceramic Disc Capacitors.",
     info_thanks_str="Many thanks to Arno for answering my many questions by email.",
 )
 

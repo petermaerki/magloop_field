@@ -29,6 +29,7 @@ ANTENNENDATEN = Antenna(
     powerP_W=DK3SS.powerP_W,
     info_str=DK3SS.info_str,
     info_thanks_str=DK3SS.info_thanks_str,
+    build_html=("antenna_build.html",),
     measurement_html=("../../shared/DK3SS/measurement.html",),
     info_enviroment_str=DK3SS.info_enviroment_str,
     info_conductor_str=DK3SS.info_conductor_str,

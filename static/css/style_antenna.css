@@ -65,9 +65,34 @@ table.charts td {
 
 table.charts img {
     width: 100%;
-    max-width: 400px;
+    max-width: 300px;
     height: auto;
     border: 1px solid #ddd;
+}
+
+table.charts td.values-cell {
+    white-space: nowrap;
+}
+
+table.chart-values {
+    width: auto;
+    border-collapse: collapse;
+}
+
+table.chart-values td {
+    border: none;
+    padding: 0.05rem 0.2rem;
+    line-height: 1.1;
+}
+
+table.chart-values td.unit {
+    white-space: nowrap;
+}
+
+table.chart-values td.value {
+    text-align: right;
+    padding-left: 0.9rem;
+    font-variant-numeric: tabular-nums;
 }
 
 table.h-field-summary,
@@ -117,6 +142,8 @@ table.measure-table td.hl-factor {
 
 h2 {
     margin-top: 2rem;
+    margin-bottom: 0.3rem;
+
 }
 
 h3 {

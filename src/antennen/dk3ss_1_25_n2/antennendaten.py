@@ -49,6 +49,7 @@ ANTENNENDATEN = Antenna(
     info_enviroment_str=DK3SS.info_enviroment_str,
     info_conductor_str=DK3SS.info_conductor_str,
     info_capacitor_str=DK3SS.info_capacitor_str,
+    build_html=("antenna_build.html",),
     measurement_html=("../../shared/DK3SS/measurement.html",),
     bands=[
         BandData(
