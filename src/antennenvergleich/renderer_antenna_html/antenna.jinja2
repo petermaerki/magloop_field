@@ -56,6 +56,9 @@ Thanks: {{antenna.info_thanks_str}}<br>
 {% if measurement_section_html %}
 {{ measurement_section_html }}
 {% endif %}
+{% if environment_section_html %}
+{{ environment_section_html }}
+{% endif %}
 {% if vna_filelist_section.rows %}
 <h2>VNA-measurements</h2>
 The antenna S11 parameters were measured with a VNA. <br>
@@ -109,5 +112,8 @@ Details on the measurement method can be found <a href="http://www.positron.ch/r
         {% endfor %}
     </tbody>
 </table>
+{% endif %}
+{% if inductance_section_html %}
+{{ inductance_section_html }}
 {% endif %}
 </body>
