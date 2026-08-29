@@ -30,6 +30,12 @@ def build_inductance_section_html(
     l_100p_h_value: float | None = None
     l_560p_h_value: float | None = None
     cap_nix_f_value: float | None = None
+    f_nix_hz_value: float | None = None
+    f_off_hz_value: float | None = None
+    f_100p_hz_value: float | None = None
+    f_560p_hz_value: float | None = None
+    c_100p_f_value: float | None = None
+    c_560p_f_value: float | None = None
     inductance_file = output_subdir / "inductance.py"
 
     if not inductance_file.exists():
@@ -44,12 +50,30 @@ def build_inductance_section_html(
         l_100p_h = getattr(module, "L_100p_H", None)
         l_560p_h = getattr(module, "L_560p_H", None)
         cap_nix_f = getattr(module, "CAP_NIX_F", None)
+        f_nix_hz = getattr(module, "F_NIX_HZ", None)
+        f_off_hz = getattr(module, "F_OFF_HZ", None)
+        f_100p_hz = getattr(module, "F_100P_HZ", None)
+        f_560p_hz = getattr(module, "F_560P_HZ", None)
+        c_100p_f = getattr(module, "C_100P_F", None)
+        c_560p_f = getattr(module, "C_560P_F", None)
         if isinstance(l_100p_h, (int, float)):
             l_100p_h_value = float(l_100p_h)
         if isinstance(l_560p_h, (int, float)):
             l_560p_h_value = float(l_560p_h)
         if isinstance(cap_nix_f, (int, float)) and not math.isnan(float(cap_nix_f)):
             cap_nix_f_value = float(cap_nix_f)
+        if isinstance(f_nix_hz, (int, float)) and not math.isnan(float(f_nix_hz)):
+            f_nix_hz_value = float(f_nix_hz)
+        if isinstance(f_off_hz, (int, float)) and not math.isnan(float(f_off_hz)):
+            f_off_hz_value = float(f_off_hz)
+        if isinstance(f_100p_hz, (int, float)) and not math.isnan(float(f_100p_hz)):
+            f_100p_hz_value = float(f_100p_hz)
+        if isinstance(f_560p_hz, (int, float)) and not math.isnan(float(f_560p_hz)):
+            f_560p_hz_value = float(f_560p_hz)
+        if isinstance(c_100p_f, (int, float)) and not math.isnan(float(c_100p_f)):
+            c_100p_f_value = float(c_100p_f)
+        if isinstance(c_560p_f, (int, float)) and not math.isnan(float(c_560p_f)):
+            c_560p_f_value = float(c_560p_f)
     except Exception as exc:  # pragma: no cover - best effort for optional section
         print(
             f"Warnung: Induktivitaet konnte nicht geladen werden ({inductance_file}): {exc}"
@@ -153,14 +177,84 @@ def build_inductance_section_html(
         def highlight_inductance_value_text(value: float | None) -> str:
             return f"<span class='hl-yellow'>{html.escape(fmt_sig4(value))}</span>"
 
+        def plain_mhz_text(value: float | None) -> str:
+            if value is None:
+                return ""
+            return html.escape(f"{value / 1_000_000.0:.6f}")
+
+        def plain_pf_text(value: float | None) -> str:
+            if value is None:
+                return ""
+            return html.escape(f"{value * 1e12:.1f}")
+
         rows_html: list[str] = []
+        if f_nix_hz_value is not None:
+            rows_html.append(
+                "<tr>"
+                "<td>f<sub>NIX</sub></td>"
+                "<td class='unit'>MHz</td>"
+                f"<td class='val'>{plain_mhz_text(f_nix_hz_value)}</td>"
+                "<td>Resonance frequency with no additional capacitors connected.</td>"
+                "</tr>"
+            )
+
+        if f_off_hz_value is not None:
+            rows_html.append(
+                "<tr>"
+                "<td>f<sub>OFF</sub></td>"
+                "<td class='unit'>MHz</td>"
+                f"<td class='val'>{plain_mhz_text(f_off_hz_value)}</td>"
+                "<td>Capacitors and switches are physically connected at the antenna capacitor.<br>A small parasitic capacitance from wiring and switches lowers the resonance frequency.</td>"
+                "</tr>"
+            )
+
+        if f_100p_hz_value is not None:
+            rows_html.append(
+                "<tr>"
+                "<td>f<sub>100</sub></td>"
+                "<td class='unit'>MHz</td>"
+                f"<td class='val'>{plain_mhz_text(f_100p_hz_value)}</td>"
+                "<td>Resonance frequency with an additional 100 pF capacitor switched in.</td>"
+                "</tr>"
+            )
+
+        if f_560p_hz_value is not None:
+            rows_html.append(
+                "<tr>"
+                "<td>f<sub>560</sub></td>"
+                "<td class='unit'>MHz</td>"
+                f"<td class='val'>{plain_mhz_text(f_560p_hz_value)}</td>"
+                "<td>Resonance frequency with an additional 560 pF capacitor switched in.</td>"
+                "</tr>"
+            )
+
+        if c_100p_f_value is not None:
+            rows_html.append(
+                "<tr>"
+                "<td>C<sub>100</sub></td>"
+                "<td class='unit'>pF</td>"
+                f"<td class='val'>{plain_pf_text(c_100p_f_value)}</td>"
+                "<td>Additional capacitance used for the 100 pF branch.</td>"
+                "</tr>"
+            )
+
+        if c_560p_f_value is not None:
+            rows_html.append(
+                "<tr>"
+                "<td>C<sub>560</sub></td>"
+                "<td class='unit'>pF</td>"
+                f"<td class='val'>{plain_pf_text(c_560p_f_value)}</td>"
+                "<td>Additional capacitance used for the 560 pF branch.</td>"
+                "</tr>"
+            )
+
         if l_h_geometry_value is not None:
             rows_html.append(
                 "<tr>"
                 "<td>L</td>"
                 "<td class='unit'>H</td>"
                 f"<td class='val'>{highlight_inductance_value_text(l_h_geometry_value)}</td>"
-                "<td>calculated from geometry of the main loop</td>"
+                "<td>Calculated from geometry of the main loop.</td>"
                 "</tr>"
             )
 
@@ -172,7 +266,7 @@ def build_inductance_section_html(
                 "<td>L<sub>100</sub></td>"
                 "<td class='unit'>H</td>"
                 f"<td class='val'>{highlight_inductance_value_text(l_100p_h_value)}</td>"
-                f"<td>derived from the resonance frequencies f<sub>OFF</sub> and f<sub>100</sub><br>deviation {dev_100_html} vs L</td>"
+                f"<td>Derived from the resonance frequencies f<sub>OFF</sub> and f<sub>100</sub><br>deviation {dev_100_html} vs L</td>"
                 "</tr>"
             )
         if l_560p_h_value is not None:
@@ -183,7 +277,7 @@ def build_inductance_section_html(
                 "<td>L<sub>560</sub></td>"
                 "<td class='unit'>H</td>"
                 f"<td class='val'>{highlight_inductance_value_text(l_560p_h_value)}</td>"
-                f"<td>derived from the resonance frequencies f<sub>OFF</sub> and f<sub>560</sub><br>deviation {dev_560_html} vs L</td>"
+                f"<td>Derived from the resonance frequencies f<sub>OFF</sub> and f<sub>560</sub><br>deviation {dev_560_html} vs L</td>"
                 "</tr>"
             )
 
@@ -193,7 +287,7 @@ def build_inductance_section_html(
                 "<td>C<sub>NIX</sub></td>"
                 "<td class='unit'>As/V</td>"
                 f"<td class='val'>{html.escape(fmt_sig4(cap_nix_f_value))}</td>"
-                "<td>derived from using L<sub>100</sub>, f<sub>OFF</sub>, and f<sub>NIX</sub><br>estimated parasitic capacitance of switches and wiring; expected value 1 ... 5 pF</td>"
+                "<td>Derived from using L<sub>100</sub>, f<sub>OFF</sub>, and f<sub>NIX</sub><br>estimated parasitic capacitance of switches and wiring; expected value 1 ... 5 pF</td>"
                 "</tr>"
             )
 

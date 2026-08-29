@@ -55,8 +55,8 @@
  <g class="Page">
   <g class="com.sun.star.drawing.PolyLineShape">
    <g id="id3">
-    <rect class="BoundingBox" stroke="none" fill="none" x="10087" y="8975" width="251" height="51"/>
-    <path fill="none" stroke="rgb(0,0,0)" stroke-width="50" stroke-linejoin="round" d="M 10212,9000 L 10312,9000 10112,9000"/>
+    <rect class="BoundingBox" stroke="none" fill="none" x="9887" y="8975" width="251" height="51"/>
+    <path fill="none" stroke="rgb(0,0,0)" stroke-width="50" stroke-linejoin="round" d="M 10012,9000 L 10112,9000 9912,9000"/>
    </g>
   </g>
   <g class="com.sun.star.drawing.CustomShape">
@@ -323,8 +323,8 @@
   </g>
   <g class="com.sun.star.drawing.PolyLineShape">
    <g id="id44">
-    <rect class="BoundingBox" stroke="none" fill="none" x="13987" y="5475" width="251" height="51"/>
-    <path fill="none" stroke="rgb(0,0,0)" stroke-width="50" stroke-linejoin="round" d="M 14112,5500 L 14212,5500 14012,5500"/>
+    <rect class="BoundingBox" stroke="none" fill="none" x="13787" y="5475" width="251" height="51"/>
+    <path fill="none" stroke="rgb(0,0,0)" stroke-width="50" stroke-linejoin="round" d="M 13912,5500 L 14012,5500 13812,5500"/>
    </g>
   </g>
   <g class="com.sun.star.drawing.CustomShape">
@@ -519,8 +519,8 @@
   </g>
   <g class="com.sun.star.drawing.PolyLineShape">
    <g id="id74">
-    <rect class="BoundingBox" stroke="none" fill="none" x="13977" y="8975" width="251" height="51"/>
-    <path fill="none" stroke="rgb(0,0,0)" stroke-width="50" stroke-linejoin="round" d="M 14102,9000 L 14202,9000 14002,9000"/>
+    <rect class="BoundingBox" stroke="none" fill="none" x="13777" y="8975" width="251" height="51"/>
+    <path fill="none" stroke="rgb(0,0,0)" stroke-width="50" stroke-linejoin="round" d="M 13902,9000 L 14002,9000 13802,9000"/>
    </g>
   </g>
   <g class="com.sun.star.drawing.CustomShape">
