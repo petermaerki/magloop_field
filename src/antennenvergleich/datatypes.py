@@ -104,7 +104,8 @@ class Antenna:
     vna_calibration: VnaCalibration = VnaCalibration.AT_VNA
     measurement_html: tuple[str, ...] = field(default_factory=tuple)
     enviroment_html: tuple[str, ...] = field(default_factory=tuple)
-    build_html: tuple[str, ...] = field(default_factory=tuple)
+    antenna_build_html: tuple[str, ...] = field(default_factory=tuple)
+    final_remarks_html: tuple[str, ...] = field(default_factory=tuple)
     template_vars_dict: dict[str, str] = field(default_factory=dict)
     overview_pictures: tuple[str, ...] = field(default_factory=tuple)
     inductivity_pictures: tuple[str, ...] = field(default_factory=tuple)

@@ -45,8 +45,9 @@ ANTENNENDATEN = Antenna(
     info_capacitor_str="Air variable capacitor, self-made, CNC-milled from aluminum sheet.",
     info_thanks_str="Many thanks to Peter HB9BPO for the support, the fun conversations, and the catering.",
     enviroment_html=("enviroment.html",),
-    build_html=("antenna_build.html",),
+    antenna_build_html=("antenna_build.html",),
     measurement_html=("measurement.html",),
+    final_remarks_html=("final_remarks.html",),
     template_vars_dict={
         "hoehe_zentrum_ueber_boden_m": f"{_hoehe_ueber_boden_zentrum_m:0.2f}",
         "h_field_tx_info": "IC-7300 MK2",

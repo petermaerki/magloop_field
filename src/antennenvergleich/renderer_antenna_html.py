@@ -115,9 +115,7 @@ def _load_html_fragments(
     fragments: list[str] = []
     for rel_path in rel_paths:
         path = (base_dir / rel_path).resolve()
-        if not path.is_file():
-            print(f"Warnung: {warning_label} nicht gefunden ({path})")
-            continue
+        assert path.is_file(), f"{warning_label} not found: {path}"
         try:
             fragment = path.read_text(encoding="utf-8")
             fragment = _render_fragment_template(
@@ -299,34 +297,20 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         )
         build_html_block = _load_html_fragments(
             antenna_data=antenna_data,
-            attribute_name="build_html",
+            attribute_name="antenna_build_html",
             base_dir=directory_s1p_results.parent,
             destination_dir=entry.directory,
             warning_label="build_html",
             template_vars=template_vars_dict,
         )
-
-        final_remarks_path = (directory_s1p_results.parent / "final_remarks.html").resolve()
-        if final_remarks_path.is_file():
-            try:
-                final_remarks_html_block = final_remarks_path.read_text(encoding="utf-8")
-                final_remarks_html_block = jinja2.Environment(
-                    loader=jinja2.FileSystemLoader(
-                        [
-                            final_remarks_path.parent.as_posix(),
-                            DIRECTORY_SRC.as_posix(),
-                        ]
-                    )
-                ).from_string(final_remarks_html_block).render(**template_vars_dict)
-                final_remarks_html_block = _rewrite_local_links_in_html_fragment(
-                    final_remarks_html_block,
-                    fragment_dir=final_remarks_path.parent,
-                    destination_dir=entry.directory,
-                )
-            except Exception as exc:  # pragma: no cover - optional section best effort
-                print(
-                    f"Warnung: final_remarks.html konnte nicht geladen werden ({final_remarks_path}): {exc}"
-                )
+        final_remarks_html_block = _load_html_fragments(
+            antenna_data=antenna_data,
+            attribute_name="final_remarks_html",
+            base_dir=directory_s1p_results.parent,
+            destination_dir=entry.directory,
+            warning_label="final_remarks_html",
+            template_vars=template_vars_dict,
+        )
 
     if not band_data_rows and antenna_data is not None:
         for idx, band in enumerate(getattr(antenna_data, "bands", ()) or (), start=1):
