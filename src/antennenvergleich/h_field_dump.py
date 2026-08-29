@@ -232,7 +232,9 @@ class HFieldData:
         self,
         frequency_sections: list[_FrequencyTables],
     ) -> None:
-        out_path = self.this_antenna_dir / "h_field" / "h_field_measurements.html"
+        out_path = (
+            self.this_antenna_dir / "h_field" / "h_field_measurements_generated.html"
+        )
 
         sections_html = ""
         for section in frequency_sections:

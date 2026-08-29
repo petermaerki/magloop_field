@@ -117,7 +117,9 @@ def build_h_field_section_html(
     if h_field_html_file.is_file():
         try:
             h_field_html = h_field_html_file.read_text(encoding="utf-8")
-            h_field_measurements_file = h_field_html_file.parent / "h_field_measurements.html"
+            h_field_measurements_file = (
+                h_field_html_file.parent / "h_field_measurements_generated.html"
+            )
             if h_field_measurements_file.is_file():
                 h_field_measurements = _parse_h_field_measurements_html(
                     h_field_measurements_file.read_text(encoding="utf-8")

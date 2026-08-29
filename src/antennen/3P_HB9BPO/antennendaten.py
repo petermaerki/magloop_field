@@ -40,6 +40,7 @@ ANTENNENDATEN = Antenna(
     powerP_W=FloatText(10.0, "HB9BPO: at higher power, the capacitor breaks down."),
     info_str="Mag loop made of copper tubing with an air variable capacitor.",
     overview_pictures=("images/20260827_113113142_overview.jpg",),
+    inductivity_pictures=("images/20260827_115219934_cap_switch.jpg",),
     info_enviroment_str=f"In the garden, on a Styrofoam box on a wooden table. Center loop {_hoehe_ueber_boden_zentrum_m:0.2f} m above ground.",
     info_conductor_str="Copper tube OD 12 mm, ID 10 mm, bare surface.",
     info_capacitor_str="Air variable capacitor, self-made, CNC-milled from aluminum sheet.",
@@ -54,6 +55,3 @@ ANTENNENDATEN = Antenna(
     },
     bands=[],
 )
-
-
-print(ANTENNENDATEN)

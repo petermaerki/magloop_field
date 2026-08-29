@@ -18,11 +18,24 @@
             "justMyCode": false
         },
         {
+            "name": "run_1_h_field",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "antennenvergleich.run_1_h_field",
+            "justMyCode": false
+        },
+        {
             "name": "run_2_html",
             "type": "debugpy",
             "request": "launch",
             "module": "antennenvergleich.run_2_html",
             "justMyCode": false
+        },
+        {
+            "name": "run_build_all.sh",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "${workspaceFolder}/run_build_all.sh"
         },
         {
             "name": "debug_loop_directories",
