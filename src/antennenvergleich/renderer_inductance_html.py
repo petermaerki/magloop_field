@@ -141,8 +141,8 @@ def build_inductance_section_html(
             rows_html.append(
                 "<tr>"
                 "<td>f<sub>NIX</sub></td>"
-                "<td class='unit'>MHz</td>"
                 f"<td class='val'>{plain_mhz_text(inductance.f_nix_hz)}</td>"
+                "<td class='unit'>MHz</td>"
                 "<td>Resonance frequency with no additional capacitors connected.</td>"
                 "</tr>"
             )
@@ -151,8 +151,8 @@ def build_inductance_section_html(
             rows_html.append(
                 "<tr>"
                 "<td>f<sub>OFF</sub></td>"
-                "<td class='unit'>MHz</td>"
                 f"<td class='val'>{plain_mhz_text(inductance.f_off_hz)}</td>"
+                "<td class='unit'>MHz</td>"
                 "<td>Capacitors and switches are physically connected at the antenna capacitor.<br>A small parasitic capacitance from wiring and switches lowers the resonance frequency.</td>"
                 "</tr>"
             )
@@ -161,8 +161,8 @@ def build_inductance_section_html(
             rows_html.append(
                 "<tr>"
                 "<td>f<sub>100</sub></td>"
-                "<td class='unit'>MHz</td>"
                 f"<td class='val'>{plain_mhz_text(inductance.f_100p_hz)}</td>"
+                "<td class='unit'>MHz</td>"
                 "<td>Resonance frequency with an additional 100 pF capacitor switched in.</td>"
                 "</tr>"
             )
@@ -171,8 +171,8 @@ def build_inductance_section_html(
             rows_html.append(
                 "<tr>"
                 "<td>f<sub>560</sub></td>"
-                "<td class='unit'>MHz</td>"
                 f"<td class='val'>{plain_mhz_text(inductance.f_560p_hz)}</td>"
+                "<td class='unit'>MHz</td>"
                 "<td>Resonance frequency with an additional 560 pF capacitor switched in.</td>"
                 "</tr>"
             )
@@ -180,8 +180,8 @@ def build_inductance_section_html(
         rows_html.append(
             "<tr>"
             "<td>C<sub>100</sub></td>"
-            "<td class='unit'>pF</td>"
             f"<td class='val'>{plain_pf_text(constants_s1p.C_100P_F)}</td>"
+            "<td class='unit'>pF</td>"
             "<td>Additional capacitance used for the 100 pF branch.</td>"
             "</tr>"
         )
@@ -189,8 +189,8 @@ def build_inductance_section_html(
         rows_html.append(
             "<tr>"
             "<td>C<sub>560</sub></td>"
-            "<td class='unit'>pF</td>"
             f"<td class='val'>{plain_pf_text(constants_s1p.C_560P_F)}</td>"
+            "<td class='unit'>pF</td>"
             "<td>Additional capacitance used for the 560 pF branch.</td>"
             "</tr>"
         )
@@ -199,8 +199,8 @@ def build_inductance_section_html(
             rows_html.append(
                 "<tr>"
                 "<td>L</td>"
-                "<td class='unit'>H</td>"
                 f"<td class='val'>{highlight_inductance_value_text(l_h_geometry_value)}</td>"
+                "<td class='unit'>H</td>"
                 "<td>Calculated from geometry of the main loop.</td>"
                 "</tr>"
             )
@@ -210,8 +210,8 @@ def build_inductance_section_html(
         rows_html.append(
             "<tr>"
             "<td>L<sub>100</sub></td>"
-            "<td class='unit'>H</td>"
             f"<td class='val'>{highlight_inductance_value_text(inductance.l_100p_h)}</td>"
+            "<td class='unit'>H</td>"
             f"<td>Derived from the resonance frequencies f<sub>OFF</sub> and f<sub>100</sub><br>deviation {dev_100_html} vs L</td>"
             "</tr>"
         )
@@ -221,8 +221,8 @@ def build_inductance_section_html(
         rows_html.append(
             "<tr>"
             "<td>L<sub>560</sub></td>"
-            "<td class='unit'>H</td>"
             f"<td class='val'>{highlight_inductance_value_text(inductance.l_560p_h)}</td>"
+            "<td class='unit'>H</td>"
             f"<td>Derived from the resonance frequencies f<sub>OFF</sub> and f<sub>560</sub><br>deviation {dev_560_html} vs L</td>"
             "</tr>"
         )
@@ -231,8 +231,8 @@ def build_inductance_section_html(
             rows_html.append(
                 "<tr>"
                 "<td>C<sub>NIX</sub></td>"
-                "<td class='unit'>As/V</td>"
                 f"<td class='val'>{html.escape(fmt_sig4(inductance.c_nix_f))}</td>"
+                "<td class='unit'>As/V</td>"
                 "<td>Derived from using L<sub>100</sub>, f<sub>OFF</sub>, and f<sub>NIX</sub><br>estimated parasitic capacitance of switches and wiring; expected value 1 ... 5 pF</td>"
                 "</tr>"
             )

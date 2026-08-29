@@ -4,7 +4,7 @@ import pathlib
 
 from antennenvergleich import datatypes
 
-from . import renderer_compare_html
+from . import constants, renderer_compare_html
 
 
 class EnumCategory(enum.StrEnum):
@@ -41,6 +41,17 @@ class AntennaJoin:
         )
 
 
+def _ordered_band_names(values: set[str]) -> list[str]:
+    unknown_values = values - set(constants.BANDS.f_hz_by_band_name)
+    assert not unknown_values, f"Unknown band(s): {sorted(unknown_values)}"
+
+    def band_sort_key(band_name: str) -> int:
+        assert band_name.endswith("m"), band_name
+        return int(band_name.removesuffix("m"))
+
+    return sorted(values, key=band_sort_key)
+
+
 def get_antenna_joins(
     antenna_entries: list[datatypes.AntennaPlusDirectory],
 ) -> list[AntennaJoin]:
@@ -52,7 +63,7 @@ def get_antenna_joins(
         assert isinstance(antenna.bands, list)
         for band in antenna.bands:
             band_str = renderer_compare_html._band_from_frequency(f_Hz=band.f_Hz.value)
-            print(antenna.selection_location)
+            assert band_str is not None, band.f_Hz.value
             antenna_joins.append(
                 AntennaJoin(
                     directory=antenna_entry.directory,
@@ -117,7 +128,11 @@ class CategoryStats:
         self.category = category
 
         values = {f.value(category=category) for f in antenna_filters}
-        self.checkboxes: list[Checkbox] = [Checkbox(c) for c in sorted(values)]
+        if category == EnumCategory.BAND:
+            ordered_values = _ordered_band_names(values)
+        else:
+            ordered_values = sorted(values)
+        self.checkboxes = [Checkbox(c) for c in ordered_values]
 
     def reset(self) -> None:
         for c in self.checkboxes:

@@ -153,5 +153,4 @@ HB9SM = SimpleNamespace(
         "The connections were temporarily taped to the capacitor plates with yellow tape.<br>"
         "With two switches the two capacitors can be switched in."
     ),
-
 )

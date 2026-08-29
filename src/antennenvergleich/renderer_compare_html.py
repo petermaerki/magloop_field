@@ -15,33 +15,21 @@ from .antenna_calculations import (
 )
 
 # ── Constants (same as calculations.py) ───────────────────────────────────────
-C_LIGHT_MS = 299_792_458.0  # m/s
-
-BAND_ORDER = ["10m", "12m", "15m", "20m", "30m", "40m", "60m", "80m", "160m"]
-
 DIRECTORY_OF_THIS_FILE = pathlib.Path(__file__).parent
 
-_BAND_WAVELENGTHS_M = {
-    "160m": 160.0,
-    "80m": 80.0,
-    "60m": 60.0,
-    "40m": 40.0,
-    "30m": 30.0,
-    "20m": 20.0,
-    "15m": 15.0,
-    "12m": 12.0,
-    "10m": 10.0,
-}
+
+def _band_sort_key(band_name: str) -> int:
+    assert band_name.endswith("m"), band_name
+    return int(band_name.removesuffix("m"))
 
 
 def _band_from_frequency(f_Hz: float | None) -> str | None:
     if f_Hz is None or f_Hz <= 0:
         return None
 
-    wavelength_m = C_LIGHT_MS / f_Hz
     return min(
-        _BAND_WAVELENGTHS_M.items(),
-        key=lambda item: abs(wavelength_m - item[1]),
+        constants.BANDS.f_hz_by_band_name.items(),
+        key=lambda item: abs(f_Hz - item[1]),
     )[0]
 
 
@@ -310,7 +298,7 @@ class HtmlRenderer:
             band = _band_from_frequency(bd.f_Hz.value)
             if band is not None and band not in by_band:
                 by_band[band] = bd
-        for band in BAND_ORDER:
+        for band in sorted(constants.BANDS.f_hz_by_band_name, key=_band_sort_key):
             if band in by_band:
                 return by_band[band]
         return antenna.bands[0] if antenna.bands else None
@@ -397,7 +385,7 @@ class HtmlRenderer:
 
         available_bands = [
             band
-            for band in BAND_ORDER
+            for band in sorted(constants.BANDS.f_hz_by_band_name, key=_band_sort_key)
             if any(
                 band in band_data_by_dir[entry.directory] for entry in antenna_entries
             )
