@@ -1,7 +1,7 @@
 """Shared antenna data structures and discovery logic."""
 
+import enum
 from dataclasses import dataclass, field
-from enum import Enum
 from pathlib import Path
 
 from antennenvergleich.constants_s1p import (
@@ -17,7 +17,7 @@ def _is_cap_values_file(path: Path) -> bool:
     return any(tag in stem_u for tag in CAP_VALUES_TAGS)
 
 
-class VnaCalibration(str, Enum):
+class VnaCalibration(enum.StrEnum):
     ANTENNA_FEED_POINT = "antenna_feed_point"
     AT_VNA = "at_vna"
 

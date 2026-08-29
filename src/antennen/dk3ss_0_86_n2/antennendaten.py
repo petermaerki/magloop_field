@@ -3,7 +3,6 @@
 from antennenvergleich.constants import BANDS, DK3SS
 from antennenvergleich.datatypes import Antenna, BandData, FloatText
 
-
 q_80m = 545  # qrz_com_db_DK3SS.pdf
 bw262_Hz_80m = BANDS.f_hz_by_band_name["80m"] / q_80m
 

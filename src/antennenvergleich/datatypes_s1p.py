@@ -75,7 +75,7 @@ class S1pValues:
             print(f"Warnung: ruff format fehlgeschlagen fuer {filename}: {exc}")
 
     @staticmethod
-    def read_values_file(filename: pathlib.Path) -> "S1pValues":
+    def read_values_file(filename: pathlib.Path) -> S1pValues:
         """Load swr_values and model from a generated *_values.py file."""
         try:
             relative_py = filename.resolve().relative_to(DIRECTORY_SRC)

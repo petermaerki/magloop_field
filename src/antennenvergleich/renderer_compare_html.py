@@ -6,8 +6,7 @@ import os
 import pathlib
 from collections.abc import Callable
 
-from antennenvergleich.datatypes import Antenna, BandData, VnaCalibration
-from magloop_field.calculations import AntennaCalculator as FieldAntennaCalculator
+from antennenvergleich.datatypes import Antenna, BandData
 
 from . import constants, loop_directories, renderer_diagram_svg
 from .antenna_calculations import (

@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import contextlib
-import importlib
 from pathlib import Path
 
 from antennenvergleich . h_field_dump import HFieldData

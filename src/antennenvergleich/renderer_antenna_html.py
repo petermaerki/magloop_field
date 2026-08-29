@@ -1,6 +1,7 @@
 import os
 import pathlib
 import re
+import typing
 from urllib.parse import urlsplit, urlunsplit
 
 import jinja2
@@ -115,7 +116,7 @@ def _generate_inductance_section(
     output_subdir: pathlib.Path,
     antenna_dir: pathlib.Path,
     antenna_data: object | None,
-    first_values_with_model: ValuesDataFile | None,
+    first_values_with_model: S1pValues | None,
     antenna_dir_name: str,
 ) -> str:
     return build_inductance_section_html(
@@ -168,14 +169,14 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
             return min(band_centers_mhz, key=lambda item: abs(item[1] - f_mhz))[0]
         return fallback
 
-    def infer_band_label(values: ValuesDataFile, base_stem: str) -> str:
+    def infer_band_label(values: S1pValues, base_stem: str) -> str:
         f_hz = values.model.f0_Hz if values.model is not None else None
         return infer_band_label_from_f_hz(f_hz, base_stem)
 
     vna_values_rows: list[dict[str, object]] = []
     vna_chart_rows: list[dict[str, object]] = []
     band_data_rows: list[dict[str, object]] = []
-    first_values_with_model: ValuesDataFile | None = None
+    first_values_with_model: S1pValues | None = None
     for values_path in values_files:
         values = S1pValues.read_values_file(values_path)
         if first_values_with_model is None and values.model is not None:
@@ -246,7 +247,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
     measurement_html_block = ""
     build_html_block = ""
     final_remarks_html_block = ""
-    template_vars_dict: dict[str, str] = {
+    template_vars_dict: dict[str, typing.Any] = {
         "constants": constants,
         "antenna": antenna,
     }

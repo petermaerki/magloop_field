@@ -1,8 +1,7 @@
 """Physics calculations for magnetic-loop antenna comparison."""
 
-from magloop_field.calculations import AntennaCalculator
-
 from antennenvergleich.datatypes import Antenna, BandData
+from magloop_field.calculations import AntennaCalculator
 
 
 def _make_calc(antenna: Antenna, bd: BandData) -> AntennaCalculator:

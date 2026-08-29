@@ -4,10 +4,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from magloop_field.calculations import AntennaCalculator, Calculator
-
 from antennenvergleich.datatypes import Antenna, BandData
 from antennenvergleich.h_field_meter import h_field_from_p_dbm
+from magloop_field.calculations import AntennaCalculator, Calculator
 
 
 @dataclass(frozen=True)

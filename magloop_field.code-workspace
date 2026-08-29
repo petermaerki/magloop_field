@@ -5,6 +5,28 @@
 		}
 	],
 	"settings": {
+		"[python]": {
+			"editor.formatOnSave": true,
+			"editor.defaultFormatter": "charliermarsh.ruff"
+		},
+		"python.testing.pytestEnabled": true,
+		"python.testing.unittestEnabled": false,
+		"python.testing.pytestArgs": [
+			"-v",
+			"-s",
+			"tests"
+		],
+		"python.testing.autoTestDiscoverOnSaveEnabled": true,
+		"ruff.enable": true,
+		"ruff.fixAll": true,
+		"ruff.lint.enable": true,
+		"python-envs.pythonProjects": [
+			{
+				"path": ".",
+				"envManager": "ms-python.python:venv",
+				"packageManager": "ms-python.python:pip"
+			}
+		],
 		"chat.tools.terminal.autoApprove": {
 			".": true,
 			"pytest": true,
@@ -15,5 +37,13 @@
 			"awk": true,
 			"true": true
 		}
+	},
+	"extensions": {
+		"recommendations": [
+			"charliermarsh.ruff",
+			"hediet.vscode-drawio",
+			"ms-python.mypy-type-checker",
+			"ms-python.python",
+		]
 	}
 }

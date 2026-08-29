@@ -1,6 +1,6 @@
-'''Agent: 
+"""Agent:
 schreibe mir hier code welcher aus den files in s1p_results aus den files values.py ein
-file generiert: 
+file generiert:
 
 table_results.typ
 
@@ -32,7 +32,7 @@ files mit 30 ohm sind zu wenig
 reihenfolge: zu erst Antennenfusspunkt ohm aufsteigend dann beim VNA ohm aufsteigend
 
 
-'''
+"""
 
 import importlib.util
 import pathlib
@@ -44,14 +44,16 @@ OUTPUT = pathlib.Path(__file__).parent / "table_results.typ"
 
 def load_values(path: pathlib.Path):
     spec = importlib.util.spec_from_file_location(path.stem, path)
+    assert spec is not None
     mod = importlib.util.module_from_spec(spec)
+    assert mod is not None
     spec.loader.exec_module(mod)
     return mod
 
 
 def kopplung(stem: str) -> str:
     if "_50_ohm_" in stem:
-        return '50 Ω'
+        return "50 Ω"
     if "_80_ohm_" in stem:
         return "zu viel"
     if "_30_ohm_" in stem:
@@ -61,7 +63,7 @@ def kopplung(stem: str) -> str:
 
 def vna_kalibriert(stem: str) -> str:
     if "_fusspunkt_" in stem:
-        return 'Fuss- \\\npunkt'
+        return "Fuss- \\\npunkt"
     if "_kabel_" in stem:
         return "beim VNA"
     return "?"
@@ -81,18 +83,20 @@ def build_table() -> str:
             continue
         mod = load_values(f)
         m = mod.model
-        rows.append((
-            kopplung(f.stem),
-            vna_kalibriert(f.stem),
-            f"{m.f0_Hz / 1e6:.3f}",
-            f"{m.BSWR2_62_Hz:.0f}",
-            f"{mod.swr_values.swr_min:.2f}",
-            f"{m.alpha_db:.3f}",
-            f"{m.tau_s * 1e9:.1f}",
-        ))
+        rows.append(
+            (
+                kopplung(f.stem),
+                vna_kalibriert(f.stem),
+                f"{m.f0_Hz / 1e6:.3f}",
+                f"{m.BSWR2_62_Hz:.0f}",
+                f"{mod.swr_values.swr_min:.2f}",
+                f"{m.alpha_db:.3f}",
+                f"{m.tau_s * 1e9:.1f}",
+            )
+        )
 
     header = (
-        '[Kopp-\\\nlung]',
+        "[Kopp-\\\nlung]",
         "[VNA cal]",
         "[f\\\n(MHz)]",
         '[$B_"SWR 2.62"$\\\n(Hz)]',

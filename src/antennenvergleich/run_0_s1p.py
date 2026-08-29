@@ -4,9 +4,7 @@
 from __future__ import annotations
 
 import dataclasses
-import html
 import math
-import re
 import shutil
 from pathlib import Path
 

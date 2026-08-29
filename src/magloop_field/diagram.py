@@ -2,7 +2,6 @@ import io
 import math
 import pathlib
 
-import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.lines import Line2D
@@ -44,15 +43,15 @@ class HFieldPlot:
     ) -> None:
         assert isinstance(calculator, Calculator)
 
-        self.calculator=calculator
-        self.lim_x_m=lim_x_m
-        self.lim_y_m=lim_y_m
-        self.x_step=x_step
-        self.y_step=y_step
-        self.levels=levels
-        self.icnirp_limit_a_per_m=icnirp_limit_a_per_m
-        self.show_icnirp_blue=show_icnirp_blue
-        self.d_min_abstand_m=d_min_abstand_m
+        self.calculator = calculator
+        self.lim_x_m = lim_x_m
+        self.lim_y_m = lim_y_m
+        self.x_step = x_step
+        self.y_step = y_step
+        self.levels = levels
+        self.icnirp_limit_a_per_m = icnirp_limit_a_per_m
+        self.show_icnirp_blue = show_icnirp_blue
+        self.d_min_abstand_m = d_min_abstand_m
 
         self._save_h_field_plot()
 
@@ -67,18 +66,16 @@ class HFieldPlot:
     def close(self) -> None:
         plt.close(self.gcf)
 
-    def svg_text(self)-> str:
+    def svg_text(self) -> str:
         svg_buffer = io.BytesIO()
-        self.gcf.savefig(
-            svg_buffer, format="svg", bbox_inches="tight", pad_inches=0.01
-        )
+        self.gcf.savefig(svg_buffer, format="svg", bbox_inches="tight", pad_inches=0.01)
         return svg_buffer.getvalue().decode("utf-8")
-        
+
     def _save_h_field_plot(self) -> None:
         x = np.linspace(-self.lim_x_m, self.lim_x_m, 1000)
         y = np.linspace(-self.lim_y_m, self.lim_y_m, 1000)
         X, Y = np.meshgrid(x, y)
-        H_total =self. calculator.h_field_abs_xyz(
+        H_total = self.calculator.h_field_abs_xyz(
             X,
             Y,
             0.0,
@@ -121,7 +118,6 @@ class HFieldPlot:
         for label in clabels:
             label.set_bbox({"facecolor": "white", "edgecolor": "none", "pad": 3})
 
-        show_blue_limit_line = False
         if (
             self.show_icnirp_blue
             and self.icnirp_limit_a_per_m is not None

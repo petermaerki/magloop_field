@@ -5,8 +5,7 @@ from pathlib import Path
 
 from antennenvergleich.antenna_calculations import AntennaCalculator
 from antennenvergleich.constants import BANDS, DK3SS
-from antennenvergleich.datatypes import Antenna, BandData, FloatText, IntText
-
+from antennenvergleich.datatypes import Antenna, BandData, FloatText
 
 q_160m = 305  # qrz_com_db_DK3SS.pdf
 bw262_Hz_160m = BANDS.f_hz_by_band_name["30m"] / q_160m
@@ -112,7 +111,9 @@ def _build_summary_lines() -> list[str]:
     lines.append(f"D_m: {_fmt_sig(ANTENNENDATEN.D_m.value)} m")
     lines.append(f"d_m: {_fmt_sig(ANTENNENDATEN.d_m.value)} m")
     lines.append(f"n: {_fmt_sig(ANTENNENDATEN.n.value)}")
-    for band_name, band in zip(("160m", "80m", "40m"), ANTENNENDATEN.bands):
+    for band_name, band in zip(
+        ("160m", "80m", "40m"), ANTENNENDATEN.bands, strict=True
+    ):
         calc = AntennaCalculator(
             D_m=ANTENNENDATEN.D_m.value,
             d_m=ANTENNENDATEN.d_m.value,
@@ -133,7 +134,9 @@ def _build_summary_lines() -> list[str]:
 def _write_cross_check_capacity_html() -> None:
     output_path = Path(__file__).with_name("cross_check_capacity.html")
     rows = []
-    for band_name, band in zip(("160m", "80m", "40m"), ANTENNENDATEN.bands):
+    for band_name, band in zip(
+        ("160m", "80m", "40m"), ANTENNENDATEN.bands, strict=True
+    ):
         calc = AntennaCalculator(
             D_m=ANTENNENDATEN.D_m.value,
             d_m=ANTENNENDATEN.d_m.value,

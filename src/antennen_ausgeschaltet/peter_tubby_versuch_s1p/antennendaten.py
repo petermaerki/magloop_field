@@ -1,7 +1,7 @@
 """Structured data for the Peter Märki Tubby outdoor antenna."""
 
 from antennenvergleich.constants import PETER_TUBBY
-from antennenvergleich.datatypes import Antenna, FloatText, IntText
+from antennenvergleich.datatypes import Antenna
 
 ANTENNENDATEN = Antenna(
     name="Peter Tubby s1p",

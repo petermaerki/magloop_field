@@ -1,5 +1,5 @@
-from antennenvergleich.constants import MAZZONI_MIDI, HB9SM
-from antennenvergleich.datatypes import Antenna, FloatText, IntText, VnaCalibration
+from antennenvergleich.constants import HB9SM, MAZZONI_MIDI
+from antennenvergleich.datatypes import Antenna
 
 ANTENNENDATEN = Antenna(
     # name="Mazzoni Midi Loop",

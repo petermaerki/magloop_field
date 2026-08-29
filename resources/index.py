@@ -6,7 +6,7 @@ from pyodide.ffi import JsNull, create_proxy
 from pyscript import when
 from pyscript.web import page
 
-from antennenvergleich import renderer_compare_html, renderer_diagram_svg, webui_filter
+from antennenvergleich import renderer_diagram_svg, webui_filter
 from webui import util_compare
 
 try:

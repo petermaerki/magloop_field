@@ -43,7 +43,7 @@ class Inductance:
             print(f"Warnung: ruff format fehlgeschlagen fuer {filename}: {exc}")
 
     @staticmethod
-    def read_values_file(filename: pathlib.Path) -> "Inductance":
+    def read_values_file(filename: pathlib.Path) -> Inductance:
         """Load swr_values and model from a generated *_values.py file."""
         try:
             relative_py = filename.resolve().relative_to(DIRECTORY_SRC)

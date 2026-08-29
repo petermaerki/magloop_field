@@ -1,8 +1,6 @@
-import math
 
 from antennenvergleich.datatypes import (
     Antenna,
-    BandData,
     FloatText,
     IntText,
     VnaCalibration,
