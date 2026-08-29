@@ -97,7 +97,7 @@ def main() -> None:
     html_renderer = renderer_compare_html.HtmlRenderer()
     html_renderer.render(antenna_entries)
 
-    html = html_renderer.close()
+    html = html_renderer.close(body_only=False)
     filename = constants.DIRECTORY_REPO / "generated_compare.html"
     filename.write_text(html, encoding="utf-8")
     print(f"Written: {filename}")

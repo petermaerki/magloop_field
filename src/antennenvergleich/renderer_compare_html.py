@@ -34,7 +34,6 @@ _BAND_WAVELENGTHS_M = {
 }
 
 
-
 def _band_from_frequency(f_Hz: float | None) -> str | None:
     if f_Hz is None or f_Hz <= 0:
         return None
@@ -226,6 +225,7 @@ _ROWS: list[tuple[str, str, str, RowFormatter]] = [
 
 # ── HTML generation ────────────────────────────────────────────────────────────
 
+
 class HtmlRenderer:
     def __init__(
         self,
@@ -233,7 +233,11 @@ class HtmlRenderer:
     ) -> None:
         self.html_root_directory = html_root_directory
         self.sections: list[str] = []
-        self.html_prefix = f"""<!-- Automatically generated file by run_2_html.py. Do not edit manually. -->
+        self.sections.append(
+            f"""<img src="{renderer_diagram_svg.FILENAME_SVG_ETA_F}" id="{renderer_diagram_svg.ID_SVG_ETA_F}" alt="Antenna efficiency eta over frequency">"""
+        )
+
+        self.html_prefix = """<!-- Automatically generated file by run_2_html.py. Do not edit manually. -->
 
 <!DOCTYPE html>
 <html lang=\"de\">
@@ -243,7 +247,6 @@ class HtmlRenderer:
     <link rel="stylesheet" href="static/css/style_compare.css">
 </head>
 <body>
-<img src="{renderer_diagram_svg.FILENAME_SVG_ETA_F}" id="{renderer_diagram_svg.ID_SVG_ETA_F}" alt="Antenna efficiency eta over frequency">
 """
 
     def _build_calculator_url(
@@ -323,7 +326,9 @@ class HtmlRenderer:
         assert filename.is_file(), f"Path does not exist: '{filename}'!"
         return os.path.relpath(filename, self.html_root_directory)
 
-    def render(self, antenna_entries: list[loop_directories.AntennaPlusDirectory]) -> None:
+    def render(
+        self, antenna_entries: list[loop_directories.AntennaPlusDirectory]
+    ) -> None:
         if not antenna_entries:
             return
 
@@ -352,7 +357,9 @@ class HtmlRenderer:
                 f"<div class='color-swatch' style='background:{color};'></div>"
                 "</th>"
             )
-            overview_pictures = self._overview_pictures_from_field(antenna, entry.directory)
+            overview_pictures = self._overview_pictures_from_field(
+                antenna, entry.directory
+            )
             if not overview_pictures:
                 header_overview_pictures += "<th></th>"
             else:
@@ -391,7 +398,9 @@ class HtmlRenderer:
         available_bands = [
             band
             for band in BAND_ORDER
-            if any(band in band_data_by_dir[entry.directory] for entry in antenna_entries)
+            if any(
+                band in band_data_by_dir[entry.directory] for entry in antenna_entries
+            )
         ]
 
         body = ""
@@ -464,14 +473,17 @@ class HtmlRenderer:
         )
         self.sections.append(section)
 
-    def close(self) -> str:
+    def close(self, body_only: bool) -> str:
         html_suffix = """
 <p style='margin-top: 2rem; font-size: 0.9rem; color: #666;'>No guarantee for correctness! Feedback is welcome.</p>
 </body>
 </html>
 """
-        html = f"{self.html_prefix}{''.join(self.sections)}{html_suffix}"
-        return html
+        html_body = "".join(self.sections)
+        if body_only:
+            return html_body
+
+        return f"{self.html_prefix}{html_body}{html_suffix}"
 
 
 @dataclasses.dataclass(frozen=True)
