@@ -75,6 +75,9 @@ def build_inductance_section_html(
         picture_rel_paths = tuple(
             getattr(antenna_data, "inductivity_pictures", ()) or ()
         )
+        picture_caption_html = str(
+            getattr(antenna_data, "inductivity_pictures_caption_str", "") or ""
+        ).strip()
         if picture_rel_paths:
             image_tags: list[str] = []
             for picture_rel in picture_rel_paths:
@@ -86,9 +89,14 @@ def build_inductance_section_html(
                 ).as_posix()
                 alt = html.escape(f"Inductivity picture: {pic_path.name}", quote=True)
                 src = html.escape(rel_to_antenna, quote=True)
-                image_tags.append(
+                figure_html = (
+                    '<figure>'
                     f'<a href="{src}"><img class="inductivity-picture" src="{src}" alt="{alt}"></a>'
                 )
+                if picture_caption_html:
+                    figure_html += f'<figcaption>{picture_caption_html}</figcaption>'
+                figure_html += '</figure>'
+                image_tags.append(figure_html)
             if image_tags:
                 inductivity_pictures_html = (
                     '<div class="inductivity-pictures">'

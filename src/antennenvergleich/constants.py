@@ -146,4 +146,10 @@ HB9SM = SimpleNamespace(
     info_enviroment_str="Indoor, 3rd floor below the roof.",
     info_thanks_str="Many thanks to Stefan for the support and for allowing me to publish these measurement values and supporting documents.",
     vna_calibration=VnaCalibration.ANTENNA_FEED_POINT,
+    inductivity_pictures_caption_str=(
+        "The switched capacitor is visible in the lower part of the picture.<br>"
+        "The connections were temporarily taped to the capacitor plates with yellow tape.<br>"
+        "With two switches the two capacitors can be switched in."
+    ),
+
 )

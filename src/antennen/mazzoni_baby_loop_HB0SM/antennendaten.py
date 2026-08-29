@@ -24,6 +24,7 @@ ANTENNENDATEN = Antenna(
     info_conductor_str=MAZZONI_BABY.info_conductor_str,
     info_capacitor_str=MAZZONI_BABY.info_capacitor_str,
     info_thanks_str=HB9SM.info_thanks_str,
+    inductivity_pictures_caption_str=HB9SM.inductivity_pictures_caption_str,
     vna_calibration=HB9SM.vna_calibration,
     bands=[],
 )

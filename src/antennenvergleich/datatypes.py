@@ -109,6 +109,7 @@ class Antenna:
     template_vars_dict: dict[str, str] = field(default_factory=dict)
     overview_pictures: tuple[str, ...] = field(default_factory=tuple)
     inductivity_pictures: tuple[str, ...] = field(default_factory=tuple)
+    inductivity_pictures_caption_str: str = ""
     bands: list[BandData] = field(default_factory=list)
 
     def __post_init__(self) -> None:

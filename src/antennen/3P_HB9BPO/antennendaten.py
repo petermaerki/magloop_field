@@ -41,6 +41,9 @@ ANTENNENDATEN = Antenna(
     info_str="Mag loop made of copper tubing with an air variable capacitor.",
     overview_pictures=("images/20260827_113113142_overview.jpg",),
     inductivity_pictures=("images/20260827_115219934_cap_switch.jpg",),
+    inductivity_pictures_caption_str= "The switched capacitor is visible in the picture above.<br>" \
+    " The connections were temporarily taped to the main loop with yellow tape.<br>" \
+    "With two switches (only one is visible in the picture because they are exactly behind each other), the two capacitors can be switched in.",
     info_enviroment_str=f"In the garden, on a Styrofoam box on a wooden table. Center loop {_hoehe_ueber_boden_zentrum_m:0.2f} m above ground.",
     info_conductor_str="Copper tube OD 12 mm, ID 10 mm, bare surface.",
     info_capacitor_str="Air variable capacitor, self-made, CNC-milled from aluminum sheet.",
