@@ -53,4 +53,61 @@ Thanks: {{antenna.info_thanks_str}}<br>
         {% endfor %}
     </tbody>
 </table>
+{% if measurement_section_html %}
+{{ measurement_section_html }}
+{% endif %}
+{% if vna_filelist_section.rows %}
+<h2>VNA-measurements</h2>
+The antenna S11 parameters were measured with a VNA. <br>
+The following values were derived from these measurements.<br>
+Details on the measurement method can be found <a href="http://www.positron.ch/rf/vna_to_measure_loop_antenna/pdf/measure_a_magnetic_loop.pdf">here</a>.<br>
+{{ vna_calibration_html }}
+<table class="compact">
+    <thead>
+        <tr>
+            <th>File</th>
+            <th>model_f0<br>MHz</th>
+            <th>model_BSWR2_62<br>kHz</th>
+            <th>model_alpha<br>db</th>
+            <th>model_tau<br>ns</th>
+            <th>SWR_min</th>
+            <th>eta_SWR_ant</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in vna_filelist_section.rows %}
+        <tr>
+            <td>{{ row.file_name|e }}</td>
+            <td>{{ row.f0_mhz|e }}</td>
+            <td>{{ row.bswr_khz|e }}</td>
+            <td>{{ row.alpha_db|e }}</td>
+            <td>{{ row.tau_ns|e }}</td>
+            <td>{{ row.swr_min|e }}</td>
+            <td>{{ row.eta_swr_ant|e }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% if vna_smith_section.rows %}
+<p> </p>
+<p>The following diagrams: red points = measured values; green line = fitted model.</p>
+<table class="charts">
+    <thead>
+        <tr>
+            <th>Smith</th>
+            <th>SWR</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in vna_smith_section.rows %}
+        <tr>
+            <td><h3>{{ row.label|e }}</h3><a href="{{ row.smith_rel|e }}"><img src="{{ row.smith_rel|e }}" alt="{{ row.label|e }} smith"></a></td>
+            <td><h3>{{ row.label|e }}</h3><a href="{{ row.swr_rel|e }}"><img src="{{ row.swr_rel|e }}" alt="{{ row.label|e }} swr"></a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
 </body>

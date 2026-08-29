@@ -7,7 +7,13 @@
 	"settings": {
 		"chat.tools.terminal.autoApprove": {
 			".": true,
-			"pytest": true
+			"pytest": true,
+			"/^cd /home/maerki/data_yoga-7/gits/magloop_field && python3 - <<'PY'\nfrom pathlib import Path\nfor name in \\['generated_antenna\\.html','generated_antenna_reference\\.html'\\]:\n    path = Path\\('src/antennen/3P_HB9BPO'\\)/name\n    lines = path\\.read_text\\(encoding='utf-8'\\)\\.splitlines\\(\\)\n    idx = next\\(\\(i for i,l in enumerate\\(lines\\) if '<hr' in l\\), None\\)\n    if idx is None:\n        print\\(f'\\{name\\}: no <hr> match'\\)\n        continue\n    start = max\\(0, idx-40\\)\n    end = min\\(len\\(lines\\), idx\\+120\\)\n    print\\(f'FILE: \\{name\\}'\\)\n    print\\(f'FIRST <hr> LINE: \\{idx\\+1\\}'\\)\n    for n in range\\(start\\+1, end\\+1\\):\n        print\\(f'\\{n\\}: \\{lines\\[n-1\\]\\}'\\)\n    print\\('---'\\)\nPY$/": {
+				"approve": true,
+				"matchCommandLine": true
+			},
+			"awk": true,
+			"true": true
 		}
 	}
 }

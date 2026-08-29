@@ -24,6 +24,8 @@ from .constants_s1p import (
     VALUES_SUFFIX,
 )
 from .renderer_antenna_efficiency_table_html import build_efficiency_table
+from .renderer_vna_filelist_html import build_vna_filelist_section
+from .renderer_vna_smith_html import build_vna_smith_section
 
 DIRECTORY_OF_THIS_FILE = pathlib.Path(__file__).parent
 
@@ -392,8 +394,8 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         f_hz = values.model.f0_Hz if values.model is not None else None
         return infer_band_label_from_f_hz(f_hz, base_stem)
 
-    rows: list[str] = []
-    chart_rows: list[str] = []
+    vna_values_rows: list[dict[str, object]] = []
+    vna_chart_rows: list[dict[str, str]] = []
     band_data_rows: list[dict[str, object]] = []
     first_values_with_model: ValuesDataFile | None = None
     for values_path in values_files:
@@ -433,31 +435,25 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
             }
         )
 
-        rows.append(
-            "<tr>"
-            f"<td>{html.escape(values_path.name)}</td>"
-            f"<td>{html.escape(fmt((f0_hz / 1e6) if isinstance(f0_hz, (int, float)) else None, 3))}</td>"
-            f"<td>{html.escape(fmt((bswr / 1e3) if isinstance(bswr, (int, float)) else None, 1))}</td>"
-            f"<td>{html.escape(fmt(alpha, 3))}</td>"
-            f"<td>{html.escape(fmt(tau_ns, 2))}</td>"
-            f"<td>{html.escape(fmt(swr_min, 2))}</td>"
-            f"<td>{html.escape(fmt(eta_ant, 3))}</td>"
-            "</tr>"
+        vna_values_rows.append(
+            {
+                "file_name": values_path.name,
+                "f0_mhz": (f0_hz / 1e6) if isinstance(f0_hz, (int, float)) else None,
+                "bswr_khz": (bswr / 1e3) if isinstance(bswr, (int, float)) else None,
+                "alpha_db": alpha,
+                "tau_ns": tau_ns,
+                "swr_min": swr_min,
+                "eta_swr_ant": eta_ant,
+            }
         )
 
-        chart_rows.append(
-            "<tr>"
-            f"<td><h3>{html.escape(base_stem)}</h3>"
-            f'<a href="{html.escape(smith_rel)}">'
-            f'<img src="{html.escape(smith_rel)}" alt="{html.escape(base_stem)} smith"></a></td>'
-            f"<td><h3>{html.escape(base_stem)}</h3>"
-            f'<a href="{html.escape(swr_rel)}">'
-            f'<img src="{html.escape(swr_rel)}" alt="{html.escape(base_stem)} swr"></a></td>'
-            "</tr>"
+        vna_chart_rows.append(
+            {
+                "label": base_stem,
+                "smith_rel": smith_rel,
+                "swr_rel": swr_rel,
+            }
         )
-
-    table_rows = "\n".join(rows)
-    chart_table_rows = "\n".join(chart_rows)
     antenna_dir_name = directory_s1p_results.parent.name
 
     antenna_data = entry.antenna
@@ -525,12 +521,11 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         antenna_data=antenna_data,
     )
 
-    template = env.get_template("antenna.jinja2")
-    jinja_html = template.render(
-        antenna=entry.antenna,
-        antenna_css_rel=antenna_css_rel,
-        efficency_table=efficency_table,
-    )
+    measurement_section_html = ""
+    if measurement_html_block.strip():
+        measurement_section_html = (
+            f"<h2>Measurement Info</h2>\n{measurement_html_block}"
+        )
 
     inductivity_section_html = _generate_inductivity_section(
         output_subdir=directory_s1p_results,
@@ -543,12 +538,6 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
     environment_section_html = ""
     if environment_html_block.strip():
         environment_section_html = f"<h2>Enviroment</h2>\n{environment_html_block}"
-
-    measurement_section_html = ""
-    if measurement_html_block.strip():
-        measurement_section_html = (
-            f"<h2>Measurement Info</h2>\n{measurement_html_block}"
-        )
 
     vna_calibration_html = ""
     if antenna_data is not None:
@@ -591,31 +580,8 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
             else:
                 vna_calibration_html = f"<p>{calibration_text_html}</p>"
 
-    measurements_section_html = ""
-    if table_rows:
-        measurements_section_html = (
-            "<h2>VNA-measurements</h2>\n"
-            "The antenna S11 parameters were measured with a VNA. <br>"
-            "The following values were derived from these measurements.<br>"
-            'Details on the measurement method can be found <a href="http://www.positron.ch/rf/vna_to_measure_loop_antenna/pdf/measure_a_magnetic_loop.pdf">here</a>.<br>'
-            f"{vna_calibration_html}"
-            '<table class="compact">\n'
-            "    <thead>\n"
-            "        <tr>\n"
-            "            <th>File</th>\n"
-            "            <th>model_f0<br>MHz</th>\n"
-            "            <th>model_BSWR2_62<br>kHz</th>\n"
-            "            <th>model_alpha<br>db</th>\n"
-            "            <th>model_tau<br>ns</th>\n"
-            "            <th>SWR_min</th>\n"
-            "            <th>eta_SWR_ant</th>\n"
-            "        </tr>\n"
-            "    </thead>\n"
-            "    <tbody>\n"
-            f"{table_rows}\n"
-            "    </tbody>\n"
-            "</table>"
-        )
+    vna_filelist_section = build_vna_filelist_section(vna_values_rows)
+    vna_smith_section = build_vna_smith_section(vna_chart_rows)
 
     h_field_section_html = ""
     h_field_html_file = directory_s1p_results.parent / "h_field" / "h_field.html"
@@ -668,24 +634,6 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
             print(
                 f"Warnung: H-field-HTML konnte nicht geladen werden ({h_field_html_file}): {exc}"
             )
-
-    diagrams_section_html = ""
-    if chart_table_rows:
-        diagrams_section_html = (
-            "<p> </p>"
-            "<p>The following diagrams: red points = measured values; green line = fitted model.</p>"
-            '<table class="charts">\n'
-            "    <thead>\n"
-            "        <tr>\n"
-            "            <th>Smith</th>\n"
-            "            <th>SWR</th>\n"
-            "        </tr>\n"
-            "    </thead>\n"
-            "    <tbody>\n"
-            f"{chart_table_rows}\n"
-            "    </tbody>\n"
-            "</table>"
-        )
 
     antenna_image_html = ""
     try:
@@ -754,11 +702,16 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         f"compare page</a></p>"
     )
 
-    # antenna_css_path = constants.DIRECTORY_REPO / "static/css/style_antenna.css"
-    # antenna_css_rel = pathlib.Path(
-    #     os.path.relpath(antenna_css_path.resolve(), entry.directory.resolve())
-    # ).as_posix()
-    antenna_css_rel = "..."
+    template = env.get_template("antenna.jinja2")
+    jinja_html = template.render(
+        antenna=entry.antenna,
+        antenna_css_rel=antenna_css_rel,
+        efficency_table=efficency_table,
+        measurement_section_html=measurement_section_html,
+        vna_calibration_html=vna_calibration_html,
+        vna_filelist_section=vna_filelist_section,
+        vna_smith_section=vna_smith_section,
+    )
 
     doc = f"""<!-- Automatically generated file by run_2_html.py. Do not edit manually. -->
 <!doctype html>
@@ -775,10 +728,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
     <h1>{html.escape(header_title)}</h1>
     {antenna_image_html}
     <info_block_html>
-    {measurement_section_html}
     {environment_section_html}
-    {measurements_section_html}
-    {diagrams_section_html}
     {inductivity_section_html}
     {h_field_section_html}
     {compare_overview_link_html}
