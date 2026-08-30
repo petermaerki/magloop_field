@@ -9,7 +9,9 @@ class VnaSmithRow:
     f0_mhz: str
     bswr_khz: str
     alpha_db: str
+    alpha_db_datasheet: str
     tau_ns: str
+    tau_ns_datasheet: str
     swr_min: str
     eta_swr_ant: str
 
@@ -40,7 +42,9 @@ def build_vna_smith_section(chart_rows: list[dict[str, object]]) -> VnaSmithSect
                 f0_mhz=_fmt(row.get("f0_mhz"), 3),
                 bswr_khz=_fmt(row.get("bswr_khz"), 1),
                 alpha_db=_fmt(row.get("alpha_db"), 3),
+                alpha_db_datasheet=_fmt(row.get("alpha_db_datasheet"), 3),
                 tau_ns=_fmt(row.get("tau_ns"), 2),
+                tau_ns_datasheet=_fmt(row.get("tau_ns_datasheet"), 2),
                 swr_min=_fmt(row.get("swr_min"), 2),
                 eta_swr_ant=_fmt(row.get("eta_swr_ant"), 3),
             )

@@ -1,3 +1,4 @@
+from antennenvergleich import constants
 from antennenvergleich.constants import HB9SM, MAZZONI_BABY
 from antennenvergleich.datatypes import Antenna
 

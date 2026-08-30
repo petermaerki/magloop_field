@@ -103,9 +103,11 @@ class Antenna:
     selection_name: str = "-"
     info_thanks_str: str = ""
     vna_calibration: VnaCalibration = VnaCalibration.AT_VNA
+    vna_device_str: str = ""
     measurement_html: str | None = None
     enviroment_html: str | None = None
     antenna_build_html: str | None = None
+    vna_remarks_html: str | None = None
     final_remarks_html: str | None = None
     template_vars_dict: dict[str, str] = field(default_factory=dict)
     overview_pictures: tuple[str, ...] = field(default_factory=tuple)
@@ -124,9 +126,11 @@ class Antenna:
         assert_selection(self.selection_name)
         assert_selection(self.selection_location)
 
+        assert isinstance(self.vna_device_str, str)
         assert isinstance(self.measurement_html, str | None)
         assert isinstance(self.enviroment_html, str | None)
         assert isinstance(self.antenna_build_html, str | None)
+        assert isinstance(self.vna_remarks_html, str | None)
         assert isinstance(self.final_remarks_html, str | None)
 
         if isinstance(value, str):

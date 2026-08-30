@@ -1,3 +1,4 @@
+from antennenvergleich import constants
 from antennenvergleich.constants import HB9SM, MAZZONI_MIDI
 from antennenvergleich.datatypes import Antenna
 
@@ -14,6 +15,7 @@ ANTENNENDATEN = Antenna(
     p_m=MAZZONI_MIDI.p_m,
     powerP_W=MAZZONI_MIDI.powerP_W,
     info_str=MAZZONI_MIDI.info_str,
+    vna_device_str=constants.VNA_PETER_INFO,
     overview_pictures=("images/overview_midi.jpg",),
     inductivity_pictures=("images/20260820_164701101_2_induktivitaet_midi.jpg",),
     measurement_html="../../shared/HB0SM/measurement.html",

@@ -1,5 +1,7 @@
 """Structured data for the Ciro Mazzoni Stealth Loop."""
 
+from antennenvergleich import constants
+
 from antennenvergleich.constants import MAZZONI_STEALTH
 from antennenvergleich.datatypes import Antenna
 
@@ -20,6 +22,7 @@ ANTENNENDATEN = Antenna(
     p_m=MAZZONI_STEALTH.p_m,
     powerP_W=MAZZONI_STEALTH.powerP_W,
     info_str=MAZZONI_STEALTH.info_str,
+    vna_device_str=constants.VNA_PETER_INFO,
     overview_pictures=("images/stealth_antenne_2021_02.jpg",),
     measurement_html="measurement.html",
     enviroment_html="enviroment.html",

@@ -70,7 +70,7 @@ Thanks: {{antenna.info_thanks_str}}<br>
 {% endif %}
 {% if vna_filelist_section.rows %}
 <h2>VNA measurements</h2>
-The antenna S11 parameters were measured with {{ vna_info|e }}. <br>
+The antenna S11 parameters were measured with the {{ vna_device_info|e }}. <br>
 The following values were derived from these measurements.<br>
 Details on the measurement method can be found <a href="http://www.positron.ch/rf/vna_to_measure_loop_antenna/pdf/measure_a_magnetic_loop.pdf">here</a>.<br>
 {% if vna_calibration_mode == "antenna_feed_point" %}
@@ -81,19 +81,25 @@ Used cables: 80 cm RG400 (including the choke) and 10 m LMR195.<br>
 The cable attenuation alpha and the cable delay tau in the following table should therefore be small.</p>
 {% elif vna_calibration_mode == "at_vna" %}
 <p>{% if vna_calibration_href %}<a href="{{ vna_calibration_href|e }}"><img class="vna-calibration-picture" src="{{ vna_calibration_href|e }}" alt="VNA calibration: kabel_vna.svg"></a><br>{% endif %}
-The calibration was done directly at {{ vna_info|e }}: green line. The cable influence was measured and removed.<br>
-The cable attenuation alpha and the cable delay tau in the following table show the estimated cable values based on the {{ vna_info|e }} measurement.</p>
+The calibration was done directly at the {{ vna_device_info|e }}: green line. The cable influence was measured and removed.<br>
+The cable attenuation alpha and the cable delay tau in the following table show the estimated cable values based on the {{ vna_device_info|e }} measurement.</p>
 {% endif %}
 <table class="compact">
     <thead>
         <tr>
             <th>File</th>
-            <th>model_f0<br>MHz</th>
-            <th>model_BSWR2_62<br>kHz</th>
-            <th>model_alpha<br>db</th>
+            <th>model f0<br>MHz</th>
+            <th>model BSWR2_62<br>kHz</th>
+            <th>model alpha<br>db</th>
+            {% if vna_cable_data %}
+            <th>datasheet alpha<br>db</th>
+            {% endif %}
             <th>model_tau<br>ns</th>
-            <th>SWR_min</th>
-            <th>eta_SWR_ant</th>
+            {% if vna_cable_data %}
+            <th>datasheet tau<br>ns</th>
+            {% endif %}
+            <th>SWR min</th>
+            <th>eta SWR</th>
         </tr>
     </thead>
     <tbody>
@@ -103,13 +109,22 @@ The cable attenuation alpha and the cable delay tau in the following table show 
             <td>{{ row.f0_mhz|e }}</td>
             <td>{{ row.bswr_khz|e }}</td>
             <td>{{ row.alpha_db|e }}</td>
+            {% if vna_cable_data %}
+            <td>{{ row.alpha_db_datasheet|e }}</td>
+            {% endif %}
             <td>{{ row.tau_ns|e }}</td>
+            {% if vna_cable_data %}
+            <td>{{ row.tau_ns_datasheet|e }}</td>
+            {% endif %}
             <td>{{ row.swr_min|e }}</td>
             <td>{{ row.eta_swr_ant|e }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+{% if vna_remarks_section_html %}
+{{ vna_remarks_section_html }}
+{% endif %}
 {% endif %}
 
 {% if vna_smith_section.rows %}
@@ -135,7 +150,13 @@ The cable attenuation alpha and the cable delay tau in the following table show 
                         <tr><td>model_f0</td><td class="value">{{ row.f0_mhz|e }}</td><td class="unit">MHz</td></tr>
                         <tr><td>model_BSWR2_62</td><td class="value">{{ row.bswr_khz|e }}</td><td class="unit">kHz</td></tr>
                         <tr><td>model_alpha</td><td class="value">{{ row.alpha_db|e }}</td><td class="unit">db</td></tr>
+                        {% if vna_cable_data %}
+                        <tr><td>alpha datasheet</td><td class="value">{{ row.alpha_db_datasheet|e }}</td><td class="unit">db</td></tr>
+                        {% endif %}
                         <tr><td>model_tau</td><td class="value">{{ row.tau_ns|e }}</td><td class="unit">ns</td></tr>
+                        {% if vna_cable_data %}
+                        <tr><td>tau datasheet</td><td class="value">{{ row.tau_ns_datasheet|e }}</td><td class="unit">ns</td></tr>
+                        {% endif %}
                         <tr><td>SWR_min</td><td class="value">{{ row.swr_min|e }}</td><td class="unit"></td></tr>
                         <tr><td>eta_SWR_ant</td><td class="value">{{ row.eta_swr_ant|e }}</td><td class="unit"></td></tr>
                     </tbody>

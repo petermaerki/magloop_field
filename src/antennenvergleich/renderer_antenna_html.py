@@ -9,6 +9,7 @@ import jinja2
 from antennenvergleich import loop_directories
 from antennenvergleich.datatypes import Antenna, AntennaPlusDirectory, VnaCalibration
 from antennenvergleich.datatypes_s1p import S1pValues
+from antennenvergleich.vna_cable import VnaCableData
 
 from . import constants
 from .constants import BANDS, DIRECTORY_SRC
@@ -153,6 +154,11 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         if not _is_cap_measurement_name(p.stem)
     )
 
+    vna_cable_data: VnaCableData | None = None
+    vna_cable_path = entry.directory / "vna_cable" / "vna_cable_data.py"
+    if vna_cable_path.is_file():
+        vna_cable_data = VnaCableData.read_values_file(vna_cable_path)
+
     band_centers_mhz: list[tuple[str, float]] = sorted(
         ((name, f_hz / 1e6) for name, f_hz in BANDS.f_hz_by_band_name.items()),
         key=lambda item: item[1],
@@ -221,7 +227,17 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
                 "f0_mhz": (f0_hz / 1e6) if isinstance(f0_hz, (int, float)) else None,
                 "bswr_khz": (bswr / 1e3) if isinstance(bswr, (int, float)) else None,
                 "alpha_db": alpha,
+                "alpha_db_datasheet": (
+                    vna_cable_data.alpha_db_at_f_hz(float(f0_hz))
+                    if vna_cable_data is not None and isinstance(f0_hz, (int, float))
+                    else None
+                ),
                 "tau_ns": tau_ns,
+                "tau_ns_datasheet": (
+                    vna_cable_data.tau_ns_at_f_hz(float(f0_hz))
+                    if vna_cable_data is not None and isinstance(f0_hz, (int, float))
+                    else None
+                ),
                 "swr_min": swr_min,
                 "eta_swr_ant": eta_ant,
             }
@@ -235,7 +251,17 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
                 "f0_mhz": (f0_hz / 1e6) if isinstance(f0_hz, (int, float)) else None,
                 "bswr_khz": (bswr / 1e3) if isinstance(bswr, (int, float)) else None,
                 "alpha_db": alpha,
+                "alpha_db_datasheet": (
+                    vna_cable_data.alpha_db_at_f_hz(float(f0_hz))
+                    if vna_cable_data is not None and isinstance(f0_hz, (int, float))
+                    else None
+                ),
                 "tau_ns": tau_ns,
+                "tau_ns_datasheet": (
+                    vna_cable_data.tau_ns_at_f_hz(float(f0_hz))
+                    if vna_cable_data is not None and isinstance(f0_hz, (int, float))
+                    else None
+                ),
                 "swr_min": swr_min,
                 "eta_swr_ant": eta_ant,
             }
@@ -247,11 +273,14 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
     environment_html_block = ""
     measurement_html_block = ""
     build_html_block = ""
+    vna_remarks_html_block = ""
     final_remarks_html_block = ""
     eta_f_svg_rel = ""
+    vna_device_info = entry.antenna.vna_device_str
     template_vars_dict: dict[str, typing.Any] = {
         "constants": constants,
         "antenna": antenna,
+        "vna_device_info": vna_device_info,
     }
 
     measurement_html_block = _load_html_fragments(
@@ -271,6 +300,13 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
     build_html_block = _load_html_fragments(
         antenna_data=antenna,
         filename_html=antenna.antenna_build_html,
+        base_dir=directory_s1p_results.parent,
+        destination_dir=entry.directory,
+        template_vars=template_vars_dict,
+    )
+    vna_remarks_html_block = _load_html_fragments(
+        antenna_data=antenna,
+        filename_html=antenna.vna_remarks_html,
         base_dir=directory_s1p_results.parent,
         destination_dir=entry.directory,
         template_vars=template_vars_dict,
@@ -344,6 +380,10 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
             f"<h2>Measurement Info</h2>\n{measurement_html_block}"
         )
 
+    vna_remarks_section_html = ""
+    if vna_remarks_html_block.strip():
+        vna_remarks_section_html = f"{vna_remarks_html_block}"
+
     build_details_section_html = ""
     if build_html_block.strip():
         build_details_section_html = f"<h2>Build Details</h2>\n{build_html_block}"
@@ -416,7 +456,9 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         environment_section_html=environment_section_html,
         vna_calibration_mode=vna_calibration_mode,
         vna_calibration_href=vna_calibration_href,
+        vna_cable_data=vna_cable_data,
         vna_filelist_section=vna_filelist_section,
+        vna_remarks_section_html=vna_remarks_section_html,
         vna_smith_section=vna_smith_section,
         inductance_section_html=inductance_section_html,
         h_field_section_before_html=h_field_section_before_html,
@@ -424,7 +466,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         h_field_measurements=h_field_measurements,
         final_remarks_section_html=final_remarks_section_html,
         eta_f_svg_rel=eta_f_svg_rel,
-        vna_info=constants.VNA_INFO,
+        vna_device_info=vna_device_info,
         compare_overview_href=compare_overview_href,
     )
     (entry.directory / "generated_antenna.html").write_text(

@@ -15,6 +15,7 @@ class FeedlineSegment:
     length_m: float
     points: tuple[tuple[float, float], tuple[float, float]]
     unit: str  # "db_per_100m" | "db_per_100ft"
+    delay_ns_m: float | None = None
 
 
 def interpolate_db_at_f_sqrt(

@@ -19,7 +19,7 @@ RUFF_BIN = DIRECTORY_SRC.parent / ".venv" / "bin" / "ruff"
 
 ANTENNENDATEN_FILENAME = "antennendaten.py"
 
-VNA_INFO = "NanoVNA V2 Plus4"
+VNA_PETER_INFO = "NanoVNA V2 Plus4"
 
 
 C_LIGHT_MS = 299792458.0
