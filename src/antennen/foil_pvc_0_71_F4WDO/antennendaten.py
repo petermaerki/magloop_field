@@ -1,3 +1,5 @@
+from math import pi, sqrt
+
 from antennenvergleich.datatypes import (
     Antenna,
     FloatText,
@@ -5,14 +7,12 @@ from antennenvergleich.datatypes import (
     VnaCalibration,
 )
 
-from math import pi, sqrt
-
 """Achteck"""
 
 _AREA_FREECAD_M2 = 0.41761
 
 ANTENNENDATEN = Antenna(
-    color="#5d363b",  # color from compare_colors.py
+    color="#9ae4ff",  # color from compare_colors.py
     selection_brand="Selfmade",
     selection_location="F4WDO",
     selection_name="foil_pvc_0_71",
