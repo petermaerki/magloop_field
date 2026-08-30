@@ -26,6 +26,11 @@ Thanks: {{antenna.info_thanks_str}}<br>
 {% endif %}
 
 <h2>Antenna Efficiency Overview</h2>
+{% if eta_f_svg_rel %}
+<p>
+    <a href="{{ eta_f_svg_rel|e }}"><img class="eta-picture" src="{{ eta_f_svg_rel|e }}"></a>
+</p>
+{% endif %}
 <table class="compact">
     <tbody>
         {% if efficiency_table.columns %}
@@ -53,6 +58,7 @@ Thanks: {{antenna.info_thanks_str}}<br>
         {% endfor %}
     </tbody>
 </table>
+
 {% if build_details_section_html %}
 {{ build_details_section_html }}
 {% endif %}

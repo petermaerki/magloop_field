@@ -190,6 +190,13 @@ img.overview-antenna-picture {
     border: 1px solid #ddd;
 }
 
+img.eta-picture {
+    width: auto;
+    max-width: 500pt;
+    height: auto;
+    max-height: 500px;
+}
+
 .hl-yellow {
     background: #fff59d;
     padding: 0 0.15rem;

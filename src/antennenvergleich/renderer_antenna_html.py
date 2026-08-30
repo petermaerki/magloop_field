@@ -25,6 +25,7 @@ from .renderer_h_field_html import HFieldMeasurements, build_h_field_section_htm
 from .renderer_inductance_html import build_inductance_section_html
 from .renderer_vna_filelist_html import build_vna_filelist_section
 from .renderer_vna_smith_html import build_vna_smith_section
+from . import renderer_diagram_svg
 
 DIRECTORY_OF_THIS_FILE = pathlib.Path(__file__).parent
 
@@ -247,6 +248,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
     measurement_html_block = ""
     build_html_block = ""
     final_remarks_html_block = ""
+    eta_f_svg_rel = ""
     template_vars_dict: dict[str, typing.Any] = {
         "constants": constants,
         "antenna": antenna,
@@ -280,6 +282,15 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         destination_dir=entry.directory,
         template_vars=template_vars_dict,
     )
+
+    eta_f_svg = renderer_diagram_svg.Diagramm_eta_f_svg(show_legend=False).render(
+        [antenna]
+    )
+    eta_f_svg_path = (
+        entry.directory / renderer_diagram_svg.FILENAME_SVG_ETA_F_PER_ANTENNA
+    )
+    eta_f_svg_path.write_text(eta_f_svg, encoding="utf-8")
+    eta_f_svg_rel = eta_f_svg_path.name
 
     if not band_data_rows and antenna is not None:
         for idx, band in enumerate(antenna.bands or (), start=1):
@@ -412,6 +423,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         h_field_section_after_html=h_field_section_after_html,
         h_field_measurements=h_field_measurements,
         final_remarks_section_html=final_remarks_section_html,
+        eta_f_svg_rel=eta_f_svg_rel,
         vna_info=constants.VNA_INFO,
         compare_overview_href=compare_overview_href,
     )
