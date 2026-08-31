@@ -11,7 +11,7 @@ vna_cable_data = VnaCableData(
     cables=[
         FeedlineSegment(
             name="LLF240",
-            length_m=20.0,
+            length_m=15.0,
             points=((10e6, 2.9), (30e6, 4.1)),
             unit="db_per_100m",
             delay_ns_m=4.0,

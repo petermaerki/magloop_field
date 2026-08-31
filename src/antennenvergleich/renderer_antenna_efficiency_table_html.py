@@ -72,13 +72,13 @@ ROW_SPECS: list[tuple[str, str, str, str]] = [
         "Gesamteffizienz: (R_R / R_T) * eta_SWR_ant.",
     ),
     (
-        "Loop current <i>I</i>",
+        "Loop current <i>I</i> rms",
         "A",
         "I",
         "Strom im Hauptloop bei der Referenzleistung.",
     ),
     (
-        "Loop voltage <i>U</i><sub>loop</sub>",
+        "Loop voltage <i>U</i><sub>loop</sub> rms",
         "V",
         "U",
         "Spannung über dem Loop bei Resonanz.",

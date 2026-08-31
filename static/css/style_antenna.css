@@ -54,6 +54,23 @@ table.compact {
     font-size: 1rem;
 }
 
+table.table_capacitor_spacing {
+    display: inline-table;
+    width: auto;
+    max-width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #999;
+    margin: 0 0 0.5rem 0;
+    font-size: 0.95rem;
+}
+
+table.table_capacitor_spacing td {
+    border: 1px solid #999;
+    padding: 0.18rem 0.35rem;
+    vertical-align: top;
+    line-height: 1.2;
+}
+
 table.charts {
     width: auto;
 }

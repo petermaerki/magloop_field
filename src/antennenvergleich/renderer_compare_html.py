@@ -191,13 +191,13 @@ _ROWS: list[tuple[str, str, str, RowFormatter]] = [
         lambda c: _fmt_percent(c.eta * 100),
     ),
     (
-        "Loop current <i>I</i>",
+        "Loop current <i>I</i> rms",
         "A",
         "Strom im Hauptloop bei der Referenzleistung.",
         lambda c: f"{c.I_main_loop_A:.2f}",
     ),
     (
-        "Loop voltage <i>U</i><sub>loop</sub>",
+        "Loop voltage <i>U</i><sub>loop</sub> rms",
         "V",
         "Spannung über dem Loop bei Resonanz.",
         lambda c: f"{c.U_loop_V:.0f}",
