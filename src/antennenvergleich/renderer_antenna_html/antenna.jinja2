@@ -4,12 +4,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{antenna.selection_brand}} {{antenna.selection_name}} {{antenna.selection_location}} - antenna</title>
+    <title>Magnetic Loop Antenna {{antenna.selection_brand}} {{antenna.selection_name}} {{antenna.selection_location}} - antenna</title>
     <link rel="stylesheet" href="{{antenna_css_rel}}">
+    <meta name="keywords" content="Magnetic,Loop, Antenna, HB9ISP, Efficiency,{{ antenna.selection_brand|e }}, {{ antenna.selection_name|e }}, {{ antenna.selection_location|e }}">
 </head>
 <body>
 
-<h1>{{antenna.selection_brand}} {{antenna.selection_name}} {{antenna.selection_location}}</h1>
+<h1>Magnetic Loop Antenna {{antenna.selection_brand}} {{antenna.selection_name}} {{antenna.selection_location}}</h1>
 
 {% for src in antenna.overview_pictures %}
 <p>
@@ -209,6 +210,8 @@ To quantify the extent of this distortion, the H-field was measured and compared
 {% if final_remarks_section_html %}
 {{ final_remarks_section_html }}
 {% endif %}
-<p>All antennas overview: <a href="{{ compare_overview_href|e }}">compare page</a></p>
+<hr>
+<p>Overview of all antennas: <a href="{{ compare_overview_href|e }}">compare page</a><br>
+{{ AUTOR_STR|e }}</p>
 </body>
 </html>

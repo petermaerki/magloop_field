@@ -449,6 +449,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
     template = env.get_template("antenna.jinja2")
     jinja_html = template.render(
         antenna=entry.antenna,
+        AUTOR_STR=constants.AUTOR_STR,
         antenna_css_rel=antenna_css_rel,
         efficiency_table=efficiency_table,
         build_details_section_html=build_details_section_html,

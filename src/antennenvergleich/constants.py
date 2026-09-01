@@ -21,6 +21,7 @@ ANTENNENDATEN_FILENAME = "antennendaten.py"
 
 VNA_PETER_INFO = "NanoVNA V2 Plus4"
 
+AUTOR_STR = "2026 Peter Märki (HB9ISP). This project is created in my free time and has no commercial background. Provided without warranty of any kind. Feedback is welcome."
 
 C_LIGHT_MS = 299792458.0
 """

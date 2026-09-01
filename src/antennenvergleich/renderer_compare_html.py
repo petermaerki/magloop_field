@@ -235,6 +235,8 @@ class HtmlRenderer:
     <link rel="stylesheet" href="static/css/style_compare.css">
 </head>
 <body>
+<h1>Magnetic Loop Antenna Compare</h1>
+<p>This is a static page. For the page with filters and selection, go to the <a href="index.html?page=compare">compare page</a>.</p>
 """
 
     def _build_calculator_url(
@@ -462,8 +464,9 @@ class HtmlRenderer:
         self.sections.append(section)
 
     def close(self, body_only: bool) -> str:
-        html_suffix = """
-<p style='margin-top: 2rem; font-size: 0.9rem; color: #666;'>No guarantee for correctness! Feedback is welcome.</p>
+        author_footer = html.escape(constants.AUTOR_STR)
+        html_suffix = f"""
+    <p style='margin-top: 2rem; font-size: 0.9rem; color: #666;'>{author_footer}</p>
 </body>
 </html>
 """
