@@ -6,6 +6,7 @@ from . import (
     renderer_antenna_html,
     renderer_compare_html,
     renderer_diagram_svg,
+    sitemap,
     webui_filter,
 )
 
@@ -111,6 +112,9 @@ def main() -> None:
     filename_svg = constants.DIRECTORY_REPO / renderer_diagram_svg.FILENAME_SVG_ETA_DL
     filename_svg.write_text(svg, encoding="utf-8")
     print(f"Written: {filename_svg}")
+
+    filename_sitemap = sitemap.write_sitemap(antenna_entries)
+    print(f"Written: {filename_sitemap}")
 
 
 if __name__ == "__main__":
