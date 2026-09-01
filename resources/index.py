@@ -52,7 +52,8 @@ def load_params_from_url():
             "d_m": "d_m",
             "n": "n",
             "p_m": "p_m",
-            "P_W": "P_W",
+            "Pfwd_W": "P_W",
+            "swr_min": "swr_min",
         }
 
         for param_name, field_id in direct_mapping.items():
@@ -113,6 +114,7 @@ def do_calculate_inductance(e=None):
     (f_L_MHz_text,) = page["input#f_L_MHz"].value
     (bw_kHz_text,) = page["input#bw_kHz"].value
     (P_W_text,) = page["input#P_W"].value
+    (swr_min_text,) = page["input#swr_min"].value
 
     antenna_D_m = float(antenna_D_m_text)
     d_m = float(d_m_text)
@@ -131,15 +133,16 @@ def do_calculate_inductance(e=None):
     f_Hz = float(f_L_MHz_text) * 1e6
     bw_Hz = float(bw_kHz_text) * 1e3
     P_W = float(P_W_text)
+    swr_min = float(swr_min_text)
 
     ac = calculations.AntennaCalculator(
         D_m=antenna_D_m,
         d_m=d_m,
         n=n,
-        swr_min=2.62,
+        swr_min=swr_min,
         f_Hz=f_Hz,
         bw262_Hz=bw_Hz,
-        powerP_W=P_W,
+        powerPfwd_W=P_W,
         p_m=p_m,
     )
 
@@ -149,7 +152,9 @@ def do_calculate_inductance(e=None):
     page["b#out_RT_mOhm"].innerHTML = f"{ac.RT_Ohm:.3g}"
     page["b#out_RLoss_Ohm"].innerHTML = f"{(ac.RT_Ohm - ac.RR_Ohm):.3g}"
     page["b#out_RR_mOhm"].innerHTML = f"{ac.RR_Ohm:.3g}"
-    page["b#out_eta_percent"].innerHTML = f"{(100.0 * ac.RR_Ohm / ac.RT_Ohm):.3g}"
+    page["b#out_eta_swr_ant_percent"].innerHTML = f"{(100.0 * ac.eta_SWR_ant):.3g}"
+    page["b#out_powerPload_W"].innerHTML = f"{ac.powerPload_W:.3g}"
+    page["b#out_eta_percent"].innerHTML = f"{(100.0 * ac.eta):.3g}"
     page["b#out_I_main_loop_A"].innerHTML = f"{ac.I_main_loop_A:.3g}"
     page["b#out_U_loop_V"].innerHTML = f"{ac.U_loop_V:.0f}"
     page["b#out_m_Am2"].innerHTML = f"{ac.m_Am2:.3g}"

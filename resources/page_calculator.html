@@ -82,19 +82,45 @@
             </tr>
             <tr>
                 <td class="input_label">
-                    <label for="P_W">Power into antenna P</label>
+                    <label for="Pfwd_W">Power to antenna P<sub>fwd</sub></label>
                 </td>
                 <td class="input_value">
-                    <input type="text" id="P_W" value="94">
+                    <input type="text" id="Pfwd_W" value="94">
                 </td>
                 <td class="unit">W</td>
-                <td>Power at the antenna feed point. Do not forget cable losses.</td>
+                <td>Power towards the antenna feed point <br>(forward power after cable losses; a portion may be reflected due to SWR mismatch).</td>
+            </tr>
+            <tr>
+                <td class="input_label">
+                    <label for="swr_min">SWR<sub>min</sub></label>
+                </td>
+                <td class="input_value">
+                    <input type="text" id="swr_min" value="1.0">
+                </td>
+                <td class="unit"></td>
+                <td>Minimum SWR at the antenna feed point.</td>
             </tr>
             <tr>
                 <td colspan="3">
-                    <button type="button" id="btn_calculate_antenna" class="bg-blue-300 hover:bg-blue-600 text-black py-2 px-4 rounded">Calculate Antenna</button>
+                    <button type="button" id="btn_calculate_antenna"
+                        class="bg-blue-300 hover:bg-blue-600 text-black py-2 px-4 rounded">Calculate Antenna</button>
                 </td>
             </tr>
+            <tr>
+                <td>eta<sub>SWR_ant</sub></td>
+                <td><b id="out_eta_swr_ant_percent">...</b></td>
+                <td class="unit">%</td>
+                <td><small>$\eta_{\mathrm{SWR\_ant}} = \frac{4\,\mathrm{SWR}_{\min}}{(1+\mathrm{SWR}_{\min})^2}$</small>
+                </td>
+            </tr>
+            <tr>
+                <td>Power antenna load P<sub>load</sub></td>
+                <td><b id="out_powerPload_W">...</b></td>
+                <td class="unit">W</td>
+                <td><small>$P_{\mathrm{load}} = P_{\mathrm{fwd}}\,\eta_{\mathrm{SWR\_ant}}$ </small>The power that goes into R<sub>T</sub>.</td>
+            </tr>
+
+
 
             <tr>
                 <td>Inductance L</td>
@@ -147,13 +173,13 @@
                 <td>Antenna efficiency η</td>
                 <td><b id="out_eta_percent">...</b></td>
                 <td class="unit">%</td>
-                <td><small>$\eta = \frac{R_R}{R_T}$</small></td>
+                <td><small>$\eta = \frac{R_R}{R_T}\,\eta_{\mathrm{SWR\_ant}}$</small></td>
             </tr>
             <tr>
                 <td>Loop current I rms<sub>main loop</sub></td>
                 <td><b id="out_I_main_loop_A">...</b></td>
                 <td class="unit">A</td>
-                <td><small>$I_{\mathrm{main\ loop}} = \sqrt{\frac{P}{R_T}}$</small></td>
+                <td><small>$I_{\mathrm{main\ loop}} = \sqrt{\frac{P_{\mathrm{load}}}{R_T}}$</small></td>
             </tr>
             <tr>
                 <td>Loop voltage U rms<sub>loop</sub></td>
@@ -205,7 +231,9 @@
                 </td>
                 <td class="unit">A m^2</td>
                 <td rowspan="3" style="vertical-align: middle;">
-                    <button type="button" id="btn_copy_above" class="bg-blue-300 hover:bg-blue-600 text-black py-2 px-4 rounded" style="height: 6em;">Copy from above</button>
+                    <button type="button" id="btn_copy_above"
+                        class="bg-blue-300 hover:bg-blue-600 text-black py-2 px-4 rounded" style="height: 6em;">Copy
+                        from above</button>
                 </td>
             </tr>
             <tr>
@@ -297,7 +325,8 @@
 
             <tr>
                 <td colspan="3">
-                    <button type="submit" py-click="do_calculate" class="bg-blue-300 hover:bg-blue-600 text-black py-2 px-4 rounded">Calculate H-Field</button>
+                    <button type="submit" py-click="do_calculate"
+                        class="bg-blue-300 hover:bg-blue-600 text-black py-2 px-4 rounded">Calculate H-Field</button>
                 </td>
             </tr>
 

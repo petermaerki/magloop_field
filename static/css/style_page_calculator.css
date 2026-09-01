@@ -183,6 +183,11 @@
     white-space: nowrap;
 }
 
+#page_calculator b#out_eta_percent {
+    background: #fff59d;
+    padding: 0 4px;
+}
+
 #page_calculator input#p_m {
     transition: background-color 0.2s ease, color 0.2s ease;
 }

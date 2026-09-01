@@ -22,12 +22,6 @@ ROW_SPECS: list[tuple[str, str, str, str]] = [
         "Äquivalenter Leiterdurchmesser der Loop.",
     ),
     ("Loop count <i>n</i>", "1", "n", "Anzahl der Windungen der Schleife."),
-    (
-        "Power into antenna <i>P</i>",
-        "W",
-        "P",
-        "Eingespeiste Leistung in die Antenne.",
-    ),
     ("Inductance <i>L</i>", "H", "L", "Berechnete Induktivität der Loop."),
     (
         "Capacitance <i>C</i>",
@@ -59,12 +53,24 @@ ROW_SPECS: list[tuple[str, str, str, str]] = [
         "RLoss",
         "Verlustwiderstand: R_T - R_R.",
     ),
+    (
+        "Power to antenna <i>P</i><sub>fwd</sub>",
+        "W",
+        "P",
+        "Power towards the antenna feed point<br>(forward power after cable losses; a portion may be reflected due to SWR mismatch).",
+    ),
     ("swr_min", "1", "swr_min", "Minimales SWR am Antenneneingang."),
     (
         "eta<sub>SWR_ant</sub>",
         "%",
         "eta_swr",
         "Anpassungswirkungsgrad aus swr_min: eta = 4*SWR/(1+SWR)^2.",
+    ),
+    (
+        "Power antenna load <i>P</i><sub>load</sub>",
+        "W",
+        "Pload",
+        "Power in antenna load: P_load = P_fwd * eta_SWR_ant.",
     ),
     (
         "<b>Antenna efficiency <i>η</i></b>",
@@ -169,7 +175,7 @@ def _calc_for_item(
             swr_min=float(swr_min),
             f_Hz=float(f0_mhz) * 1e6,
             bw262_Hz=float(bw_hz),
-            powerP_W=antenna_data.powerP_W.value,
+            powerPfwd_W=antenna_data.powerPfwd_W.value,
         )
     except Exception:
         return None
@@ -202,10 +208,12 @@ def _value_source(
         return str(item.get("source_swr") or file_name)
     if key == "eta_swr":
         return f"[{file_name}] Berechnet aus swr_min: eta = 4*SWR/(1+SWR)^2."
+    if key == "Pload":
+        return f"[{file_name}] Computed from P_fwd and swr_min."
     if key == "P":
         if antenna_data is None:
             return file_name
-        return str(getattr(antenna_data.powerP_W, "source", "") or file_name)
+        return str(getattr(antenna_data.powerPfwd_W, "source", "") or file_name)
     if key in {"L", "C", "Q0", "RT", "RR", "RLoss", "eta", "I", "U", "m"}:
         return (
             f"[{file_name}] Berechnet aus Geometrie- und Messdaten."
@@ -229,7 +237,7 @@ def _format_value(calc: FieldAntennaCalculator | None, key: str) -> str:
     if key == "bw":
         return f"{calc.bw262_Hz / 1e3:.1f}"
     if key == "P":
-        return f"{calc.powerP_W:.0f}"
+        return f"{calc.powerPfwd_W:.0f}"
     if key == "L":
         return f"{calc.L_H:.2e}"
     if key == "C":
@@ -246,6 +254,8 @@ def _format_value(calc: FieldAntennaCalculator | None, key: str) -> str:
         return f"{calc.swr_min:.2f}"
     if key == "eta_swr":
         return _fmt_percent(calc.eta_SWR_ant * 100)
+    if key == "Pload":
+        return f"{calc.powerPload_W:.0f}"
     if key == "eta":
         return _fmt_percent(calc.eta * 100)
     if key == "I":

@@ -39,8 +39,8 @@ print(
 
 
 ANTENNENDATEN = Antenna(
-    #name="epicenter",
-    #call="W6NBC",
+    # name="epicenter",
+    # call="W6NBC",
     color="#018700",  # color from compare_colors.py
     selection_brand="Selfmade",
     selection_location="W6NBC",
@@ -52,7 +52,9 @@ ANTENNENDATEN = Antenna(
     d_m=FloatText(0.04826, "youtube, OD1.9 Inch"),
     n=IntText(1, ""),
     p_m=FloatText(0.0, ""),
-    powerP_W=FloatText(50.0, "estimated reference power; not documented in the available sources"),
+    powerPfwd_W=FloatText(
+        50.0, "estimated reference power; not documented in the available sources"
+    ),
     info_str="Rectangular loop, PVC pipe wrapped with aluminum foil. The frequency is tuned by sliding an aluminum-foil-covered tube back and forth in the upper segment.",
     overview_pictures=("images/epicenter_overview.png",),
     info_enviroment_str="Outdoor, details unknown.",

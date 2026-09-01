@@ -1,9 +1,5 @@
 """Structured data for the DK3SS 1.25m n2 loop."""
 
-import html
-from pathlib import Path
-
-from antennenvergleich.antenna_calculations import AntennaCalculator
 from antennenvergleich.constants import BANDS, DK3SS
 from antennenvergleich.datatypes import Antenna, BandData, FloatText
 
@@ -42,7 +38,7 @@ ANTENNENDATEN = Antenna(
     d_m=DK3SS.d_m,
     n=DK3SS.n,
     p_m=DK3SS.p_m,
-    powerP_W=DK3SS.powerP_W,
+    powerPfwd_W=DK3SS.powerP_W,
     info_str=DK3SS.info_str,
     info_thanks_str=DK3SS.info_thanks_str,
     info_enviroment_str=DK3SS.info_enviroment_str,

@@ -83,7 +83,6 @@ class HFieldData:
             ),
         )
 
-
     @staticmethod
     def read_values_file(filename: pathlib.Path) -> "HFieldData":
         try:
@@ -105,13 +104,14 @@ class HFieldData:
 
         return h_field_data
 
-
     def print(self, out: io.TextIOWrapper) -> None:
-        assert isinstance(out,io.TextIOWrapper)
+        assert isinstance(out, io.TextIOWrapper)
 
         # Antenna data from project files (geometry from HB0SM, band data from datasheet).
         # Same mechanism as run_2_html.py: enrich local antenna with fitted s1p_results.
-        entry = AntennaPlusDirectory(antenna=self.antennendaten, directory=self.this_antenna_dir)
+        entry = AntennaPlusDirectory(
+            antenna=self.antennendaten, directory=self.this_antenna_dir
+        )
         entry.enrich_s1p()
         ant_datasheet = entry.antenna
 
@@ -121,9 +121,7 @@ class HFieldData:
         antenna_p_m = self.antennendaten.p_m.value
 
         if not ant_datasheet.bands:
-            raise ValueError(
-                "No band data found in antennendaten.py and s1p_results"
-            )
+            raise ValueError("No band data found in antennendaten.py and s1p_results")
 
         sections_by_frequency: dict[float, _FrequencyTables] = {}
         frequency_sections: list[_FrequencyTables] = []
@@ -131,11 +129,13 @@ class HFieldData:
         for messpunkt in self._iter_messpunkte():
             print(f"=== Messpunkt {messpunkt.punkt_str} ===", file=out)
 
-            losses_db, attenuation_cables_connectors_total_dbm = calculate_feedline_losses(
-                f_hz=messpunkt.f_Hz,
-                cables=self.cables,
-                connectors_count=self.connectors_count,
-                connector_loss_db=self.connector_loss_db,
+            losses_db, attenuation_cables_connectors_total_dbm = (
+                calculate_feedline_losses(
+                    f_hz=messpunkt.f_Hz,
+                    cables=self.cables,
+                    connectors_count=self.connectors_count,
+                    connector_loss_db=self.connector_loss_db,
+                )
             )
 
             for cable in self.cables:
@@ -152,7 +152,9 @@ class HFieldData:
             )
             print(f"tx_after_cable_w: {tx_after_cable_w:.3f} W", file=out)
 
-            closest_band = select_closest_band(antenna=ant_datasheet, f_hz=messpunkt.f_Hz)
+            closest_band = select_closest_band(
+                antenna=ant_datasheet, f_hz=messpunkt.f_Hz
+            )
             antenna_swr_min = closest_band.swr_min.value
             antenna_bw262_hz = closest_band.bw262_Hz.value
 
@@ -167,7 +169,7 @@ class HFieldData:
                 swr_min=antenna_swr_min,
                 f_Hz=messpunkt.f_Hz,
                 bw262_Hz=antenna_bw262_hz,
-                powerP_W=tx_after_cable_w,
+                powerPfwd_W=tx_after_cable_w,
             )
 
             print("--- debug_h_field_inputs ---", file=out)
@@ -274,12 +276,7 @@ class HFieldData:
         sections_html = ""
         for section in frequency_sections:
             summary_html = "".join(
-                (
-                    "<tr>"
-                    f"<td>{html.escape(label)}</td>"
-                    f"<td>{html.escape(value)}</td>"
-                    "</tr>"
-                )
+                (f"<tr><td>{html.escape(label)}</td><td>{html.escape(value)}</td></tr>")
                 for label, value in section.summary_rows
             )
 
@@ -319,4 +316,3 @@ class HFieldData:
             f"{sections_html}"
         )
         out_path.write_text(doc, encoding="utf-8")
-

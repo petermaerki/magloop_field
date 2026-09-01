@@ -94,7 +94,7 @@ class Antenna:
     info_enviroment_str: str
     info_conductor_str: str
     info_capacitor_str: str
-    powerP_W: FloatText
+    powerPfwd_W: FloatText
     color: str = "#000000"
     name: str = ""
     call: str = ""

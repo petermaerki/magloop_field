@@ -53,14 +53,16 @@ def _value_source(label: str, antenna: Antenna, bd: BandData) -> str | None:
         return antenna.d_m.source
     if label.startswith("Loop count"):
         return antenna.n.source
-    if label.startswith("Power into antenna"):
-        return antenna.powerP_W.source
+    if label.startswith("Power into antenna") or label.startswith("Power to antenna"):
+        return antenna.powerPfwd_W.source
     if label.startswith("Frequency"):
         return bd.f_Hz.source
     if label.startswith("Bandwidth"):
         return bd.bw262_Hz.source
     if label == "swr_min":
         return bd.swr_min.source
+    if label.startswith("Power antenna load") or label.startswith("Power antenna load"):
+        return "[Berechnet] P_load = P_fwd * eta_SWR_ant"
 
     # Derived quantities are computed consistently from the listed inputs.
     return (
@@ -131,12 +133,6 @@ _ROWS: list[tuple[str, str, str, RowFormatter]] = [
         lambda c: f"{c.bw262_Hz / 1e3:.2f}",
     ),
     (
-        "Power into antenna <i>P</i>",
-        "W",
-        "Eingespeiste Leistung in die Antenne.",
-        lambda c: f"{c.powerP_W:.0f}",
-    ),
-    (
         "Inductance <i>L</i>",
         "H",
         "Berechnete Induktivität der Loop.",
@@ -173,6 +169,12 @@ _ROWS: list[tuple[str, str, str, RowFormatter]] = [
         lambda c: _fmt_r(c.RLoss_Ohm),
     ),
     (
+        "Power to antenna <i>P</i><sub>fwd</sub>",
+        "W",
+        "Power towards the antenna feed point <br>(forward power after cable losses; a portion may be reflected due to SWR mismatch).",
+        lambda c: f"{c.powerPfwd_W:.0f}",
+    ),
+    (
         "swr_min",
         "1",
         "Minimales SWR am Antenneneingang.",
@@ -183,6 +185,12 @@ _ROWS: list[tuple[str, str, str, RowFormatter]] = [
         "%",
         "Anpassungswirkungsgrad aus swr_min: eta = 4*SWR/(1+SWR)^2.",
         lambda c: _fmt_percent(c.eta_SWR_ant * 100),
+    ),
+    (
+        "Power antenna load <i>P</i><sub>load</sub>",
+        "W",
+        "Power in antenna load: P_load = P_fwd * eta_SWR_ant.",
+        lambda c: f"{c.powerPload_W:.0f}",
     ),
     (
         "<b>Antenna efficiency <i>η</i></b>",
@@ -270,10 +278,12 @@ class HtmlRenderer:
                 params.append(f"f_Hz={band_data.f_Hz.value}")
             if band_data.bw262_Hz.value is not None:
                 params.append(f"bw_Hz={fmt_param(band_data.bw262_Hz.value, 0)}")
+            if band_data.swr_min.value is not None:
+                params.append(f"swr_min={fmt_param(band_data.swr_min.value, 4)}")
 
         # Extract power parameter
-        if antenna.powerP_W.value is not None:
-            params.append(f"P_W={antenna.powerP_W.value}")
+        if antenna.powerPfwd_W.value is not None:
+            params.append(f"Pfwd_W={antenna.powerPfwd_W.value}")
 
         if params:
             return f"{base_url}?{'&'.join(params)}"

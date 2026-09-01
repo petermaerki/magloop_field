@@ -2,7 +2,7 @@ import dataclasses
 import math
 
 import numpy as np
-from antennenvergleich . constants import C_LIGHT_MS
+from antennenvergleich.constants import C_LIGHT_MS
 from scipy import special
 
 _MU0 = 4.0 * math.pi * 1e-7  # H/m
@@ -32,6 +32,7 @@ def icnirp_1998_h_limit_section_text(f_hz: float) -> str:
         "0.1-10 MHz: H = 0.73/f_MHz A/m; "
         "10-30 MHz: H = 0.073 A/m."
     )
+
 
 def _ellip_rf(x, y, z, tol=1e-12, max_iter=60):
     """Carlson symmetric integral RF(x, y, z) for non-negative x, y, z."""
@@ -161,10 +162,16 @@ class AntennaCalculator:
     bandwidth B_SWR2.62 [Hz]
     """
 
-    powerP_W: float
+    # powerPload_W: float
+    # """
+    # power in antenna [W]
+    # """
+
+    powerPfwd_W: float
     """
-    power into antenna [W]
+    power fwd towards antenna [W]
     """
+
     p_m: float = 0.0
     """
     winding pitch [m] for multi-turn coils
@@ -249,7 +256,9 @@ class AntennaCalculator:
     def RR_Ohm(self) -> float:
         """Radiation resistance [Ohm] — Rayleigh term with King finite-size correction."""
         rayleigh = 31171.0 * ((self.A_m2 * self.f_Hz**2) / C_LIGHT_MS**2) ** 2
-        king_correction = 1.0 + 0.5 * ((math.pi * self.D_m * self.f_Hz) / C_LIGHT_MS) ** 2
+        king_correction = (
+            1.0 + 0.5 * ((math.pi * self.D_m * self.f_Hz) / C_LIGHT_MS) ** 2
+        )
         return self.n**2 * rayleigh * king_correction
 
     @property
@@ -272,9 +281,13 @@ class AntennaCalculator:
         return 4.0 * s / (1.0 + s) ** 2
 
     @property
+    def powerPload_W(self) -> float:
+        return self.powerPfwd_W * self.eta_SWR_ant
+
+    @property
     def I_main_loop_A(self) -> float:
         """Loop current [A]"""
-        return math.sqrt(self.powerP_W / self.RT_Ohm)
+        return math.sqrt(self.powerPload_W / self.RT_Ohm)
 
     @property
     def U_loop_V(self) -> float:

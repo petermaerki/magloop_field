@@ -57,7 +57,7 @@ PETER_TUBBY = Antenna(
     ),
     n=IntText(1, ""),
     p_m=FloatText(0.0, ""),
-    powerP_W=FloatText(_power_standard_P_W, "typical power"),
+    powerPfwd_W=FloatText(_power_standard_P_W, "typical power"),
     info_str="Homebrew rectangular loop made of thick copper tubing with vacuum capacitors, 10 m to 160 m.",
     info_enviroment_str="",
     info_conductor_str="Copper tube 100mm",

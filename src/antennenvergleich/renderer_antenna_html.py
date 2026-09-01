@@ -152,9 +152,10 @@ def _build_calculator_url_for_antenna_page(
     d_conductor_m = antenna.d_m.value
     n = antenna.n.value
     p_m = antenna.p_m.value
-    power_w = antenna.powerP_W.value
+    p_fwd_w = antenna.powerPfwd_W.value
     f_hz = band_data.f_Hz.value
     bw_hz = band_data.bw262_Hz.value
+    swr_min = band_data.swr_min.value
     index_rel = pathlib.Path(
         os.path.relpath(constants.DIRECTORY_REPO / "index.html", output_directory)
     ).as_posix()
@@ -167,7 +168,8 @@ def _build_calculator_url_for_antenna_page(
         f"p_m={p_m}&"
         f"f_Hz={int(round(f_hz))}&"
         f"bw_Hz={fmt_param(bw_hz, 0)}&"
-        f"P_W={power_w}"
+        f"Pfwd_W={p_fwd_w}&"
+        f"swr_min={fmt_param(swr_min, 4)}"
     )
 
 

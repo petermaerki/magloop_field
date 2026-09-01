@@ -13,5 +13,5 @@ def _make_calc(antenna: Antenna, bd: BandData) -> AntennaCalculator:
         swr_min=bd.swr_min.value,
         f_Hz=bd.f_Hz.value,
         bw262_Hz=bd.bw262_Hz.value,
-        powerP_W=antenna.powerP_W.value,
+        powerPfwd_W=antenna.powerPfwd_W.value,
     )

@@ -99,7 +99,7 @@ def expected_h_field_at_point(
         swr_min=swr_min,
         f_Hz=f_hz,
         bw262_Hz=bw262_hz,
-        powerP_W=power_into_antenna_w,
+        powerPfwd_W=power_into_antenna_w,
     )
 
     field_calc = Calculator(

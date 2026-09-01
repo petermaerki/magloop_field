@@ -92,7 +92,7 @@ def build_inductance_section_html(
                 swr_min=first_values_with_model.swr_values.swr_min,
                 f_Hz=first_values_with_model.model.f0_Hz,
                 bw262_Hz=first_values_with_model.model.BSWR2_62_Hz,
-                powerP_W=100.0,
+                powerPfwd_W=100.0,
             )
             l_h_geometry_value = float(calc.L_H)
         except Exception as exc:  # pragma: no cover - best effort for optional section
