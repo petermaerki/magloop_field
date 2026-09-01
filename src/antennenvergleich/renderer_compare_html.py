@@ -45,30 +45,10 @@ def _antenna_info_tooltip(antenna: Antenna) -> str:
     )
 
 
-def _value_source(label: str, antenna: Antenna, bd: BandData) -> str | None:
-    """Return source text for the numeric cell tooltip in a given row."""
-    if label.startswith("Loop diameter"):
-        return antenna.D_m.source
-    if label.startswith("Conductor diameter"):
-        return antenna.d_m.source
-    if label.startswith("Loop count"):
-        return antenna.n.source
-    if label.startswith("Power into antenna") or label.startswith("Power to antenna"):
-        return antenna.powerPfwd_W.source
-    if label.startswith("Frequency"):
-        return bd.f_Hz.source
-    if label.startswith("Bandwidth"):
-        return bd.bw262_Hz.source
-    if label == "swr_min":
-        return bd.swr_min.source
-    if label.startswith("Power antenna load") or label.startswith("Power antenna load"):
-        return "[Berechnet] P_load = P_fwd * eta_SWR_ant"
-
-    # Derived quantities are computed consistently from the listed inputs.
-    return (
-        "[Berechnet] Aus Geometrie-, Frequenz- und Bandbreitendaten "
-        "gemäss den Formeln in run_2_html.py"
-    )
+_DERIVED_SOURCE_TOOLTIP = (
+    "[Computed] From geometry, frequency, and bandwidth data "
+    "according to the formulas in calculations.py "
+)
 
 
 # ── Value formatters ───────────────────────────────────────────────────────────
@@ -98,123 +78,151 @@ def _fmt_percent(v: float) -> str:
 
 
 RowFormatter = Callable[[AntennaCalculator], str]
+SourceFormatter = Callable[[Antenna, BandData], str | None]
 
 
-# (column-1 label, unit, tooltip description, formatter taking AntennaCalculator)
-_ROWS: list[tuple[str, str, str, RowFormatter]] = [
+def _source_derived(_antenna: Antenna, _bd: BandData) -> str:
+    return _DERIVED_SOURCE_TOOLTIP
+
+
+def _source_power_load(_antenna: Antenna, _bd: BandData) -> str:
+    return "[Computed] P_load = P_fwd * eta_SWR_ant"
+
+
+# (column-1 label, unit, tooltip description, value formatter, source formatter)
+_ROWS: list[tuple[str, str, str, RowFormatter, SourceFormatter]] = [
     (
         "Loop diameter <i>D</i>",
         "m",
         "Äquivalenter Durchmesser der Loop.",
         lambda c: f"{c.D_m:.3f}",
+        lambda antenna, _bd: antenna.D_m.source,
     ),
     (
         "Conductor diameter <i>d</i>",
         "m",
         "Äquivalenter Leiterdurchmesser der Loop.",
         lambda c: f"{c.d_m:.3f}",
+        lambda antenna, _bd: antenna.d_m.source,
     ),
     (
         "Loop count <i>n</i>",
         "1",
         "Anzahl der Windungen der Schleife.",
         lambda c: f"{c.n:.0f}",
+        lambda antenna, _bd: antenna.n.source,
     ),
     (
         "Frequency <i>f</i>",
         "MHz",
         "Mittenfrequenz des betrachteten Bandes.",
         lambda c: f"{c.f_Hz / 1e6:.3f}",
+        lambda _antenna, bd: bd.f_Hz.source,
     ),
     (
         "Bandwidth <i>B</i><sub>SWR=2.62</sub>",
         "kHz",
         "Bandbreite am Antenneneingang beim Kriterium SWR = 2.62.",
         lambda c: f"{c.bw262_Hz / 1e3:.2f}",
+        lambda _antenna, bd: bd.bw262_Hz.source,
     ),
     (
         "Inductance <i>L</i>",
         "H",
         "Berechnete Induktivität der Loop.",
         lambda c: f"{c.L_H:.2e}",
+        _source_derived,
     ),
     (
         "Capacitance <i>C</i>",
         "F",
         "Erforderliche Resonanzkapazität bei der Bandfrequenz.",
         lambda c: f"{c.C_F:.2e}",
+        _source_derived,
     ),
     (
         "Unloaded Q<sub>0</sub>",
         "1",
         "Unbelastete Güte, aus f / Bandbreite abgeschätzt.",
         lambda c: f"{c.Q0:.0f}",
+        _source_derived,
     ),
     (
         "Damping resistance <i>R</i><sub>T</sub>",
         "Ohm",
         "Gesamter Dämpfungswiderstand des Resonanzkreises.",
         lambda c: _fmt_r(c.RT_Ohm),
+        _source_derived,
     ),
     (
         "Radiation resistance <i>R</i><sub>R</sub>",
         "Ohm",
         "Äquivalenter Strahlungswiderstand der Antenne.",
         lambda c: _fmt_r(c.RR_Ohm),
+        _source_derived,
     ),
     (
         "Loss resistance <i>R</i><sub>Loss</sub>",
         "Ohm",
         "Verlustwiderstand: R_T - R_R.",
         lambda c: _fmt_r(c.RLoss_Ohm),
+        _source_derived,
     ),
     (
         "Power to antenna <i>P</i><sub>fwd</sub>",
         "W",
         "Power towards the antenna feed point <br>(forward power after cable losses; a portion may be reflected due to SWR mismatch).",
         lambda c: f"{c.powerPfwd_W:.0f}",
+        lambda antenna, _bd: antenna.powerPfwd_W.source,
     ),
     (
         "swr_min",
         "1",
         "Minimales SWR am Antenneneingang.",
         lambda c: f"{c.swr_min:.2f}",
+        lambda _antenna, bd: bd.swr_min.source,
     ),
     (
         "eta<sub>SWR_ant</sub>",
         "%",
         "Anpassungswirkungsgrad aus swr_min: eta = 4*SWR/(1+SWR)^2.",
         lambda c: _fmt_percent(c.eta_SWR_ant * 100),
+        _source_derived,
     ),
     (
         "Power antenna load <i>P</i><sub>load</sub>",
         "W",
         "Power in antenna load: P_load = P_fwd * eta_SWR_ant.",
         lambda c: f"{c.powerPload_W:.0f}",
+        _source_power_load,
     ),
     (
         "<b>Antenna efficiency <i>η</i></b>",
         "%",
         "Gesamteffizienz: (R_R / R_T) * eta_SWR_ant.",
         lambda c: _fmt_percent(c.eta * 100),
+        _source_derived,
     ),
     (
         "Loop current <i>I</i> rms",
         "A",
         "Strom im Hauptloop bei der Referenzleistung.",
         lambda c: f"{c.I_main_loop_A:.2f}",
+        _source_derived,
     ),
     (
         "Loop voltage <i>U</i><sub>loop</sub> rms",
         "V",
         "Spannung über dem Loop bei Resonanz.",
         lambda c: f"{c.U_loop_V:.0f}",
+        _source_derived,
     ),
     (
         "Magnetic dipole moment <i>m</i>",
         "A m²",
         "Magnetisches Dipolmoment des Loops.",
         lambda c: f"{c.m_Am2:.3f}",
+        _source_derived,
     ),
 ]
 
@@ -435,7 +443,7 @@ class HtmlRenderer:
                 "</tr>\n"
             )
             body += header_block_prefix + header_overview_links_band
-            for label, unit, tooltip, fmt in _ROWS:
+            for label, unit, tooltip, fmt, source_fmt in _ROWS:
                 is_rloss = "Loss" in label
                 is_efficiency_row = "Antenna efficiency" in label
                 unit_html = f"<b>{unit}</b>" if is_efficiency_row else unit
@@ -460,7 +468,7 @@ class HtmlRenderer:
                         if (highlight_neg or highlight_over_100_efficiency)
                         else ""
                     )
-                    source_text = _value_source(label, entry.antenna, band_data) or ""
+                    source_text = source_fmt(entry.antenna, band_data) or ""
                     source_attr = html.escape(source_text, quote=True)
                     row += f"<td class='val{extra}' title='{source_attr}'>{val}</td>"
                 row += "</tr>\n"
