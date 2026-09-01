@@ -53,7 +53,6 @@ def load_params_from_url():
             "n": "n",
             "p_m": "p_m",
             "Pfwd_W": "Pfwd_W",
-            "P_W": "Pfwd_W",
             "swr_min": "swr_min",
         }
 
@@ -108,6 +107,12 @@ def do_calculate_inductance(e=None):
     if not DEVELOPMENT_NUMPY:
         return
 
+    calc_button = document.getElementById("btn_calculate_antenna")
+    if calc_button is not None:
+        calc_button.style.backgroundColor = ""
+        calc_button.style.color = ""
+        calc_button.style.borderColor = ""
+
     (antenna_D_m_text,) = page["input#antenna_D_m"].value
     (d_m_text,) = page["input#d_m"].value
     (n_text,) = page["input#n"].value
@@ -117,35 +122,45 @@ def do_calculate_inductance(e=None):
     (p_fwd_w_text,) = page["input#Pfwd_W"].value
     (swr_min_text,) = page["input#swr_min"].value
 
-    antenna_D_m = float(antenna_D_m_text)
-    d_m = float(d_m_text)
-    n = int(n_text)
-    p_m = float(p_m_text)
+    try:
+        antenna_D_m = float(antenna_D_m_text)
+        d_m = float(d_m_text)
+        n = int(n_text)
+        p_m = float(p_m_text)
+        f_Hz = float(f_L_MHz_text) * 1e6
+        bw_Hz = float(bw_kHz_text) * 1e3
+        p_fwd_w = float(p_fwd_w_text)
+        swr_min = float(swr_min_text)
 
-    pitch_input = document.getElementById("p_m")
-    if pitch_input is not None:
-        if n == 1:
-            pitch_input.style.backgroundColor = "#e6e6e6"
-            pitch_input.style.color = "#666666"
-        else:
-            pitch_input.style.backgroundColor = ""
-            pitch_input.style.color = ""
+        ac = calculations.AntennaCalculator(
+            D_m=antenna_D_m,
+            d_m=d_m,
+            n=n,
+            swr_min=swr_min,
+            f_Hz=f_Hz,
+            bw262_Hz=bw_Hz,
+            powerPfwd_W=p_fwd_w,
+            p_m=p_m,
+        )
+    except calculations.InvalidAntennaInput as e:
+        if calc_button is not None:
+            calc_button.textContent = f"Calculate Antenna: {e}"
+            calc_button.style.backgroundColor = "#ffdddd"
+            calc_button.style.color = "#b00020"
+            calc_button.style.borderColor = "#b00020"
+        print(f"Invalid antenna input: {e}")
+        return
+    except ValueError as e:
+        if calc_button is not None:
+            calc_button.textContent = f"Calculate Antenna: {e}"
+            calc_button.style.backgroundColor = "#ffdddd"
+            calc_button.style.color = "#b00020"
+            calc_button.style.borderColor = "#b00020"
+        print(f"Invalid numeric input: {e}")
+        return
 
-    f_Hz = float(f_L_MHz_text) * 1e6
-    bw_Hz = float(bw_kHz_text) * 1e3
-    p_fwd_w = float(p_fwd_w_text)
-    swr_min = float(swr_min_text)
-
-    ac = calculations.AntennaCalculator(
-        D_m=antenna_D_m,
-        d_m=d_m,
-        n=n,
-        swr_min=swr_min,
-        f_Hz=f_Hz,
-        bw262_Hz=bw_Hz,
-        powerPfwd_W=p_fwd_w,
-        p_m=p_m,
-    )
+    if calc_button is not None:
+        calc_button.textContent = "Calculate Antenna"
 
     page["b#out_L_uH"].innerHTML = f"{ac.L_H:.3g}"
     page["b#out_C_pF"].innerHTML = f"{ac.C_F:.3g}"

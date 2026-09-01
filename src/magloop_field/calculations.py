@@ -2,8 +2,9 @@ import dataclasses
 import math
 
 import numpy as np
-from antennenvergleich.constants import C_LIGHT_MS
 from scipy import special
+
+from antennenvergleich.constants import C_LIGHT_MS
 
 _MU0 = 4.0 * math.pi * 1e-7  # H/m
 _KR_NEAR = 0.3
@@ -11,6 +12,10 @@ _KR_FAR = 1.0
 # Transition tuning for the hybrid model:
 # keep the elliptic (quasi-static) solution dominant for kr < 0.3,
 # blend in the mid zone, and enforce pure retarded behavior for kr >= 1.0.
+
+
+class InvalidAntennaInput(ValueError):
+    """Input parameters are physically or mathematically invalid."""
 
 
 def icnirp_1998_h_limit_a_per_m(f_hz: float) -> float:
@@ -178,22 +183,59 @@ class AntennaCalculator:
     """
 
     def __post_init__(self) -> None:
-        assert self.n > 0, f"n must be a positive integer, got {self.n}"
-        assert isinstance(self.n, int) and not isinstance(self.n, bool), (
-            f"n must be an integer, got {self.n}"
-        )
-        assert self.d_m > 0, f"d_m must be positive, got {self.d_m}"
-        assert self.p_m >= 0, f"p_m must be non-negative, got {self.p_m}"
-        if self.n > 1:
-            assert self.p_m > 0.0, f"p_m must be positive for n > 1, got {self.p_m}"
-        assert self.D_m > 0, f"D_m must be positive, got {self.D_m}"
+        if not isinstance(self.n, int) or isinstance(self.n, bool):
+            raise InvalidAntennaInput(f"n must be an integer, got {self.n}")
+        if self.n <= 0:
+            raise InvalidAntennaInput(f"n must be a positive integer, got {self.n}")
+
+        if not math.isfinite(self.D_m):
+            raise InvalidAntennaInput(f"D_m must be finite, got {self.D_m}")
+        if self.D_m <= 0:
+            raise InvalidAntennaInput(f"D_m must be positive, got {self.D_m}")
+
+        if not math.isfinite(self.d_m):
+            raise InvalidAntennaInput(f"d_m must be finite, got {self.d_m}")
+        if self.d_m <= 0:
+            raise InvalidAntennaInput(f"d_m must be positive, got {self.d_m}")
+        if self.D_m <= self.d_m:
+            raise InvalidAntennaInput(
+                f"D_m must be greater than d_m, got D_m={self.D_m}, d_m={self.d_m}"
+            )
+
+        if not math.isfinite(self.p_m):
+            raise InvalidAntennaInput(f"p_m must be finite, got {self.p_m}")
+        if self.p_m < 0:
+            raise InvalidAntennaInput(f"p_m must be non-negative, got {self.p_m}")
+        if self.n > 1 and self.p_m <= 0.0:
+            raise InvalidAntennaInput(f"p_m must be positive for n > 1, got {self.p_m}")
+
+        if not math.isfinite(self.swr_min):
+            raise InvalidAntennaInput(f"swr_min must be finite, got {self.swr_min}")
+        if self.swr_min < 1.0:
+            raise InvalidAntennaInput(f"swr_min must be >= 1.0, got {self.swr_min}")
+
+        if not math.isfinite(self.f_Hz):
+            raise InvalidAntennaInput(f"f_Hz must be finite, got {self.f_Hz}")
+        if self.f_Hz <= 0:
+            raise InvalidAntennaInput(f"f_Hz must be > 0, got {self.f_Hz}")
+
+        if not math.isfinite(self.bw262_Hz):
+            raise InvalidAntennaInput(f"bw262_Hz must be finite, got {self.bw262_Hz}")
+        if self.bw262_Hz <= 0:
+            raise InvalidAntennaInput(f"bw262_Hz must be > 0, got {self.bw262_Hz}")
+
+        if not math.isfinite(self.powerPfwd_W):
+            raise InvalidAntennaInput(
+                f"powerPfwd_W must be finite, got {self.powerPfwd_W}"
+            )
+        if self.powerPfwd_W < 0:
+            raise InvalidAntennaInput(
+                f"powerPfwd_W must be >= 0, got {self.powerPfwd_W}"
+            )
 
     @property
     def L_H(self) -> float:
-        assert self.D_m > 0
-        assert self.d_m > 0
-        assert self.n > 0
-
+        # Input domain was already validated in __post_init__.
         radius_m = self.D_m / 2.0
         conductor_radius_m = self.d_m / 2.0
 
@@ -307,9 +349,11 @@ class Calculator:
     m_Am2: float
     f_Hz: float
 
-    @property
-    def h_field(self) -> float:
-        return self.m_Am2 * 2
+    # Disabled on purpose: this shortcut is physically incomplete as an H-field
+    # value (missing distance and normalization terms). Keep for traceability.
+    # @property
+    # def h_field(self) -> float:
+    #     return self.m_Am2 * 2
 
     def h_field_elliptic_abs_xyz(self, x_m, y_m, z_m, m_Am2, antenna_D_m):
         """Exact |H| of a circular loop via elliptic integrals (magnetostatic closed form).
