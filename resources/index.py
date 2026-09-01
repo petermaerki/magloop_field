@@ -103,7 +103,7 @@ def load_params_from_url():
 # CALCULATOR
 #
 @when("click", "#btn_calculate_antenna")
-def do_calculate_inductance(e=None):
+def do_calculate_antenna_efficiency(e=None):
     if not DEVELOPMENT_NUMPY:
         return
 
@@ -183,45 +183,101 @@ def copy_values_from_above(e=None):
     document.getElementById("field_D_m").value = page["input#antenna_D_m"].value[0]
 
 
-def do_calculate(e):
+@when("click", "#btn_calculate_h_field")
+def do_calculate_h_field(e=None):
     if not DEVELOPMENT_NUMPY:
         return
 
-    (m_Am2_text,) = page["input#m_Am2"].value
-    (f_MHz_text,) = page["input#f_MHz"].value
-    (x_m_text,) = page["input#x_m"].value
-    (y_m_text,) = page["input#y_m"].value
-    (z_m_text,) = page["input#z_m"].value
-    (lim_x_m_text,) = page["input#lim_x_m"].value
-    (lim_y_m_text,) = page["input#lim_y_m"].value
-    (line_at_field_text,) = page["input#line_at_field"].value
-    m_Am2 = float(m_Am2_text)
-    f_Hz = float(f_MHz_text) * 1e6
-    x_m = float(x_m_text)
-    y_m = float(y_m_text)
-    z_m = float(z_m_text)
-    lim_x_m = float(lim_x_m_text)
-    lim_y_m = float(lim_y_m_text)
-    line_tokens = line_at_field_text.replace(",", " ").split()
-    levels = sorted({float(token) for token in line_tokens}) if line_tokens else None
-    show_icnirp_blue = True
-    show_icnirp_node = document.getElementById("show_icnirp_blue")
-    if show_icnirp_node is not None:
-        show_icnirp_blue = bool(show_icnirp_node.checked)
+    calc_button = None
+    if e is not None:
+        try:
+            calc_button = e.currentTarget
+        except Exception:
+            calc_button = None
+
+    if calc_button is not None:
+        calc_button.style.backgroundColor = ""
+        calc_button.style.color = ""
+        calc_button.style.borderColor = ""
+
+    try:
+        (m_Am2_text,) = page["input#m_Am2"].value
+        (f_MHz_text,) = page["input#f_MHz"].value
+        (x_m_text,) = page["input#x_m"].value
+        (y_m_text,) = page["input#y_m"].value
+        (z_m_text,) = page["input#z_m"].value
+        (lim_x_m_text,) = page["input#lim_x_m"].value
+        (lim_y_m_text,) = page["input#lim_y_m"].value
+        (line_at_field_text,) = page["input#line_at_field"].value
+        (antenna_D_m_text,) = page["input#field_D_m"].value
+
+        m_Am2 = float(m_Am2_text)
+        f_Hz = float(f_MHz_text) * 1e6
+        x_m = float(x_m_text)
+        y_m = float(y_m_text)
+        z_m = float(z_m_text)
+        lim_x_m = float(lim_x_m_text)
+        lim_y_m = float(lim_y_m_text)
+        antenna_D_m = float(antenna_D_m_text)
+
+        if lim_x_m < 0:
+            raise calculations.InvalidAntennaInput(
+                f"lim_x_m must be non-negative, got {lim_x_m}"
+            )
+        if lim_y_m < 0:
+            raise calculations.InvalidAntennaInput(
+                f"lim_y_m must be non-negative, got {lim_y_m}"
+            )
+
+        line_tokens = line_at_field_text.replace(",", " ").split()
+        levels = None
+        if line_tokens:
+            parsed_levels = []
+            for token in line_tokens:
+                level = float(token)
+                if not math.isfinite(level):
+                    raise calculations.InvalidAntennaInput(
+                        f"line_at_field contains non-finite value: {token}"
+                    )
+                if level <= 0:
+                    raise calculations.InvalidAntennaInput(
+                        f"line_at_field values must be positive, got {level}"
+                    )
+                parsed_levels.append(level)
+            levels = sorted(set(parsed_levels))
+
+        show_icnirp_blue = True
+        show_icnirp_node = document.getElementById("show_icnirp_blue")
+        if show_icnirp_node is not None:
+            show_icnirp_blue = bool(show_icnirp_node.checked)
+
+        calculator = calculations.CalculatorHField(
+            antenna_D_m=antenna_D_m,
+            R_m=antenna_D_m / 2,
+            m_Am2=m_Am2,
+            f_Hz=f_Hz,
+        )
+    except calculations.InvalidAntennaInput as e:
+        if calc_button is not None:
+            calc_button.textContent = f"Calculate H-Field: {e}"
+            calc_button.style.backgroundColor = "#ffdddd"
+            calc_button.style.color = "#b00020"
+            calc_button.style.borderColor = "#b00020"
+        print(f"Invalid H-field input: {e}")
+        return
+    except ValueError as e:
+        if calc_button is not None:
+            calc_button.textContent = f"Calculate H-Field: {e}"
+            calc_button.style.backgroundColor = "#ffdddd"
+            calc_button.style.color = "#b00020"
+            calc_button.style.borderColor = "#b00020"
+        print(f"Invalid numeric input for H-field: {e}")
+        return
+
+    if calc_button is not None:
+        calc_button.textContent = "Calculate H-Field"
 
     d_min_abstand_m = 0.01
-    try:
-        (antenna_D_m_text,) = page["input#field_D_m"].value
-        antenna_D_m = float(antenna_D_m_text)
-    except Exception:
-        antenna_D_m = 1.0
-
-    calculator = calculations.Calculator(
-        antenna_D_m=antenna_D_m,
-        R_m=antenna_D_m / 2,
-        m_Am2=m_Am2,
-        f_Hz=f_Hz,
-    )
 
     rho_m = math.sqrt(y_m**2 + z_m**2)
     r_loop_m = antenna_D_m / 2.0
@@ -276,7 +332,7 @@ def do_calculate(e):
 
 @when("change", "#show_icnirp_blue")
 def on_show_icnirp_blue_change(e=None):
-    do_calculate(e)
+    do_calculate_h_field(e)
 
 
 def close_splash_dialog() -> None:
@@ -421,9 +477,9 @@ if True:
     # 3) calculate H-field
     try:
         load_params_from_url()
-        do_calculate_inductance(None)
+        do_calculate_antenna_efficiency(None)
         copy_values_from_above(None)
-        do_calculate(None)
+        do_calculate_h_field(None)
     except Exception as e:
         print(f"Initial render failed: {e}")
 

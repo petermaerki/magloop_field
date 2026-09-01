@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from antennenvergleich.datatypes import Antenna, BandData
 from antennenvergleich.h_field_meter import h_field_from_p_dbm
-from magloop_field.calculations import AntennaCalculator, Calculator
+from magloop_field.calculations import AntennaCalculator, CalculatorHField
 
 
 @dataclass(frozen=True)
@@ -102,7 +102,7 @@ def expected_h_field_at_point(
         powerPfwd_W=power_into_antenna_w,
     )
 
-    field_calc = Calculator(
+    field_calc = CalculatorHField(
         antenna_D_m=antenna_D_m,
         R_m=antenna_D_m / 2.0,
         m_Am2=ac.m_Am2,

@@ -343,11 +343,42 @@ class AntennaCalculator:
 
 
 @dataclasses.dataclass(frozen=True)
-class Calculator:
+class CalculatorHField:
     antenna_D_m: float
     R_m: float
     m_Am2: float
     f_Hz: float
+
+    def __post_init__(self) -> None:
+        if not math.isfinite(self.antenna_D_m):
+            raise InvalidAntennaInput(
+                f"antenna_D_m must be finite, got {self.antenna_D_m}"
+            )
+        if self.antenna_D_m <= 0:
+            raise InvalidAntennaInput(
+                f"antenna_D_m must be positive, got {self.antenna_D_m}"
+            )
+
+        if not math.isfinite(self.R_m):
+            raise InvalidAntennaInput(f"R_m must be finite, got {self.R_m}")
+        if self.R_m <= 0:
+            raise InvalidAntennaInput(f"R_m must be positive, got {self.R_m}")
+
+        expected_r_m = self.antenna_D_m / 2.0
+        if not math.isclose(self.R_m, expected_r_m, rel_tol=0.0, abs_tol=1e-12):
+            raise InvalidAntennaInput(
+                f"R_m must be antenna_D_m/2, got R_m={self.R_m}, antenna_D_m={self.antenna_D_m}"
+            )
+
+        if not math.isfinite(self.m_Am2):
+            raise InvalidAntennaInput(f"m_Am2 must be finite, got {self.m_Am2}")
+        if self.m_Am2 < 0:
+            raise InvalidAntennaInput(f"m_Am2 must be non-negative, got {self.m_Am2}")
+
+        if not math.isfinite(self.f_Hz):
+            raise InvalidAntennaInput(f"f_Hz must be finite, got {self.f_Hz}")
+        if self.f_Hz <= 0:
+            raise InvalidAntennaInput(f"f_Hz must be > 0, got {self.f_Hz}")
 
     # Disabled on purpose: this shortcut is physically incomplete as an H-field
     # value (missing distance and normalization terms). Keep for traceability.

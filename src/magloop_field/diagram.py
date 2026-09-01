@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.lines import Line2D
 
-from magloop_field.calculations import Calculator
+from magloop_field.calculations import CalculatorHField
 
 
 def _suggest_tick_step(limit_m: float) -> float:
@@ -31,7 +31,7 @@ def _suggest_tick_step(limit_m: float) -> float:
 class HFieldPlot:
     def __init__(
         self,
-        calculator: Calculator,
+        calculator: CalculatorHField,
         lim_x_m: float,
         lim_y_m: float,
         x_step=None,
@@ -41,7 +41,7 @@ class HFieldPlot:
         show_icnirp_blue=False,
         d_min_abstand_m=0.01,
     ) -> None:
-        assert isinstance(calculator, Calculator)
+        assert isinstance(calculator, CalculatorHField)
 
         self.calculator = calculator
         self.lim_x_m = lim_x_m
@@ -237,7 +237,7 @@ def main() -> None:
     antenna_D_m = 1.0
     I_A = 10.5
     m_Am2 = I_A * np.pi * (antenna_D_m / 2) ** 2
-    calculator = Calculator(
+    calculator = CalculatorHField(
         antenna_D_m=antenna_D_m,
         R_m=antenna_D_m / 2,
         m_Am2=m_Am2,
