@@ -53,7 +53,7 @@ Thanks: {{antenna.info_thanks_str}}<br>
                 <td title="{{ row.tooltip|e }}">{{ row.label_html }}</td>
                 <td class="unit">{{ row.unit_html }}</td>
                 {% for cell in row.cells %}
-                    <td class="{{ cell.css_class }}"{% if cell.colspan > 1 %} colspan="{{ cell.colspan }}"{% endif %} title="{{ cell.tooltip|e }}">{{ cell.value|e }}</td>
+                    <td class="{{ cell.css_class }}"{% if cell.colspan > 1 %} colspan="{{ cell.colspan }}"{% endif %} title="{{ cell.tooltip|e }}">{% if cell.href %}<a href="{{ cell.href|e }}">{{ cell.value|e }}</a>{% else %}{{ cell.value|e }}{% endif %}</td>
                 {% endfor %}
             </tr>
         {% endfor %}
@@ -211,7 +211,8 @@ To quantify the extent of this distortion, the H-field was measured and compared
 {{ final_remarks_section_html }}
 {% endif %}
 <hr>
-<p>Overview of all antennas: <a href="{{ compare_overview_href|e }}">compare page</a><br>
+<p>Overview of all Antennas with filter/selection: <a href="{{ compare_overview_href|e }}">compare page</a><br>
+Overview of all Antennas static: <a href="{{ compare_static_href|e }}">static compare page</a><br>
 {{ AUTOR_STR|e }}</p>
 </body>
 </html>

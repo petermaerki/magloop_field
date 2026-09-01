@@ -7,11 +7,16 @@ from urllib.parse import urlsplit, urlunsplit
 import jinja2
 
 from antennenvergleich import loop_directories
-from antennenvergleich.datatypes import Antenna, AntennaPlusDirectory, VnaCalibration
+from antennenvergleich.datatypes import (
+    Antenna,
+    AntennaPlusDirectory,
+    BandData,
+    VnaCalibration,
+)
 from antennenvergleich.datatypes_s1p import S1pValues
 from antennenvergleich.vna_cable import VnaCableData
 
-from . import constants
+from . import constants, renderer_diagram_svg
 from .constants import BANDS, DIRECTORY_SRC
 from .constants_s1p import (
     CAP_VALUES_TAGS,
@@ -21,12 +26,13 @@ from .constants_s1p import (
     SWR_SUFFIX,
     VALUES_SUFFIX,
 )
-from .renderer_antenna_efficiency_table_html import build_efficiency_table
+from .renderer_antenna_efficiency_table_html import (
+    build_efficiency_table,
+)
 from .renderer_h_field_html import HFieldMeasurements, build_h_field_section_html
 from .renderer_inductance_html import build_inductance_section_html
 from .renderer_vna_filelist_html import build_vna_filelist_section
 from .renderer_vna_smith_html import build_vna_smith_section
-from . import renderer_diagram_svg
 
 DIRECTORY_OF_THIS_FILE = pathlib.Path(__file__).parent
 
@@ -131,6 +137,40 @@ def _generate_inductance_section(
     )
 
 
+def _build_calculator_url_for_antenna_page(
+    antenna: Antenna,
+    band_data: BandData,
+    output_directory: pathlib.Path,
+) -> str:
+    def fmt_param(value: float | int, decimals: int) -> str:
+        if isinstance(value, int):
+            return str(value)
+        text = f"{value:.{decimals}f}".rstrip("0").rstrip(".")
+        return text or "0"
+
+    d_m = antenna.D_m.value
+    d_conductor_m = antenna.d_m.value
+    n = antenna.n.value
+    p_m = antenna.p_m.value
+    power_w = antenna.powerP_W.value
+    f_hz = band_data.f_Hz.value
+    bw_hz = band_data.bw262_Hz.value
+    index_rel = pathlib.Path(
+        os.path.relpath(constants.DIRECTORY_REPO / "index.html", output_directory)
+    ).as_posix()
+
+    return (
+        f"{index_rel}?"
+        f"D_m={fmt_param(d_m, 4)}&"
+        f"d_m={fmt_param(d_conductor_m, 4)}&"
+        f"n={n}&"
+        f"p_m={p_m}&"
+        f"f_Hz={int(round(f_hz))}&"
+        f"bw_Hz={fmt_param(bw_hz, 0)}&"
+        f"P_W={power_w}"
+    )
+
+
 def write_antenna_html(entry: AntennaPlusDirectory) -> None:
     """Generate one antenna.html page for a given antenna results directory."""
     directory_s1p_results = entry.directory / DIRECTORY_S1P_RESULTS
@@ -208,6 +248,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         band_data_rows.append(
             {
                 "band": band_label,
+                "band_data": values.band_data,
                 "file": values_path.name,
                 "f0_mhz": (f0_hz / 1e6) if isinstance(f0_hz, (int, float)) else None,
                 "bswr": bswr,
@@ -349,6 +390,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
             band_data_rows.append(
                 {
                     "band": band_label,
+                    "band_data": band,
                     "file": "antennendaten.py",
                     "f0_mhz": (float(f_hz) / 1e6)
                     if isinstance(f_hz, (int, float))
@@ -372,6 +414,11 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         band_data_rows=band_data_rows,
         band_order=band_order,
         antenna_data=antenna,
+        link_by_item=lambda item: _build_calculator_url_for_antenna_page(
+            antenna=antenna,
+            band_data=typing.cast(BandData, item["band_data"]),
+            output_directory=entry.directory,
+        ),
     )
 
     measurement_section_html = ""
@@ -445,6 +492,10 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         os.path.relpath(compare_overview_path.resolve(), entry.directory.resolve())
     ).as_posix()
     compare_overview_href = f"{compare_overview_rel}?page=compare"
+    compare_static_path = constants.DIRECTORY_REPO / "generated_compare.html"
+    compare_static_href = pathlib.Path(
+        os.path.relpath(compare_static_path.resolve(), entry.directory.resolve())
+    ).as_posix()
 
     template = env.get_template("antenna.jinja2")
     jinja_html = template.render(
@@ -469,6 +520,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         eta_f_svg_rel=eta_f_svg_rel,
         vna_device_info=vna_device_info,
         compare_overview_href=compare_overview_href,
+        compare_static_href=compare_static_href,
     )
     (entry.directory / "generated_antenna.html").write_text(
         jinja_html,

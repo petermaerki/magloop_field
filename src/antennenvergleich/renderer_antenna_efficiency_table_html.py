@@ -1,4 +1,5 @@
 import dataclasses
+from collections.abc import Callable
 
 from magloop_field.calculations import AntennaCalculator as FieldAntennaCalculator
 
@@ -100,6 +101,7 @@ class EfficiencyCell:
     tooltip: str
     css_class: str = "val"
     colspan: int = 1
+    href: str | None = None
 
 
 @dataclasses.dataclass(frozen=True)
@@ -259,6 +261,7 @@ def build_efficiency_table(
     band_data_rows: list[dict[str, object]],
     band_order: list[str],
     antenna_data: Antenna | None,
+    link_by_item: Callable[[dict[str, object]], str] | None = None,
 ) -> EfficiencyTable:
     sorted_band_items = sorted(
         band_data_rows,
@@ -312,6 +315,23 @@ def build_efficiency_table(
                 tooltip=tooltip,
                 cells=cells,
                 css_class="eff-row" if key == "eta" else "",
+            )
+        )
+
+    if link_by_item is not None and sorted_band_items:
+        rows.append(
+            EfficiencyRow(
+                label_html="Link to calculator",
+                unit_html="",
+                tooltip="Direct link to calculator using the same parameters as this column.",
+                cells=[
+                    EfficiencyCell(
+                        value="calculator",
+                        tooltip="Open calculator with this band parameters.",
+                        href=link_by_item(item),
+                    )
+                    for item in sorted_band_items
+                ],
             )
         )
 

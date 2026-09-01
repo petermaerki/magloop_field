@@ -404,12 +404,15 @@ class HtmlRenderer:
                 ).resolve()
                 filename_relative = self._get_relative_path(filename_html_antenna)
                 band_data = band_data_by_dir[entry.directory].get(band)
-                calculator_url = self._build_calculator_url(entry.antenna, band_data)
-                link_html = (
-                    f"<a href='{html.escape(filename_relative, quote=True)}'>description</a>"
-                    "<br>"
-                    f"<a href='{html.escape(calculator_url, quote=True)}' style='text-decoration: underline;'>calculator</a>"
-                )
+                link_html = f"<a href='{html.escape(filename_relative, quote=True)}'>description</a>"
+                if band_data is not None:
+                    calculator_url = self._build_calculator_url(
+                        entry.antenna, band_data
+                    )
+                    link_html += (
+                        "<br>"
+                        f"<a href='{html.escape(calculator_url, quote=True)}' style='text-decoration: underline;'>calculator</a>"
+                    )
                 header_overview_links_band += (
                     f"<th style='font-weight: normal;'>{link_html}</th>"
                 )
