@@ -19,6 +19,7 @@ class FilterWrapper:
             antenna_entries=self.antenna_entries
         )
         self.filter = webui_filter.Filter(antenna_joins=antenna_joins)
+        self.apply_filter()
 
     def apply_filter(self) -> None:
         self.filtered_antenna_entries = [

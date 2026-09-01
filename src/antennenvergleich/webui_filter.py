@@ -193,7 +193,14 @@ class Filter:
     def reset(self) -> None:
         for level in self.category_stats:
             level.reset()
+        self._apply_default_states()
         self.update_grey_states()
+
+    def _apply_default_states(self) -> None:
+        location_stats = self.find_category(EnumCategory.LOCATION)
+        for checkbox in location_stats.checkboxes:
+            if checkbox.name == "Datasheet":
+                checkbox.set_checked(False)
 
     def option_has_matches(self, category: EnumCategory, option_name: str) -> bool:
         for antenna_join in self.antenna_joins:

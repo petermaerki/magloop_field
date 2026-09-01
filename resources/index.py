@@ -52,7 +52,8 @@ def load_params_from_url():
             "d_m": "d_m",
             "n": "n",
             "p_m": "p_m",
-            "Pfwd_W": "P_W",
+            "Pfwd_W": "Pfwd_W",
+            "P_W": "Pfwd_W",
             "swr_min": "swr_min",
         }
 
@@ -113,7 +114,7 @@ def do_calculate_inductance(e=None):
     (p_m_text,) = page["input#p_m"].value
     (f_L_MHz_text,) = page["input#f_L_MHz"].value
     (bw_kHz_text,) = page["input#bw_kHz"].value
-    (P_W_text,) = page["input#P_W"].value
+    (p_fwd_w_text,) = page["input#Pfwd_W"].value
     (swr_min_text,) = page["input#swr_min"].value
 
     antenna_D_m = float(antenna_D_m_text)
@@ -132,7 +133,7 @@ def do_calculate_inductance(e=None):
 
     f_Hz = float(f_L_MHz_text) * 1e6
     bw_Hz = float(bw_kHz_text) * 1e3
-    P_W = float(P_W_text)
+    p_fwd_w = float(p_fwd_w_text)
     swr_min = float(swr_min_text)
 
     ac = calculations.AntennaCalculator(
@@ -142,7 +143,7 @@ def do_calculate_inductance(e=None):
         swr_min=swr_min,
         f_Hz=f_Hz,
         bw262_Hz=bw_Hz,
-        powerPfwd_W=P_W,
+        powerPfwd_W=p_fwd_w,
         p_m=p_m,
     )
 
