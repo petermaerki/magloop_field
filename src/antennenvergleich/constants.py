@@ -30,6 +30,9 @@ m/s
 
 BANDS = SimpleNamespace(
     f_hz_by_band_name={
+        "70cm": 435_000_000,
+        "2m": 145_000_000,
+        "6m": 51_000_000,
         "10m": 28_500_000,
         "12m": 24_940_000,
         "15m": 21_200_000,
@@ -42,7 +45,6 @@ BANDS = SimpleNamespace(
         "160m": 1_840_000,
     },
 )
-
 _power_standard_Pfwd_W = 100.0
 
 PETER_TUBBY = Antenna(
