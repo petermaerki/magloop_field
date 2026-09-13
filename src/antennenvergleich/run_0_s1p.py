@@ -31,6 +31,7 @@ from antennenvergleich.constants_s1p import (
 from antennenvergleich.datatype_inductance import Inductance
 from antennenvergleich.datatypes_s1p import (
     AntennaModelFit,
+    Debug3Point,
     S1pValues,
     SwrValues,
 )
@@ -48,6 +49,9 @@ CURVE_LINEWIDTH = 2.0
 filter_points_swr_limit_on = False
 filter_points_swr_limit_swr = 6.0
 """For the circle fitting take only points where SWR is below 6"""
+
+write_ImpedancesAroundResonance = True
+N_ImpedancesAroundResonance = 30
 
 MODEL_COLOR = "#2dc653"
 
@@ -357,6 +361,42 @@ def decimation_datapoints(
     return freqs_hz[idx], gamma[idx]
 
 
+def _calc_impedances_around_resonance(
+    freqs: np.ndarray,
+    gamma: np.ndarray,
+    resonance_idx: int,
+) -> Debug3Point | None:
+    if not write_ImpedancesAroundResonance:
+        return None
+    n = N_ImpedancesAroundResonance
+    below = list(range(max(0, resonance_idx - n), resonance_idx))
+    above = list(range(resonance_idx + 1, min(len(freqs), resonance_idx + 1 + n)))
+    selected = below + [resonance_idx] + above
+    z = 50.0 * (1 + gamma[selected]) / (1 - gamma[selected])
+    mag = np.clip(np.abs(gamma[selected]), 0.0, 1.0 - 1e-12)
+    swr = (1.0 + mag) / (1.0 - mag)
+
+    n_below = len(below)
+    pts: list[tuple[float, complex, float]] = [
+        (float(freqs[selected[k]]), complex(z[k]), float(swr[k]))
+        for k in range(len(selected))
+    ]
+
+    # pick below/above point whose SWR is closest to 6.0
+    _TARGET = 6.0
+    k_below = int(np.argmin(np.abs(swr[:n_below] - _TARGET))) if n_below else 0
+    k_above = (
+        n_below + 1 + int(np.argmin(np.abs(swr[n_below + 1 :] - _TARGET)))
+        if len(above)
+        else n_below
+    )
+
+    return Debug3Point(
+        impedances_around_resonance=tuple(pts),
+        impedances_3_selected=(pts[k_below], pts[n_below], pts[k_above]),
+    )
+
+
 def make_chart(s1p_path: Path, filename_svg: Path) -> S1pValues:
     freqs, gamma = load_s1p(s1p_path)
     freqs, gamma = decimation_datapoints(freqs, gamma)
@@ -520,6 +560,9 @@ def make_chart(s1p_path: Path, filename_svg: Path) -> S1pValues:
         swr_values=swr_values,
         model=model,
         b_tau_s=b_tau_s,
+        debug_from_3_point_measurement=_calc_impedances_around_resonance(
+            freqs, gamma, idx
+        ),
     )
     s1p_values.write_py(filename=filename_values_py)
 

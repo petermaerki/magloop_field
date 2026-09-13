@@ -35,12 +35,41 @@ class SwrValues:
     z_swr_min: complex
 
 
+def _fmt_z(z: complex) -> str:
+    """Format complex without outer parens: 're + imj' or 're - imj'."""
+    if z.imag >= 0:
+        return f"{z.real!r} + {z.imag!r}j"
+    return f"{z.real!r} - {abs(z.imag)!r}j"
+
+
+@dataclass(frozen=True, repr=False)
+class Debug3Point:
+    impedances_around_resonance: tuple[tuple[float, complex, float], ...]
+    impedances_3_selected: tuple[tuple[float, complex, float], ...]
+
+    def __repr__(self) -> str:
+        inner_all = ", ".join(
+            f"({f!r}, {_fmt_z(z)}, {swr!r})"
+            for f, z, swr in self.impedances_around_resonance
+        )
+        inner_sel = ", ".join(
+            f"({f!r}, {_fmt_z(z)}, {swr!r})" for f, z, swr in self.impedances_3_selected
+        )
+        return (
+            f"Debug3Point("
+            f"impedances_around_resonance=({inner_all},), "
+            f"impedances_3_selected=({inner_sel},)"
+            f")"
+        )
+
+
 @dataclass(frozen=True)
 class S1pValues:
     filename: str
-    swr_values : SwrValues
-    model : AntennaModelFit | None
-    b_tau_s :float
+    swr_values: SwrValues
+    model: AntennaModelFit | None
+    b_tau_s: float
+    debug_from_3_point_measurement: Debug3Point | None = None
 
     @property
     def band_data(self) -> BandData:
@@ -53,15 +82,16 @@ class S1pValues:
             swr_min=FloatText(self.swr_values.swr_min, "s1p measurement"),
         )
 
-    def write_py(self, filename:pathlib.Path) ->None:
+    def write_py(self, filename: pathlib.Path) -> None:
         assert isinstance(filename, pathlib.Path)
 
         with filename.open("w") as fw:
             fw.write("import numpy as np\n")
             fw.write("\n")
-            fw.write(
-                "from antennenvergleich.datatypes_s1p import AntennaModelFit, S1pValues, SwrValues\n"
-            )
+            imports = "AntennaModelFit, S1pValues, SwrValues"
+            if self.debug_from_3_point_measurement is not None:
+                imports = "AntennaModelFit, Debug3Point, S1pValues, SwrValues"
+            fw.write(f"from antennenvergleich.datatypes_s1p import {imports}\n")
             fw.write(f"S1P_VALUES = {self!r}\n")
 
         try:
@@ -80,9 +110,7 @@ class S1pValues:
         try:
             relative_py = filename.resolve().relative_to(DIRECTORY_SRC)
         except ValueError as exc:
-            raise RuntimeError(
-                f"{filename} liegt nicht unter {DIRECTORY_SRC}"
-            ) from exc
+            raise RuntimeError(f"{filename} liegt nicht unter {DIRECTORY_SRC}") from exc
 
         module_name = ".".join(relative_py.with_suffix("").parts)
         module = importlib.import_module(module_name)
