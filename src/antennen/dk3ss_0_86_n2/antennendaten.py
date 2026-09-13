@@ -17,6 +17,7 @@ ANTENNENDATEN = Antenna(
     # name="Selfmade 0.86m n2",
     # call="DK3SS",
     color="#0000dd",  # color from compare_colors.py
+    dashed=True,  # dashed if not measured with .s1p values or unsure
     selection_brand="Selfmade",
     selection_location="DK3SS",
     selection_name="0.86m n2",

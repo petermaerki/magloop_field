@@ -142,10 +142,13 @@ class Diagramm_eta_f_svg:
         buf += self._draw_y_ticks()
         buf += self._draw_axis_labels()
         for antenna, pts in data:
-            buf += self._draw_series(pts, antenna.color)
+            buf += self._draw_series(pts, antenna.color, antenna.dashed)
         if self._show_legend:
             buf += self._draw_legend(
-                [(antenna.antenna_label, antenna.color) for antenna, _ in data]
+                [
+                    (antenna.antenna_label, antenna.color, antenna.dashed)
+                    for antenna, _ in data
+                ]
             )
         buf.append("</svg>")
         return "\n".join(buf)
@@ -233,14 +236,17 @@ class Diagramm_eta_f_svg:
         y_label_y = cy
         return [
             f'  <text x="{axis_end_x:.1f}" y="{axis_end_y}" text-anchor="middle" font-size="{FONT_SIZE_LABELS}" font-family="Arial,sans-serif" fill="#222" transform="rotate(-90 {axis_end_x:.1f} {axis_end_y})">MHz</text>',
-            f'  <text transform="rotate(-90 {y_label_x} {y_label_y:.1f})" x="{y_label_x}" y="{y_label_y:.1f}" text-anchor="middle" font-size="{FONT_SIZE_LABELS}" font-family="Arial,sans-serif" fill="#222">η (Wirkungsgrad)</text>',
+            f'  <text transform="rotate(-90 {y_label_x} {y_label_y:.1f})" x="{y_label_x}" y="{y_label_y:.1f}" text-anchor="middle" font-size="{FONT_SIZE_LABELS}" font-family="Arial,sans-serif" fill="#222">η (Efficiency)</text>',
         ]
 
-    def _draw_series(self, pts: list[tuple[float, float]], color: str) -> list[str]:
+    def _draw_series(
+        self, pts: list[tuple[float, float]], color: str, dashed: bool = False
+    ) -> list[str]:
         lines = []
         coords = " ".join(f"{self._px(f):.2f},{self._py(e):.2f}" for f, e in pts)
+        dash_attr = ' stroke-dasharray="8,4"' if dashed else ""
         lines.append(
-            f'  <polyline points="{coords}" fill="none" stroke="{color}" stroke-width="{LINE_WIDTH_SERIES}" clip-path="url(#plotarea)"/>'
+            f'  <polyline points="{coords}" fill="none" stroke="{color}" stroke-width="{LINE_WIDTH_SERIES}"{dash_attr} clip-path="url(#plotarea)"/>'
         )
         for f, e in pts:
             x, y = self._px(f), self._py(e)
@@ -249,14 +255,15 @@ class Diagramm_eta_f_svg:
             )
         return lines
 
-    def _draw_legend(self, entries: list[tuple[str, str]]) -> list[str]:
+    def _draw_legend(self, entries: list[tuple[str, str, bool]]) -> list[str]:
         lines = []
         lx = SVG_MARGIN_LEFT + self._pw + 5
         ly = SVG_MARGIN_TOP + 0
-        for i, (name, color) in enumerate(entries):
+        for i, (name, color, dashed) in enumerate(entries):
             y = ly + i * 14
+            dash_attr = ' stroke-dasharray="8,4"' if dashed else ""
             lines.append(
-                f'  <line x1="{lx}" y1="{y + 7}" x2="{lx + 25}" y2="{y + 7}" stroke="{color}" stroke-width="{LINE_WIDTH_LEGEND}"/>'
+                f'  <line x1="{lx}" y1="{y + 7}" x2="{lx + 25}" y2="{y + 7}" stroke="{color}" stroke-width="{LINE_WIDTH_LEGEND}"{dash_attr}/>'
             )
             lines.append(
                 f'  <circle cx="{lx + 12}" cy="{y + 7}" r="4" fill="{color}" stroke="white" stroke-width="{LINE_WIDTH_LEGEND_DOT}"/>'
@@ -343,9 +350,12 @@ class Diagramm_eta_D_lambda_svg:
         buf += self._draw_y_ticks()
         buf += self._draw_axis_labels()
         for antenna, pts in data:
-            buf += self._draw_series(pts, antenna.color)
+            buf += self._draw_series(pts, antenna.color, antenna.dashed)
         buf += self._draw_legend(
-            [(antenna.antenna_label, antenna.color) for antenna, _ in data]
+            [
+                (antenna.antenna_label, antenna.color, antenna.dashed)
+                for antenna, _ in data
+            ]
         )
         buf.append("</svg>")
         return "\n".join(buf)
@@ -420,14 +430,17 @@ class Diagramm_eta_D_lambda_svg:
         cy = SVG_MARGIN_TOP + self._ph / 2
         return [
             f'  <text x="{cx:.1f}" y="{SVG_MARGIN_TOP + self._ph + 50}" text-anchor="middle" font-size="{FONT_SIZE_LABELS}" font-family="Arial,sans-serif" fill="#222">D / λ</text>',
-            f'  <text transform="rotate(-90 25 {cy:.1f})" x="25" y="{cy:.1f}" text-anchor="middle" font-size="{FONT_SIZE_LABELS}" font-family="Arial,sans-serif" fill="#222">η (Wirkungsgrad)</text>',
+            f'  <text transform="rotate(-90 25 {cy:.1f})" x="25" y="{cy:.1f}" text-anchor="middle" font-size="{FONT_SIZE_LABELS}" font-family="Arial,sans-serif" fill="#222">η (Efficiency)</text>',
         ]
 
-    def _draw_series(self, pts: list[tuple[float, float]], color: str) -> list[str]:
+    def _draw_series(
+        self, pts: list[tuple[float, float]], color: str, dashed: bool = False
+    ) -> list[str]:
         lines = []
         coords = " ".join(f"{self._px(x):.2f},{self._py(e):.2f}" for x, e in pts)
+        dash_attr = ' stroke-dasharray="8,4"' if dashed else ""
         lines.append(
-            f'  <polyline points="{coords}" fill="none" stroke="{color}" stroke-width="{LINE_WIDTH_SERIES}" clip-path="url(#plotarea)"/>'
+            f'  <polyline points="{coords}" fill="none" stroke="{color}" stroke-width="{LINE_WIDTH_SERIES}"{dash_attr} clip-path="url(#plotarea)"/>'
         )
         for x, e in pts:
             x_pos, y_pos = self._px(x), self._py(e)
@@ -436,14 +449,15 @@ class Diagramm_eta_D_lambda_svg:
             )
         return lines
 
-    def _draw_legend(self, entries: list[tuple[str, str]]) -> list[str]:
+    def _draw_legend(self, entries: list[tuple[str, str, bool]]) -> list[str]:
         lines = []
         lx = SVG_MARGIN_LEFT + self._pw + 18
         ly = SVG_MARGIN_TOP + 10
-        for i, (name, color) in enumerate(entries):
+        for i, (name, color, dashed) in enumerate(entries):
             y = ly + i * 22
+            dash_attr = ' stroke-dasharray="8,4"' if dashed else ""
             lines.append(
-                f'  <line x1="{lx}" y1="{y + 7}" x2="{lx + 25}" y2="{y + 7}" stroke="{color}" stroke-width="{LINE_WIDTH_LEGEND}"/>'
+                f'  <line x1="{lx}" y1="{y + 7}" x2="{lx + 25}" y2="{y + 7}" stroke="{color}" stroke-width="{LINE_WIDTH_LEGEND}"{dash_attr}/>'
             )
             lines.append(
                 f'  <circle cx="{lx + 12}" cy="{y + 7}" r="4" fill="{color}" stroke="white" stroke-width="{LINE_WIDTH_LEGEND_DOT}"/>'

@@ -18,6 +18,7 @@ ANTENNENDATEN = Antenna(
     # name="Mazzoni Midi Loop",
     # call="Datasheet",
     color="#ff7ed1",  # color from compare_colors.py
+    dashed=True,
     selection_brand="Mazzoni",
     selection_location="Datasheet",
     selection_name="Midi",

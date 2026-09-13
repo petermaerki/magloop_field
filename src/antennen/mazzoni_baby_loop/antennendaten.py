@@ -17,6 +17,7 @@ ANTENNENDATEN = Antenna(
     # name="Mazzoni Baby Loop",
     # call="Datasheet",
     color="#00acc6",  # color from compare_colors.py
+    dashed=True,
     selection_brand="Mazzoni",
     selection_location="Datasheet",
     selection_name="Baby",

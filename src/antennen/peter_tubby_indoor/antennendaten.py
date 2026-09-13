@@ -7,6 +7,7 @@ ANTENNENDATEN = Antenna(
     # name="Selfmade Tubby Indoor",
     # call="HB9ISP",
     color="#ffa52f",  # color from compare_colors.py
+    dashed=False,
     selection_brand="Selfmade",
     selection_location="HB9ISP",
     selection_name="Tubby indoor",

@@ -18,6 +18,7 @@ ANTENNENDATEN = Antenna(
     # name="Mazzoni Stealth Loop",
     # call="Datasheet",
     color="#005659",  # color from compare_colors.py
+    dashed=True,
     selection_brand="Mazzoni",
     selection_location="Datasheet",
     selection_name="Stealth",
