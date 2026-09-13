@@ -3,7 +3,9 @@
 
 from __future__ import annotations
 
+import contextlib
 import dataclasses
+import io
 import math
 import shutil
 from pathlib import Path
@@ -15,6 +17,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import least_squares
 
+from antennenvergleich.bandwith_from_3_impedances import print_resonator_fits
 from antennenvergleich.constants import DIRECTORY_SRC
 from antennenvergleich.constants_s1p import (
     C_100P_F,
@@ -361,6 +364,18 @@ def decimation_datapoints(
     return freqs_hz[idx], gamma[idx]
 
 
+def _run_3point_fit(
+    pt_below: tuple[float, complex, float],
+    pt_res: tuple[float, complex, float],
+    pt_above: tuple[float, complex, float],
+) -> str:
+    measurements = [(f, z) for f, z, _swr in (pt_below, pt_res, pt_above)]
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        print_resonator_fits([measurements])
+    return buf.getvalue()
+
+
 def _calc_impedances_around_resonance(
     freqs: np.ndarray,
     gamma: np.ndarray,
@@ -393,7 +408,10 @@ def _calc_impedances_around_resonance(
 
     return Debug3Point(
         impedances_around_resonance=tuple(pts),
-        impedances_3_selected=(pts[k_below], pts[n_below], pts[k_above]),
+        debug_impedances_3_selected=(pts[k_below], pts[n_below], pts[k_above]),
+        debug_result_3_impedances=_run_3point_fit(
+            pts[k_below], pts[n_below], pts[k_above]
+        ),
     )
 
 

@@ -42,10 +42,26 @@ def _fmt_z(z: complex) -> str:
     return f"{z.real!r} - {abs(z.imag)!r}j"
 
 
+def _fmt_result_str(s: str) -> str:
+    """Format a multiline string as concatenated quoted literals, one per line."""
+    parts = s.split("\n")
+    if s.endswith("\n"):
+        parts = parts[:-1]
+        segments = [repr(p + "\n") for p in parts]
+    else:
+        segments = [repr(p + "\n") for p in parts[:-1]]
+        if parts[-1]:
+            segments.append(repr(parts[-1]))
+    if len(segments) <= 1:
+        return repr(s)
+    return "(\n    " + "\n    ".join(segments) + "\n)"
+
+
 @dataclass(frozen=True, repr=False)
 class Debug3Point:
     impedances_around_resonance: tuple[tuple[float, complex, float], ...]
-    impedances_3_selected: tuple[tuple[float, complex, float], ...]
+    debug_impedances_3_selected: tuple[tuple[float, complex, float], ...]
+    debug_result_3_impedances: str
 
     def __repr__(self) -> str:
         inner_all = ", ".join(
@@ -53,12 +69,14 @@ class Debug3Point:
             for f, z, swr in self.impedances_around_resonance
         )
         inner_sel = ", ".join(
-            f"({f!r}, {_fmt_z(z)}, {swr!r})" for f, z, swr in self.impedances_3_selected
+            f"({f!r}, {_fmt_z(z)}, {swr!r})"
+            for f, z, swr in self.debug_impedances_3_selected
         )
         return (
             f"Debug3Point("
             f"impedances_around_resonance=({inner_all},), "
-            f"impedances_3_selected=({inner_sel},)"
+            f"debug_impedances_3_selected=({inner_sel},), "
+            f"debug_result_3_impedances={_fmt_result_str(self.debug_result_3_impedances)}"
             f")"
         )
 
