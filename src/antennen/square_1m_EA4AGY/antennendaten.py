@@ -18,7 +18,7 @@ ANTENNENDATEN = Antenna(
     color="#8e7900",  # color from compare_colors.py
     dashed=True,
     selection_brand="Selfmade",
-    selection_location="EA4EAY-draft",
+    selection_location="EA4EAY",
     selection_name="square_1m",
     D_m=FloatText(
         aequivalent_D_m,
@@ -42,13 +42,13 @@ ANTENNENDATEN = Antenna(
     final_remarks_html="final_remarks.html",
     bands=[
         BandData(
-            f_Hz=FloatText(14_179_300, "EA4AGY_20m_crop.jpg"),
-            bw262_Hz=FloatText(254918, "EA4AGY_20m_crop.jpg"),
-            swr_min=FloatText(1.28, "EA4AGY_20m_crop.jpg"),
+            f_Hz=FloatText(14_196000, "EA4AGY_20m_crop.jpg"),
+            bw262_Hz=FloatText(285636, "EA4AGY_20m_crop.jpg"),
+            swr_min=FloatText(1.25, "EA4AGY_20m_crop.jpg"),
         ),
         BandData(
-            f_Hz=FloatText(7149600, "EA4AGY_20m_crop.jpg"),
-            bw262_Hz=FloatText(99988, "EA4AGY_20m_crop.jpg"),
+            f_Hz=FloatText(7150000, "EA4AGY_20m_crop.jpg"),
+            bw262_Hz=FloatText(70685, "EA4AGY_20m_crop.jpg"),
             swr_min=FloatText(1.25, "EA4AGY_20m_crop.jpg"),
         ),
     ],

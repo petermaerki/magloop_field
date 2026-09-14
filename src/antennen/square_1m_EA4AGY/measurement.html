@@ -1,11 +1,23 @@
-<p>The antenna was measured with a NanoVNA. I had two SWR screenshots available, and I estimated the bandwidth from those images. <br>
-No detailed information is available about the cables used, the calibration setup, or the measurement location, so the results should be interpreted with caution.</p>
-
-<figure>
-	<a href="vna_screenshot/EA4AGY_20m_crop.svg"><img src="vna_screenshot/EA4AGY_20m_crop.svg" style="max-width: 400px; width: 100%; height: auto;"></a>
-	<figcaption>Screenshot with overlaid model data.</figcaption>
-</figure>
-<figure>
-	<a href="vna_screenshot/EA4AGY_40m_crop.svg"><img src="vna_screenshot/EA4AGY_40m_crop.svg" style="max-width: 400px; width: 100%; height: auto;"></a>
-	<figcaption>Screenshot with overlaid model data.</figcaption>
-</figure>
+<p>The antenna was measured with a NanoVNA. <br>I had two SWR screenshots and two Smith chart screenshots available, and I estimated the bandwidth from those images. <br>
+No detailed information is available about the cables used, the calibration setup, so the results should be interpreted with caution.</p>
+<p>With the SWR alone, there are two possible models for the parallel resonant circuit. <br>In the SWR plot, the two solutions are shown as Rpar_1 and Rpar_2. <br>Based on the Smith chart, which in this case is undercoupled, it can be concluded that the first solution with Rpar_1 is the correct one.</p>
+<div style="display: flex; gap: 1rem; align-items: flex-start; justify-content: flex-start; flex-wrap: nowrap;">
+	<figure style="width: min(42vw, 400px); margin: 0; flex: 0 0 auto;">
+		<a href="vna_screenshot/20m_swr.svg"><img src="vna_screenshot/20m_swr.svg" style="width: 100%; height: auto; display: block;"></a>
+		<figcaption>20m Screenshot with overlaid model data.</figcaption>
+	</figure>
+	<figure style="width: min(42vw, 400px); margin: 0; flex: 0 0 auto;">
+		<a href="vna_screenshot/20m_smith.png"><img src="vna_screenshot/20m_smith.png" style="width: 100%; height: auto; display: block;"></a>
+		<figcaption>20 m Smith chart. Circle too small: undercoupled.</figcaption>
+	</figure>
+</div>
+<div style="display: flex; gap: 1rem; align-items: flex-start; justify-content: flex-start; flex-wrap: nowrap; margin-top: 1.5rem;">
+	<figure style="width: min(42vw, 400px); margin: 0; flex: 0 0 auto;">
+		<a href="vna_screenshot/40m_swr.svg"><img src="vna_screenshot/40m_swr.svg" style="width: 100%; height: auto; display: block;"></a>
+		<figcaption>40m Screenshot with overlaid model data.</figcaption>
+	</figure>
+	<figure style="width: min(42vw, 400px); margin: 0; flex: 0 0 auto;">
+		<a href="vna_screenshot/40m_smith.png"><img src="vna_screenshot/40m_smith.png" style="width: 100%; height: auto; display: block;"></a>
+		<figcaption>40 m Smith chart. Circle too small: undercoupled.</figcaption>
+	</figure>
+</div>

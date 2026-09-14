@@ -97,8 +97,8 @@ def plot_swr_overlay(infos: SWRInfos, Z0: float = 50.0, DPI: int = 100) -> None:
     freqs = np.linspace(infos.freq_min_hz, infos.freq_max_hz, 1000)
     results = []
     for Rpar, color, lw, ls in [
-        (Rpar_large, "red", 8, "-"),
-        (Rpar_small, "blue", 8, ":"),
+        (Rpar_large, "red", 3, "-"),
+        (Rpar_small, "blue", 3, ":"),
     ]:
         Q = solve_Q(Rpar, f0, f_free, swr_free)
         L_val = Rpar / (2 * np.pi * f0 * Q)
@@ -114,12 +114,12 @@ def plot_swr_overlay(infos: SWRInfos, Z0: float = 50.0, DPI: int = 100) -> None:
             color=color,
             linewidth=lw,
             linestyle=ls,
-            alpha=0.7,
+            alpha=0.4,
             dashes=(1, 6) if color == "blue" else (None, None),
         )
 
-    x0 = infos.freq_min_hz + 10_000
-    swr0 = infos.swr_min_axis + 0.05
+    x0 = infos.freq_min_hz + 0.015 * (infos.freq_max_hz - infos.freq_min_hz)
+    swr0 = infos.swr_min_axis + 0.06
     swr_step = (infos.swr_max_axis - infos.swr_min_axis) * 0.085
     fontsize = round(24 * W / 1553)
     kw: dict[str, Any] = {
@@ -127,25 +127,23 @@ def plot_swr_overlay(infos: SWRInfos, Z0: float = 50.0, DPI: int = 100) -> None:
         "verticalalignment": "bottom",
         "bbox": {"facecolor": "white", "alpha": 0.6, "edgecolor": "none"},
     }
+    combined_text = "\n".join(
+        [
+            f"Rpar_1={results[1]['Rpar']:.0f} Ohm",
+            f"B_unloaded_1={results[1]['B']:.0f} Hz",
+            f"Rpar_2={results[0]['Rpar']:.0f} Ohm",
+            f"B_unloaded_2={results[0]['B']:.0f} Hz",
+            f"swr min: {infos.point_min_swr:.2f} @ {infos.point_min_hz / 1e6:.3f} MHz",
+        ]
+    )
     ax.text(
         x0,
         swr0,
-        f"swr min: {infos.point_min_swr:.2f} @ {infos.point_min_hz / 1e6:.3f} MHz",
+        combined_text,
         color="black",
-        **kw,
-    )
-    ax.text(
-        x0,
-        swr0 + swr_step,
-        f"Rpar_2={results[0]['Rpar']:.0f} Ohm\nB_unloaded_2={results[0]['B']:.0f} Hz",
-        color="red",
-        **kw,
-    )
-    ax.text(
-        x0,
-        swr0 + 2 * swr_step,
-        f"Rpar_1={results[1]['Rpar']:.0f} Ohm\nB_unloaded_1={results[1]['B']:.0f} Hz",
-        color="blue",
+        ha="left",
+        va="bottom",
+        linespacing=1.35,
         **kw,
     )
 
