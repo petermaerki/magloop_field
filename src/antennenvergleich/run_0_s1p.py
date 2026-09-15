@@ -376,6 +376,57 @@ def _run_3point_fit(
     return buf.getvalue()
 
 
+def _estimate_bandwidth_from_model_curve(
+    freqs_hz: np.ndarray,
+    gamma_model: np.ndarray | None,
+    swr_target: float = 2.62,
+) -> float | None:
+    if gamma_model is None or len(freqs_hz) < 2:
+        return None
+
+    swr_model = (1.0 + np.abs(gamma_model)) / (1.0 - np.abs(gamma_model))
+    if float(np.min(swr_model)) > swr_target:
+        return None
+
+    i_min = int(np.argmin(swr_model))
+
+    def _crossing(start_idx: int, step: int) -> float | None:
+        idx = start_idx
+        while 0 <= idx + step < len(swr_model) and swr_model[idx + step] <= swr_target:
+            idx += step
+
+        next_idx = idx + step
+        if not (0 <= next_idx < len(swr_model)):
+            return None
+
+        y0 = float(swr_model[idx])
+        y1 = float(swr_model[next_idx])
+        if np.isclose(y0, y1):
+            return float(freqs_hz[idx])
+
+        x0 = float(freqs_hz[idx])
+        x1 = float(freqs_hz[next_idx])
+        fraction = (swr_target - y0) / (y1 - y0)
+        return x0 + fraction * (x1 - x0)
+
+    f_left = _crossing(i_min, -1)
+    f_right = _crossing(i_min, 1)
+    if f_left is None or f_right is None:
+        return None
+
+    return f_right - f_left
+
+
+def _format_debug_swr_only_curve(
+    freqs_hz: np.ndarray, gamma_model: np.ndarray | None
+) -> str | None:
+    bandwidth_hz = _estimate_bandwidth_from_model_curve(freqs_hz, gamma_model)
+    if bandwidth_hz is None:
+        return None
+
+    return f"from swr diagramm only\nBW_2.62 = {bandwidth_hz:.0f} Hz"
+
+
 def _calc_impedances_around_resonance(
     freqs: np.ndarray,
     gamma: np.ndarray,
@@ -578,6 +629,7 @@ def make_chart(s1p_path: Path, filename_svg: Path) -> S1pValues:
         swr_values=swr_values,
         model=model,
         b_tau_s=b_tau_s,
+        debug_swr_only=_format_debug_swr_only_curve(freqs, g_model),
         debug_from_3_point_measurement=_calc_impedances_around_resonance(
             freqs, gamma, idx
         ),

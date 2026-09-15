@@ -18,7 +18,7 @@ ANTENNENDATEN = Antenna(
     color="#8e7900",  # color from compare_colors.py
     dashed=True,
     selection_brand="Selfmade",
-    selection_location="EA4EAY",
+    selection_location="EA4AGY",
     selection_name="square_1m",
     D_m=FloatText(
         aequivalent_D_m,
@@ -32,7 +32,7 @@ ANTENNENDATEN = Antenna(
     ),
     info_str="Rectangular loop made from 22 mm copper tubing with a butterfly air-variable capacitor.",
     overview_pictures=("images/20250905_204448_overview.jpg",),
-    info_enviroment_str="Indoor, on wooden table, next to brick wall and window. 8th floor under the roof.",
+    info_enviroment_str="Indoor, on wooden table, next to brick wall and window. 11th floor under the roof.",
     info_conductor_str="Copper tube 22 mm, connected with sanitary angle fittings and soft-soldered joints.",
     info_capacitor_str="Air-variable butterfly capacitor 15 pF-240 pF 2kV.",
     info_thanks_str="Many thanks to Carlos for answering all my emails and sending me screenshots of his vna.",

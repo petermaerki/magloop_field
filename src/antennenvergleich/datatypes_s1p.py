@@ -2,10 +2,9 @@ from __future__ import annotations
 
 import importlib
 import pathlib
-import subprocess
 from dataclasses import dataclass
 
-from antennenvergleich.constants import DIRECTORY_SRC, RUFF_BIN
+from antennenvergleich.constants import DIRECTORY_SRC
 from antennenvergleich.datatypes import BandData, FloatText
 
 
@@ -25,6 +24,26 @@ class AntennaModelFit:
     fit_message: str
     fit_iterations: int
 
+    def __repr__(self) -> str:
+        return _fmt_dataclass_block(
+            "AntennaModelFit",
+            [
+                f"R_res_ohm={self.R_res_ohm!r}",
+                f"L_res_H={self.L_res_H!r}",
+                f"C_res_F={self.C_res_F!r}",
+                f"L_P_H={self.L_P_H!r}",
+                f"f0_Hz={self.f0_Hz!r}",
+                f"Q={self.Q!r}",
+                f"BSWR2_62_Hz={self.BSWR2_62_Hz!r}",
+                f"alpha_db={self.alpha_db!r}",
+                f"tau_s={self.tau_s!r}",
+                f"fit_residual={self.fit_residual!r}",
+                f"fit_success={self.fit_success!r}",
+                f"fit_message={self.fit_message!r}",
+                f"fit_iterations={self.fit_iterations!r}",
+            ],
+        )
+
 
 @dataclass(frozen=True)
 class SwrValues:
@@ -34,12 +53,26 @@ class SwrValues:
     f_swr_hz_min: float
     z_swr_min: complex
 
+    def __repr__(self) -> str:
+        return _fmt_dataclass_block(
+            "SwrValues",
+            [
+                f"swr_min={self.swr_min!r}",
+                f"eta_swr={self.eta_swr!r}",
+                f"eta_swr_ant={self.eta_swr_ant!r}",
+                f"f_swr_hz_min={self.f_swr_hz_min!r}",
+                f"z_swr_min=np.complex128({_fmt_z(self.z_swr_min)})",
+            ],
+        )
+
 
 def _fmt_z(z: complex) -> str:
     """Format complex without outer parens: 're + imj' or 're - imj'."""
-    if z.imag >= 0:
-        return f"{z.real!r} + {z.imag!r}j"
-    return f"{z.real!r} - {abs(z.imag)!r}j"
+    real = float(z.real)
+    imag = float(z.imag)
+    if imag >= 0:
+        return f"{real!r} + {imag!r}j"
+    return f"{real!r} - {abs(imag)!r}j"
 
 
 def _fmt_result_str(s: str) -> str:
@@ -57,6 +90,54 @@ def _fmt_result_str(s: str) -> str:
     return "(\n    " + "\n    ".join(segments) + "\n)"
 
 
+def _fmt_dataclass_block(name: str, fields: list[str]) -> str:
+    return f"{name}(\n        " + ",\n        ".join(fields) + ",\n    )"
+
+
+def _fmt_measurement_block(
+    measurements: tuple[tuple[float, complex, float], ...],
+) -> str:
+    lines = ["("]
+    for frequency_hz, impedance, swr in measurements:
+        lines.append(f"            ({frequency_hz!r}, {_fmt_z(impedance)}, {swr!r}),")
+    lines.append("        )")
+    return "\n".join(lines)
+
+
+def _fmt_debug_swr_only_str(s: str) -> str:
+    """Format the SWR-only debug note with an explicit comment and line breaks."""
+    parts = s.split("\n")
+    if len(parts) <= 1:
+        return repr(s)
+
+    if s.endswith("\n"):
+        parts = parts[:-1]
+
+    lines = ["("]
+    for index, part in enumerate(parts):
+        literal = part + "\n" if index < len(parts) - 1 else part
+        lines.append(f"    {literal!r}")
+    lines.append(")")
+    return "\n".join(lines)
+
+
+def _fmt_debug_swr_only_block(s: str) -> str:
+    """Format the SWR-only field as a multiline assignment block."""
+    parts = s.split("\n")
+    if len(parts) <= 1:
+        return f"debug_swr_only={s!r}"
+
+    if s.endswith("\n"):
+        parts = parts[:-1]
+
+    lines = ["debug_swr_only=("]
+    for index, part in enumerate(parts):
+        literal = part + "\n" if index < len(parts) - 1 else part
+        lines.append(f"        {literal!r}")
+    lines.append("    )")
+    return "\n".join(lines)
+
+
 @dataclass(frozen=True, repr=False)
 class Debug3Point:
     impedances_around_resonance: tuple[tuple[float, complex, float], ...]
@@ -64,30 +145,39 @@ class Debug3Point:
     debug_result_3_impedances: str
 
     def __repr__(self) -> str:
-        inner_all = ", ".join(
-            f"({f!r}, {_fmt_z(z)}, {swr!r})"
-            for f, z, swr in self.impedances_around_resonance
-        )
-        inner_sel = ", ".join(
-            f"({f!r}, {_fmt_z(z)}, {swr!r})"
-            for f, z, swr in self.debug_impedances_3_selected
-        )
-        return (
-            f"Debug3Point("
-            f"impedances_around_resonance=({inner_all},), "
-            f"debug_impedances_3_selected=({inner_sel},), "
-            f"debug_result_3_impedances={_fmt_result_str(self.debug_result_3_impedances)}"
-            f")"
+        return _fmt_dataclass_block(
+            "Debug3Point",
+            [
+                f"impedances_around_resonance={_fmt_measurement_block(self.impedances_around_resonance)}",
+                f"debug_impedances_3_selected={_fmt_measurement_block(self.debug_impedances_3_selected)}",
+                f"debug_result_3_impedances={_fmt_result_str(self.debug_result_3_impedances)}",
+            ],
         )
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, repr=False)
 class S1pValues:
     filename: str
     swr_values: SwrValues
     model: AntennaModelFit | None
     b_tau_s: float
+    debug_swr_only: str | None = None
     debug_from_3_point_measurement: Debug3Point | None = None
+
+    def __repr__(self) -> str:
+        parts = [
+            f"filename={self.filename!r}",
+            f"swr_values={self.swr_values!r}",
+            f"model={self.model!r}",
+            f"b_tau_s={self.b_tau_s!r}",
+        ]
+        if self.debug_swr_only is not None:
+            parts.append(_fmt_debug_swr_only_block(self.debug_swr_only))
+        if self.debug_from_3_point_measurement is not None:
+            parts.append(
+                f"debug_from_3_point_measurement={self.debug_from_3_point_measurement!r}"
+            )
+        return "S1pValues(\n    " + ",\n    ".join(parts) + ",\n)"
 
     @property
     def band_data(self) -> BandData:
@@ -103,24 +193,21 @@ class S1pValues:
     def write_py(self, filename: pathlib.Path) -> None:
         assert isinstance(filename, pathlib.Path)
 
-        with filename.open("w") as fw:
-            fw.write("import numpy as np\n")
-            fw.write("\n")
-            imports = "AntennaModelFit, S1pValues, SwrValues"
-            if self.debug_from_3_point_measurement is not None:
-                imports = "AntennaModelFit, Debug3Point, S1pValues, SwrValues"
-            fw.write(f"from antennenvergleich.datatypes_s1p import {imports}\n")
-            fw.write(f"S1P_VALUES = {self!r}\n")
+        imports = ["AntennaModelFit", "S1pValues", "SwrValues"]
+        if self.debug_from_3_point_measurement is not None:
+            imports = ["AntennaModelFit", "Debug3Point", "S1pValues", "SwrValues"]
 
-        try:
-            subprocess.run(
-                [str(RUFF_BIN), "format", str(filename)],
-                check=True,
-            )
-        except FileNotFoundError:
-            print(f"Warnung: {RUFF_BIN} nicht gefunden, ueberspringe Formatierung.")
-        except subprocess.CalledProcessError as exc:
-            print(f"Warnung: ruff format fehlgeschlagen fuer {filename}: {exc}")
+        text = "\n".join(
+            [
+                "import numpy as np",
+                "",
+                "from antennenvergleich.datatypes_s1p import " + ", ".join(imports),
+                "",
+                f"S1P_VALUES = {self!r}",
+                "",
+            ]
+        )
+        filename.write_text(text)
 
     @staticmethod
     def read_values_file(filename: pathlib.Path) -> S1pValues:
