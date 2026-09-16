@@ -33,5 +33,6 @@ ANTENNENDATEN = Antenna(
     info_enviroment_str="In the garden on the ground on patio slabs.",
     info_conductor_str=MAZZONI_STEALTH.info_conductor_str,
     info_capacitor_str=MAZZONI_STEALTH.info_capacitor_str,
+    inductivity_accepted="The deviation quite large. The geometry of the Stealth is unusual. There are places, for example the spring at the bottom, where the conductor cross-section is relatively small. This could explain the inductance deviation.",
     bands=[],
 )

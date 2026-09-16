@@ -249,11 +249,13 @@ def build_inductance_section_html(
             max_deviation = max(deviations, key=lambda value: abs(value))
             max_deviation_text = f"{max_deviation:+.0f}%"
             max_deviation_html = highlight_deviation_text(max_deviation_text)
+            accepted_text = html.escape(
+                getattr(antenna_data, "inductivity_accepted", "")
+            )
             summary_html = (
                 "<p>"
                 "The maximum deviation between L and the capacitor-based L<sub>1x</sub> values "
-                f"is {max_deviation_html}. "
-                "This is considered a small deviation and is accepted. "
+                f"is {max_deviation_html}. {accepted_text} "
                 "L is used for the calculations of the antenna efficiency."
                 "</p>"
             )

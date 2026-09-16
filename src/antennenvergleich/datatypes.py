@@ -12,6 +12,7 @@ from antennenvergleich.constants_s1p import (
 )
 
 VNA_STANDARD_CABLES = "Used cables: 80 cm RG400 (including the choke) and 10 m LMR195."
+INDUCTIVITY_ACCEPTED = "This is considered a small deviation and is accepted."
 
 
 def _is_cap_values_file(path: Path) -> bool:
@@ -116,6 +117,7 @@ class Antenna:
     template_vars_dict: dict[str, str] = field(default_factory=dict)
     overview_pictures: tuple[str, ...] = field(default_factory=tuple)
     inductivity_pictures: tuple[str, ...] = field(default_factory=tuple)
+    inductivity_accepted: str = INDUCTIVITY_ACCEPTED
     inductivity_pictures_caption_str: str = ""
     bands: list[BandData] = field(default_factory=list)
 

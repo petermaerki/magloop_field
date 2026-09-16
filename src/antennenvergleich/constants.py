@@ -67,7 +67,11 @@ PETER_TUBBY = Antenna(
 )
 
 
-_STEALTH_AREA_M2 = 0.328
+_STEALTH_AREA_CAP_ZUSAMMEN_M2 = 0.328
+"""AREA gemessen mit freecad ab Geometrie Prospekt C voll zusammen"""
+_STEALTH_AREA_CAP_M2 = 0.016
+"""AREA gemessen mit freecad ab Geometrie Prospekt nur C etwas geoeffnet"""
+_STEALTH_AREA_M2 = _STEALTH_AREA_CAP_ZUSAMMEN_M2 + _STEALTH_AREA_CAP_M2
 _STEALTH_PROFILE_W_MM = 60
 _STEALTH_PROFILE_H_MM = 20
 
