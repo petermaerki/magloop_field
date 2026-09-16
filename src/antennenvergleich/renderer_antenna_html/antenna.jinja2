@@ -53,7 +53,7 @@ Thanks: {{antenna.info_thanks_str}}<br>
                 <td title="{{ row.tooltip|e }}">{{ row.label_html }}</td>
                 <td class="unit">{{ row.unit_html }}</td>
                 {% for cell in row.cells %}
-                    <td class="{{ cell.css_class }}"{% if cell.colspan > 1 %} colspan="{{ cell.colspan }}"{% endif %} title="{{ cell.tooltip|e }}">{% if cell.href %}<a href="{{ cell.href|e }}">{{ cell.value|e }}</a>{% else %}{{ cell.value|e }}{% endif %}</td>
+                    <td class="{{ cell.css_class }}"{% if cell.colspan > 1 %} colspan="{{ cell.colspan }}"{% endif %} title="{{ cell.tooltip|e }}">{% if cell.href %}<a href="{{ cell.href|e }}" class="calculator-link">{{ cell.value|e }}</a>{% else %}{{ cell.value|e }}{% endif %}</td>
                 {% endfor %}
             </tr>
         {% endfor %}
@@ -78,7 +78,7 @@ Details on the measurement method can be found <a href="http://www.positron.ch/r
 <p>{% if vna_calibration_href %}<a href="{{ vna_calibration_href|e }}"><img class="vna-calibration-picture" src="{{ vna_calibration_href|e }}" alt="VNA calibration: fusspunkt_vna.svg"></a><br>{% endif %}
 The calibration of the VNA was done at the antenna feed point: green line.<br>
 Common-mode choke at the antenna: <a href="http://www.positron.ch/rf/choke_simple">positron.ch/rf/choke_simple</a>.<br>
-Used cables: 80 cm RG400 (including the choke) and 10 m LMR195.<br>
+{{ antenna.vna_cable|e }}<br>
 The cable attenuation alpha and the cable delay tau in the following table should therefore be small.</p>
 {% elif vna_calibration_mode == "at_vna" %}
 <p>{% if vna_calibration_href %}<a href="{{ vna_calibration_href|e }}"><img class="vna-calibration-picture" src="{{ vna_calibration_href|e }}" alt="VNA calibration: kabel_vna.svg"></a><br>{% endif %}

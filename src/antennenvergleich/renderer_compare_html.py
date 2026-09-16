@@ -5,6 +5,7 @@ import html
 import os
 import pathlib
 from collections.abc import Callable
+from decimal import Decimal, ROUND_HALF_UP
 
 from antennenvergleich.datatypes import Antenna, BandData
 
@@ -72,6 +73,21 @@ def _fmt_percent(v: float) -> str:
     return f"{v:.3f}"
 
 
+def _fmt_pico(v: float) -> str:
+    """Format capacitance values in picofarad notation with 3 significant digits."""
+    value = Decimal(str(v)) * Decimal("1e12")
+    if value == 0:
+        return "0"
+
+    places = max(0, 3 - value.adjusted() - 1)
+    q = Decimal("1").scaleb(-places)
+    rounded = value.quantize(q, rounding=ROUND_HALF_UP)
+    text = format(rounded, "f").rstrip("0").rstrip(".")
+    if text in {"-0", ""}:
+        text = "0"
+    return text
+
+
 RowFormatter = Callable[[AntennaCalculator], str]
 SourceFormatter = Callable[[Antenna, BandData], str | None]
 
@@ -130,9 +146,9 @@ _ROWS: list[tuple[str, str, str, RowFormatter, SourceFormatter]] = [
     ),
     (
         "Capacitance <i>C</i>",
-        "F",
+        "pF",
         "Erforderliche Resonanzkapazität bei der Bandfrequenz.",
-        lambda c: f"{c.C_F:.2e}",
+        lambda c: _fmt_pico(c.C_F),
         _source_derived,
     ),
     (
@@ -430,7 +446,7 @@ class HtmlRenderer:
                     )
                     link_html += (
                         "<br>"
-                        f"<a href='{html.escape(calculator_url, quote=True)}' style='text-decoration: underline;'>calculator</a>"
+                        f"<a href='{html.escape(calculator_url, quote=True)}' style='font-size: 0.85em; text-decoration: underline;'>calculator</a>"
                     )
                 header_overview_links_band += (
                     f"<th style='font-weight: normal;'>{link_html}</th>"

@@ -11,6 +11,8 @@ from antennenvergleich.constants_s1p import (
     VALUES_SUFFIX,
 )
 
+VNA_STANDARD_CABLES = "Used cables: 80 cm RG400 (including the choke) and 10 m LMR195."
+
 
 def _is_cap_values_file(path: Path) -> bool:
     stem_u = path.stem.upper()
@@ -105,6 +107,7 @@ class Antenna:
     info_thanks_str: str = ""
     vna_calibration: VnaCalibration = VnaCalibration.AT_VNA
     vna_device_str: str = ""
+    vna_cable: str = VNA_STANDARD_CABLES
     measurement_html: str | None = None
     enviroment_html: str | None = None
     antenna_build_html: str | None = None

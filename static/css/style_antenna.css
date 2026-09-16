@@ -28,6 +28,12 @@ td.val {
     text-align: right;
 }
 
+a.calculator-link {
+    font-size: 0.82em;
+    line-height: 1.2;
+    text-decoration: underline;
+}
+
 td.merged {
     text-align: center;
 }

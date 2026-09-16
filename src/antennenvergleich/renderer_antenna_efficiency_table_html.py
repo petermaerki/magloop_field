@@ -1,10 +1,26 @@
 import dataclasses
 from collections.abc import Callable
+from decimal import Decimal, ROUND_HALF_UP
 
 from magloop_field.calculations import AntennaCalculator as FieldAntennaCalculator
 
 from .constants_s1p import DIRECTORY_S1P_RESULTS
 from .datatypes import Antenna
+
+def _fmt_pico(v: float) -> str:
+    """Format capacitance values in picofarad notation with 3 significant digits."""
+    value = Decimal(str(v)) * Decimal("1e12")
+    if value == 0:
+        return "0"
+
+    places = max(0, 3 - value.adjusted() - 1)
+    q = Decimal("1").scaleb(-places)
+    rounded = value.quantize(q, rounding=ROUND_HALF_UP)
+    text = format(rounded, "f").rstrip("0").rstrip(".")
+    if text in {"-0", ""}:
+        text = "0"
+    return text
+
 
 ROW_SPECS: list[tuple[str, str, str, str]] = [
     ("Frequency <i>f</i>", "MHz", "f", "Mittenfrequenz des betrachteten Bandes."),
@@ -25,7 +41,7 @@ ROW_SPECS: list[tuple[str, str, str, str]] = [
     ("Inductance <i>L</i>", "H", "L", "Berechnete Induktivität der Loop."),
     (
         "Capacitance <i>C</i>",
-        "F",
+        "pF",
         "C",
         "Erforderliche Resonanzkapazität bei der Bandfrequenz.",
     ),
@@ -241,7 +257,7 @@ def _format_value(calc: FieldAntennaCalculator | None, key: str) -> str:
     if key == "L":
         return f"{calc.L_H:.2e}"
     if key == "C":
-        return f"{calc.C_F:.2e}"
+        return _fmt_pico(calc.C_F)
     if key == "Q0":
         return f"{calc.Q0:.0f}"
     if key == "RT":
