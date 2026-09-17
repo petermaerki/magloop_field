@@ -1,4 +1,5 @@
 import dataclasses
+import re
 from collections.abc import Callable
 from decimal import Decimal, ROUND_HALF_UP
 
@@ -6,6 +7,7 @@ from magloop_field.calculations import AntennaCalculator as FieldAntennaCalculat
 
 from .constants_s1p import DIRECTORY_S1P_RESULTS
 from .datatypes import Antenna
+
 
 def _fmt_pico(v: float) -> str:
     """Format capacitance values in picofarad notation with 3 significant digits."""
@@ -115,6 +117,13 @@ ROW_SPECS: list[tuple[str, str, str, str]] = [
 ]
 
 MERGED_SINGLE_VALUE_KEYS = {"D", "d", "n", "L"}
+
+
+def _filename_timestamp_key(file_name: str) -> tuple[int, int, str]:
+    match = re.match(r"^(\d{8})_(\d{4})_", file_name)
+    if match:
+        return (int(match.group(1)), int(match.group(2)), file_name)
+    return (99999999, 9999, file_name)
 
 
 @dataclasses.dataclass(frozen=True)
@@ -293,6 +302,7 @@ def build_efficiency_table(
         band_data_rows,
         key=lambda x: (
             band_order.index(str(x["band"])) if str(x["band"]) in band_order else 999,
+            _filename_timestamp_key(str(x.get("file") or "")),
             float(x["f0_mhz"]) if isinstance(x["f0_mhz"], (int, float)) else 0.0,
         ),
     )

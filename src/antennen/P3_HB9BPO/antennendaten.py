@@ -43,11 +43,11 @@ ANTENNENDATEN = Antenna(
     inductivity_pictures_caption_str="The switched capacitor is visible in the picture above.<br>"
     " The connections were temporarily taped to the main loop with yellow tape.<br>"
     "With two switches (only one is visible in the picture because they are exactly behind each other), the two capacitors can be switched in.",
-    info_enviroment_str=f"In the garden, on a Styrofoam box on a wooden table. Center loop {_hoehe_ueber_boden_zentrum_m:0.2f} m above ground.",
+    info_environment_str=f"In the garden, on a Styrofoam box on a wooden table. Center loop {_hoehe_ueber_boden_zentrum_m:0.2f} m above ground.",
     info_conductor_str="Copper tube OD 12 mm, ID 10 mm, bare surface.",
     info_capacitor_str="Air variable capacitor, self-made, CNC-milled from aluminum sheet.",
     info_thanks_str="Many thanks to Peter HB9BPO for the support, the fun conversations, and the catering.",
-    enviroment_html="enviroment.html",
+    environment_html="environment.html",
     antenna_build_html="antenna_build.html",
     measurement_html="measurement.html",
     final_remarks_html="final_remarks.html",

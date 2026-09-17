@@ -58,7 +58,7 @@ ANTENNENDATEN = Antenna(
     ),
     info_str="Rectangular loop, PVC pipe wrapped with aluminum foil. The frequency is tuned by sliding an aluminum-foil-covered tube back and forth in the upper segment.",
     overview_pictures=("images/epicenter_overview.png",),
-    info_enviroment_str="Outdoor, details unknown.",
+    info_environment_str="Outdoor, details unknown.",
     info_conductor_str="PVC pipe wrapped with aluminum foil.",
     info_capacitor_str="Variable capacitor made from telescoping PVC pipes wrapped with aluminum foil.",
     info_thanks_str="Many thanks to W6NBC (Silent Key) for the many publicly available contributions.",

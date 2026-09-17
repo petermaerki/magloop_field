@@ -1,6 +1,6 @@
 <!-- Automatically generated file by run_2_html.py. Do not edit manually. -->
 <!doctype html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,13 +18,15 @@
 </p>
 {% endfor %}
 
-<p>Info: {{antenna.info_str}}<br>
+<p>
+Info: {{antenna.info_str}}<br>
 Conductor: {{antenna.info_conductor_str}}<br>
 Capacitor: {{antenna.info_capacitor_str}}<br>
-Enviroment: {{antenna.info_enviroment_str}}<br>
+Environment: {{antenna.info_environment_str}}<br>
 {% if antenna.info_thanks_str: %}
 Thanks: {{antenna.info_thanks_str}}<br>
 {% endif %}
+</p>
 
 <h2>Antenna Efficiency Overview</h2>
 {% if eta_f_svg_rel %}
@@ -77,8 +79,7 @@ Details on the measurement method can be found <a href="http://www.positron.ch/r
 {% if vna_calibration_mode == "antenna_feed_point" %}
 <p>{% if vna_calibration_href %}<a href="{{ vna_calibration_href|e }}"><img class="vna-calibration-picture" src="{{ vna_calibration_href|e }}" alt="VNA calibration: fusspunkt_vna.svg"></a><br>{% endif %}
 The calibration of the VNA was done at the antenna feed point: green line.<br>
-Common-mode choke at the antenna: <a href="http://www.positron.ch/rf/choke_simple">positron.ch/rf/choke_simple</a>.<br>
-{{ antenna.vna_cable|e }}<br>
+{{ antenna.vna_cable|safe }}<br>
 The cable attenuation alpha and the cable delay tau in the following table should therefore be small.</p>
 {% elif vna_calibration_mode == "at_vna" %}
 <p>{% if vna_calibration_href %}<a href="{{ vna_calibration_href|e }}"><img class="vna-calibration-picture" src="{{ vna_calibration_href|e }}" alt="VNA calibration: kabel_vna.svg"></a><br>{% endif %}

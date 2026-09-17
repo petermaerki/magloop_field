@@ -34,7 +34,7 @@ def _antenna_info_tooltip(antenna: Antenna) -> str:
     return "\n".join(
         [
             f"info_str={antenna.info_str}",
-            f"info_enviroment_str={antenna.info_enviroment_str}",
+            f"info_environment_str={antenna.info_environment_str}",
             f"info_conductor_str={antenna.info_conductor_str}",
             f"info_capacitor_str={antenna.info_capacitor_str}",
         ]

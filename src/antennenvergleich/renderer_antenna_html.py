@@ -335,7 +335,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
     )
     environment_html_block = _load_html_fragments(
         antenna_data=antenna,
-        filename_html=antenna.enviroment_html,
+        filename_html=antenna.environment_html,
         base_dir=directory_s1p_results.parent,
         destination_dir=entry.directory,
         template_vars=template_vars_dict,
@@ -453,7 +453,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
 
     environment_section_html = ""
     if environment_html_block.strip():
-        environment_section_html = f"<h2>Enviroment</h2>\n{environment_html_block}"
+        environment_section_html = f"<h2>Environment</h2>\n{environment_html_block}"
 
     vna_calibration_mode = ""
     vna_calibration_href = ""

@@ -11,7 +11,12 @@ from antennenvergleich.constants_s1p import (
     VALUES_SUFFIX,
 )
 
-VNA_STANDARD_CABLES = "Used cables: 80 cm RG400 (including the choke) and 10 m LMR195."
+VNA_STANDARD_CABLES = (
+    "Common-mode choke at the antenna: "
+    '<a href="http://www.positron.ch/rf/choke_simple">'
+    "positron.ch/rf/choke_simple</a><br>"
+    "Used cables: 80 cm RG400 (including the choke) and 10 m LMR195."
+)
 INDUCTIVITY_ACCEPTED = "This is considered a small deviation and is accepted."
 
 
@@ -94,7 +99,7 @@ class Antenna:
     n: IntText
     p_m: FloatText
     info_str: str
-    info_enviroment_str: str
+    info_environment_str: str
     info_conductor_str: str
     info_capacitor_str: str
     powerPfwd_W: FloatText
@@ -110,7 +115,7 @@ class Antenna:
     vna_device_str: str = ""
     vna_cable: str = VNA_STANDARD_CABLES
     measurement_html: str | None = None
-    enviroment_html: str | None = None
+    environment_html: str | None = None
     antenna_build_html: str | None = None
     vna_remarks_html: str | None = None
     final_remarks_html: str | None = None
@@ -134,7 +139,7 @@ class Antenna:
 
         assert isinstance(self.vna_device_str, str)
         assert isinstance(self.measurement_html, str | None)
-        assert isinstance(self.enviroment_html, str | None)
+        assert isinstance(self.environment_html, str | None)
         assert isinstance(self.antenna_build_html, str | None)
         assert isinstance(self.vna_remarks_html, str | None)
         assert isinstance(self.final_remarks_html, str | None)

@@ -61,7 +61,7 @@ PETER_TUBBY = Antenna(
     p_m=FloatText(0.0, ""),
     powerPfwd_W=FloatText(_power_standard_Pfwd_W, "typical power"),
     info_str="Homebrew rectangular loop made of thick copper tubing with vacuum capacitors, 10 m to 160 m.",
-    info_enviroment_str="",
+    info_environment_str="",
     info_conductor_str="Copper tube 100mm",
     info_capacitor_str="Vacuum Capacitor",
 )
@@ -79,7 +79,7 @@ _MAZZONI_CONDUCTOR_BABY_MIDI = (
     "Aluminium tube, 2 mm wall thickness, bare untreated surface."
 )
 _MAZZONI_CAPACITOR_BABY_MIDI = "Variable air capacitor; the plate stack at the top of the antenna is telescoped in and out."
-_MAZZONI_ENVIROMENT = "Unknown, values from datasheet."
+_MAZZONI_environment = "Unknown, values from datasheet."
 _MAZZONI_INFO = "Widely used antenna from the manufacturer Mazzoni, Italy."
 MAZZONI_STEALTH = SimpleNamespace(
     D_m=FloatText(
@@ -94,9 +94,9 @@ MAZZONI_STEALTH = SimpleNamespace(
     p_m=FloatText(0.0, ""),
     powerP_W=FloatText(_power_standard_Pfwd_W, "typical power"),
     info_str=_MAZZONI_INFO,
-    info_enviroment_str=_MAZZONI_ENVIROMENT,
-    info_conductor_str="Aluminium rectangular tube, painted gray.",
-    info_capacitor_str="Air capacitor, likely aluminum, painted gray",
+    info_environment_str=_MAZZONI_environment,
+    info_conductor_str="Aluminium rectangular tube, outside 60mm x 20mm, wall 2 mm, painted gray.",
+    info_capacitor_str="Air capacitor, aluminum, painted gray",
 )
 
 _MIDI_CONDUCTOR_WIDTH_m = 0.076
@@ -119,7 +119,7 @@ MAZZONI_MIDI = SimpleNamespace(
     p_m=FloatText(0.0, ""),
     powerPfwd_W=FloatText(_power_standard_Pfwd_W, "typical power"),
     info_str=_MAZZONI_INFO,
-    info_enviroment_str=_MAZZONI_ENVIROMENT,
+    info_environment_str=_MAZZONI_environment,
     info_conductor_str=_MAZZONI_CONDUCTOR_BABY_MIDI,
     info_capacitor_str=_MAZZONI_CAPACITOR_BABY_MIDI,
 )
@@ -133,7 +133,7 @@ MAZZONI_BABY = SimpleNamespace(
     p_m=FloatText(0.0, ""),
     powerPfwd_W=FloatText(_power_standard_Pfwd_W, "typical power"),
     info_str=_MAZZONI_INFO,
-    info_enviroment_str=_MAZZONI_ENVIROMENT,
+    info_environment_str=_MAZZONI_environment,
     info_conductor_str=_MAZZONI_CONDUCTOR_BABY_MIDI,
     info_capacitor_str=_MAZZONI_CAPACITOR_BABY_MIDI,
 )
@@ -144,7 +144,7 @@ DK3SS = SimpleNamespace(
     p_m=FloatText(0.05, "EMail 20260809"),
     powerPfwd_W=FloatText(10.0, "typical power"),
     info_str="Homebrew copper loop by DK3SS. Two turns; frequency is adjusted by varying the spacing between the turns.",
-    info_enviroment_str="On a table in the middle of an attic apartment room, non-conductive building materials.",
+    info_environment_str="On a table in the middle of an attic apartment room, non-conductive building materials.",
     info_conductor_str="Copper tube 10mm.",
     info_capacitor_str="Ceramic Disc Capacitors.",
     info_thanks_str="Many thanks to Arno for answering my many questions by email.",
@@ -152,7 +152,7 @@ DK3SS = SimpleNamespace(
 
 
 HB9SM = SimpleNamespace(
-    info_enviroment_str="Indoor, 3rd floor below the roof.",
+    info_environment_str="Indoor, 3rd floor below the roof.",
     info_thanks_str="Many thanks to Stefan for the support and for allowing me to publish these measurement values and supporting documents.",
     vna_calibration=VnaCalibration.ANTENNA_FEED_POINT,
     inductivity_pictures_caption_str=(
