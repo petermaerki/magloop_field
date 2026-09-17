@@ -103,7 +103,7 @@ class Antenna:
     info_conductor_str: str
     info_capacitor_str: str
     powerPfwd_W: FloatText
-    color: str = "#000000"
+    color: str | None = None
     dashed: bool = False
     name: str = ""
     call: str = ""

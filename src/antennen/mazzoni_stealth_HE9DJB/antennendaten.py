@@ -12,7 +12,7 @@ NOTES = []
 FOOTNOTES = {}
 
 ANTENNENDATEN = Antenna(
-    color="#573b00",  # color from compare_colors.py
+    # color="#573b00",  # color from compare_colors.py
     selection_brand="Mazzoni",
     selection_location="HE9DJB",
     selection_name="Stealth",

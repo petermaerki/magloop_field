@@ -1,6 +1,7 @@
 """Generates compare.html — comparison table for magnetic loop antennas."""
 
 from . import (
+    compare_colors,
     constants,
     loop_directories,
     renderer_antenna_html,
@@ -34,6 +35,34 @@ def _assert_unique_antenna_colors(
         "Each antenna must have a unique color in antennendaten.py.\n"
         f"{details}"
     )
+
+
+def _assign_missing_antenna_colors(
+    antenna_entries: list[loop_directories.AntennaPlusDirectory],
+) -> None:
+    used_colors = {
+        antenna.color for entry in antenna_entries if (antenna := entry.antenna).color
+    }
+    palette_iter = iter(compare_colors.COLORS_PETER_32)
+
+    for entry in antenna_entries:
+        antenna = entry.antenna
+        if antenna.color:
+            continue
+
+        next_color = None
+        for candidate in palette_iter:
+            if candidate not in used_colors:
+                next_color = candidate
+                break
+
+        if next_color is None:
+            raise RuntimeError(
+                "No unused color left in COLORS_PETER_32 for an antenna without an explicit color."
+            )
+
+        used_colors.add(next_color)
+        object.__setattr__(antenna, "color", next_color)
 
 
 def main() -> None:
@@ -88,6 +117,7 @@ def main() -> None:
             a for a in antenna_entries if a.directory in filter.set_antenna_dir
         ]
 
+    _assign_missing_antenna_colors(antenna_entries)
     _assert_unique_antenna_colors(antenna_entries)
 
     generated_antennas = renderer_antenna_html.generate_antenna_html_files()

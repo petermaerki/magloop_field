@@ -373,7 +373,8 @@ class HtmlRenderer:
             header_brand += f"<th style='font-weight: normal;' title='{tooltip_attr}'>{brand_html}</th>"
             header_names += f"<th style='font-weight: normal;' title='{tooltip_attr}'>{name_html}</th>"
             header_calls += f"<th style='font-weight: normal;'>{location_html}</th>"
-            color = html.escape(antenna.color, quote=True)
+            color_value = antenna.color or "#000000"
+            color = html.escape(color_value, quote=True)
             header_overview_colors += (
                 "<th class='color-cell'>"
                 f"<div class='color-swatch' style='background:{color};'></div>"

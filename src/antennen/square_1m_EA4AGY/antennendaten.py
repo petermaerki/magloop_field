@@ -15,7 +15,7 @@ aequivalent_D_m = 2 * math.sqrt(A_m2 / math.pi)
 
 
 ANTENNENDATEN = Antenna(
-    color="#8e7900",  # color from compare_colors.py
+    # color="#8e7900",  # color from compare_colors.py
     dashed=True,
     selection_brand="Selfmade",
     selection_location="EA4AGY",

@@ -5,7 +5,7 @@ from antennenvergleich.datatypes import Antenna
 ANTENNENDATEN = Antenna(
     # name="Mazzoni Baby Loop",
     # call="HB0SM",
-    color="#97ff00",  # color from compare_colors.py
+    # color="#97ff00",  # color from compare_colors.py
     selection_brand="Mazzoni",
     selection_location="HB0SM",
     selection_name="Baby",

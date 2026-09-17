@@ -1,12 +1,38 @@
 import importlib
 import pathlib
 
+from antennenvergleich import compare_colors
 from antennenvergleich.constants import ANTENNENDATEN_FILENAME
 from antennenvergleich.datatypes import AntennaPlusDirectory
 
 DIRECTORY_OF_THIS_FILE = pathlib.Path(__file__).parent
 DIRECTORY_ANTENNEN = DIRECTORY_OF_THIS_FILE.parent / "antennen"
 assert DIRECTORY_ANTENNEN.is_dir(), DIRECTORY_ANTENNEN
+
+
+def _assign_missing_antenna_colors(
+    antenna_entries: list[AntennaPlusDirectory],
+) -> None:
+    used_colors = {
+        e.antenna.color for e in antenna_entries if e.antenna.color is not None
+    }
+    palette_iter = iter(compare_colors.COLORS_PETER_32)
+
+    for entry in antenna_entries:
+        antenna = entry.antenna
+        if antenna.color is not None:
+            continue
+
+        for candidate in palette_iter:
+            if candidate not in used_colors:
+                used_colors.add(candidate)
+                object.__setattr__(antenna, "color", candidate)
+                break
+        else:
+            raise RuntimeError(
+                "No unused color left in COLORS_PETER_32 for an antenna without an explicit color."
+            )
+
 
 def get_antennen_daten() -> list[AntennaPlusDirectory]:
     antennas: list[AntennaPlusDirectory] = []
@@ -18,6 +44,7 @@ def get_antennen_daten() -> list[AntennaPlusDirectory]:
                 directory=directory,
             )
         )
+    _assign_missing_antenna_colors(antennas)
     return antennas
 
 

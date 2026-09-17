@@ -29,7 +29,7 @@ die ihreseits etwas vom L kompensiert (reale Verhältnisse!)"
 ANTENNENDATEN = Antenna(
     # name="Selfmade 1.25m n2",
     # call="DK3SS",
-    color="#8c3bff",  # color from compare_colors.py
+    # color="#8c3bff",  # color from compare_colors.py
     dashed=True,
     selection_brand="Selfmade",
     selection_location="DK3SS",
