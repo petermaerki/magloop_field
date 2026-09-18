@@ -26,56 +26,56 @@ ANTENNENDATEN = Antenna(
         BandData(
             f_Hz=FloatText(3_573_000, "[MaerkiTabelle] Spalte f"),
             bw262_Hz=FloatText(
-                2_200, "[MaerkiTabelle] outdoor BW @ SWR 2.62 @ Antenneneingang"
+                2_400, "[MaerkiTabelle] outdoor BW @ SWR 2.62 @ Antenneneingang"
             ),
             swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
         ),
         BandData(
             f_Hz=FloatText(5_357_000, "[MaerkiTabelle] Spalte f"),
             bw262_Hz=FloatText(
-                5_200, "[MaerkiTabelle] outdoor BW @ SWR 2.62 @ Antenneneingang"
+                5_500, "[MaerkiTabelle] outdoor BW @ SWR 2.62 @ Antenneneingang"
             ),
             swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
         ),
         BandData(
             f_Hz=FloatText(7_074_000, "[MaerkiTabelle] Spalte f"),
             bw262_Hz=FloatText(
-                6_300, "[MaerkiTabelle] outdoor BW @ SWR 2.62 @ Antenneneingang"
+                6_700, "[MaerkiTabelle] outdoor BW @ SWR 2.62 @ Antenneneingang"
             ),
             swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
         ),
         BandData(
             f_Hz=FloatText(10_136_000, "[MaerkiTabelle] Spalte f"),
             bw262_Hz=FloatText(
-                8_700, "[MaerkiTabelle] outdoor BW @ SWR 2.62 @ Antenneneingang"
+                9_300, "[MaerkiTabelle] outdoor BW @ SWR 2.62 @ Antenneneingang"
             ),
             swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
         ),
         BandData(
             f_Hz=FloatText(14_074_000, "[MaerkiTabelle] Spalte f"),
             bw262_Hz=FloatText(
-                11_100, "[MaerkiTabelle] outdoor BW @ SWR 2.62 @ Antenneneingang"
+                12_100, "[MaerkiTabelle] outdoor BW @ SWR 2.62 @ Antenneneingang"
             ),
             swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
         ),
         BandData(
             f_Hz=FloatText(21_074_000, "[MaerkiTabelle] Spalte f"),
             bw262_Hz=FloatText(
-                59_000, "[MaerkiTabelle] outdoor BW @ SWR 2.62 @ Antenneneingang"
+                66_000, "[MaerkiTabelle] outdoor BW @ SWR 2.62 @ Antenneneingang"
             ),
             swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
         ),
         BandData(
             f_Hz=FloatText(24_915_000, "[MaerkiTabelle] Spalte f"),
             bw262_Hz=FloatText(
-                179_000, "[MaerkiTabelle] outdoor BW @ SWR 2.62 @ Antenneneingang"
+                201_000, "[MaerkiTabelle] outdoor BW @ SWR 2.62 @ Antenneneingang"
             ),
             swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
         ),
         BandData(
             f_Hz=FloatText(28_074_000, "[MaerkiTabelle] Spalte f"),
             bw262_Hz=FloatText(
-                310_000, "[MaerkiTabelle] outdoor BW @ SWR 2.62 @ Antenneneingang"
+                350_000, "[MaerkiTabelle] outdoor BW @ SWR 2.62 @ Antenneneingang"
             ),
             swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
         ),
