@@ -67,12 +67,14 @@
                     <a class="img_popup" href="static/images/smith_klein.png" target="_blank" rel="noopener noreferrer">
                         <img src="static/images/smith_klein.png" style="height: 100px" alt="Smith chart" />
                     </a>
-                    VNA calibrated at the cable end at the antenna.
+                    <br>B<sub>int</sub> can be estimated from the S-parameters.<br>
+                    Often similar to the bandwidth B<sub>SWR2.62</sub> estimated from the SWR bandwidth at SWR 2.62,<br>
+                    if SWR<sub>min</sub> = 1 and the VNA is calibrated at the antenna end of the cable.
                 </td>
             </tr>
             <tr>
                 <td class="input_label">
-                    <label for="bw_kHz">Bandwidth B<sub>SWR=2.6</sub></label>
+                    <label for="bw_kHz">Intrinsic bandwidth B<sub>int</sub></label>
                 </td>
                 <td class="input_value">
                     <input type="text" id="bw_kHz" value="86.6">
@@ -140,7 +142,7 @@
                 <td>Unloaded Q<sub>0</sub></td>
                 <td><b id="out_Q0">...</b></td>
                 <td class="unit"></td>
-                <td><small>$Q_0 = \frac{f}{B_{\mathrm{SWR}=2.6}}$</small></td>
+                <td><small>$Q_0 = \frac{f}{B_{\mathrm{int}}}$</small></td>
             </tr>
             <tr>
                 <td>Damping resistance R<sub>T</sub></td>

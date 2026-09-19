@@ -27,10 +27,10 @@ def _fmt_pico(v: float) -> str:
 ROW_SPECS: list[tuple[str, str, str, str]] = [
     ("Frequency <i>f</i>", "MHz", "f", "Mittenfrequenz des betrachteten Bandes."),
     (
-        "Bandwidth <i>B</i><sub>SWR=2.62</sub>",
+        "Intrinsic bandwidth <i>B</i><sub>int</sub>",
         "kHz",
         "bw",
-        "Bandbreite am Antenneneingang beim Kriterium SWR = 2.62.",
+        "Intrinsic bandwidth of the resonant circuit, often similar to the bandwidth at SWR 2.62.",
     ),
     ("Loop diameter <i>D</i>", "m", "D", "Äquivalenter Durchmesser der Loop."),
     (
