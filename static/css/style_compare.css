@@ -163,6 +163,11 @@ tr.efficiency-row td.val.neg {
     background: #ffcccc !important;
 }
 
+tr.source-row td,
+tr.source-row th {
+    font-size: 0.85em;
+}
+
 tr.band-row td.band-label {
     background: #fff59d;
     font-weight: 600;

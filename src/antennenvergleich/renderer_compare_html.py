@@ -471,9 +471,15 @@ class HtmlRenderer:
             for label, unit, tooltip, fmt, source_fmt in _ROWS:
                 is_rloss = "Loss" in label
                 is_efficiency_row = "Antenna efficiency" in label
+                is_source_row = label.startswith("Source")
                 unit_html = f"<b>{unit}</b>" if is_efficiency_row else unit
                 tooltip_attr = html.escape(tooltip, quote=True)
-                row_class = " class='efficiency-row'" if is_efficiency_row else ""
+                row_class_parts = []
+                if is_efficiency_row:
+                    row_class_parts.append("efficiency-row")
+                if is_source_row:
+                    row_class_parts.append("source-row")
+                row_class = f" class='{' '.join(row_class_parts)}'" if row_class_parts else ""
                 row = f"<tr{row_class}><td title='{tooltip_attr}'>{label}</td><td class='unit'>{unit_html}</td>"
                 for entry in antenna_entries:
                     band_data = band_data_by_dir[entry.directory].get(band)
