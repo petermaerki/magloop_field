@@ -125,6 +125,8 @@ class Antenna:
     inductivity_accepted: str = INDUCTIVITY_ACCEPTED
     inductivity_pictures_caption_str: str = ""
     bands: list[BandData] = field(default_factory=list)
+    bandwidth_source_str: str | None = None
+    bandwidth_source_tooltip_str: str | None = None
 
     def __post_init__(self) -> None:
         value = self.vna_calibration

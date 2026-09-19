@@ -52,4 +52,6 @@ ANTENNENDATEN = Antenna(
             swr_min=FloatText(1.25, "EA4AGY_20m_crop.jpg"),
         ),
     ],
+    bandwidth_source_str="SWR estimate",
+    bandwidth_source_tooltip_str="Rough estimate from VNA SWR and Smith chart screenshots; cable and calibration are unknown.",
 )

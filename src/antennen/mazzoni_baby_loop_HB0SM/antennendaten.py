@@ -28,4 +28,5 @@ ANTENNENDATEN = Antenna(
     inductivity_pictures_caption_str=HB9SM.inductivity_pictures_caption_str,
     vna_calibration=HB9SM.vna_calibration,
     bands=[],
+    bandwidth_source_str="S-Parameters",
 )

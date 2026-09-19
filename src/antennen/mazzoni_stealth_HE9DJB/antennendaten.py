@@ -36,4 +36,5 @@ ANTENNENDATEN = Antenna(
     inductivity_accepted="The deviation is quite large. The geometry of the Stealth is unusual. There are places, for example the spring at the bottom, where the conductor cross-section is relatively small. This could explain the inductance deviation.<br> The uncertainty in the inductance also leads to uncertainty in the efficiency. The efficiencies calculated on this page must therefore be treated with appropriate caution.<br>",
     info_thanks_str="Many thanks to Dieter HE9DJB for the opportunity to measure his antenna, for the active support, and for the interesting conversations.",
     bands=[],
+    bandwidth_source_str="S-Parameters",
 )

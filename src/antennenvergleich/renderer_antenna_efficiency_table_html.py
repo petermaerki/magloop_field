@@ -32,6 +32,12 @@ ROW_SPECS: list[tuple[str, str, str, str]] = [
         "bw",
         "Intrinsic bandwidth of the resonant circuit, often similar to the bandwidth at SWR 2.62.",
     ),
+    (
+        "Source of B<sub>int</sub>",
+        "",
+        "source_bw",
+        "Source of the intrinsic bandwidth value.",
+    ),
     ("Loop diameter <i>D</i>", "m", "D", "Äquivalenter Durchmesser der Loop."),
     (
         "Conductor diameter <i>d</i>",
@@ -318,7 +324,24 @@ def build_efficiency_table(
     rows: list[EfficiencyRow] = []
     for label_html, unit_html, key, tooltip in ROW_SPECS:
         cells: list[EfficiencyCell] = []
-        if key in MERGED_SINGLE_VALUE_KEYS and sorted_band_items:
+        if key == "source_bw":
+            if antenna_data is None:
+                source_value = "-"
+                source_tooltip = "-"
+            else:
+                source_value = str(antenna_data.bandwidth_source_str or "-")
+                source_tooltip = str(
+                    antenna_data.bandwidth_source_tooltip_str or source_value
+                )
+            cells.append(
+                EfficiencyCell(
+                    value=source_value,
+                    tooltip=source_tooltip,
+                    css_class="val merged",
+                    colspan=len(sorted_band_items) if sorted_band_items else 1,
+                )
+            )
+        elif key in MERGED_SINGLE_VALUE_KEYS and sorted_band_items:
             first_item = sorted_band_items[0]
             first_calc = _calc_for_item(first_item, antenna_data)
             cells.append(

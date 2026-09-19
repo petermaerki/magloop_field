@@ -138,6 +138,13 @@ _ROWS: list[tuple[str, str, str, RowFormatter, SourceFormatter]] = [
         lambda _antenna, bd: bd.bw262_Hz.source,
     ),
     (
+        "Source of B<sub>int</sub>",
+        "",
+        "Source of the intrinsic bandwidth value.",
+        lambda _c: "",
+        lambda antenna, _bd: antenna.bandwidth_source_str or "",
+    ),
+    (
         "Inductance <i>L</i>",
         "H",
         "Calculated inductance of the loop.",
@@ -474,7 +481,14 @@ class HtmlRenderer:
                         row += "<td class='val miss'></td>"
                         continue
                     calc = _make_calc(entry.antenna, band_data)
-                    val = fmt(calc)
+                    raw_source_text = source_fmt(entry.antenna, band_data) or ""
+                    source_text = (
+                        str(raw_source_text)
+                        if not isinstance(raw_source_text, str)
+                        else raw_source_text
+                    )
+                    is_source_row = label.startswith("Source")
+                    val = source_text if is_source_row else str(fmt(calc))
                     if is_efficiency_row:
                         val = f"<b>{val}</b>"
                     highlight_neg = is_rloss and calc.RLoss_Ohm < 0
@@ -486,8 +500,15 @@ class HtmlRenderer:
                         if (highlight_neg or highlight_over_100_efficiency)
                         else ""
                     )
-                    source_text = source_fmt(entry.antenna, band_data) or ""
-                    source_attr = html.escape(source_text, quote=True)
+                    if is_source_row:
+                        tooltip_text = (
+                            entry.antenna.bandwidth_source_tooltip_str
+                            or entry.antenna.bandwidth_source_str
+                            or source_text
+                        )
+                        source_attr = html.escape(tooltip_text, quote=True)
+                    else:
+                        source_attr = html.escape(source_text, quote=True)
                     row += f"<td class='val{extra}' title='{source_attr}'>{val}</td>"
                 row += "</tr>\n"
                 body += row

@@ -74,4 +74,6 @@ ANTENNENDATEN = Antenna(
             ),
         ),
     ],
+    bandwidth_source_str="Q webpage",
+    bandwidth_source_tooltip_str="Q published on a webpage; cable, calibration, and exact frequency are unknown.",
 )

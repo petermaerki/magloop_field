@@ -81,6 +81,9 @@ _MAZZONI_CONDUCTOR_BABY_MIDI = (
 _MAZZONI_CAPACITOR_BABY_MIDI = "Variable air capacitor; the plate stack at the top of the antenna is telescoped in and out."
 _MAZZONI_environment = "Unknown, values from datasheet."
 _MAZZONI_INFO = "Widely used antenna from the manufacturer Mazzoni, Italy."
+_MAZZONI_BANDWIDTH_SOURCE_STR = "Datasheet"
+_MAZZONI_BANDWIDTH_TOOLTIP_STR = "Bandwidth from the datasheet; the exact measurement method, instrument, and environment are unknown."
+
 MAZZONI_STEALTH = SimpleNamespace(
     D_m=FloatText(
         2 * sqrt(_STEALTH_AREA_M2 / pi),
@@ -97,6 +100,8 @@ MAZZONI_STEALTH = SimpleNamespace(
     info_environment_str=_MAZZONI_environment,
     info_conductor_str="Aluminium rectangular tube, outside 60mm x 20mm, wall 2 mm, painted gray.",
     info_capacitor_str="Air capacitor, aluminum, painted gray",
+    bandwidth_source=_MAZZONI_BANDWIDTH_SOURCE_STR,
+    bandwidth_source_tooltip_str=_MAZZONI_BANDWIDTH_TOOLTIP_STR,
 )
 
 _MIDI_CONDUCTOR_WIDTH_m = 0.076
@@ -122,6 +127,8 @@ MAZZONI_MIDI = SimpleNamespace(
     info_environment_str=_MAZZONI_environment,
     info_conductor_str=_MAZZONI_CONDUCTOR_BABY_MIDI,
     info_capacitor_str=_MAZZONI_CAPACITOR_BABY_MIDI,
+    bandwidth_source=_MAZZONI_BANDWIDTH_SOURCE_STR,
+    bandwidth_source_tooltip_str=_MAZZONI_BANDWIDTH_TOOLTIP_STR,
 )
 
 MAZZONI_BABY = SimpleNamespace(
@@ -136,6 +143,8 @@ MAZZONI_BABY = SimpleNamespace(
     info_environment_str=_MAZZONI_environment,
     info_conductor_str=_MAZZONI_CONDUCTOR_BABY_MIDI,
     info_capacitor_str=_MAZZONI_CAPACITOR_BABY_MIDI,
+    bandwidth_source=_MAZZONI_BANDWIDTH_SOURCE_STR,
+    bandwidth_source_tooltip_str=_MAZZONI_BANDWIDTH_TOOLTIP_STR,
 )
 
 DK3SS = SimpleNamespace(

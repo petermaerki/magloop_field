@@ -87,4 +87,5 @@ ANTENNENDATEN = Antenna(
             swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
         ),
     ],
+    bandwidth_source_str="SWR = 2.62",
 )

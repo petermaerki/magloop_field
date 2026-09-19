@@ -67,4 +67,6 @@ ANTENNENDATEN = Antenna(
             swr_min=FloatText(1.18, "[Annahme] Mazzoni: nicht perfekt anpassbar"),
         ),
     ],
+    bandwidth_source_str=MAZZONI_BABY.bandwidth_source,
+    bandwidth_source_tooltip_str=MAZZONI_BABY.bandwidth_source_tooltip_str,
 )

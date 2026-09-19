@@ -38,4 +38,5 @@ ANTENNENDATEN = Antenna(
     vna_remarks_html="vna_remarks.html",
     final_remarks_html="final_remarks.html",
     bands=[],
+    bandwidth_source_str="S-Parameters",
 )

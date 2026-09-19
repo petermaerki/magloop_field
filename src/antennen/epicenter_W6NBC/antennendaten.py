@@ -77,4 +77,5 @@ ANTENNENDATEN = Antenna(
             swr_min=FloatText(2.7, ""),
         ),
     ],
+    bandwidth_source_str="SWR screenshot",
 )

@@ -56,4 +56,5 @@ ANTENNENDATEN = Antenna(
         "h_field_tx_info": "IC-7300 MK2",
     },
     bands=[],
+    bandwidth_source_str="S-Parameters",
 )

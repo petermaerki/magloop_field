@@ -56,4 +56,6 @@ ANTENNENDATEN = Antenna(
             swr_min=FloatText(1.18, ""),
         ),
     ],
+    bandwidth_source_str=MAZZONI_STEALTH.bandwidth_source,
+    bandwidth_source_tooltip_str=MAZZONI_STEALTH.bandwidth_source_tooltip_str,
 )
