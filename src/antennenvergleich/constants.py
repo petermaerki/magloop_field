@@ -51,7 +51,7 @@ PETER_TUBBY = Antenna(
     name="Tubby Peter Outdoor",
     call="HB9ISP",
     D_m=FloatText(
-        1.014,
+        1.0063,
         "[Maerki2026] paper sec. 'Key Parameters': equivalent diameter 1.014 m (rechteckige Schleife 0.95 m × 0.85 m)",
     ),
     d_m=FloatText(
