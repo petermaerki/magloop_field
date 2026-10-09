@@ -91,7 +91,7 @@ The cable attenuation alpha and the cable delay tau in the following table show 
         <tr>
             <th>File</th>
             <th>model f0<br>MHz</th>
-            <th>model BSWR2_62<br>kHz</th>
+            <th>model Bint<br>kHz</th>
             <th>model alpha<br>db</th>
             {% if vna_cable_data %}
             <th>datasheet alpha<br>db</th>
@@ -109,7 +109,7 @@ The cable attenuation alpha and the cable delay tau in the following table show 
         <tr>
             <td>{{ row.file_name|e }}</td>
             <td>{{ row.f0_mhz|e }}</td>
-            <td>{{ row.bswr_khz|e }}</td>
+            <td>{{ row.bint_khz|e }}</td>
             <td>{{ row.alpha_db|e }}</td>
             {% if vna_cable_data %}
             <td>{{ row.alpha_db_datasheet|e }}</td>
@@ -150,7 +150,7 @@ The cable attenuation alpha and the cable delay tau in the following table show 
                 <table class="chart-values">
                     <tbody>
                         <tr><td>model_f0</td><td class="value">{{ row.f0_mhz|e }}</td><td class="unit">MHz</td></tr>
-                        <tr><td>model_BSWR2_62</td><td class="value">{{ row.bswr_khz|e }}</td><td class="unit">kHz</td></tr>
+                        <tr><td>model_Bint</td><td class="value">{{ row.bint_khz|e }}</td><td class="unit">kHz</td></tr>
                         <tr><td>model_alpha</td><td class="value">{{ row.alpha_db|e }}</td><td class="unit">db</td></tr>
                         {% if vna_cable_data %}
                         <tr><td>alpha datasheet</td><td class="value">{{ row.alpha_db_datasheet|e }}</td><td class="unit">db</td></tr>

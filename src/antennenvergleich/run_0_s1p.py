@@ -311,7 +311,7 @@ def fit_antenna_model(
         L_P_H=float(Lp),
         f0_Hz=float(f0_hz),
         Q=float(Q),
-        BSWR2_62_Hz=float(f0_hz / Q),
+        Bint_Hz=float(f0_hz / Q),
         alpha_db=float(alpha),
         tau_s=float(tau),
         fit_residual=float(best.cost),

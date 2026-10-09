@@ -11,6 +11,15 @@
     <link rel="stylesheet" href="static/css/style_page_calculator.css">
     <link rel="stylesheet" href="static/css/style_page_compare_filter.css">
     <link rel="stylesheet" href="static/css/style_compare.css">
+    <style>
+        #s1p_smith_chart svg,
+        #s1p_swr_chart svg {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+        }
+    </style>
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -52,6 +61,11 @@
     <div id="app_content">
         <section id="page-card" aria-label="Pages">
             <div role="tablist" aria-label="Page selection">
+                <button type="button" role="tab" aria-selected="false" aria-controls="page-s1p"
+                    data-page-tab="s1p">
+                    <span class="material-icons" aria-hidden="true">show_chart</span>
+                    S1P Analyzer
+                </button>
                 <button type="button" role="tab" aria-selected="true" aria-controls="page-calculation"
                     data-page-tab="calculation">
                     <span class="material-icons" aria-hidden="true">podcasts</span>
@@ -64,6 +78,7 @@
                 </button>
             </div>
 
+            <div id="page_s1p" role="tabpanel" data-page-panel="s1p" hidden>-</div>
             <div id="page_calculator" role="tabpanel" data-page-panel="calculation">-</div>
             <div id="page_compare" role="tabpanel" data-page-panel="compare" hidden>-</div>
         </section>
@@ -96,6 +111,9 @@
             if (value === 'calculation') {
                 return 'calculation';
             }
+            if (value === 's1p') {
+                return 's1p';
+            }
             return 'calculation';
         }
 
@@ -111,7 +129,9 @@
 
             if (updateUrl) {
                 const url = new URL(window.location.href);
-                const pageParam = normalized === 'calculation' ? 'calculator' : 'compare';
+                const pageParam = normalized === 'calculation' ? 'calculator'
+                                : normalized === 'compare' ? 'compare'
+                                : normalized;
                 url.searchParams.set('page', pageParam);
                 window.history.replaceState({}, '', url);
             }
@@ -123,6 +143,43 @@
 
         const initialPageParam = new URLSearchParams(window.location.search).get('page');
         showPage(normalizePageName(initialPageParam), false);
+
+        // Drag-and-drop support for the S1P drop zone (loaded dynamically by PyScript).
+        // MutationObserver waits for the element to appear, then wires up drag events.
+        (function () {
+            function setupS1pDropZone() {
+                const zone = document.getElementById('s1p_drop_zone');
+                const input = document.getElementById('s1p_file_input');
+                if (!zone || !input || zone._s1pReady) return;
+                zone._s1pReady = true;
+                obs.disconnect();
+
+                zone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    zone.classList.add('border-blue-400', 'bg-blue-50');
+                    zone.classList.remove('border-slate-400', 'bg-slate-100');
+                });
+                zone.addEventListener('dragleave', () => {
+                    zone.classList.remove('border-blue-400', 'bg-blue-50');
+                    zone.classList.add('border-slate-400', 'bg-slate-100');
+                });
+                zone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    zone.classList.remove('border-blue-400', 'bg-blue-50');
+                    zone.classList.add('border-slate-400', 'bg-slate-100');
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0) {
+                        const dt = new DataTransfer();
+                        dt.items.add(files[0]);
+                        input.files = dt.files;
+                        input.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                });
+            }
+
+            const obs = new MutationObserver(setupS1pDropZone);
+            obs.observe(document.body, { childList: true, subtree: true });
+        })();
     </script>
 
     <script type="py" src="./resources/lazyload.py" async></script>

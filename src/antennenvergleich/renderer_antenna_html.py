@@ -230,7 +230,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         values = S1pValues.read_values_file(values_path)
         if first_values_with_model is None and values.model is not None:
             first_values_with_model = values
-        bswr = values.model.BSWR2_62_Hz if values.model else None
+        bint = values.model.Bint_Hz if values.model else None
         alpha = values.model.alpha_db if values.model else None
         tau_ns = values.model.tau_s * 1e9 if values.model else None
         f0_hz = values.model.f0_Hz if values.model else None
@@ -253,7 +253,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
                 "band_data": values.band_data,
                 "file": values_path.name,
                 "f0_mhz": (f0_hz / 1e6) if isinstance(f0_hz, (int, float)) else None,
-                "bswr": bswr,
+                "bint": bint,
                 "alpha": alpha,
                 "tau_ns": tau_ns,
                 "swr_min": swr_min,
@@ -268,7 +268,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
             {
                 "file_name": values_path.name,
                 "f0_mhz": (f0_hz / 1e6) if isinstance(f0_hz, (int, float)) else None,
-                "bswr_khz": (bswr / 1e3) if isinstance(bswr, (int, float)) else None,
+                "bint_khz": (bint / 1e3) if isinstance(bint, (int, float)) else None,
                 "alpha_db": alpha,
                 "alpha_db_datasheet": (
                     vna_cable_data.alpha_db_at_f_hz(float(f0_hz))
@@ -292,7 +292,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
                 "smith_rel": smith_rel,
                 "swr_rel": swr_rel,
                 "f0_mhz": (f0_hz / 1e6) if isinstance(f0_hz, (int, float)) else None,
-                "bswr_khz": (bswr / 1e3) if isinstance(bswr, (int, float)) else None,
+                "bint_khz": (bint / 1e3) if isinstance(bint, (int, float)) else None,
                 "alpha_db": alpha,
                 "alpha_db_datasheet": (
                     vna_cable_data.alpha_db_at_f_hz(float(f0_hz))
@@ -397,7 +397,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
                     "f0_mhz": (float(f_hz) / 1e6)
                     if isinstance(f_hz, (int, float))
                     else None,
-                    "bswr": float(bw_hz) if isinstance(bw_hz, (int, float)) else None,
+                    "bint": float(bw_hz) if isinstance(bw_hz, (int, float)) else None,
                     "alpha": None,
                     "tau_ns": None,
                     "swr_min": float(swr_min)

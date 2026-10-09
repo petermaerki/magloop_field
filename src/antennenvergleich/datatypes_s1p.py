@@ -16,7 +16,7 @@ class AntennaModelFit:
     L_P_H: float
     f0_Hz: float
     Q: float
-    BSWR2_62_Hz: float
+    Bint_Hz: float
     alpha_db: float
     tau_s: float
     fit_residual: float
@@ -34,7 +34,7 @@ class AntennaModelFit:
                 f"L_P_H={self.L_P_H!r}",
                 f"f0_Hz={self.f0_Hz!r}",
                 f"Q={self.Q!r}",
-                f"BSWR2_62_Hz={self.BSWR2_62_Hz!r}",
+                f"Bint_Hz={self.Bint_Hz!r}",
                 f"alpha_db={self.alpha_db!r}",
                 f"tau_s={self.tau_s!r}",
                 f"fit_residual={self.fit_residual!r}",
@@ -186,7 +186,7 @@ class S1pValues:
 
         return BandData(
             f_Hz=FloatText(self.model.f0_Hz, "s1p model fit"),
-            bw262_Hz=FloatText(self.model.BSWR2_62_Hz, "s1p model fit"),
+            bw262_Hz=FloatText(self.model.Bint_Hz, "s1p model fit"),
             swr_min=FloatText(self.swr_values.swr_min, "s1p measurement"),
         )
 

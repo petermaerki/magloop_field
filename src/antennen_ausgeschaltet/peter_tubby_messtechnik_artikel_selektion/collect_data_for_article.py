@@ -88,7 +88,7 @@ def build_table() -> str:
                 kopplung(f.stem),
                 vna_kalibriert(f.stem),
                 f"{m.f0_Hz / 1e6:.3f}",
-                f"{m.BSWR2_62_Hz:.0f}",
+                f"{m.Bint_Hz:.0f}",
                 f"{mod.swr_values.swr_min:.2f}",
                 f"{m.alpha_db:.3f}",
                 f"{m.tau_s * 1e9:.1f}",

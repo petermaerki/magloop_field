@@ -35,6 +35,9 @@ load(
 load(
     "div#page_calculator", "./resources/page_calculator.html"
 )
+load(
+    "div#page_s1p", "./resources/page_s1p.html"
+)
 
 # Must be loaded after 'page_calcuator'!
 load_md("div#readme", "./README.md")

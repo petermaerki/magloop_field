@@ -183,6 +183,24 @@ def copy_values_from_above(e=None):
     document.getElementById("field_D_m").value = page["input#antenna_D_m"].value[0]
 
 
+@when("click", "#btn_copy_from_s1p")
+def copy_values_from_s1p(e=None):
+    def _get(el_id: str) -> str:
+        el = document.getElementById(el_id)
+        return el.textContent.strip() if el is not None else ""
+
+    f0 = _get("s1p_out_f0_mhz")
+    bint = _get("s1p_out_bint_khz")
+    swr = _get("s1p_out_swr_min")
+
+    if f0 and f0 != "\u2014":
+        document.getElementById("f_L_MHz").value = f0
+    if bint and bint != "\u2014":
+        document.getElementById("bw_kHz").value = bint
+    if swr and swr != "\u2014":
+        document.getElementById("swr_min").value = swr
+
+
 @when("click", "#btn_calculate_h_field")
 def do_calculate_h_field(e=None):
     if not DEVELOPMENT_NUMPY:
@@ -458,6 +476,202 @@ def load_compare() -> None:
             checkbox.bind_dom(element_label=label, element_input=elem_input)
 
     fw.filter.update_grey_states()
+
+
+#
+# S1P ANALYZER
+#
+
+def _parse_s1p_text(text: str):
+    """Parse s1p text content into (freqs_hz, gamma) numpy arrays."""
+    freqs, gammas = [], []
+    for line in text.splitlines():
+        line = line.strip()
+        if not line or line.startswith("!"):
+            continue
+        if line.startswith("#"):
+            if "RI" not in line.upper().split():
+                raise ValueError(f"Only RI format is supported, got: {line}")
+            continue
+        cols = line.split()
+        freqs.append(float(cols[0]))
+        gammas.append(complex(float(cols[1]), float(cols[2])))
+    return numpy.asarray(freqs), numpy.asarray(gammas)
+
+
+def _fig_to_svg_str(fig) -> str:
+    import io
+    buf = io.BytesIO()
+    fig.savefig(buf, format="svg", bbox_inches="tight")
+    return buf.getvalue().decode("utf-8")
+
+
+def _analyze_s1p(filename: str, content: str) -> None:
+    if not DEVELOPMENT_NUMPY:
+        return
+
+    import matplotlib.pyplot as plt
+    from antennenvergleich.run_0_s1p import (
+        CURVE_COLOR,
+        MODEL_COLOR,
+        decimation_datapoints,
+        estimate_b_tau_s,
+        fit_antenna_model,
+        model_s11,
+    )
+    from smith.smith_swr import (
+        BACKGROUND_COLOR,
+        FIGURE_SIZE_INCHES,
+        draw_smith_chart,
+        draw_swr_chart,
+    )
+
+    status_el = document.getElementById("s1p_status")
+
+    def _set_status(msg: str) -> None:
+        if status_el is not None:
+            status_el.textContent = msg
+
+    def _set_html(el_id: str, html: str) -> None:
+        el = document.getElementById(el_id)
+        if el is not None:
+            el.innerHTML = html
+
+    def _set_text(el_id: str, text: str) -> None:
+        el = document.getElementById(el_id)
+        if el is not None:
+            el.textContent = text
+
+    _set_status(f"Analysing {filename}\u2026")
+
+    try:
+        freqs, gamma = _parse_s1p_text(content)
+        n_raw = len(freqs)
+        freqs, gamma = decimation_datapoints(freqs, gamma)
+    except Exception as e:
+        _set_status(f"Parse error: {e}")
+        return
+
+    if len(freqs) < 3:
+        _set_status("Error: fewer than 3 data points in file.")
+        return
+
+    _mag = numpy.clip(numpy.abs(gamma), 0.0, 1.0 - 1e-12)
+    swr = (1.0 + _mag) / (1.0 - _mag)
+    idx = int(numpy.argmin(swr))
+    swr_min = float(swr[idx])
+    f_hz_min = float(freqs[idx])
+    z_min = 50.0 * (1.0 + gamma[idx]) / (1.0 - gamma[idx])
+
+    r_vna = (swr_min - 1.0) / (swr_min + 1.0)
+    eta_swr = 1.0 - r_vna**2
+
+    b_tau_s = float("nan")
+    try:
+        b_tau_s, _, _, _ = estimate_b_tau_s(freqs, gamma, f_hz_min)
+    except Exception:
+        pass
+    _tau_hint = 0.0 if math.isnan(b_tau_s) else b_tau_s
+
+    model = None
+    try:
+        model = fit_antenna_model(freqs, gamma, f_hz_min, b_tau_s_hint=_tau_hint)
+    except Exception:
+        pass
+
+    g_model = None
+    if model is not None:
+        try:
+            g_model = model_s11(
+                freqs,
+                model.R_res_ohm,
+                model.f0_Hz,
+                model.Q,
+                model.L_P_H,
+                model.alpha_db,
+                model.tau_s,
+            )
+        except Exception:
+            pass
+
+    fig, ax = plt.subplots(figsize=FIGURE_SIZE_INCHES)
+    fig.patch.set_facecolor(BACKGROUND_COLOR)
+    draw_smith_chart(ax)
+    if g_model is not None:
+        ax.plot(g_model.real, g_model.imag, color=MODEL_COLOR, linewidth=8, zorder=1)
+    ax.scatter(gamma.real, gamma.imag, s=30, color=CURVE_COLOR, linewidths=0, zorder=3)
+    smith_svg = _fig_to_svg_str(fig)
+    plt.close(fig)
+
+    fig, ax = plt.subplots(figsize=FIGURE_SIZE_INCHES)
+    fig.patch.set_facecolor(BACKGROUND_COLOR)
+    draw_swr_chart(ax, freqs, gamma, g_model)
+    swr_svg = _fig_to_svg_str(fig)
+    plt.close(fig)
+
+    _set_text("s1p_out_filename", filename)
+    _set_html("s1p_out_swr_min", f"{swr_min:.3g}")
+    _set_html("s1p_out_eta_swr", f"{100.0 * eta_swr:.1f}")
+
+    if model is not None:
+        _set_html("s1p_out_f0_mhz", f"{model.f0_Hz / 1e6:.4f}")
+        _set_html("s1p_out_bint_khz", f"{model.Bint_Hz / 1e3:.2f}")
+        _set_html("s1p_out_alpha_db", f"{model.alpha_db:.2f}")
+        _set_html("s1p_out_tau_ns", f"{model.tau_s * 1e9:.1f}")
+    else:
+        for _id in ("s1p_out_f0_mhz", "s1p_out_bint_khz", "s1p_out_alpha_db", "s1p_out_tau_ns"):
+            _set_html(_id, "&#8212;")
+
+    _set_html("s1p_smith_chart", smith_svg)
+    _set_html("s1p_swr_chart", swr_svg)
+
+    b_tau_str = f"{b_tau_s * 1e9:.1f} ns" if not math.isnan(b_tau_s) else "\u2014"
+    values_lines = [
+        f"f(SWR min):  {f_hz_min / 1e6:.4f} MHz",
+        f"SWR min:     {swr_min:.3g}",
+        f"Z @ SWR min: {z_min.real:.2f}{z_min.imag:+.2f}j \u03a9",
+        f"\u03b7 SWR:       {100.0 * eta_swr:.1f} %",
+        f"b_tau:       {b_tau_str}",
+    ]
+    if model is not None:
+        values_lines += [
+            "",
+            "\u2500\u2500 Model fit \u2500\u2500",
+            f"f0:          {model.f0_Hz / 1e6:.4f} MHz",
+            f"Q:           {model.Q:.0f}",
+            f"Bint:        {model.Bint_Hz / 1e3:.2f} kHz",
+            f"R_res:       {model.R_res_ohm:.4f} \u03a9",
+            f"\u03b1:           {model.alpha_db:.2f} dB",
+            f"\u03c4:           {model.tau_s * 1e9:.1f} ns",
+            f"residual:    {model.fit_residual:.2e}",
+        ]
+    _set_text("s1p_values_cell", "\n".join(values_lines))
+
+    result_section = document.getElementById("s1p_result_section")
+    if result_section is not None:
+        result_section.removeAttribute("hidden")
+
+    _set_status(f"\u2713 {filename} \u2014 {n_raw} data points in file")
+
+
+def _handle_s1p_file(js_file) -> None:
+    from js import FileReader
+
+    reader = FileReader.new()
+
+    def _on_load(event):
+        _analyze_s1p(str(js_file.name), str(event.target.result))
+
+    reader.onload = create_proxy(_on_load)
+    reader.readAsText(js_file)
+
+
+@when("change", "#s1p_file_input")
+def on_s1p_file_input_change(event):
+    files = event.target.files
+    if not files.length:
+        return
+    _handle_s1p_file(files.item(0))
 
 
 #

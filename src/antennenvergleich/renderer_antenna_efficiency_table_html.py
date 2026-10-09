@@ -189,7 +189,7 @@ def _calc_for_item(
     if antenna_data is None:
         return None
     f0_mhz = item.get("f0_mhz")
-    bw_hz = item.get("bswr")
+    bw_hz = item.get("bint")
     swr_min = item.get("swr_min")
     if not (
         isinstance(f0_mhz, (int, float))
