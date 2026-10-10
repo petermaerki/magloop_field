@@ -66,6 +66,28 @@ PETER_TUBBY = Antenna(
     info_capacitor_str="Vacuum Capacitor",
 )
 
+_PCB_HOEHE_M = 0.1
+_LEITERPAKET_BREITE_M = 0.052
+PETER_2026_PCB = Antenna(
+    name="2026_pcb",
+    call="HB9ISP",
+    D_m=FloatText(
+        0.7,
+        "temporaerer Wert grob geschaetzt aus Berechnung",
+    ),
+    d_m=FloatText(
+        2 * (_PCB_HOEHE_M + _LEITERPAKET_BREITE_M) / pi,
+        "äquiv. Rohrdurchmesser = Umfang/pi",
+    ),
+    n=IntText(1, ""),
+    p_m=FloatText(0.0, ""),
+    powerPfwd_W=FloatText(_power_standard_Pfwd_W, "typical power"),
+    info_str="Homebrew loop from pcb boards. Air capacitor.",
+    info_environment_str="",
+    info_conductor_str="PCB boards 100mm wide, 35 um copper.",
+    info_capacitor_str="Air capacitor made from PCB boards.",
+)
+
 
 _STEALTH_AREA_CAP_ZUSAMMEN_M2 = 0.328
 """AREA gemessen mit freecad ab Geometrie Prospekt C voll zusammen"""
