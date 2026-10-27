@@ -1,6 +1,6 @@
 from antennenvergleich import constants
 from antennenvergleich.constants import HB9SM, MAZZONI_BABY
-from antennenvergleich.datatypes import Antenna
+from antennenvergleich.datatypes import Antenna, VnaCalibration
 
 ANTENNENDATEN = Antenna(
     # name="Mazzoni Baby Loop",
@@ -15,7 +15,8 @@ ANTENNENDATEN = Antenna(
     p_m=MAZZONI_BABY.p_m,
     powerPfwd_W=MAZZONI_BABY.powerPfwd_W,
     info_str=MAZZONI_BABY.info_str,
-    # overview_pictures=("images/overview_baby.jpg",),
+    vna_device_str=constants.VNA_PETER_INFO,
+    overview_pictures=("images/overview.jpeg",),
     # inductivity_pictures=("images/20260820_161035446_induktivitaet_baby.jpg",),
     # measurement_html="../../shared/HB0SM/measurement.html",
     # environment_html="../../shared/HB0SM/environment.html",
@@ -23,12 +24,13 @@ ANTENNENDATEN = Antenna(
     # antenna_build_html="../../shared/HB0SM/antenna_build.html",
     # final_remarks_html="../../shared/HB0SM/final_remarks.html",
     final_remarks_html="final_remarks.html",
-    info_environment_str=HB9SM.info_environment_str,
+    info_environment_str="Mounted on a mast with a rotor 1.5m above the roof of a 5-storey building",
     info_conductor_str=MAZZONI_BABY.info_conductor_str,
     info_capacitor_str=MAZZONI_BABY.info_capacitor_str,
-    # info_thanks_str=HB9SM.info_thanks_str,
+    measurement_html="measurement.html",
+    info_thanks_str="Many thanks to Stephan for allowing me to measure his antenna, for the pleasant conversations, and for showing me his workshop and shack.",
     # inductivity_pictures_caption_str=HB9SM.inductivity_pictures_caption_str,
-    vna_calibration=HB9SM.vna_calibration,
+    vna_calibration=VnaCalibration.AT_VNA,
     bands=[],
     bandwidth_source_str="S-Parameters",
 )

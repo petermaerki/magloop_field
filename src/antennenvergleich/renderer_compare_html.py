@@ -281,7 +281,9 @@ class HtmlRenderer:
         def fmt_param(value: float | int, decimals: int) -> str:
             if isinstance(value, int):
                 return str(value)
-            text = f"{value:.{decimals}f}".rstrip("0").rstrip(".")
+            text = f"{value:.{decimals}f}"
+            if "." in text:
+                text = text.rstrip("0").rstrip(".")
             return text or "0"
 
         # Use relative path so it works both locally and on GitHub Pages

@@ -145,7 +145,9 @@ def _build_calculator_url_for_antenna_page(
     def fmt_param(value: float | int, decimals: int) -> str:
         if isinstance(value, int):
             return str(value)
-        text = f"{value:.{decimals}f}".rstrip("0").rstrip(".")
+        text = f"{value:.{decimals}f}"
+        if "." in text:
+            text = text.rstrip("0").rstrip(".")
         return text or "0"
 
     d_m = antenna.D_m.value
