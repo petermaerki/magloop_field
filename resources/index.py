@@ -559,12 +559,11 @@ def _analyze_s1p(filename: str, content: str) -> None:
     _mag = numpy.clip(numpy.abs(gamma), 0.0, 1.0 - 1e-12)
     swr = (1.0 + _mag) / (1.0 - _mag)
     idx = int(numpy.argmin(swr))
-    swr_min = float(swr[idx])
+    swr_min_vna = float(swr[idx])
     f_hz_min = float(freqs[idx])
     z_min = 50.0 * (1.0 + gamma[idx]) / (1.0 - gamma[idx])
 
-    r_vna = (swr_min - 1.0) / (swr_min + 1.0)
-    eta_swr = 1.0 - r_vna**2
+    r_vna = (swr_min_vna - 1.0) / (swr_min_vna + 1.0)
 
     b_tau_s = float("nan")
     try:
@@ -578,6 +577,13 @@ def _analyze_s1p(filename: str, content: str) -> None:
         model = fit_antenna_model(freqs, gamma, f_hz_min, b_tau_s_hint=_tau_hint)
     except Exception:
         pass
+
+    swr_min_ant = swr_min_vna  # fallback: no cable correction without model
+    eta_swr_ant = 1.0 - r_vna**2
+    if model is not None:
+        r_ant = r_vna * 10 ** (model.alpha_db / 10.0)
+        eta_swr_ant = 1.0 - r_ant**2
+        swr_min_ant = (1.0 + r_ant) / (1.0 - r_ant)
 
     g_model = None
     if model is not None:
@@ -610,8 +616,8 @@ def _analyze_s1p(filename: str, content: str) -> None:
     plt.close(fig)
 
     _set_text("s1p_out_filename", filename)
-    _set_html("s1p_out_swr_min", f"{swr_min:.3g}")
-    _set_html("s1p_out_eta_swr", f"{100.0 * eta_swr:.1f}")
+    _set_html("s1p_out_swr_min", f"{swr_min_ant:.3g}")
+    _set_html("s1p_out_eta_swr", f"{100.0 * eta_swr_ant:.1f}")
 
     if model is not None:
         _set_html("s1p_out_f0_mhz", f"{model.f0_Hz / 1e6:.4f}")
@@ -628,10 +634,10 @@ def _analyze_s1p(filename: str, content: str) -> None:
     b_tau_str = f"{b_tau_s * 1e9:.1f} ns" if not math.isnan(b_tau_s) else "\u2014"
     values_lines = [
         f"f(SWR min):  {f_hz_min / 1e6:.4f} MHz",
-        f"SWR min:     {swr_min:.3g}",
+        f"SWR min_ant: {swr_min_ant:.3g}",
+        f"SWR min_vna: {swr_min_vna:.3g}",
         f"Z @ SWR min: {z_min.real:.2f}{z_min.imag:+.2f}j \u03a9",
-        f"\u03b7 SWR:       {100.0 * eta_swr:.1f} %",
-        f"b_tau:       {b_tau_str}",
+        f"\u03b7 SWR ant:   {100.0 * eta_swr_ant:.1f} %",
     ]
     if model is not None:
         values_lines += [
