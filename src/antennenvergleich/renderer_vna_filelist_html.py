@@ -10,7 +10,8 @@ class VnaFileListRow:
     alpha_db_datasheet: str
     tau_ns: str
     tau_ns_datasheet: str
-    swr_min: str
+    swr_min_vna: str
+    swr_min_ant: str
     eta_swr_ant: str
 
 
@@ -43,7 +44,8 @@ def build_vna_filelist_section(
                 alpha_db_datasheet=_fmt(row.get("alpha_db_datasheet"), 3),
                 tau_ns=_fmt(row.get("tau_ns"), 2),
                 tau_ns_datasheet=_fmt(row.get("tau_ns_datasheet"), 2),
-                swr_min=_fmt(row.get("swr_min"), 2),
+                swr_min_vna=_fmt(row.get("swr_min_vna"), 2),
+                swr_min_ant=_fmt(row.get("swr_min_ant"), 2),
                 eta_swr_ant=_fmt(row.get("eta_swr_ant"), 3),
             )
         )

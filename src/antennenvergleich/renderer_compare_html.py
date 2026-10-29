@@ -194,9 +194,9 @@ _ROWS: list[tuple[str, str, str, RowFormatter, SourceFormatter]] = [
         lambda antenna, _bd: antenna.powerPfwd_W.source,
     ),
     (
-        "swr_min",
+        "swr_min_ant",
         "1",
-        "Minimales SWR am Antenneneingang.",
+        "Minimales SWR am Antennenfusspunkt.",
         lambda c: f"{c.swr_min:.2f}",
         lambda _antenna, bd: bd.swr_min.source,
     ),

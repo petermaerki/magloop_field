@@ -89,7 +89,7 @@ def build_inductance_section_html(
                 d_m=antenna_data.d_m.value,
                 n=antenna_data.n.value if antenna_data.n.value is not None else 1,
                 p_m=antenna_data.p_m.value or 0.0,
-                swr_min=first_values_with_model.swr_values.swr_min,
+                swr_min=first_values_with_model.swr_values.swr_min_ant or first_values_with_model.swr_values.swr_min_vna,
                 f_Hz=first_values_with_model.model.f0_Hz,
                 bw262_Hz=first_values_with_model.model.Bint_Hz,
                 powerPfwd_W=100.0,

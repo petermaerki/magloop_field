@@ -557,12 +557,14 @@ def make_chart(s1p_path: Path, filename_svg: Path) -> S1pValues:
 
     print(f"  {s1p_path.name}  →  {filename_svg.name}, {swr_path.name}")
 
-    r_vna = (swr_min - 1.0) / (swr_min + 1.0)
-    eta_swr = 1.0 - r_vna**2
+    swr_min_vna = swr_min
+    r_vna = (swr_min_vna - 1.0) / (swr_min_vna + 1.0)
     eta_swr_ant = None
+    swr_min_ant = None
     if model:
         r_ant = r_vna * 10 ** (model.alpha_db / 10.0)
         eta_swr_ant = 1.0 - r_ant**2
+        swr_min_ant = (1.0 + r_ant) / (1.0 - r_ant)
 
     # --- group delay diagram ---
     delay_path = filename_svg.with_name(
@@ -611,8 +613,8 @@ def make_chart(s1p_path: Path, filename_svg: Path) -> S1pValues:
     plt.close(fig_d)
 
     swr_values = SwrValues(
-        swr_min=swr_min,
-        eta_swr=eta_swr,
+        swr_min_vna=swr_min_vna,
+        swr_min_ant=swr_min_ant,
         eta_swr_ant=eta_swr_ant,
         f_swr_hz_min=f_hz_min,
         z_swr_min=z_min,

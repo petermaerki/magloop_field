@@ -47,8 +47,8 @@ class AntennaModelFit:
 
 @dataclass(frozen=True)
 class SwrValues:
-    swr_min: float
-    eta_swr: float
+    swr_min_vna: float
+    swr_min_ant: float | None
     eta_swr_ant: float | None
     f_swr_hz_min: float
     z_swr_min: complex
@@ -57,8 +57,8 @@ class SwrValues:
         return _fmt_dataclass_block(
             "SwrValues",
             [
-                f"swr_min={self.swr_min!r}",
-                f"eta_swr={self.eta_swr!r}",
+                f"swr_min_vna={self.swr_min_vna!r}",
+                f"swr_min_ant={self.swr_min_ant!r}",
                 f"eta_swr_ant={self.eta_swr_ant!r}",
                 f"f_swr_hz_min={self.f_swr_hz_min!r}",
                 f"z_swr_min=np.complex128({_fmt_z(self.z_swr_min)})",
@@ -187,7 +187,7 @@ class S1pValues:
         return BandData(
             f_Hz=FloatText(self.model.f0_Hz, "s1p model fit"),
             bw262_Hz=FloatText(self.model.Bint_Hz, "s1p model fit"),
-            swr_min=FloatText(self.swr_values.swr_min, "s1p measurement"),
+            swr_min=FloatText(self.swr_values.swr_min_ant or self.swr_values.swr_min_vna, "s1p measurement"),
         )
 
     def write_py(self, filename: pathlib.Path) -> None:

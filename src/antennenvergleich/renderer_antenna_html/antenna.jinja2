@@ -100,7 +100,8 @@ The cable attenuation alpha and the cable delay tau in the following table show 
             {% if vna_cable_data %}
             <th>datasheet tau<br>ns</th>
             {% endif %}
-            <th>SWR min</th>
+            <th>SWR_min_vna</th>
+            <th>SWR_min_ant</th>
             <th>eta SWR</th>
         </tr>
     </thead>
@@ -118,7 +119,8 @@ The cable attenuation alpha and the cable delay tau in the following table show 
             {% if vna_cable_data %}
             <td>{{ row.tau_ns_datasheet|e }}</td>
             {% endif %}
-            <td>{{ row.swr_min|e }}</td>
+            <td>{{ row.swr_min_vna|e }}</td>
+            <td>{{ row.swr_min_ant|e }}</td>
             <td>{{ row.eta_swr_ant|e }}</td>
         </tr>
         {% endfor %}
@@ -159,7 +161,8 @@ The cable attenuation alpha and the cable delay tau in the following table show 
                         {% if vna_cable_data %}
                         <tr><td>tau datasheet</td><td class="value">{{ row.tau_ns_datasheet|e }}</td><td class="unit">ns</td></tr>
                         {% endif %}
-                        <tr><td>SWR_min</td><td class="value">{{ row.swr_min|e }}</td><td class="unit"></td></tr>
+                        <tr><td>SWR_min_vna</td><td class="value">{{ row.swr_min_vna|e }}</td><td class="unit"></td></tr>
+                        <tr><td>SWR_min_ant</td><td class="value">{{ row.swr_min_ant|e }}</td><td class="unit"></td></tr>
                         <tr><td>eta_SWR_ant</td><td class="value">{{ row.eta_swr_ant|e }}</td><td class="unit"></td></tr>
                     </tbody>
                 </table>

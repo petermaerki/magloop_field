@@ -25,7 +25,7 @@ def _fmt_pico(v: float) -> str:
 
 
 ROW_SPECS: list[tuple[str, str, str, str]] = [
-    ("Frequency <i>f</i>", "MHz", "f", "Mittenfrequenz des betrachteten Bandes."),
+    ("Frequency <i>f</i>", "MHz", "f", "Center frequency of the considered band."),
     (
         "Intrinsic bandwidth <i>B</i><sub>int</sub>",
         "kHz",
@@ -38,44 +38,44 @@ ROW_SPECS: list[tuple[str, str, str, str]] = [
         "source_bw",
         "Source of the intrinsic bandwidth value.",
     ),
-    ("Loop diameter <i>D</i>", "m", "D", "Äquivalenter Durchmesser der Loop."),
+    ("Loop diameter <i>D</i>", "m", "D", "Equivalent diameter of the loop."),
     (
         "Conductor diameter <i>d</i>",
         "m",
         "d",
-        "Äquivalenter Leiterdurchmesser der Loop.",
+        "Equivalent conductor diameter of the loop.",
     ),
-    ("Loop count <i>n</i>", "1", "n", "Anzahl der Windungen der Schleife."),
-    ("Inductance <i>L</i>", "H", "L", "Berechnete Induktivität der Loop."),
+    ("Loop count <i>n</i>", "1", "n", "Number of loop turns."),
+    ("Inductance <i>L</i>", "H", "L", "Calculated inductance of the loop."),
     (
         "Capacitance <i>C</i>",
         "pF",
         "C",
-        "Erforderliche Resonanzkapazität bei der Bandfrequenz.",
+        "Required resonance capacitance at the band frequency.",
     ),
     (
         "Unloaded Q<sub>0</sub>",
         "1",
         "Q0",
-        "Unbelastete Güte, aus f / Bandbreite abgeschätzt.",
+        "Unloaded Q factor, estimated from f / bandwidth.",
     ),
     (
         "Damping resistance <i>R</i><sub>T</sub>",
         "Ohm",
         "RT",
-        "Gesamter Dämpfungswiderstand des Resonanzkreises.",
+        "Total damping resistance of the resonant circuit.",
     ),
     (
         "Radiation resistance <i>R</i><sub>R</sub>",
         "Ohm",
         "RR",
-        "Äquivalenter Strahlungswiderstand der Antenne.",
+        "Equivalent radiation resistance of the antenna.",
     ),
     (
         "Loss resistance <i>R</i><sub>Loss</sub>",
         "Ohm",
         "RLoss",
-        "Verlustwiderstand: R_T - R_R.",
+        "Loss resistance: R_T - R_R.",
     ),
     (
         "Power to antenna <i>P</i><sub>fwd</sub>",
@@ -83,12 +83,12 @@ ROW_SPECS: list[tuple[str, str, str, str]] = [
         "P",
         "Power towards the antenna feed point<br>(forward power after cable losses; a portion may be reflected due to SWR mismatch).",
     ),
-    ("swr_min", "1", "swr_min", "Minimales SWR am Antenneneingang."),
+    ("swr_min_ant", "1", "swr_min", "Minimales SWR am Antennenfusspunkt."),
     (
         "eta<sub>SWR_ant</sub>",
         "%",
         "eta_swr",
-        "Anpassungswirkungsgrad aus swr_min: eta = 4*SWR/(1+SWR)^2.",
+        "Mismatch efficiency from swr_min_ant: eta = 4*SWR/(1+SWR)^2.",
     ),
     (
         "Power antenna load <i>P</i><sub>load</sub>",
@@ -100,25 +100,25 @@ ROW_SPECS: list[tuple[str, str, str, str]] = [
         "<b>Antenna efficiency <i>η</i></b>",
         "<b>%</b>",
         "eta",
-        "Gesamteffizienz: (R_R / R_T) * eta_SWR_ant.",
+        "Total efficiency: (R_R / R_T) * eta_SWR_ant.",
     ),
     (
         "Loop current <i>I</i> rms",
         "A",
         "I",
-        "Strom im Hauptloop bei der Referenzleistung.",
+        "Loop current at the reference power.",
     ),
     (
         "Loop voltage <i>U</i><sub>loop</sub> rms",
         "V",
         "U",
-        "Spannung über dem Loop bei Resonanz.",
+        "Voltage across the loop at resonance.",
     ),
     (
         "Magnetic dipole moment <i>m</i>",
         "A m²",
         "m",
-        "Magnetisches Dipolmoment des Loops.",
+        "Magnetic dipole moment of the loop.",
     ),
 ]
 
@@ -190,7 +190,7 @@ def _calc_for_item(
         return None
     f0_mhz = item.get("f0_mhz")
     bw_hz = item.get("bint")
-    swr_min = item.get("swr_min")
+    swr_min = item.get("swr_min_ant")
     if not (
         isinstance(f0_mhz, (int, float))
         and isinstance(bw_hz, (int, float))
@@ -238,7 +238,7 @@ def _value_source(
     if key == "swr_min":
         return str(item.get("source_swr") or file_name)
     if key == "eta_swr":
-        return f"[{file_name}] Berechnet aus swr_min: eta = 4*SWR/(1+SWR)^2."
+        return f"[{file_name}] Computed from swr_min_ant: eta = 4*SWR/(1+SWR)^2."
     if key == "Pload":
         return f"[{file_name}] Computed from P_fwd and swr_min."
     if key == "P":
@@ -247,9 +247,7 @@ def _value_source(
         return str(getattr(antenna_data.powerPfwd_W, "source", "") or file_name)
     if key in {"L", "C", "Q0", "RT", "RR", "RLoss", "eta", "I", "U", "m"}:
         return (
-            f"[{file_name}] Berechnet aus Geometrie- und Messdaten."
-            if calc is not None
-            else file_name
+            "Computed from geometry and measurement data." if calc is not None else file_name
         )
     return file_name
 

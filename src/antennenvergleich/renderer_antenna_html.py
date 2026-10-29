@@ -237,7 +237,10 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         tau_ns = values.model.tau_s * 1e9 if values.model else None
         f0_hz = values.model.f0_Hz if values.model else None
         eta_ant = values.swr_values.eta_swr_ant
-        swr_min = values.swr_values.swr_min
+        swr_min_vna = values.swr_values.swr_min_vna
+        swr_min_ant = values.swr_values.swr_min_ant
+        swr_min = swr_min_ant if swr_min_ant is not None else swr_min_vna
+        band_data = values.band_data
         base_stem = values_path.stem.removesuffix(VALUES_SUFFIX)
         band_label = infer_band_label(values, base_stem)
         smith_name = f"{base_stem}{SMITH_SUFFIX}{SVG_EXTENSION}"
@@ -258,7 +261,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
                 "bint": bint,
                 "alpha": alpha,
                 "tau_ns": tau_ns,
-                "swr_min": swr_min,
+                "swr_min_ant": swr_min,
                 "eta_ant": eta_ant,
                 "source_f": values.band_data.f_Hz.source if values.model else None,
                 "source_bw": values.band_data.bw262_Hz.source if values.model else None,
@@ -283,7 +286,8 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
                     if vna_cable_data is not None and isinstance(f0_hz, (int, float))
                     else None
                 ),
-                "swr_min": swr_min,
+                "swr_min_ant": swr_min,
+                "swr_min_vna": swr_min_vna,
                 "eta_swr_ant": eta_ant,
             }
         )
@@ -307,7 +311,8 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
                     if vna_cable_data is not None and isinstance(f0_hz, (int, float))
                     else None
                 ),
-                "swr_min": swr_min,
+                "swr_min_ant": swr_min,
+                "swr_min_vna": swr_min_vna,
                 "eta_swr_ant": eta_ant,
             }
         )
@@ -402,7 +407,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
                     "bint": float(bw_hz) if isinstance(bw_hz, (int, float)) else None,
                     "alpha": None,
                     "tau_ns": None,
-                    "swr_min": float(swr_min)
+                    "swr_min_ant": float(swr_min)
                     if isinstance(swr_min, (int, float))
                     else None,
                     "eta_ant": eta_ant,
