@@ -1,7 +1,7 @@
 """Structured data for the Peter Märki Tubby indoor antenna."""
 
-from antennenvergleich.constants import PETER_TUBBY
-from antennenvergleich.datatypes import Antenna, BandData, FloatText
+from antennenvergleich.constants import PETER_TUBBY, VNA_PETER_INFO_SAA2
+from antennenvergleich.datatypes import Antenna, BandData, FloatText, VnaCalibration
 
 ANTENNENDATEN = Antenna(
     # name="Selfmade Tubby Indoor",
@@ -15,77 +15,84 @@ ANTENNENDATEN = Antenna(
     d_m=PETER_TUBBY.d_m,
     n=PETER_TUBBY.n,
     p_m=PETER_TUBBY.p_m,
+    vna_calibration=VnaCalibration.ANTENNA_FEED_POINT,
+    vna_device_str=VNA_PETER_INFO_SAA2,
+    vna_cable="",
     powerPfwd_W=PETER_TUBBY.powerPfwd_W,
     info_str=PETER_TUBBY.info_str,
+    inductivity_pictures=("images/20261102_132615995_cap_switch.jpg",),
+    inductivity_pictures_caption_str="The switched capacitor is visible in the picture above.<br>",
     overview_pictures=("images/tubby_indoor.png",),
     environment_html="environment.html",
     info_environment_str="Placed in an upstairs room of a timber-frame house, 0.8 m above the floor.",
     info_conductor_str=PETER_TUBBY.info_conductor_str,
     info_capacitor_str=PETER_TUBBY.info_capacitor_str,
-    bands=[
-        BandData(
-            f_Hz=FloatText(1_840_000, "[MaerkiTabelle] Spalte f"),
-            bw262_Hz=FloatText(
-                3_700, "[MaerkiTabelle] indoor BW @ SWR 2.62 @ Antenneneingang"
-            ),
-            swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
-        ),
-        BandData(
-            f_Hz=FloatText(3_573_000, "[MaerkiTabelle] Spalte f"),
-            bw262_Hz=FloatText(
-                5_700, "[MaerkiTabelle] indoor BW @ SWR 2.62 @ Antenneneingang"
-            ),
-            swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
-        ),
-        BandData(
-            f_Hz=FloatText(5_357_000, "[MaerkiTabelle] Spalte f"),
-            bw262_Hz=FloatText(
-                11_900, "[MaerkiTabelle] indoor BW @ SWR 2.62 @ Antenneneingang"
-            ),
-            swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
-        ),
-        BandData(
-            f_Hz=FloatText(7_074_000, "[MaerkiTabelle] Spalte f"),
-            bw262_Hz=FloatText(
-                17_000, "[MaerkiTabelle] indoor BW @ SWR 2.62 @ Antenneneingang"
-            ),
-            swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
-        ),
-        BandData(
-            f_Hz=FloatText(10_136_000, "[MaerkiTabelle] Spalte f"),
-            bw262_Hz=FloatText(
-                40_000, "[MaerkiTabelle] indoor BW @ SWR 2.62 @ Antenneneingang"
-            ),
-            swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
-        ),
-        BandData(
-            f_Hz=FloatText(14_074_000, "[MaerkiTabelle] Spalte f"),
-            bw262_Hz=FloatText(
-                87_000, "[MaerkiTabelle] indoor BW @ SWR 2.62 @ Antenneneingang"
-            ),
-            swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
-        ),
-        BandData(
-            f_Hz=FloatText(21_074_000, "[MaerkiTabelle] Spalte f"),
-            bw262_Hz=FloatText(
-                231_000, "[MaerkiTabelle] indoor BW @ SWR 2.62 @ Antenneneingang"
-            ),
-            swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
-        ),
-        BandData(
-            f_Hz=FloatText(24_915_000, "[MaerkiTabelle] Spalte f"),
-            bw262_Hz=FloatText(
-                359_000, "[MaerkiTabelle] indoor BW @ SWR 2.62 @ Antenneneingang"
-            ),
-            swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
-        ),
-        BandData(
-            f_Hz=FloatText(28_074_000, "[MaerkiTabelle] Spalte f"),
-            bw262_Hz=FloatText(
-                645_000, "[MaerkiTabelle] indoor BW @ SWR 2.62 @ Antenneneingang"
-            ),
-            swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
-        ),
-    ],
-    bandwidth_source_str="SWR = 2.62",
+    bands=[],
+    # bands=[
+    #     BandData(
+    #         f_Hz=FloatText(1_840_000, "[MaerkiTabelle] Spalte f"),
+    #         bw262_Hz=FloatText(
+    #             3_700, "[MaerkiTabelle] indoor BW @ SWR 2.62 @ Antenneneingang"
+    #         ),
+    #         swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
+    #     ),
+    #     BandData(
+    #         f_Hz=FloatText(3_573_000, "[MaerkiTabelle] Spalte f"),
+    #         bw262_Hz=FloatText(
+    #             5_700, "[MaerkiTabelle] indoor BW @ SWR 2.62 @ Antenneneingang"
+    #         ),
+    #         swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
+    #     ),
+    #     BandData(
+    #         f_Hz=FloatText(5_357_000, "[MaerkiTabelle] Spalte f"),
+    #         bw262_Hz=FloatText(
+    #             11_900, "[MaerkiTabelle] indoor BW @ SWR 2.62 @ Antenneneingang"
+    #         ),
+    #         swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
+    #     ),
+    #     BandData(
+    #         f_Hz=FloatText(7_074_000, "[MaerkiTabelle] Spalte f"),
+    #         bw262_Hz=FloatText(
+    #             17_000, "[MaerkiTabelle] indoor BW @ SWR 2.62 @ Antenneneingang"
+    #         ),
+    #         swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
+    #     ),
+    #     BandData(
+    #         f_Hz=FloatText(10_136_000, "[MaerkiTabelle] Spalte f"),
+    #         bw262_Hz=FloatText(
+    #             40_000, "[MaerkiTabelle] indoor BW @ SWR 2.62 @ Antenneneingang"
+    #         ),
+    #         swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
+    #     ),
+    #     BandData(
+    #         f_Hz=FloatText(14_074_000, "[MaerkiTabelle] Spalte f"),
+    #         bw262_Hz=FloatText(
+    #             87_000, "[MaerkiTabelle] indoor BW @ SWR 2.62 @ Antenneneingang"
+    #         ),
+    #         swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
+    #     ),
+    #     BandData(
+    #         f_Hz=FloatText(21_074_000, "[MaerkiTabelle] Spalte f"),
+    #         bw262_Hz=FloatText(
+    #             231_000, "[MaerkiTabelle] indoor BW @ SWR 2.62 @ Antenneneingang"
+    #         ),
+    #         swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
+    #     ),
+    #     BandData(
+    #         f_Hz=FloatText(24_915_000, "[MaerkiTabelle] Spalte f"),
+    #         bw262_Hz=FloatText(
+    #             359_000, "[MaerkiTabelle] indoor BW @ SWR 2.62 @ Antenneneingang"
+    #         ),
+    #         swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
+    #     ),
+    #     BandData(
+    #         f_Hz=FloatText(28_074_000, "[MaerkiTabelle] Spalte f"),
+    #         bw262_Hz=FloatText(
+    #             645_000, "[MaerkiTabelle] indoor BW @ SWR 2.62 @ Antenneneingang"
+    #         ),
+    #         swr_min=FloatText(1.0, "[Annahme] Tubby: auf SWR 1.0 abgeglichen"),
+    #     ),
+    # ],
+    bandwidth_source_str="S-Parameters",
+    # bandwidth_source_str="SWR = 2.62",
 )
