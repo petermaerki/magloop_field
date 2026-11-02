@@ -6,3 +6,4 @@ magloop_field.egg-info/*
 .ninja_log
 *generated*
 uv.lock
+**/*_gitignore*
