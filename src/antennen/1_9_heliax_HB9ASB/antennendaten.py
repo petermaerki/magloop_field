@@ -21,6 +21,7 @@ ANTENNENDATEN = Antenna(
     info_conductor_str="Heliax 1-1/4 corrugated coaxial cable. Approx. 36 mm outer diameter.",
     info_capacitor_str="Variable vacuum capacitor 500 pF (Comet). For the 160 m band, two additional fixed-value vacuum capacitors are switched in.",
     final_remarks_html="final_remarks.html",
+    info_thanks_str="Many thanks to Toni for sharing the measurement results and for the lively discussions on efficiency.",
     bands=[
         # 630m Band ausgeblendet weil es ein Langwellenband ist und kein Kurzwellenband
         # BandData(
