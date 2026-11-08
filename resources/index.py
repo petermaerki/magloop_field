@@ -366,12 +366,6 @@ def query(selector: str):
     return element
 
 
-def update_svg(selector: str, svg: str) -> None:
-    img = query(selector=selector)
-    svg_data = base64.b64encode(svg.encode("utf-8")).decode("ascii")
-    img.src = f"data:image/svg+xml;base64,{svg_data}"
-
-
 def update_svg_inline(selector: str, svg: str) -> None:
     """
     Replace the <img> placeholder with the SVG inlined into the DOM.
