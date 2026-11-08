@@ -75,7 +75,7 @@ def power_after_loss_db(tx_power_w: float, total_loss_db: float) -> float:
 def select_closest_band(antenna: Antenna, f_hz: float) -> BandData:
     if not antenna.bands:
         raise ValueError("No band data found")
-    return min(antenna.bands, key=lambda b: abs(b.f_Hz.value - f_hz))  # type: ignore[operator]
+    return min(antenna.bands, key=lambda b: abs(b.f_Hz.value - f_hz))
 
 
 def expected_h_field_at_point(

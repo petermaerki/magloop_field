@@ -95,8 +95,6 @@ class Diagramm_eta_f_svg:
     def _eta_points_for_antenna(antenna: Antenna) -> list[tuple[float, float]]:
         pts: list[tuple[float, float]] = []
         for bd in antenna.bands:
-            if bd.f_Hz.value is None or bd.bw262_Hz.value is None:
-                continue
             calc = _make_calc(antenna, bd)
             if calc.eta > 0:
                 pts.append((bd.f_Hz.value, calc.eta))
@@ -108,8 +106,6 @@ class Diagramm_eta_f_svg:
     ) -> list[tuple[Antenna, list[tuple[float, float]]]]:
         result = []
         for antenna in antennas:
-            if antenna.D_m.value is None or antenna.d_m.value is None:
-                continue
             pts = self._eta_points_for_antenna(antenna)
             if pts:
                 result.append((antenna, pts))
@@ -309,12 +305,8 @@ class Diagramm_eta_D_lambda_svg:
     ) -> list[tuple[Antenna, list[tuple[float, float]]]]:
         result = []
         for antenna in antennas:
-            if antenna.D_m.value is None:
-                continue
             pts: list[tuple[float, float]] = []
             for bd in antenna.bands:
-                if bd.f_Hz.value is None or bd.bw262_Hz.value is None:
-                    continue
                 calc = _make_calc(antenna, bd)
                 if calc.eta > 0:
                     wavelength_m = C_LIGHT_MS / bd.f_Hz.value

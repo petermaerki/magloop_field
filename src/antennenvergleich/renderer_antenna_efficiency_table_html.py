@@ -199,14 +199,14 @@ def _calc_for_item(
         return None
     try:
         return FieldAntennaCalculator(
-            D_m=antenna_data.D_m.value,  # type: ignore[arg-type]
-            d_m=antenna_data.d_m.value,  # type: ignore[arg-type]
-            n=antenna_data.n.value if antenna_data.n.value is not None else 1,
-            p_m=antenna_data.p_m.value or 0.0,
+            D_m=antenna_data.D_m.value,
+            d_m=antenna_data.d_m.value,
+            n=antenna_data.n.value,
+            p_m=antenna_data.p_m.value,
             swr_min=float(swr_min),
             f_Hz=float(f0_mhz) * 1e6,
             bw262_Hz=float(bw_hz),
-            powerPfwd_W=antenna_data.powerPfwd_W.value,  # type: ignore[arg-type]
+            powerPfwd_W=antenna_data.powerPfwd_W.value,
         )
     except Exception:
         return None

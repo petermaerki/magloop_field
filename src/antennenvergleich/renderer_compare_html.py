@@ -291,27 +291,19 @@ class HtmlRenderer:
         params = []
 
         # Extract geometry parameters from antenna
-        if antenna.D_m.value is not None:
-            params.append(f"D_m={fmt_param(antenna.D_m.value, 4)}")
-        if antenna.d_m.value is not None:
-            params.append(f"d_m={fmt_param(antenna.d_m.value, 4)}")
-        if antenna.n.value is not None:
-            params.append(f"n={antenna.n.value}")
-        if antenna.p_m.value is not None:
-            params.append(f"p_m={antenna.p_m.value}")
+        params.append(f"D_m={fmt_param(antenna.D_m.value, 4)}")
+        params.append(f"d_m={fmt_param(antenna.d_m.value, 4)}")
+        params.append(f"n={antenna.n.value}")
+        params.append(f"p_m={antenna.p_m.value}")
 
         # Extract band-specific parameters
         if band_data is not None:
-            if band_data.f_Hz.value is not None:
-                params.append(f"f_Hz={band_data.f_Hz.value}")
-            if band_data.bw262_Hz.value is not None:
-                params.append(f"bw_Hz={fmt_param(band_data.bw262_Hz.value, 0)}")
-            if band_data.swr_min.value is not None:
-                params.append(f"swr_min={fmt_param(band_data.swr_min.value, 4)}")
+            params.append(f"f_Hz={band_data.f_Hz.value}")
+            params.append(f"bw_Hz={fmt_param(band_data.bw262_Hz.value, 0)}")
+            params.append(f"swr_min={fmt_param(band_data.swr_min.value, 4)}")
 
         # Extract power parameter
-        if antenna.powerPfwd_W.value is not None:
-            params.append(f"Pfwd_W={antenna.powerPfwd_W.value}")
+        params.append(f"Pfwd_W={antenna.powerPfwd_W.value}")
 
         if params:
             return f"{base_url}?{'&'.join(params)}"

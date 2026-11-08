@@ -379,42 +379,29 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
 
     if not band_data_rows and antenna is not None:
         for idx, band in enumerate(antenna.bands or (), start=1):
-            f_hz_obj = band.f_Hz
-            bw_hz_obj = band.bw262_Hz
-            swr_min_obj = band.swr_min
+            f_hz = band.f_Hz.value
+            bw_hz = band.bw262_Hz.value
+            swr_min = band.swr_min.value
 
-            f_hz = f_hz_obj.value if f_hz_obj is not None else None
-            bw_hz = bw_hz_obj.value if bw_hz_obj is not None else None
-            swr_min = swr_min_obj.value if swr_min_obj is not None else None  # type: ignore[assignment]
-
-            band_label = infer_band_label_from_f_hz(
-                float(f_hz) if isinstance(f_hz, (int, float)) else None,
-                f"band_{idx}",
-            )
+            band_label = infer_band_label_from_f_hz(f_hz, f"band_{idx}")
             eta_ant = None
-            if isinstance(swr_min, (int, float)) and swr_min > 0:
-                eta_ant = 4.0 * float(swr_min) / ((1.0 + float(swr_min)) ** 2)
+            if swr_min > 0:
+                eta_ant = 4.0 * swr_min / ((1.0 + swr_min) ** 2)
 
             band_data_rows.append(
                 {
                     "band": band_label,
                     "band_data": band,
                     "file": "antennendaten.py",
-                    "f0_mhz": (float(f_hz) / 1e6)
-                    if isinstance(f_hz, (int, float))
-                    else None,
-                    "bint": float(bw_hz) if isinstance(bw_hz, (int, float)) else None,
+                    "f0_mhz": f_hz / 1e6,
+                    "bint": bw_hz,
                     "alpha": None,
                     "tau_ns": None,
-                    "swr_min_ant": float(swr_min)
-                    if isinstance(swr_min, (int, float))
-                    else None,
+                    "swr_min_ant": swr_min,
                     "eta_ant": eta_ant,
-                    "source_f": str(f_hz_obj.source) if f_hz_obj is not None else "",
-                    "source_bw": str(bw_hz_obj.source) if bw_hz_obj is not None else "",
-                    "source_swr": str(swr_min_obj.source)
-                    if swr_min_obj is not None
-                    else "",
+                    "source_f": str(band.f_Hz.source),
+                    "source_bw": str(band.bw262_Hz.source),
+                    "source_swr": str(band.swr_min.source),
                 }
             )
 
