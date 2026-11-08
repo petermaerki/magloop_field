@@ -9,7 +9,10 @@ from antennenvergleich import (
 
 class FilterWrapper:
     def __init__(self) -> None:
-        self.antenna_entries = loop_directories.get_antennen_daten()
+        self.antenna_entries = loop_directories.get_antennen_daten(
+            include_draft=constants_ctl.CTL.ctl_draft
+        )
+
         self.filtered_antenna_entries = self.antenna_entries
 
         for entry in self.antenna_entries:
@@ -28,12 +31,6 @@ class FilterWrapper:
             for a in self.antenna_entries
             if a.directory in self.filter.set_antenna_dir
         ]
-
-        if not constants_ctl.CTL.draft:
-            # Remove draft antennas
-            self.filtered_antenna_entries = [
-                a for a in self.filtered_antenna_entries if not a.antenna.ctl_draft
-            ]
 
         print(f"apply_filter() {len(self.filtered_antenna_entries)} remaining")
 

@@ -33,16 +33,22 @@ def _assign_missing_antenna_colors(
             )
 
 
-def get_antennen_daten() -> list[AntennaPlusDirectory]:
+def get_antennen_daten(include_draft: bool = True) -> list[AntennaPlusDirectory]:
     antennas: list[AntennaPlusDirectory] = []
     for directory in get_antennen_directories():
         module = importlib.import_module(f"antennen.{directory.name}.antennendaten")
-        antennas.append(
-            AntennaPlusDirectory(
-                antenna=module.ANTENNENDATEN,
-                directory=directory,
-            )
+
+        antenna = AntennaPlusDirectory(
+            antenna=module.ANTENNENDATEN,
+            directory=directory,
         )
+        if not include_draft:
+            # Skip draft antennas
+            if antenna.antenna.ctl_draft:
+                # This is a draft antenna and has to be skipped
+                continue
+
+        antennas.append(antenna)
     _assign_missing_antenna_colors(antennas)
     return antennas
 

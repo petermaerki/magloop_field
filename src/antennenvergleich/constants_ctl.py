@@ -7,8 +7,8 @@ class Ctl:
     This is the interface between the http parameters '?draft=1' and the python logic.
     """
 
-    draft: bool = True
-    detailed: bool = True
+    ctl_draft: bool = True
+    ctl_detailed: bool = True
 
     def load_from_url_params(self, params: dict[str, str]) -> None:
         """
@@ -26,10 +26,8 @@ class Ctl:
             text = params.get(param, "0")
             return text == "1"
 
-        self.draft = get_bool("ctl_draft")
-        self.detailed = get_bool("ctl_detailed")
-
-        print(f"{self.draft=}")
+        self.ctl_draft = get_bool("ctl_draft")
+        self.ctl_detailed = get_bool("ctl_detailed")
 
 
-CTL = Ctl(draft=False, detailed=False)
+CTL = Ctl(ctl_draft=False, ctl_detailed=False)

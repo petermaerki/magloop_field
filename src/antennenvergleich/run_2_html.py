@@ -66,7 +66,7 @@ def _assign_missing_antenna_colors(
 
 
 def main() -> None:
-    antenna_entries = loop_directories.get_antennen_daten()
+    antenna_entries = loop_directories.get_antennen_daten(include_draft=False)
 
     for entry in antenna_entries:
         entry.enrich_s1p()
