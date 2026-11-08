@@ -5,6 +5,7 @@ from collections.abc import Callable
 
 from antennenvergleich import constants_s1p
 from antennenvergleich.datatype_inductance import Inductance
+from antennenvergleich.datatypes import Antenna
 from antennenvergleich.datatypes_s1p import AntennaModelFit, S1pValues
 from magloop_field.calculations import AntennaCalculator as FieldAntennaCalculator
 
@@ -14,7 +15,7 @@ from .constants import DIRECTORY_SRC
 def build_inductance_section_html(
     output_subdir: pathlib.Path,
     antenna_dir: pathlib.Path,
-    antenna_data: object | None,
+    antenna_data: Antenna | None,
     first_values_with_model: S1pValues | None,
     antenna_dir_name: str,
     rewrite_local_links: Callable[[str, pathlib.Path, pathlib.Path], str],
@@ -40,8 +41,8 @@ def build_inductance_section_html(
     inductivity_text_html = inductivity_text_file.read_text(encoding="utf-8")
     inductivity_text_html = rewrite_local_links(
         inductivity_text_html,
-        fragment_dir=inductivity_text_file.parent,
-        destination_dir=antenna_dir,
+        inductivity_text_file.parent,
+        antenna_dir,
     )
 
     try:
@@ -84,10 +85,10 @@ def build_inductance_section_html(
     l_h_geometry_value: float | None = None
     if antenna_data is not None and first_values_with_model is not None:
         try:
-            assert isinstance(first_values_with_model, AntennaModelFit)
+            assert isinstance(first_values_with_model.model, AntennaModelFit)
             calc = FieldAntennaCalculator(
-                D_m=antenna_data.D_m.value,
-                d_m=antenna_data.d_m.value,
+                D_m=antenna_data.D_m.value,  # type: ignore[arg-type]
+                d_m=antenna_data.d_m.value,  # type: ignore[arg-type]
                 n=antenna_data.n.value if antenna_data.n.value is not None else 1,
                 p_m=antenna_data.p_m.value or 0.0,
                 swr_min=first_values_with_model.swr_values.swr_min_ant
@@ -104,9 +105,9 @@ def build_inductance_section_html(
 
     if (
         l_h_geometry_value is not None
-        or inductance.l_100p_h_value is not None
+        or inductance.l_100p_h is not None
         or inductance.l_560p_h is not None
-        or inductance.cap_nix_f is not None
+        or inductance.c_nix_f is not None
     ):
 
         def fmt_sig4(value: float | None) -> str:

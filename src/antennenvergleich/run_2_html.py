@@ -19,7 +19,7 @@ def _assert_unique_antenna_colors(
     for entry in antenna_entries:
         antenna = entry.antenna
         label = antenna.antenna_label
-        color_to_antennas.setdefault(antenna.color, []).append(label)
+        color_to_antennas.setdefault(antenna.color, []).append(label)  # type: ignore[arg-type]
 
     duplicates = {
         color: labels for color, labels in color_to_antennas.items() if len(labels) > 1

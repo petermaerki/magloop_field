@@ -98,7 +98,7 @@ class HFieldPlot:
 
         # Isolinien < 1 A/m
         if self.levels is None:
-            levels = [0.05, 0.1, 0.2]
+            levels = np.array([0.05, 0.1, 0.2], dtype=float)
         else:
             levels = np.unique(np.asarray(self.levels, dtype=float))
             if levels.size == 0:

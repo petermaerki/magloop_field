@@ -106,13 +106,13 @@ class Checkbox:
 
     def _apply_dom_state(self) -> None:
         if self.element_input is not None:
-            self.element_input.checked = self.checked
+            self.element_input.checked = self.checked  # type: ignore[attr-defined]
 
         if self.element_label is not None:
             if self.greyed:
-                self.element_label.classList.add("filter-option-empty")
+                self.element_label.classList.add("filter-option-empty")  # type: ignore[attr-defined]
             else:
-                self.element_label.classList.remove("filter-option-empty")
+                self.element_label.classList.remove("filter-option-empty")  # type: ignore[attr-defined]
 
 
 class CategoryStats:

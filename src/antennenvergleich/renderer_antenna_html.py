@@ -123,7 +123,7 @@ def _load_html_fragments(
 def _generate_inductance_section(
     output_subdir: pathlib.Path,
     antenna_dir: pathlib.Path,
-    antenna_data: object | None,
+    antenna_data: Antenna | None,
     first_values_with_model: S1pValues | None,
     antenna_dir_name: str,
 ) -> str:
@@ -390,7 +390,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
 
             f_hz = f_hz_obj.value if f_hz_obj is not None else None
             bw_hz = bw_hz_obj.value if bw_hz_obj is not None else None
-            swr_min = swr_min_obj.value if swr_min_obj is not None else None
+            swr_min = swr_min_obj.value if swr_min_obj is not None else None  # type: ignore[assignment]
 
             band_label = infer_band_label_from_f_hz(
                 float(f_hz) if isinstance(f_hz, (int, float)) else None,

@@ -4,11 +4,11 @@ from antennenvergleich import constants
 from antennenvergleich.constants import MAZZONI_STEALTH
 from antennenvergleich.datatypes import Antenna
 
-SOURCES = []
+SOURCES: list[str] = []
 
-NOTES = []
+NOTES: list[str] = []
 
-FOOTNOTES = {}
+FOOTNOTES: dict[str, str] = {}
 
 ANTENNENDATEN = Antenna(
     # color="#573b00",  # color from compare_colors.py

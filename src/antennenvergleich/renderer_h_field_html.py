@@ -133,8 +133,8 @@ def build_h_field_section_html(
 
         h_field_html = rewrite_local_links(
             h_field_html,
-            fragment_dir=h_field_html_file.parent,
-            destination_dir=antenna_dir,
+            h_field_html_file.parent,
+            antenna_dir,
         )
 
     before, marker, after = h_field_html.partition(_H_FIELD_MEASUREMENTS_MARKER)

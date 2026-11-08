@@ -104,8 +104,8 @@ class HFieldData:
 
         return h_field_data
 
-    def print(self, out: io.TextIOWrapper) -> None:
-        assert isinstance(out, io.TextIOWrapper)
+    def print(self, out: io.TextIOWrapper | None = None) -> None:
+        assert isinstance(out, io.TextIOWrapper | None)
 
         # Antenna data from project files (geometry from HB0SM, band data from datasheet).
         # Same mechanism as run_2_html.py: enrich local antenna with fitted s1p_results.
@@ -122,7 +122,7 @@ class HFieldData:
 
         assert isinstance(antenna_D_m, float)
         assert isinstance(antenna_d_m, float)
-        assert isinstance(antenna_n, float)
+        assert isinstance(antenna_n, int)
         assert isinstance(antenna_p_m, float)
 
         if not ant_datasheet.bands:

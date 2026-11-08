@@ -142,11 +142,11 @@ class Diagramm_eta_f_svg:
         buf += self._draw_y_ticks()
         buf += self._draw_axis_labels()
         for antenna, pts in data:
-            buf += self._draw_series(pts, antenna.color, antenna.dashed)
+            buf += self._draw_series(pts, antenna.color, antenna.dashed)  # type: ignore[arg-type]
         if self._show_legend:
             buf += self._draw_legend(
                 [
-                    (antenna.antenna_label, antenna.color, antenna.dashed)
+                    (antenna.antenna_label, antenna.color, antenna.dashed)  # type: ignore[misc]
                     for antenna, _ in data
                 ]
             )
@@ -350,10 +350,10 @@ class Diagramm_eta_D_lambda_svg:
         buf += self._draw_y_ticks()
         buf += self._draw_axis_labels()
         for antenna, pts in data:
-            buf += self._draw_series(pts, antenna.color, antenna.dashed)
+            buf += self._draw_series(pts, antenna.color, antenna.dashed)  # type: ignore[arg-type]
         buf += self._draw_legend(
             [
-                (antenna.antenna_label, antenna.color, antenna.dashed)
+                (antenna.antenna_label, antenna.color, antenna.dashed)  # type: ignore[misc]
                 for antenna, _ in data
             ]
         )

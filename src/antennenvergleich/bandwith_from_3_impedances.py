@@ -124,7 +124,7 @@ def select_coupling_from_smith(measurements: MeasurementSet, z0: float = 50.0) -
 
 def fit_swr_candidates(
     measurements: MeasurementSet, z0: float = 50.0
-) -> tuple[SWRCandidate, SWRCandidate]:
+) -> list[SWRCandidate]:
     """Generate the two physically possible SWR-only resonator branches."""
     freqs_hz = np.asarray([freq_hz for freq_hz, _ in measurements], dtype=float)
     swr_values = np.asarray(
@@ -156,7 +156,7 @@ def fit_swr_candidates(
                 c_f=float(c_f),
             )
         )
-    return tuple(candidates)
+    return candidates
 
 
 def choose_swr_candidate(

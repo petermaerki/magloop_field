@@ -61,4 +61,4 @@ class VnaCableData:
         print(f"connectors_count={self.connectors_count}", file=stream)
         print(f"connector_loss_db={self.connector_loss_db}", file=stream)
         if out is None:
-            print(stream.getvalue(), end="")
+            print(stream.getvalue(), end="")  # type: ignore[union-attr]
