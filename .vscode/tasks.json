@@ -33,7 +33,7 @@
         {
             "label": "mypy",
             "type": "shell",
-            "command": ". .venv/bin/activate && python -m mypy --config-file pyproject.toml || true",
+            "command": ". .venv/bin/activate && mypy --config-file pyproject.toml || true",
             "options": {
                 "cwd": "${workspaceFolder}"
             },
