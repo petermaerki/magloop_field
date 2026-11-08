@@ -127,6 +127,7 @@ class Antenna:
     bands: list[BandData] = field(default_factory=list)
     bandwidth_source_str: str | None = None
     bandwidth_source_tooltip_str: str | None = None
+    ctl_draft: bool = False
 
     def __post_init__(self) -> None:
         value = self.vna_calibration

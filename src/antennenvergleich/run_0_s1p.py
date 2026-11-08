@@ -175,7 +175,9 @@ def model_s11(
     return g * 10 ** (-alpha_f / 10) * np.exp(-1j * 2 * omega * tau)
 
 
-def estimate_b_tau_s(freqs_hz: np.ndarray, gamma: np.ndarray, f_swr_hz: float) -> float:
+def estimate_b_tau_s(
+    freqs_hz: np.ndarray, gamma: np.ndarray, f_swr_hz: float
+) -> tuple[float, np.ndarray, np.ndarray, np.ndarray]:
     """Estimate one-way cable delay via SWR-weighted linear fit of group delay.
 
     Thins data to one point per 100 kHz, then fits a line through the group

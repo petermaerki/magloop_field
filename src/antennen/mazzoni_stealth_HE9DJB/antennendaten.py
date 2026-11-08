@@ -1,7 +1,6 @@
 """Structured data for the Ciro Mazzoni Stealth Loop."""
 
 from antennenvergleich import constants
-
 from antennenvergleich.constants import MAZZONI_STEALTH
 from antennenvergleich.datatypes import Antenna
 

@@ -1,4 +1,5 @@
 from antennenvergleich import (
+    constants_ctl,
     loop_directories,
     renderer_compare_html,
     renderer_diagram_svg,
@@ -27,6 +28,13 @@ class FilterWrapper:
             for a in self.antenna_entries
             if a.directory in self.filter.set_antenna_dir
         ]
+
+        if not constants_ctl.CTL.draft:
+            # Remove draft antennas
+            self.filtered_antenna_entries = [
+                a for a in self.filtered_antenna_entries if not a.antenna.ctl_draft
+            ]
+
         print(f"apply_filter() {len(self.filtered_antenna_entries)} remaining")
 
     def render_results_html(self) -> str:

@@ -6,7 +6,7 @@ from pyodide.ffi import JsNull, create_proxy
 from pyscript import when
 from pyscript.web import page
 
-from antennenvergleich import renderer_diagram_svg, webui_filter
+from antennenvergleich import constants_ctl, renderer_diagram_svg, webui_filter
 from webui import util_compare
 
 try:
@@ -19,80 +19,69 @@ except ModuleNotFoundError:
     pass
 
 
-def load_params_from_url():
+def parse_query_string() -> dict[str, str]:
+    search_params = str(window.location.search)
+    print(f"URL search params: {search_params}")
+
+    if not search_params or search_params == "":
+        print("No URL parameters found")
+        return {}
+
+    # Remove leading '?'
+    if search_params.startswith("?"):
+        search_params = search_params[1:]
+
+    # Parse key=value pairs
+    params = {}
+    for pair in search_params.split("&"):
+        if "=" in pair:
+            key, value = pair.split("=", 1)
+            params[key] = value
+
+    print(f"Parsed parameters: {params}")
+    return params
+
+
+def load_params_from_url_ctl(params: dict[str, str]):
+    constants_ctl.CTL.load_from_url_params(params)
+
+
+def load_params_from_url_calculator(params: dict[str, str]):
     """Load calculator parameters from URL query string and populate form fields."""
+
     try:
-        # Get URL search params
-        search_params = str(window.location.search)
-        print(f"URL search params: {search_params}")
 
-        if not search_params or search_params == "":
-            print("No URL parameters found")
-            return
-
-        # Parse query string manually (remove leading '?')
-        if search_params.startswith("?"):
-            search_params = search_params[1:]
-
-        # Parse key=value pairs
-        params = {}
-        for pair in search_params.split("&"):
-            if "=" in pair:
-                key, value = pair.split("=", 1)
-                params[key] = value
-
-        print(f"Parsed parameters: {params}")
+        def assign_field(
+            param_name: str,
+            field_id: str,
+            factor: float | None = None,
+        ) -> None:
+            if param_name not in params:
+                return
+            try:
+                input_element = document.getElementById(field_id)
+                if input_element is None:
+                    print(f"Field {field_id} not found")
+                    return
+                if factor is None:
+                    value = params[param_name]
+                else:
+                    value = str(float(params[param_name]) * factor)
+                input_element.value = value
+                print(f"Set {field_id} = {value}")
+            except (ValueError, TypeError) as e:
+                print(f"Error converting {param_name}: {e}")
 
         # Set values from URL parameters
-        params_set = 0
+        assign_field("D_m", "D_m")
+        assign_field("d_m", "d_m")
+        assign_field("n", "n")
+        assign_field("p_m", "p_m")
+        assign_field("Pfwd_W", "Pfwd_W")
+        assign_field("swr_min", "swr_min")
+        assign_field("f_Hz", "f_L_MHz", 1e-6)
+        assign_field("bw_Hz", "bw_kHz", 1e-3)
 
-        # Simple direct mapping (no conversion needed)
-        direct_mapping = {
-            "D_m": "antenna_D_m",
-            "d_m": "d_m",
-            "n": "n",
-            "p_m": "p_m",
-            "Pfwd_W": "Pfwd_W",
-            "swr_min": "swr_min",
-        }
-
-        for param_name, field_id in direct_mapping.items():
-            if param_name in params:
-                input_element = document.getElementById(field_id)
-                if input_element is not None:
-                    input_element.value = params[param_name]
-                    params_set += 1
-                    print(f"Set {field_id} = {params[param_name]}")
-                else:
-                    print(f"Field {field_id} not found")
-
-        # Frequency conversion: f_Hz -> MHz (for form field)
-        if "f_Hz" in params:
-            try:
-                f_hz = float(params["f_Hz"])
-                f_mhz = f_hz / 1_000_000
-                input_element = document.getElementById("f_L_MHz")
-                if input_element is not None:
-                    input_element.value = str(f_mhz)
-                    params_set += 1
-                    print(f"Set f_L_MHz = {f_mhz} (converted from {f_hz} Hz)")
-            except (ValueError, TypeError) as e:
-                print(f"Error converting f_Hz: {e}")
-
-        # Bandwidth conversion: bw_Hz -> kHz (for form field)
-        if "bw_Hz" in params:
-            try:
-                bw_hz = float(params["bw_Hz"])
-                bw_khz = bw_hz / 1_000
-                input_element = document.getElementById("bw_kHz")
-                if input_element is not None:
-                    input_element.value = str(bw_khz)
-                    params_set += 1
-                    print(f"Set bw_kHz = {bw_khz} (converted from {bw_hz} Hz)")
-            except (ValueError, TypeError) as e:
-                print(f"Error converting bw_Hz: {e}")
-
-        print(f"Set {params_set} parameters from URL")
         # Note: calculation will be triggered by the initialization code below
 
     except Exception as e:
@@ -113,7 +102,7 @@ def do_calculate_antenna_efficiency(e=None):
         calc_button.style.color = ""
         calc_button.style.borderColor = ""
 
-    (antenna_D_m_text,) = page["input#antenna_D_m"].value
+    (antenna_D_m_text,) = page["input#D_m"].value
     (d_m_text,) = page["input#d_m"].value
     (n_text,) = page["input#n"].value
     (p_m_text,) = page["input#p_m"].value
@@ -180,7 +169,7 @@ def do_calculate_antenna_efficiency(e=None):
 def copy_values_from_above(e=None):
     document.getElementById("m_Am2").value = page["b#out_m_Am2"].innerHTML[0]
     document.getElementById("f_MHz").value = page["input#f_L_MHz"].value[0]
-    document.getElementById("field_D_m").value = page["input#antenna_D_m"].value[0]
+    document.getElementById("field_D_m").value = page["input#D_m"].value[0]
 
 
 @when("click", "#btn_copy_from_s1p")
@@ -482,6 +471,7 @@ def load_compare() -> None:
 # S1P ANALYZER
 #
 
+
 def _parse_s1p_text(text: str):
     """Parse s1p text content into (freqs_hz, gamma) numpy arrays."""
     freqs, gammas = [], []
@@ -501,6 +491,7 @@ def _parse_s1p_text(text: str):
 
 def _fig_to_svg_str(fig) -> str:
     import io
+
     buf = io.BytesIO()
     fig.savefig(buf, format="svg", bbox_inches="tight")
     return buf.getvalue().decode("utf-8")
@@ -511,6 +502,7 @@ def _analyze_s1p(filename: str, content: str) -> None:
         return
 
     import matplotlib.pyplot as plt
+
     from antennenvergleich.run_0_s1p import (
         CURVE_COLOR,
         MODEL_COLOR,
@@ -625,7 +617,12 @@ def _analyze_s1p(filename: str, content: str) -> None:
         _set_html("s1p_out_alpha_db", f"{model.alpha_db:.2f}")
         _set_html("s1p_out_tau_ns", f"{model.tau_s * 1e9:.1f}")
     else:
-        for _id in ("s1p_out_f0_mhz", "s1p_out_bint_khz", "s1p_out_alpha_db", "s1p_out_tau_ns"):
+        for _id in (
+            "s1p_out_f0_mhz",
+            "s1p_out_bint_khz",
+            "s1p_out_alpha_db",
+            "s1p_out_tau_ns",
+        ):
             _set_html(_id, "&#8212;")
 
     _set_html("s1p_smith_chart", smith_svg)
@@ -686,6 +683,9 @@ def on_s1p_file_input_change(event):
 
 print("A")
 
+params = parse_query_string()
+load_params_from_url_ctl(params=params)
+
 if True:
     load_compare()
 
@@ -696,7 +696,7 @@ if True:
     # 2) copy from above
     # 3) calculate H-field
     try:
-        load_params_from_url()
+        load_params_from_url_calculator(params=params)
         do_calculate_antenna_efficiency(None)
         copy_values_from_above(None)
         do_calculate_h_field(None)

@@ -1,8 +1,7 @@
 import importlib
 import pathlib
 
-from antennenvergleich import compare_colors
-from antennenvergleich.constants import ANTENNENDATEN_FILENAME
+from antennenvergleich import compare_colors, constants
 from antennenvergleich.datatypes import AntennaPlusDirectory
 
 DIRECTORY_OF_THIS_FILE = pathlib.Path(__file__).parent
@@ -58,7 +57,7 @@ def get_antennen_modules() -> list:
 def get_antennen_directories() -> list[pathlib.Path]:
     directories: list[pathlib.Path] = []
     for dir_antenne in DIRECTORY_ANTENNEN.iterdir():
-        file_antennendaten = dir_antenne / ANTENNENDATEN_FILENAME
+        file_antennendaten = dir_antenne / constants.ANTENNENDATEN_FILENAME
         if not file_antennendaten.is_file():
             continue
         directories.append(dir_antenne)

@@ -1,6 +1,6 @@
 from antennenvergleich import constants
-from antennenvergleich.constants import HB9SM, MAZZONI_BABY
-from antennenvergleich.datatypes import Antenna, VnaCalibration, FloatText
+from antennenvergleich.constants import MAZZONI_BABY
+from antennenvergleich.datatypes import Antenna, FloatText, VnaCalibration
 
 ANTENNENDATEN = Antenna(
     # name="Mazzoni Baby Loop",

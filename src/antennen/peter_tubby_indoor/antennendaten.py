@@ -1,7 +1,7 @@
 """Structured data for the Peter Märki Tubby indoor antenna."""
 
 from antennenvergleich.constants import PETER_TUBBY, VNA_PETER_INFO_SAA2
-from antennenvergleich.datatypes import Antenna, BandData, FloatText, VnaCalibration
+from antennenvergleich.datatypes import Antenna, VnaCalibration
 
 ANTENNENDATEN = Antenna(
     # name="Selfmade Tubby Indoor",

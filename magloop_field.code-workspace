@@ -7,7 +7,10 @@
 	"settings": {
 		"[python]": {
 			"editor.formatOnSave": true,
-			"editor.defaultFormatter": "charliermarsh.ruff"
+			"editor.defaultFormatter": "charliermarsh.ruff",
+			"editor.codeActionsOnSave": {
+				"source.organizeImports.ruff": "explicit"
+			}
 		},
 		"python.testing.pytestEnabled": true,
 		"python.testing.unittestEnabled": false,

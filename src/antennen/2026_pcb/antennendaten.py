@@ -1,13 +1,13 @@
 """Structured data for the Peter Märki Tubby indoor antenna."""
 
 from antennenvergleich import constants
-from antennenvergleich.datatypes import Antenna, BandData, FloatText, VnaCalibration
-
+from antennenvergleich.datatypes import Antenna, VnaCalibration
 
 ANTENNENDATEN = Antenna(
     # name="Selfmade Tubby Indoor",
     # call="HB9ISP",
     # color="#ffa52f",  # color from compare_colors.py
+    ctl_draft=True,
     dashed=False,
     selection_brand="Selfmade",
     selection_location="HB9ISP",

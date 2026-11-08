@@ -49,21 +49,14 @@ def write_sitemap(
     base_url: str = DEFAULT_BASE_URL,
     output_file: Path | None = None,
 ) -> Path:
+    # The draft antennas should NOT be part of sitemap.xml
+    antenna_entries = [e for e in antenna_entries if not e.antenna.ctl_draft]
+
     target = output_file or (constants.DIRECTORY_REPO / SITEMAP_FILENAME)
     urls = _build_urls(antenna_entries=antenna_entries, base_url=base_url)
     xml = _render_xml(urls=urls)
     target.write_text(xml, encoding="utf-8")
     return target
-
-
-def main() -> None:
-    entries = loop_directories.get_antennen_daten()
-    output = write_sitemap(entries)
-    print(f"Written: {output}")
-
-
-if __name__ == "__main__":
-    main()
 
 
 def main() -> None:
