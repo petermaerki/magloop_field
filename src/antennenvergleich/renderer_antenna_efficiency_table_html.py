@@ -222,21 +222,21 @@ def _value_source(
     if key == "D":
         if antenna_data is None:
             return file_name
-        return str(getattr(antenna_data.D_m, "source", "") or "")
+        return antenna_data.D_m.source
     if key == "d":
         if antenna_data is None:
             return file_name
-        return str(getattr(antenna_data.d_m, "source", "") or "")
+        return antenna_data.d_m.source
     if key == "n":
         if antenna_data is None:
             return file_name
-        return str(getattr(antenna_data.n, "source", "") or "")
+        return antenna_data.n.source
     if key == "f":
-        return str(item.get("source_f") or file_name)
+        return str(item["source_f"])
     if key == "bw":
-        return str(item.get("source_bw") or file_name)
+        return str(item["source_bw"])
     if key == "swr_min":
-        return str(item.get("source_swr") or file_name)
+        return str(item["source_swr"])
     if key == "eta_swr":
         return f"[{file_name}] Computed from swr_min_ant: eta = 4*SWR/(1+SWR)^2."
     if key == "Pload":
@@ -244,7 +244,7 @@ def _value_source(
     if key == "P":
         if antenna_data is None:
             return file_name
-        return str(getattr(antenna_data.powerPfwd_W, "source", "") or file_name)
+        return antenna_data.powerPfwd_W.source
     if key in {"L", "C", "Q0", "RT", "RR", "RLoss", "eta", "I", "U", "m"}:
         return (
             "Computed from geometry and measurement data." if calc is not None else file_name

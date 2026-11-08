@@ -89,7 +89,7 @@ def _fmt_pico(v: float) -> str:
 
 
 RowFormatter = Callable[[AntennaCalculator], str]
-SourceFormatter = Callable[[Antenna, BandData], str | None]
+SourceFormatter = Callable[[Antenna, BandData], str]
 
 
 def _source_derived(_antenna: Antenna, _bd: BandData) -> str:
@@ -483,12 +483,7 @@ class HtmlRenderer:
                         row += "<td class='val miss'></td>"
                         continue
                     calc = _make_calc(entry.antenna, band_data)
-                    raw_source_text = source_fmt(entry.antenna, band_data) or ""
-                    source_text = (
-                        str(raw_source_text)
-                        if not isinstance(raw_source_text, str)
-                        else raw_source_text
-                    )
+                    source_text = source_fmt(entry.antenna, band_data)
                     is_source_row = label.startswith("Source")
                     val = source_text if is_source_row else str(fmt(calc))
                     if is_efficiency_row:

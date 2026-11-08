@@ -33,9 +33,9 @@ class VnaCalibration(enum.StrEnum):
 class FloatText:
     """Ein Messwert oder Spezifikationswert mit Quellenangabe."""
 
-    def __init__(self, value: float | int, source: str | None) -> None:
+    def __init__(self, value: float | int, source: str) -> None:
         assert isinstance(value, float | int)
-        assert isinstance(source, str | None)
+        assert isinstance(source, str)
         self.value = float(value)
         self.source = source
 
@@ -43,9 +43,9 @@ class FloatText:
 class IntText:
     """Ein ganzzahliger Wert oder Spezifikationswert mit Quellenangabe."""
 
-    def __init__(self, value: int, source: str | None) -> None:
+    def __init__(self, value: int, source: str) -> None:
         assert isinstance(value, int)
-        assert isinstance(source, str | None)
+        assert isinstance(source, str)
         self.value = value
         self.source = source
 

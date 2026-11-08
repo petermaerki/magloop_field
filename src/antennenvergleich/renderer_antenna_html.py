@@ -262,9 +262,9 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
                 "tau_ns": tau_ns,
                 "swr_min_ant": swr_min,
                 "eta_ant": eta_ant,
-                "source_f": values.band_data.f_Hz.source if values.model else None,
-                "source_bw": values.band_data.bw262_Hz.source if values.model else None,
-                "source_swr": values.band_data.swr_min.source if values.model else None,
+                "source_f": values.band_data.f_Hz.source,
+                "source_bw": values.band_data.bw262_Hz.source,
+                "source_swr": values.band_data.swr_min.source,
             }
         )
 
@@ -399,9 +399,9 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
                     "tau_ns": None,
                     "swr_min_ant": swr_min,
                     "eta_ant": eta_ant,
-                    "source_f": str(band.f_Hz.source),
-                    "source_bw": str(band.bw262_Hz.source),
-                    "source_swr": str(band.swr_min.source),
+                    "source_f": band.f_Hz.source,
+                    "source_bw": band.bw262_Hz.source,
+                    "source_swr": band.swr_min.source,
                 }
             )
 
