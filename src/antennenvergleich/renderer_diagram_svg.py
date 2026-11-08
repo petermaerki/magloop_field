@@ -50,7 +50,7 @@ ORDINATE_TICK_VALUES = (
 
 
 class Diagramm_eta_f_svg:
-    _BAND_CENTERS_MHZ = sorted(f_hz / 1e6 for f_hz in BANDS.f_hz_by_band_name.values())
+    _BAND_CENTERS_MHZ = sorted(f_hz / 1e6 for f_hz in BANDS.values())
 
     _F_MIN_HZ = 1.5e6
     _F_MAX_HZ = 60.0e6  # vorher 35.0e6

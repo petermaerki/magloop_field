@@ -30,24 +30,24 @@ class VnaCalibration(enum.StrEnum):
     AT_VNA = "at_vna"
 
 
-@dataclass(frozen=True)
 class FloatText:
     """Ein Messwert oder Spezifikationswert mit Quellenangabe."""
 
-    value: float | None
-    source: str | None = None
+    def __init__(self, value: float | int, source: str | None) -> None:
+        assert isinstance(value, float | int)
+        assert isinstance(source, str | None)
+        self.value = float(value)
+        self.source = source
 
 
-@dataclass(frozen=True)
 class IntText:
     """Ein ganzzahliger Wert oder Spezifikationswert mit Quellenangabe."""
 
-    value: int | None
-    source: str | None = None
-
-    def __post_init__(self) -> None:
-        if self.value is not None:
-            assert isinstance(self.value, int) and not isinstance(self.value, bool)
+    def __init__(self, value: int, source: str | None) -> None:
+        assert isinstance(value, int)
+        assert isinstance(source, str | None)
+        self.value = value
+        self.source = source
 
 
 @dataclass(frozen=True)

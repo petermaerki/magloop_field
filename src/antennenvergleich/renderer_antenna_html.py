@@ -162,11 +162,6 @@ def _build_calculator_url_for_antenna_page(
         os.path.relpath(constants.DIRECTORY_REPO / "index.html", output_directory)
     ).as_posix()
 
-    assert isinstance(d_m, float)
-    assert isinstance(d_conductor_m, float)
-    assert isinstance(f_hz, float)
-    assert isinstance(bw_hz, float)
-    assert isinstance(swr_min, float)
     return (
         f"{index_rel}?"
         f"D_m={fmt_param(d_m, 4)}&"
@@ -209,7 +204,7 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         vna_cable_data = VnaCableData.read_values_file(vna_cable_path)
 
     band_centers_mhz: list[tuple[str, float]] = sorted(
-        ((name, f_hz / 1e6) for name, f_hz in BANDS.f_hz_by_band_name.items()),
+        ((name, f_hz / 1e6) for name, f_hz in BANDS.items()),
         key=lambda item: item[1],
     )
     band_order = [name for name, _ in band_centers_mhz]

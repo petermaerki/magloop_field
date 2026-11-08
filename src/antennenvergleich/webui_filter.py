@@ -42,10 +42,10 @@ class AntennaJoin:
 
 
 def _ordered_band_names(values: set[str]) -> list[str]:
-    unknown_values = values - set(constants.BANDS.f_hz_by_band_name)
+    unknown_values = values - set(constants.BANDS)
     assert not unknown_values, f"Unknown band(s): {sorted(unknown_values)}"
 
-    return sorted(values, key=constants.BANDS.f_hz_by_band_name.__getitem__)
+    return sorted(values, key=constants.BANDS.__getitem__)
 
 
 def get_antenna_joins(

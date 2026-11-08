@@ -4,13 +4,13 @@ from antennenvergleich.constants import BANDS, DK3SS
 from antennenvergleich.datatypes import Antenna, BandData, FloatText
 
 q_160m = 305  # qrz_com_db_DK3SS.pdf
-bw262_Hz_160m = BANDS.f_hz_by_band_name["30m"] / q_160m
+bw262_Hz_160m = BANDS["30m"] / q_160m
 
 q_80m = 277  # qrz_com_db_DK3SS.pdf
-bw262_Hz_80m = BANDS.f_hz_by_band_name["80m"] / q_80m
+bw262_Hz_80m = BANDS["80m"] / q_80m
 
 q_40m = 213  # qrz_com_db_DK3SS.pdf
-bw262_Hz_40m = BANDS.f_hz_by_band_name["40m"] / q_40m
+bw262_Hz_40m = BANDS["40m"] / q_40m
 
 
 _info_website = """
@@ -51,9 +51,7 @@ ANTENNENDATEN = Antenna(
     final_remarks_html="../../shared/DK3SS/final_remarks.html",
     bands=[
         BandData(
-            f_Hz=FloatText(
-                BANDS.f_hz_by_band_name["160m"], "keine Angabe daher Bandmitte"
-            ),
+            f_Hz=FloatText(BANDS["160m"], "keine Angabe daher Bandmitte"),
             bw262_Hz=FloatText(
                 bw262_Hz_160m, "berechnet aus angegebenem Q qrz_com_db_DK3SS.pdf"
             ),
@@ -63,9 +61,7 @@ ANTENNENDATEN = Antenna(
             ),
         ),
         BandData(
-            f_Hz=FloatText(
-                BANDS.f_hz_by_band_name["80m"], "keine Angabe daher Bandmitte"
-            ),
+            f_Hz=FloatText(BANDS["80m"], "keine Angabe daher Bandmitte"),
             bw262_Hz=FloatText(
                 bw262_Hz_80m, "berechnet aus angegebenem Q qrz_com_db_DK3SS.pdf"
             ),
@@ -75,9 +71,7 @@ ANTENNENDATEN = Antenna(
             ),
         ),
         BandData(
-            f_Hz=FloatText(
-                BANDS.f_hz_by_band_name["40m"], "keine Angabe daher Bandmitte"
-            ),
+            f_Hz=FloatText(BANDS["40m"], "keine Angabe daher Bandmitte"),
             bw262_Hz=FloatText(
                 bw262_Hz_40m, "berechnet aus angegebenem Q qrz_com_db_DK3SS.pdf"
             ),

@@ -24,7 +24,7 @@ def _band_from_frequency(f_Hz: float | None) -> str | None:
         return None
 
     return min(
-        constants.BANDS.f_hz_by_band_name.items(),
+        constants.BANDS.items(),
         key=lambda item: abs(f_Hz - item[1]),
     )[0]
 
@@ -339,8 +339,8 @@ class HtmlRenderer:
             if band is not None and band not in by_band:
                 by_band[band] = bd
         for band in sorted(
-            constants.BANDS.f_hz_by_band_name,
-            key=constants.BANDS.f_hz_by_band_name.__getitem__,
+            constants.BANDS,
+            key=constants.BANDS.__getitem__,
         ):
             if band in by_band:
                 return by_band[band]
@@ -430,8 +430,8 @@ class HtmlRenderer:
         available_bands = [
             band
             for band in sorted(
-                constants.BANDS.f_hz_by_band_name,
-                key=constants.BANDS.f_hz_by_band_name.__getitem__,
+                constants.BANDS,
+                key=constants.BANDS.__getitem__,
             )
             if any(
                 band in band_data_by_dir[entry.directory] for entry in antenna_entries
@@ -481,7 +481,9 @@ class HtmlRenderer:
                     row_class_parts.append("efficiency-row")
                 if is_source_row:
                     row_class_parts.append("source-row")
-                row_class = f" class='{' '.join(row_class_parts)}'" if row_class_parts else ""
+                row_class = (
+                    f" class='{' '.join(row_class_parts)}'" if row_class_parts else ""
+                )
                 row = f"<tr{row_class}><td title='{tooltip_attr}'>{label}</td><td class='unit'>{unit_html}</td>"
                 for entry in antenna_entries:
                     band_data = band_data_by_dir[entry.directory].get(band)
