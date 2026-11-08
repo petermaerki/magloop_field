@@ -372,6 +372,21 @@ def update_svg(selector: str, svg: str) -> None:
     img.src = f"data:image/svg+xml;base64,{svg_data}"
 
 
+def update_svg_inline(selector: str, svg: str) -> None:
+    """
+    Replace the <img> placeholder with the SVG inlined into the DOM.
+
+    SVG inside an <img> is rendered non-interactive: no pointer events
+    reach its elements, so :hover/click inside the SVG only work inline.
+    """
+    img = query(selector=selector)
+    container = document.createElement("div")
+    container.innerHTML = svg
+    svg_element = container.querySelector("svg")
+    svg_element.id = img.id
+    img.replaceWith(svg_element)
+
+
 def setup_compare_scrollbars() -> None:
     containers = document.querySelectorAll("#compare_results .compare-scroll-dual")
     for container in containers:
@@ -418,7 +433,7 @@ def load_compare() -> None:
         page["div#compare_results"].innerHTML = fw.render_results_html()
         setup_compare_scrollbars()
         svg = fw.render_eta_f_svg()
-        update_svg(selector=f"img#{renderer_diagram_svg.ID_SVG_ETA_F}", svg=svg)
+        update_svg_inline(selector=f"img#{renderer_diagram_svg.ID_SVG_ETA_F}", svg=svg)
 
     redraw()
 

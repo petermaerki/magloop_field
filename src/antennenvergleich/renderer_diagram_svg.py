@@ -12,6 +12,8 @@ from .datatypes import Antenna
 FILENAME_SVG_ETA_F = "generated_magnetic_loops_compare_eta_f.svg"
 FILENAME_SVG_ETA_F_PER_ANTENNA = "eta_f_generated.svg"
 ID_SVG_ETA_F = "id_svg_eta_f"
+CLASS_SVG_LEGEND_ENTRY = "svg_legend_entry"
+CLASS_SVG_SERIES = "svg_series"
 FILENAME_SVG_ETA_DL = "generated_magnetic_loops_compare_eta_DL.svg"
 
 SVG_WIDTH = 750
@@ -34,7 +36,12 @@ LINE_WIDTH_FRAME = 1.5
 LINE_WIDTH_TICK = 1.5
 LINE_WIDTH_TICK_100 = 4
 LINE_WIDTH_SERIES = 1.8
+LINE_WIDTH_SERIES_HIGHLIGHT = 4
+LINE_WIDTH_SERIES_HIT = 12
+DOT_RADIUS = 4
+DOT_RADIUS_HIGHLIGHT = 6
 LINE_WIDTH_LEGEND = 2
+LINE_WIDTH_LEGEND_HIGHLIGHT = 4
 LINE_WIDTH_LEGEND_DOT = 1
 
 ORDINATE_TICK_VALUES = (
@@ -47,6 +54,34 @@ ORDINATE_TICK_VALUES = (
     1.0,
     10.0,
 )
+
+
+def _hover_style(series_count: int) -> str:
+    """
+    CSS embedded in the SVG: hovering legend entry i OR series i highlights
+    both — the legend sample (line + dot) and the series
+    (requires inline/standalone SVG, not <img>).
+    """
+    rules = []
+    for i in range(series_count):
+        hover = f"svg:has(.{CLASS_SVG_LEGEND_ENTRY}_{i}:hover, .{CLASS_SVG_SERIES}_{i}:hover)"
+        rules.append(
+            f"{hover} .{CLASS_SVG_SERIES}_{i} polyline {{ stroke-width: {LINE_WIDTH_SERIES_HIGHLIGHT}; }}"
+        )
+        rules.append(
+            f"{hover} .{CLASS_SVG_SERIES}_{i} circle {{ r: {DOT_RADIUS_HIGHLIGHT}; }}"
+        )
+        rules.append(
+            f"{hover} .{CLASS_SVG_LEGEND_ENTRY}_{i} line {{ stroke-width: {LINE_WIDTH_LEGEND_HIGHLIGHT}; }}"
+        )
+        rules.append(
+            f"{hover} .{CLASS_SVG_LEGEND_ENTRY}_{i} circle {{ r: {DOT_RADIUS_HIGHLIGHT}; }}"
+        )
+        rules.append(
+            f"{hover} .{CLASS_SVG_LEGEND_ENTRY}_{i} text {{ fill: #000; font-weight: bold; }}"
+        )
+    joined = "\n    ".join(rules)
+    return f"  <style>\n    {joined}\n  </style>"
 
 
 class Diagramm_eta_f_svg:
@@ -131,14 +166,15 @@ class Diagramm_eta_f_svg:
             f'<svg xmlns="http://www.w3.org/2000/svg" width="{SVG_WIDTH}" height="{SVG_HEIGHT}" viewBox="0 0 {SVG_WIDTH} {SVG_HEIGHT}">',
             f'  <rect width="{SVG_WIDTH}" height="{SVG_HEIGHT}" fill="white"/>',
             f'  <clipPath id="plotarea"><rect x="{SVG_MARGIN_LEFT}" y="{SVG_MARGIN_TOP}" width="{self._pw}" height="{self._ph}"/></clipPath>',
+            _hover_style(series_count=len(data)),
         ]
         buf += self._draw_grid()
         buf += self._draw_frame()
         buf += self._draw_x_ticks()
         buf += self._draw_y_ticks()
         buf += self._draw_axis_labels()
-        for antenna, pts in data:
-            buf += self._draw_series(pts, antenna.color, antenna.dashed)  # type: ignore[arg-type]
+        for index, (antenna, pts) in enumerate(data):
+            buf += self._draw_series(index, pts, antenna.color, antenna.dashed)  # type: ignore[arg-type]
         if self._show_legend:
             buf += self._draw_legend(
                 [
@@ -236,37 +272,50 @@ class Diagramm_eta_f_svg:
         ]
 
     def _draw_series(
-        self, pts: list[tuple[float, float]], color: str, dashed: bool = False
+        self, index: int, pts: list[tuple[float, float]], color: str, dashed: bool = False
     ) -> list[str]:
-        lines = []
+        lines = [f'  <g class="{CLASS_SVG_SERIES}_{index}">']
         coords = " ".join(f"{self._px(f):.2f},{self._py(e):.2f}" for f, e in pts)
         dash_attr = ' stroke-dasharray="8,4"' if dashed else ""
+        # Invisible wide polyline: easier hover target than the thin visible line.
+        # Inline style outranks the hover rule, so its width never changes.
+        lines.append(
+            f'  <polyline points="{coords}" fill="none" stroke="transparent" style="stroke-width: {LINE_WIDTH_SERIES_HIT};" clip-path="url(#plotarea)"/>'
+        )
         lines.append(
             f'  <polyline points="{coords}" fill="none" stroke="{color}" stroke-width="{LINE_WIDTH_SERIES}"{dash_attr} clip-path="url(#plotarea)"/>'
         )
         for f, e in pts:
             x, y = self._px(f), self._py(e)
             lines.append(
-                f'  <circle cx="{x:.2f}" cy="{y:.2f}" r="4" fill="{color}" stroke="white" stroke-width="{LINE_WIDTH_LEGEND_DOT}" clip-path="url(#plotarea)"/>'
+                f'  <circle cx="{x:.2f}" cy="{y:.2f}" r="{DOT_RADIUS}" fill="{color}" stroke="white" stroke-width="{LINE_WIDTH_LEGEND_DOT}" clip-path="url(#plotarea)"/>'
             )
+        lines.append("  </g>")
         return lines
 
     def _draw_legend(self, entries: list[tuple[str, str, bool]]) -> list[str]:
         lines = []
         lx = SVG_MARGIN_LEFT + self._pw + 5
         ly = SVG_MARGIN_TOP + 0
+        row_height = 14
         for i, (name, color, dashed) in enumerate(entries):
-            y = ly + i * 14
+            y = ly + i * row_height
             dash_attr = ' stroke-dasharray="8,4"' if dashed else ""
+            lines.append(f'  <g class="{CLASS_SVG_LEGEND_ENTRY}_{i}">')
+            # Transparent rect: makes the whole row (including gaps) detect hover.
+            lines.append(
+                f'  <rect x="{lx}" y="{y}" width="{SVG_WIDTH - lx}" height="{row_height}" fill="transparent"/>'
+            )
             lines.append(
                 f'  <line x1="{lx}" y1="{y + 7}" x2="{lx + 25}" y2="{y + 7}" stroke="{color}" stroke-width="{LINE_WIDTH_LEGEND}"{dash_attr}/>'
             )
             lines.append(
-                f'  <circle cx="{lx + 12}" cy="{y + 7}" r="4" fill="{color}" stroke="white" stroke-width="{LINE_WIDTH_LEGEND_DOT}"/>'
+                f'  <circle cx="{lx + 12}" cy="{y + 7}" r="{DOT_RADIUS}" fill="{color}" stroke="white" stroke-width="{LINE_WIDTH_LEGEND_DOT}"/>'
             )
             lines.append(
                 f'  <text x="{lx + 32}" y="{y + 11}" font-size="{FONT_SIZE_LEGEND}" font-family="Arial,sans-serif" fill="#333">{html.escape(name)}</text>'
             )
+            lines.append("  </g>")
         return lines
 
 
@@ -335,14 +384,15 @@ class Diagramm_eta_D_lambda_svg:
             f'<svg xmlns="http://www.w3.org/2000/svg" width="{self._W}" height="{self._H}" viewBox="0 0 {self._W} {self._H}">',
             f'  <rect width="{self._W}" height="{self._H}" fill="white"/>',
             f'  <clipPath id="plotarea"><rect x="{self._ML}" y="{self._MT}" width="{self._pw}" height="{self._ph}"/></clipPath>',
+            _hover_style(series_count=len(data)),
         ]
         buf += self._draw_grid(xs)
         buf += self._draw_frame()
         buf += self._draw_x_ticks(xs)
         buf += self._draw_y_ticks()
         buf += self._draw_axis_labels()
-        for antenna, pts in data:
-            buf += self._draw_series(pts, antenna.color, antenna.dashed)  # type: ignore[arg-type]
+        for index, (antenna, pts) in enumerate(data):
+            buf += self._draw_series(index, pts, antenna.color, antenna.dashed)  # type: ignore[arg-type]
         buf += self._draw_legend(
             [
                 (antenna.antenna_label, antenna.color, antenna.dashed)  # type: ignore[misc]
@@ -426,35 +476,48 @@ class Diagramm_eta_D_lambda_svg:
         ]
 
     def _draw_series(
-        self, pts: list[tuple[float, float]], color: str, dashed: bool = False
+        self, index: int, pts: list[tuple[float, float]], color: str, dashed: bool = False
     ) -> list[str]:
-        lines = []
+        lines = [f'  <g class="{CLASS_SVG_SERIES}_{index}">']
         coords = " ".join(f"{self._px(x):.2f},{self._py(e):.2f}" for x, e in pts)
         dash_attr = ' stroke-dasharray="8,4"' if dashed else ""
+        # Invisible wide polyline: easier hover target than the thin visible line.
+        # Inline style outranks the hover rule, so its width never changes.
+        lines.append(
+            f'  <polyline points="{coords}" fill="none" stroke="transparent" style="stroke-width: {LINE_WIDTH_SERIES_HIT};" clip-path="url(#plotarea)"/>'
+        )
         lines.append(
             f'  <polyline points="{coords}" fill="none" stroke="{color}" stroke-width="{LINE_WIDTH_SERIES}"{dash_attr} clip-path="url(#plotarea)"/>'
         )
         for x, e in pts:
             x_pos, y_pos = self._px(x), self._py(e)
             lines.append(
-                f'  <circle cx="{x_pos:.2f}" cy="{y_pos:.2f}" r="4" fill="{color}" stroke="white" stroke-width="{LINE_WIDTH_LEGEND_DOT}" clip-path="url(#plotarea)"/>'
+                f'  <circle cx="{x_pos:.2f}" cy="{y_pos:.2f}" r="{DOT_RADIUS}" fill="{color}" stroke="white" stroke-width="{LINE_WIDTH_LEGEND_DOT}" clip-path="url(#plotarea)"/>'
             )
+        lines.append("  </g>")
         return lines
 
     def _draw_legend(self, entries: list[tuple[str, str, bool]]) -> list[str]:
         lines = []
         lx = SVG_MARGIN_LEFT + self._pw + 18
         ly = SVG_MARGIN_TOP + 10
+        row_height = 22
         for i, (name, color, dashed) in enumerate(entries):
-            y = ly + i * 22
+            y = ly + i * row_height
             dash_attr = ' stroke-dasharray="8,4"' if dashed else ""
+            lines.append(f'  <g class="{CLASS_SVG_LEGEND_ENTRY}_{i}">')
+            # Transparent rect: makes the whole row (including gaps) detect hover.
+            lines.append(
+                f'  <rect x="{lx}" y="{y}" width="{self._W - lx}" height="{row_height}" fill="transparent"/>'
+            )
             lines.append(
                 f'  <line x1="{lx}" y1="{y + 7}" x2="{lx + 25}" y2="{y + 7}" stroke="{color}" stroke-width="{LINE_WIDTH_LEGEND}"{dash_attr}/>'
             )
             lines.append(
-                f'  <circle cx="{lx + 12}" cy="{y + 7}" r="4" fill="{color}" stroke="white" stroke-width="{LINE_WIDTH_LEGEND_DOT}"/>'
+                f'  <circle cx="{lx + 12}" cy="{y + 7}" r="{DOT_RADIUS}" fill="{color}" stroke="white" stroke-width="{LINE_WIDTH_LEGEND_DOT}"/>'
             )
             lines.append(
                 f'  <text x="{lx + 32}" y="{y + 11}" font-size="{FONT_SIZE_LEGEND}" font-family="Arial,sans-serif" fill="#333">{html.escape(name)}</text>'
             )
+            lines.append("  </g>")
         return lines
