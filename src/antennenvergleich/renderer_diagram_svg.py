@@ -18,7 +18,7 @@ FILENAME_SVG_ETA_DL = "generated_magnetic_loops_compare_eta_DL.svg"
 
 SVG_WIDTH = 750
 SVG_HEIGHT = 300
-SVG_MARGIN_LEFT = 85  # 85
+SVG_MARGIN_LEFT = 85
 SVG_MARGIN_RIGHT_LEGEND = 230
 SVG_MARGIN_RIGHT_NO_LEGEND = 5
 SVG_MARGIN_TOP = 10
@@ -254,13 +254,18 @@ class _DiagramSvgBase:
         return f'stroke="#888" stroke-width="{LINE_WIDTH_TICK}"'
 
     def _draw_axis_labels(self) -> list[str]:
-        cy = SVG_MARGIN_TOP + self._ph / 2
         axis_end_x = SVG_MARGIN_LEFT + self._pw
         axis_end_y = SVG_MARGIN_TOP + self._ph + 22
         y_label_x = 25
-        y_label_y = cy
+        y_label_y = SVG_MARGIN_TOP + self._ph / 2
+        if self._show_legend:
+            # The legend margin leaves room right of the plot: horizontal caption.
+            x_axis_label = f'  <text x="{axis_end_x + 15:.1f}" y="{axis_end_y}" text-anchor="start" font-size="{FONT_SIZE_LABELS}" font-family="Arial,sans-serif" fill="#222">{self._X_AXIS_LABEL}</text>'
+        else:
+            # Only 5 px right margin: rotated caption at the axis end.
+            x_axis_label = f'  <text x="{axis_end_x:.1f}" y="{axis_end_y}" text-anchor="middle" font-size="{FONT_SIZE_LABELS}" font-family="Arial,sans-serif" fill="#222" transform="rotate(-90 {axis_end_x:.1f} {axis_end_y})">{self._X_AXIS_LABEL}</text>'
         return [
-            f'  <text x="{axis_end_x + 15:.1f}" y="{axis_end_y}" text-anchor="left" font-size="{FONT_SIZE_LABELS}" font-family="Arial,sans-serif" fill="#222" transform="rotate(0 {axis_end_x / 2:.1f} {axis_end_y})">{self._X_AXIS_LABEL}</text>',
+            x_axis_label,
             f'  <text transform="rotate(-90 {y_label_x} {y_label_y:.1f})" x="{y_label_x}" y="{y_label_y:.1f}" text-anchor="middle" font-size="{FONT_SIZE_LABELS}" font-family="Arial,sans-serif" fill="#222">η (Efficiency)</text>',
         ]
 
@@ -292,7 +297,7 @@ class _DiagramSvgBase:
     def _draw_legend(self, entries: list[tuple[str, str, bool]]) -> list[str]:
         lines = []
         lx = SVG_MARGIN_LEFT + self._pw + 5
-        ly = SVG_MARGIN_TOP + 0
+        ly = SVG_MARGIN_TOP
         row_height = 14
         for i, (name, color, dashed) in enumerate(entries):
             y = ly + i * row_height
@@ -321,7 +326,7 @@ class Diagramm_eta_f_svg(_DiagramSvgBase):
     _BAND_CENTERS_MHZ = sorted(f_hz / 1e6 for f_hz in BANDS.values())
 
     _F_MIN_HZ = 1.5e6
-    _F_MAX_HZ = 60.0e6  # vorher 35.0e6
+    _F_MAX_HZ = 60.0e6
 
     _X_AXIS_LABEL = "MHz"
 
