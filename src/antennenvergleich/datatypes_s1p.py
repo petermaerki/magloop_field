@@ -185,9 +185,9 @@ class S1pValues:
             raise ValueError("band_data requires a fitted model")
 
         return BandData(
-            f_Hz=FloatText(self.model.f0_Hz, "s1p model fit"),
-            bw262_Hz=FloatText(self.model.Bint_Hz, "s1p model fit"),
-            swr_min=FloatText(self.swr_values.swr_min_ant or self.swr_values.swr_min_vna, "s1p measurement"),
+            f_Hz=FloatText(self.model.f0_Hz, f"s1p model fit: {self.filename}"),
+            bw262_Hz=FloatText(self.model.Bint_Hz, f"s1p model fit: {self.filename}"),
+            swr_min=FloatText(self.swr_values.swr_min_ant or self.swr_values.swr_min_vna, f"s1p measurement: {self.filename}"),
         )
 
     def write_py(self, filename: pathlib.Path) -> None:
