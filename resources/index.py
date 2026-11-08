@@ -372,6 +372,36 @@ def update_svg(selector: str, svg: str) -> None:
     img.src = f"data:image/svg+xml;base64,{svg_data}"
 
 
+def update_svg_inline(selector: str, svg: str) -> None:
+    """
+    Replace the <img> placeholder with the SVG inlined into the DOM.
+
+    Unlike update_svg() (data-URI in an <img>), inline SVG elements
+    receive DOM events, so clicks inside the SVG reach python.
+    """
+    img = query(selector=selector)
+    container = document.createElement("div")
+    container.innerHTML = svg
+    svg_element = container.querySelector("svg")
+    svg_element.id = img.id
+    img.replaceWith(svg_element)
+
+
+@when("click", "div#compare_results")
+def on_eta_f_legend_click(e=None):
+    """
+    Callback for clicks on a legend entry inside the inline eta/f SVG.
+
+    The legend <text> elements are recreated on every redraw, therefore the
+    listener is attached to the static #compare_results div (event delegation).
+    """
+    entry = e.target.closest(f".{renderer_diagram_svg.CLASS_SVG_ETA_F_LEGEND}")
+    if entry is None or isinstance(entry, JsNull):
+        return
+    antenna_label = entry.getAttribute(renderer_diagram_svg.DATA_ATTRIBUTE_ANTENNA_LABEL)
+    print(f"Legend clicked: {antenna_label}")
+
+
 def setup_compare_scrollbars() -> None:
     containers = document.querySelectorAll("#compare_results .compare-scroll-dual")
     for container in containers:
@@ -418,7 +448,7 @@ def load_compare() -> None:
         page["div#compare_results"].innerHTML = fw.render_results_html()
         setup_compare_scrollbars()
         svg = fw.render_eta_f_svg()
-        update_svg(selector=f"img#{renderer_diagram_svg.ID_SVG_ETA_F}", svg=svg)
+        update_svg_inline(selector=f"img#{renderer_diagram_svg.ID_SVG_ETA_F}", svg=svg)
 
     redraw()
 

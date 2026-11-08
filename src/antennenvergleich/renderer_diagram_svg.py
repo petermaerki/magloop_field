@@ -12,6 +12,8 @@ from .datatypes import Antenna
 FILENAME_SVG_ETA_F = "generated_magnetic_loops_compare_eta_f.svg"
 FILENAME_SVG_ETA_F_PER_ANTENNA = "eta_f_generated.svg"
 ID_SVG_ETA_F = "id_svg_eta_f"
+CLASS_SVG_ETA_F_LEGEND = "svg_eta_f_legend_entry"
+DATA_ATTRIBUTE_ANTENNA_LABEL = "data-antenna-label"
 FILENAME_SVG_ETA_DL = "generated_magnetic_loops_compare_eta_DL.svg"
 
 SVG_WIDTH = 750
@@ -265,7 +267,7 @@ class Diagramm_eta_f_svg:
                 f'  <circle cx="{lx + 12}" cy="{y + 7}" r="4" fill="{color}" stroke="white" stroke-width="{LINE_WIDTH_LEGEND_DOT}"/>'
             )
             lines.append(
-                f'  <text x="{lx + 32}" y="{y + 11}" font-size="{FONT_SIZE_LEGEND}" font-family="Arial,sans-serif" fill="#333">{html.escape(name)}</text>'
+                f'  <text x="{lx + 32}" y="{y + 11}" font-size="{FONT_SIZE_LEGEND}" font-family="Arial,sans-serif" fill="#333" class="{CLASS_SVG_ETA_F_LEGEND}" {DATA_ATTRIBUTE_ANTENNA_LABEL}="{html.escape(name, quote=True)}" style="cursor: pointer;">{html.escape(name)}</text>'
             )
         return lines
 
