@@ -162,6 +162,11 @@ def _build_calculator_url_for_antenna_page(
         os.path.relpath(constants.DIRECTORY_REPO / "index.html", output_directory)
     ).as_posix()
 
+    assert isinstance(d_m, float)
+    assert isinstance(d_conductor_m, float)
+    assert isinstance(f_hz, float)
+    assert isinstance(bw_hz, float)
+    assert isinstance(swr_min, float)
     return (
         f"{index_rel}?"
         f"D_m={fmt_param(d_m, 4)}&"

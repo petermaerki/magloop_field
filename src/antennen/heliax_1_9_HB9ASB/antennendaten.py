@@ -1,6 +1,6 @@
 """Structured data for the Peter Märki Tubby outdoor antenna."""
 
-from antennenvergleich.datatypes import Antenna, BandData, FloatText
+from antennenvergleich.datatypes import Antenna, BandData, FloatText, IntText
 
 ANTENNENDATEN = Antenna(
     # color="#d60000",  # color from compare_colors.py
@@ -10,7 +10,7 @@ ANTENNENDATEN = Antenna(
     selection_name="1_9_heliax",
     D_m=FloatText(1.9, "Source: QRZ Page HB9ASB"),
     d_m=FloatText(0.036, "Source: Heliax 1-1/4: coars extimate"),
-    n=FloatText(1, ""),
+    n=IntText(1, ""),
     p_m=FloatText(0.0, ""),
     powerPfwd_W=FloatText(200.0, "Source: QRZ Page: Most of the Time 50W"),
     info_str="Mag loop made of Heliax 1-1/4 and variable vacuum capacitor.",

@@ -91,7 +91,7 @@ class Checkbox:
         self._apply_dom_state()
 
     @property
-    def text(self) -> None:
+    def text(self) -> str:
         checked_state = "x" if self.checked else "/"
         grey_state = "G" if self.greyed else "N"
         return f"{self.name}[{checked_state}{grey_state}]"

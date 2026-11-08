@@ -1,7 +1,7 @@
 """Structured data for the Peter Märki Tubby outdoor antenna."""
 
 from antennenvergleich.constants import PETER_TUBBY
-from antennenvergleich.datatypes import Antenna
+from antennenvergleich.datatypes import Antenna, FloatText
 
 ANTENNENDATEN = Antenna(
     name="Peter Tubby s1p",
@@ -15,4 +15,8 @@ ANTENNENDATEN = Antenna(
     info_conductor_str=PETER_TUBBY.info_conductor_str,
     info_capacitor_str=PETER_TUBBY.info_capacitor_str,
     bands=[],
+    powerPfwd_W=FloatText(
+        100.0,
+        "..",
+    ),
 )

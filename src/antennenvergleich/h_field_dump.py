@@ -120,6 +120,11 @@ class HFieldData:
         antenna_n = self.antennendaten.n.value
         antenna_p_m = self.antennendaten.p_m.value
 
+        assert isinstance(antenna_D_m, float)
+        assert isinstance(antenna_d_m, float)
+        assert isinstance(antenna_n, float)
+        assert isinstance(antenna_p_m, float)
+
         if not ant_datasheet.bands:
             raise ValueError("No band data found in antennendaten.py and s1p_results")
 

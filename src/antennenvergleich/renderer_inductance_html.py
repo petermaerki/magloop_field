@@ -5,7 +5,7 @@ from collections.abc import Callable
 
 from antennenvergleich import constants_s1p
 from antennenvergleich.datatype_inductance import Inductance
-from antennenvergleich.datatypes_s1p import S1pValues
+from antennenvergleich.datatypes_s1p import AntennaModelFit, S1pValues
 from magloop_field.calculations import AntennaCalculator as FieldAntennaCalculator
 
 from .constants import DIRECTORY_SRC
@@ -84,12 +84,14 @@ def build_inductance_section_html(
     l_h_geometry_value: float | None = None
     if antenna_data is not None and first_values_with_model is not None:
         try:
+            assert isinstance(first_values_with_model, AntennaModelFit)
             calc = FieldAntennaCalculator(
                 D_m=antenna_data.D_m.value,
                 d_m=antenna_data.d_m.value,
                 n=antenna_data.n.value if antenna_data.n.value is not None else 1,
                 p_m=antenna_data.p_m.value or 0.0,
-                swr_min=first_values_with_model.swr_values.swr_min_ant or first_values_with_model.swr_values.swr_min_vna,
+                swr_min=first_values_with_model.swr_values.swr_min_ant
+                or first_values_with_model.swr_values.swr_min_vna,
                 f_Hz=first_values_with_model.model.f0_Hz,
                 bw262_Hz=first_values_with_model.model.Bint_Hz,
                 powerPfwd_W=100.0,
