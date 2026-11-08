@@ -260,7 +260,7 @@ class _DiagramSvgBase:
         y_label_x = 25
         y_label_y = cy
         return [
-            f'  <text x="{axis_end_x:.1f}" y="{axis_end_y}" text-anchor="middle" font-size="{FONT_SIZE_LABELS}" font-family="Arial,sans-serif" fill="#222" transform="rotate(-90 {axis_end_x:.1f} {axis_end_y})">{self._X_AXIS_LABEL}</text>',
+            f'  <text x="{axis_end_x + 15:.1f}" y="{axis_end_y}" text-anchor="left" font-size="{FONT_SIZE_LABELS}" font-family="Arial,sans-serif" fill="#222" transform="rotate(0 {axis_end_x / 2:.1f} {axis_end_y})">{self._X_AXIS_LABEL}</text>',
             f'  <text transform="rotate(-90 {y_label_x} {y_label_y:.1f})" x="{y_label_x}" y="{y_label_y:.1f}" text-anchor="middle" font-size="{FONT_SIZE_LABELS}" font-family="Arial,sans-serif" fill="#222">η (Efficiency)</text>',
         ]
 
