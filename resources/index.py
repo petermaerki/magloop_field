@@ -386,14 +386,14 @@ def setup_compare_scrollbars() -> None:
 
         sync = {"active": False}
 
-        def on_top_scroll(_event=None):
+        def on_top_scroll(_event=None, sync=sync, top=top, bottom=bottom):
             if sync["active"]:
                 return
             sync["active"] = True
             bottom.scrollLeft = top.scrollLeft
             sync["active"] = False
 
-        def on_bottom_scroll(_event=None):
+        def on_bottom_scroll(_event=None, sync=sync, top=top, bottom=bottom):
             if sync["active"]:
                 return
             sync["active"] = True
@@ -628,7 +628,6 @@ def _analyze_s1p(filename: str, content: str) -> None:
     _set_html("s1p_smith_chart", smith_svg)
     _set_html("s1p_swr_chart", swr_svg)
 
-    b_tau_str = f"{b_tau_s * 1e9:.1f} ns" if not math.isnan(b_tau_s) else "\u2014"
     values_lines = [
         f"f(SWR min):  {f_hz_min / 1e6:.4f} MHz",
         f"SWR min_ant: {swr_min_ant:.3g}",

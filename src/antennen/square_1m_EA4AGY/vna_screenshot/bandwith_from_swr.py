@@ -120,7 +120,6 @@ def plot_swr_overlay(infos: SWRInfos, Z0: float = 50.0, DPI: int = 100) -> None:
 
     x0 = infos.freq_min_hz + 0.015 * (infos.freq_max_hz - infos.freq_min_hz)
     swr0 = infos.swr_min_axis + 0.06
-    swr_step = (infos.swr_max_axis - infos.swr_min_axis) * 0.085
     fontsize = round(24 * W / 1553)
     kw: dict[str, Any] = {
         "fontsize": fontsize,

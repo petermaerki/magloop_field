@@ -240,7 +240,6 @@ def write_antenna_html(entry: AntennaPlusDirectory) -> None:
         swr_min_vna = values.swr_values.swr_min_vna
         swr_min_ant = values.swr_values.swr_min_ant
         swr_min = swr_min_ant if swr_min_ant is not None else swr_min_vna
-        band_data = values.band_data
         base_stem = values_path.stem.removesuffix(VALUES_SUFFIX)
         band_label = infer_band_label(values, base_stem)
         smith_name = f"{base_stem}{SMITH_SUFFIX}{SVG_EXTENSION}"
