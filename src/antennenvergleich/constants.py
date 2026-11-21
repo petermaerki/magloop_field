@@ -66,6 +66,26 @@ PETER_TUBBY = Antenna(
     info_capacitor_str="Vacuum Capacitor",
 )
 
+FESZ = Antenna(
+    call="YO2FZT",
+    selection_location="YO2FZT",
+    D_m=FloatText(0.0, ""),
+    d_m=FloatText(0.0, ""),
+    n=IntText(1, ""),
+    p_m=FloatText(0.0, ""),
+    powerPfwd_W=FloatText(
+        5.0,
+        "EMail 2026-11-21  I use 5W since that is all I have. Limit is definitely higher.",
+    ),
+    info_str="Homebrew loop 10mm coax loop with butterfly capacitor made from pcb boards.",
+    info_environment_str="Indoors, about 1.5m from the walls made from reinforced concrete.",
+    info_capacitor_str="Butterfly air capacitor made from PCB boards.",
+    vna_device_str="'LiteVNA64'",
+    info_thanks_str="Many thanks to Fesz for providing the measurement data and for the countless constructive emails.",
+    info_conductor_str="",
+    vna_cable="",
+)
+
 _PCB_HOEHE_M = 0.1
 _LEITERPAKET_BREITE_M = 0.052
 PETER_2026_PCB = Antenna(

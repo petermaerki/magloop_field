@@ -1,0 +1,634 @@
+<!-- Automatically generated file by run_2_html.py. Do not edit manually. -->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Magnetic Loop Antenna Selfmade fesz_0.65 YO2FZT - antenna</title>
+    <link rel="stylesheet" href="../../../static/css/style_antenna.css">
+    <meta name="keywords" content="Magnetic,Loop, Antenna, HB9ISP, Efficiency,Selfmade, fesz_0.65, YO2FZT">
+</head>
+<body>
+
+<h1>Magnetic Loop Antenna Selfmade fesz_0.65 YO2FZT</h1>
+
+
+<p>
+    <a href="images/small_loop_thumbnail.jpg"><img class="overview-antenna-picture" src="images/small_loop_thumbnail.jpg"></a>
+</p>
+
+
+<p>
+Info: Homebrew loop 10mm coax loop with butterfly capacitor made from pcb boards.<br>
+Conductor: C538 LSZH Tasker 10.3mm outer diameter approx 2m, 10.3mm outer diameter, PL-259 at the ends. Center conductor not floating.<br>
+Capacitor: Butterfly air capacitor made from PCB boards.<br>
+Environment: Indoors, about 1.5m from the walls made from reinforced concrete.<br>
+
+Thanks: Many thanks to Fesz for providing the measurement data and for the countless constructive emails.<br>
+
+</p>
+
+<h2>Antenna Efficiency Overview</h2>
+
+<p>
+    <a href="eta_f_generated.svg"><img class="eta-picture" src="eta_f_generated.svg"></a>
+</p>
+
+<table class="compact">
+    <tbody>
+        
+        <tr class="band-row">
+            <td>Band</td>
+            <td class="unit"></td>
+            
+            <td class="val">17m</td>
+            
+            <td class="val">15m</td>
+            
+            <td class="val">12m</td>
+            
+            <td class="val">10m</td>
+            
+        </tr>
+        
+
+        
+            <tr>
+                <td title="Center frequency of the considered band.">Frequency <i>f</i></td>
+                <td class="unit">MHz</td>
+                
+                    <td class="val" title="s1p model fit: 17m_small_12_L_pcb.s1p">18.102</td>
+                
+                    <td class="val" title="s1p model fit: 15m_small_12_H_pcb.s1p">21.062</td>
+                
+                    <td class="val" title="s1p model fit: 12m_small_2_H_pcb.s1p">24.904</td>
+                
+                    <td class="val" title="s1p model fit: 10m_small_1_H_pcb.s1p">28.079</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Intrinsic bandwidth of the resonant circuit, often similar to the bandwidth at SWR 2.62.">Intrinsic bandwidth <i>B</i><sub>int</sub></td>
+                <td class="unit">kHz</td>
+                
+                    <td class="val" title="s1p model fit: 17m_small_12_L_pcb.s1p">39.1</td>
+                
+                    <td class="val" title="s1p model fit: 15m_small_12_H_pcb.s1p">52.7</td>
+                
+                    <td class="val" title="s1p model fit: 12m_small_2_H_pcb.s1p">83.6</td>
+                
+                    <td class="val" title="s1p model fit: 10m_small_1_H_pcb.s1p">111.1</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Source of the intrinsic bandwidth value.">Source of B<sub>int</sub></td>
+                <td class="unit"></td>
+                
+                    <td class="val merged" colspan="4" title="S-Parameters">S-Parameters</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Equivalent diameter of the loop.">Loop diameter <i>D</i></td>
+                <td class="unit">m</td>
+                
+                    <td class="val merged" colspan="4" title="EMail Fesz, 2026-11-20, about 0.65.">0.650</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Equivalent conductor diameter of the loop.">Conductor diameter <i>d</i></td>
+                <td class="unit">m</td>
+                
+                    <td class="val merged" colspan="4" title="Unclear, no specification in datasheet: guessing.">0.007</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Number of loop turns.">Loop count <i>n</i></td>
+                <td class="unit">1</td>
+                
+                    <td class="val merged" colspan="4" title="">1</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Calculated inductance of the loop.">Inductance <i>L</i></td>
+                <td class="unit">H</td>
+                
+                    <td class="val merged" colspan="4" title="Computed from geometry and measurement data.">1.85e-06</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Required resonance capacitance at the band frequency.">Capacitance <i>C</i></td>
+                <td class="unit">pF</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">41.7</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">30.8</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">22</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">17.3</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Unloaded Q factor, estimated from f / bandwidth.">Unloaded Q<sub>0</sub></td>
+                <td class="unit">1</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">463</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">399</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">298</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">253</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Total damping resistance of the resonant circuit.">Damping resistance <i>R</i><sub>T</sub></td>
+                <td class="unit">Ohm</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">0.456</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">0.615</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">0.974</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">1.295</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Equivalent radiation resistance of the antenna.">Radiation resistance <i>R</i><sub>R</sub></td>
+                <td class="unit">Ohm</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">0.0460</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">0.0845</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">0.166</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">0.269</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Loss resistance: R_T - R_R.">Loss resistance <i>R</i><sub>Loss</sub></td>
+                <td class="unit">Ohm</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">0.410</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">0.530</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">0.808</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">1.026</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Power towards the antenna feed point&lt;br&gt;(forward power after cable losses; a portion may be reflected due to SWR mismatch).">Power to antenna <i>P</i><sub>fwd</sub></td>
+                <td class="unit">W</td>
+                
+                    <td class="val" title="EMail 2026-11-21  I use 5W since that is all I have. Limit is definitely higher.">5</td>
+                
+                    <td class="val" title="EMail 2026-11-21  I use 5W since that is all I have. Limit is definitely higher.">5</td>
+                
+                    <td class="val" title="EMail 2026-11-21  I use 5W since that is all I have. Limit is definitely higher.">5</td>
+                
+                    <td class="val" title="EMail 2026-11-21  I use 5W since that is all I have. Limit is definitely higher.">5</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Minimales SWR am Antennenfusspunkt.">swr_min_ant</td>
+                <td class="unit">1</td>
+                
+                    <td class="val" title="s1p measurement: 17m_small_12_L_pcb.s1p">1.35</td>
+                
+                    <td class="val" title="s1p measurement: 15m_small_12_H_pcb.s1p">1.07</td>
+                
+                    <td class="val" title="s1p measurement: 12m_small_2_H_pcb.s1p">1.06</td>
+                
+                    <td class="val" title="s1p measurement: 10m_small_1_H_pcb.s1p">1.06</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Mismatch efficiency from swr_min_ant: eta = 4*SWR/(1+SWR)^2.">eta<sub>SWR_ant</sub></td>
+                <td class="unit">%</td>
+                
+                    <td class="val" title="[17m_small_12_L_pcb_VALUES.py] Computed from swr_min_ant: eta = 4*SWR/(1+SWR)^2.">97.7</td>
+                
+                    <td class="val" title="[15m_small_12_H_pcb_VALUES.py] Computed from swr_min_ant: eta = 4*SWR/(1+SWR)^2.">99.9</td>
+                
+                    <td class="val" title="[12m_small_2_H_pcb_VALUES.py] Computed from swr_min_ant: eta = 4*SWR/(1+SWR)^2.">99.9</td>
+                
+                    <td class="val" title="[10m_small_1_H_pcb_VALUES.py] Computed from swr_min_ant: eta = 4*SWR/(1+SWR)^2.">99.9</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Power in antenna load: P_load = P_fwd * eta_SWR_ant.">Power antenna load <i>P</i><sub>load</sub></td>
+                <td class="unit">W</td>
+                
+                    <td class="val" title="[17m_small_12_L_pcb_VALUES.py] Computed from P_fwd and swr_min.">5</td>
+                
+                    <td class="val" title="[15m_small_12_H_pcb_VALUES.py] Computed from P_fwd and swr_min.">5</td>
+                
+                    <td class="val" title="[12m_small_2_H_pcb_VALUES.py] Computed from P_fwd and swr_min.">5</td>
+                
+                    <td class="val" title="[10m_small_1_H_pcb_VALUES.py] Computed from P_fwd and swr_min.">5</td>
+                
+            </tr>
+        
+            <tr class="eff-row">
+                <td title="Total efficiency: (R_R / R_T) * eta_SWR_ant."><b>Antenna efficiency <i>η</i></b></td>
+                <td class="unit"><b>%</b></td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">9.85</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">13.7</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">17.0</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">20.7</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Loop current at the reference power.">Loop current <i>I</i> rms</td>
+                <td class="unit">A</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">3.27</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">2.85</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">2.27</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">1.96</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Voltage across the loop at resonance.">Loop voltage <i>U</i><sub>loop</sub> rms</td>
+                <td class="unit">V</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">691</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">700</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">657</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">643</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Magnetic dipole moment of the loop.">Magnetic dipole moment <i>m</i></td>
+                <td class="unit">A m²</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">1.086</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">0.946</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">0.752</td>
+                
+                    <td class="val" title="Computed from geometry and measurement data.">0.652</td>
+                
+            </tr>
+        
+            <tr>
+                <td title="Direct link to calculator using the same parameters as this column.">Link to calculator</td>
+                <td class="unit"></td>
+                
+                    <td class="val" title="Open calculator with this band parameters."><a href="../../../index.html?D_m=0.65&amp;d_m=0.0075&amp;n=1&amp;p_m=0.0&amp;f_Hz=18101611&amp;bw_Hz=39133&amp;Pfwd_W=5.0&amp;swr_min=1.355" class="calculator-link">calculator</a></td>
+                
+                    <td class="val" title="Open calculator with this band parameters."><a href="../../../index.html?D_m=0.65&amp;d_m=0.0075&amp;n=1&amp;p_m=0.0&amp;f_Hz=21062372&amp;bw_Hz=52744&amp;Pfwd_W=5.0&amp;swr_min=1.0721" class="calculator-link">calculator</a></td>
+                
+                    <td class="val" title="Open calculator with this band parameters."><a href="../../../index.html?D_m=0.65&amp;d_m=0.0075&amp;n=1&amp;p_m=0.0&amp;f_Hz=24903914&amp;bw_Hz=83552&amp;Pfwd_W=5.0&amp;swr_min=1.0568" class="calculator-link">calculator</a></td>
+                
+                    <td class="val" title="Open calculator with this band parameters."><a href="../../../index.html?D_m=0.65&amp;d_m=0.0075&amp;n=1&amp;p_m=0.0&amp;f_Hz=28078633&amp;bw_Hz=111116&amp;Pfwd_W=5.0&amp;swr_min=1.0647" class="calculator-link">calculator</a></td>
+                
+            </tr>
+        
+    </tbody>
+</table>
+
+
+<h2>Build Details</h2>
+
+<h3>Capacitor</h3>
+<figure>
+	<a href="../../shared/YO2FZT/images/capacitor.png"><img src="../../shared/YO2FZT/images/capacitor.png"
+			style="max-width: 500px; width: 100%; height: auto;"></a>
+<figcaption>The variable air capacitor is a custom design by Fesz, made from PCBs and 3D-printed parts.</figcaption>
+		</figure>
+
+<p>Information about the butterfly PCB air capacitor, including 3D models and gerber files: <a href="https://github.com/FeszElectronics/DIY-Variable-Capacitor">github.com/FeszElectronics/DIY-Variable-Capacitor</a>
+</p>
+<p>Youtube Video: <a href="https://youtu.be/tf2oflHAvQ0">https://youtu.be/tf2oflHAvQ0</a>
+</p>
+
+
+
+
+
+<figure>
+	<a href="../../shared/capacitor/capacitor_spacing.svg"><img src="../../shared/capacitor/capacitor_spacing.svg"
+			style="max-width: 300px; width: 100%; height: auto;"></a>
+</figure>
+
+<table class="table_capacitor_spacing">
+	<tr>
+		<td colspan="4">One half of the capacitor</td>
+	</tr>
+	<tr>
+		<td>Plate thickness</td>
+		<td>d<sub>p</sub></td>
+		<td>1.6</td>
+		<td>mm</td>
+	</tr>
+	<tr>
+		<td>Clearance</td>
+		<td>d<sub>c</sub></td>
+		<td>0.7</td>
+		<td>mm</td>
+	</tr>
+	<tr>
+		<td>Plate spacing</td>
+		<td>d<sub>s</sub> = 2 d<sub>c</sub> + d<sub>p</sub></td>
+		<td>3</td>
+		<td>mm</td>
+	</tr>
+	<tr>
+		<td>Stator plates</td>
+		<td>n<sub>s</sub></td>
+		<td>4</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Rotor plates</td>
+		<td>n<sub>r</sub></td>
+		<td>5</td>
+		<td></td>
+	</tr>
+</table>
+<p>
+Total air gap for both capacitors in series: 1.4 mm.<br>
+Rule of thumb for dielectric strength: 3 kVp/mm.<br>
+U<sub>p</sub> = 4.2 kVp.<br>
+U<sub>rms</sub> = U<sub>p</sub> / √2 = 5.9 kV.
+</p>
+
+
+<p>Measured Values:</p>
+<ul>
+	<li>Capacitance:  5 ... 26 pF</li>
+	<li>Breakdown Voltage:  3.84 kV DC</li>
+</ul>
+
+<figure>
+	<a href="../../shared/YO2FZT/images/voltage.png"><img src="../../shared/YO2FZT/images/voltage.png"
+			style="max-width: 500px; width: 100%; height: auto;"></a>
+			<figcaption>RF Voltage rating approximation by Fesz.</figcaption>
+</figure>
+
+<p>The antenna is operated at 5W as this is the limit of the transmitter. The limit of the antenna is higher.</p>
+
+<h3>Balun</h3>
+
+<figure>
+	<a href="../../shared/YO2FZT/images/balun.png"><img src="../../shared/YO2FZT/images/balun.png"
+			style="max-width: 500px; width: 100%; height: auto;"></a>
+			<figcaption>Schematic of the matching board. C2 is the variable air capacitor.</figcaption>
+</figure>
+
+<figure>
+	<a href="../../shared/YO2FZT/images/matching_board.png"><img src="../../shared/YO2FZT/images/matching_board.png"
+			style="max-width: 500px; width: 100%; height: auto;"></a>
+			<figcaption>Matching board.</figcaption>
+</figure>
+
+<p>Further details are explained in the videos.</p>
+<ul>
+	<li>
+Loop Antenna Lessons and Experiments <a href="https://youtu.be/SeXX_XPLjAk">https://youtu.be/SeXX_XPLjAk</a></li>
+<li>Antenna: will follow later.</li>
+</ul>
+
+
+
+<h2>Environment</h2>
+<p>The antenna is used Indoors, 7. floor, the loop is ~1.5m from the walls made from reinforced concrete. About 1m from the ceiling and ~1.5 from the floor.</p>
+
+
+<h2>Measurement Info</h2>
+<p>The intrinsic bandwidth B<sub>int</sub> of the antenna is determined by measuring the S11 parameters and fitting them to an antenna model.<br>
+This antenna uses capacitive coupling with a balun, which is a complex arrangement. The simple model assumes an inductive coupling loop and cannot accurately represent this topology.<br>
+See also the Smith charts below: red dots are measured values, green line is the model fit.<br>
+The VNA was calibrated at the antenna feed point. Despite this, the model returns a relatively high cable attenuation (alpha_db) and a negative cable delay (tau_s) — both of which are artifacts of the balun rather than actual cable effects.
+The measured values should therefore be treated with caution.</p>
+
+
+<h2>VNA measurements</h2>
+The antenna S11 parameters were measured with the &#39;LiteVNA64&#39;. <br>
+The following values were derived from these measurements.<br>
+Details on the measurement method can be found <a href="http://www.positron.ch/rf/vna_to_measure_loop_antenna/pdf/measure_a_magnetic_loop.pdf">here</a>.<br>
+
+<p><a href="../../shared/vna_schematic/fusspunkt_vna.svg"><img class="vna-calibration-picture" src="../../shared/vna_schematic/fusspunkt_vna.svg" alt="VNA calibration: fusspunkt_vna.svg"></a><br>
+The calibration of the VNA was done at the antenna feed point: green line.<br>
+<br>
+The cable attenuation alpha and the cable delay tau in the following table should therefore be small.</p>
+
+<table class="compact">
+    <thead>
+        <tr>
+            <th>File</th>
+            <th>model f0<br>MHz</th>
+            <th>model Bint<br>kHz</th>
+            <th>model alpha<br>db</th>
+            
+            <th>model_tau<br>ns</th>
+            
+            <th>SWR_min_vna</th>
+            <th>SWR_min_ant</th>
+            <th>eta SWR</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        <tr>
+            <td>10m_small_1_H_pcb_VALUES.py</td>
+            <td>28.079</td>
+            <td>111.1</td>
+            <td>0.363</td>
+            
+            <td>-7.39</td>
+            
+            <td>1.06</td>
+            <td>1.06</td>
+            <td>0.999</td>
+        </tr>
+        
+        <tr>
+            <td>12m_small_2_H_pcb_VALUES.py</td>
+            <td>24.904</td>
+            <td>83.6</td>
+            <td>0.373</td>
+            
+            <td>-8.47</td>
+            
+            <td>1.05</td>
+            <td>1.06</td>
+            <td>0.999</td>
+        </tr>
+        
+        <tr>
+            <td>15m_small_12_H_pcb_VALUES.py</td>
+            <td>21.062</td>
+            <td>52.7</td>
+            <td>0.441</td>
+            
+            <td>-10.17</td>
+            
+            <td>1.06</td>
+            <td>1.07</td>
+            <td>0.999</td>
+        </tr>
+        
+        <tr>
+            <td>17m_small_12_L_pcb_VALUES.py</td>
+            <td>18.102</td>
+            <td>39.1</td>
+            <td>0.555</td>
+            
+            <td>-12.26</td>
+            
+            <td>1.31</td>
+            <td>1.35</td>
+            <td>0.977</td>
+        </tr>
+        
+    </tbody>
+</table>
+
+
+
+
+<p> </p>
+<p>The following diagrams: red points = measured values; green line = fitted model.</p>
+<table class="charts">
+    <thead>
+        <tr>
+            <th>Smith</th>
+            <th>SWR</th>
+            <th>Values</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        <tr>
+            <td><h3>10m_small_1_H_pcb</h3><a href="s1p_results/10m_small_1_H_pcb_SMITH.svg"><img src="s1p_results/10m_small_1_H_pcb_SMITH.svg" alt="10m_small_1_H_pcb smith"></a></td>
+            <td><h3>10m_small_1_H_pcb</h3><a href="s1p_results/10m_small_1_H_pcb_SWR.svg"><img src="s1p_results/10m_small_1_H_pcb_SWR.svg" alt="10m_small_1_H_pcb swr"></a></td>
+            <td class="values-cell">
+                <h3>10m_small_1_H_pcb</h3>
+                <table class="chart-values">
+                    <tbody>
+                        <tr><td>model_f0</td><td class="value">28.079</td><td class="unit">MHz</td></tr>
+                        <tr><td>model_Bint</td><td class="value">111.1</td><td class="unit">kHz</td></tr>
+                        <tr><td>model_alpha</td><td class="value">0.363</td><td class="unit">db</td></tr>
+                        
+                        <tr><td>model_tau</td><td class="value">-7.39</td><td class="unit">ns</td></tr>
+                        
+                        <tr><td>SWR_min_vna</td><td class="value">1.06</td><td class="unit"></td></tr>
+                        <tr><td>SWR_min_ant</td><td class="value">1.06</td><td class="unit"></td></tr>
+                        <tr><td>eta_SWR_ant</td><td class="value">0.999</td><td class="unit"></td></tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        
+        <tr>
+            <td><h3>12m_small_2_H_pcb</h3><a href="s1p_results/12m_small_2_H_pcb_SMITH.svg"><img src="s1p_results/12m_small_2_H_pcb_SMITH.svg" alt="12m_small_2_H_pcb smith"></a></td>
+            <td><h3>12m_small_2_H_pcb</h3><a href="s1p_results/12m_small_2_H_pcb_SWR.svg"><img src="s1p_results/12m_small_2_H_pcb_SWR.svg" alt="12m_small_2_H_pcb swr"></a></td>
+            <td class="values-cell">
+                <h3>12m_small_2_H_pcb</h3>
+                <table class="chart-values">
+                    <tbody>
+                        <tr><td>model_f0</td><td class="value">24.904</td><td class="unit">MHz</td></tr>
+                        <tr><td>model_Bint</td><td class="value">83.6</td><td class="unit">kHz</td></tr>
+                        <tr><td>model_alpha</td><td class="value">0.373</td><td class="unit">db</td></tr>
+                        
+                        <tr><td>model_tau</td><td class="value">-8.47</td><td class="unit">ns</td></tr>
+                        
+                        <tr><td>SWR_min_vna</td><td class="value">1.05</td><td class="unit"></td></tr>
+                        <tr><td>SWR_min_ant</td><td class="value">1.06</td><td class="unit"></td></tr>
+                        <tr><td>eta_SWR_ant</td><td class="value">0.999</td><td class="unit"></td></tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        
+        <tr>
+            <td><h3>15m_small_12_H_pcb</h3><a href="s1p_results/15m_small_12_H_pcb_SMITH.svg"><img src="s1p_results/15m_small_12_H_pcb_SMITH.svg" alt="15m_small_12_H_pcb smith"></a></td>
+            <td><h3>15m_small_12_H_pcb</h3><a href="s1p_results/15m_small_12_H_pcb_SWR.svg"><img src="s1p_results/15m_small_12_H_pcb_SWR.svg" alt="15m_small_12_H_pcb swr"></a></td>
+            <td class="values-cell">
+                <h3>15m_small_12_H_pcb</h3>
+                <table class="chart-values">
+                    <tbody>
+                        <tr><td>model_f0</td><td class="value">21.062</td><td class="unit">MHz</td></tr>
+                        <tr><td>model_Bint</td><td class="value">52.7</td><td class="unit">kHz</td></tr>
+                        <tr><td>model_alpha</td><td class="value">0.441</td><td class="unit">db</td></tr>
+                        
+                        <tr><td>model_tau</td><td class="value">-10.17</td><td class="unit">ns</td></tr>
+                        
+                        <tr><td>SWR_min_vna</td><td class="value">1.06</td><td class="unit"></td></tr>
+                        <tr><td>SWR_min_ant</td><td class="value">1.07</td><td class="unit"></td></tr>
+                        <tr><td>eta_SWR_ant</td><td class="value">0.999</td><td class="unit"></td></tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        
+        <tr>
+            <td><h3>17m_small_12_L_pcb</h3><a href="s1p_results/17m_small_12_L_pcb_SMITH.svg"><img src="s1p_results/17m_small_12_L_pcb_SMITH.svg" alt="17m_small_12_L_pcb smith"></a></td>
+            <td><h3>17m_small_12_L_pcb</h3><a href="s1p_results/17m_small_12_L_pcb_SWR.svg"><img src="s1p_results/17m_small_12_L_pcb_SWR.svg" alt="17m_small_12_L_pcb swr"></a></td>
+            <td class="values-cell">
+                <h3>17m_small_12_L_pcb</h3>
+                <table class="chart-values">
+                    <tbody>
+                        <tr><td>model_f0</td><td class="value">18.102</td><td class="unit">MHz</td></tr>
+                        <tr><td>model_Bint</td><td class="value">39.1</td><td class="unit">kHz</td></tr>
+                        <tr><td>model_alpha</td><td class="value">0.555</td><td class="unit">db</td></tr>
+                        
+                        <tr><td>model_tau</td><td class="value">-12.26</td><td class="unit">ns</td></tr>
+                        
+                        <tr><td>SWR_min_vna</td><td class="value">1.31</td><td class="unit"></td></tr>
+                        <tr><td>SWR_min_ant</td><td class="value">1.35</td><td class="unit"></td></tr>
+                        <tr><td>eta_SWR_ant</td><td class="value">0.977</td><td class="unit"></td></tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        
+    </tbody>
+</table>
+
+
+
+
+<h2>Final Remarks</h2>
+<p>It is a joy to design and build antennas from scratch. It is inspiring when the knowledge gained is shared with the community. Many thanks to Fesz for your contributions.</p>
+
+<hr>
+<p>Overview of all Antennas with filter/selection: <a href="../../../index.html?page=compare">compare page</a><br>
+Overview of all Antennas static: <a href="../../../generated_compare.html">static compare page</a><br>
+2026 Peter Märki (HB9ISP). This project is created in my free time and has no commercial background. Provided without warranty of any kind. Feedback is welcome.</p>
+</body>
+</html>

@@ -66,10 +66,12 @@ def _assign_missing_antenna_colors(
 
 
 def main() -> None:
-    antenna_entries = loop_directories.get_antennen_daten(include_draft=False)
-
-    for entry in antenna_entries:
+    # Enrich all antennas (including draft) first so per-antenna SVGs have data
+    # and every antenna gets a consistent color across all pages.
+    for entry in loop_directories.get_antennen_daten(include_draft=True):
         entry.enrich_s1p()
+
+    antenna_entries = loop_directories.get_antennen_daten(include_draft=False)
 
     if False:
         # Filter

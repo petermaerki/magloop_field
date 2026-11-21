@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="750" height="300" viewBox="0 0 750 300">
+  <rect width="750" height="300" fill="white"/>
+  <clipPath id="plotarea"><rect x="85" y="10" width="435" height="250"/></clipPath>
+  <style>
+    svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_series_0 polyline, svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_legend_entry_0 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_series_0 circle, svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_legend_entry_0 circle { r: 6; }
+    svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_legend_entry_0 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_1:hover, .svg_series_1:hover) .svg_series_1 polyline, svg:has(.svg_legend_entry_1:hover, .svg_series_1:hover) .svg_legend_entry_1 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_1:hover, .svg_series_1:hover) .svg_series_1 circle, svg:has(.svg_legend_entry_1:hover, .svg_series_1:hover) .svg_legend_entry_1 circle { r: 6; }
+    svg:has(.svg_legend_entry_1:hover, .svg_series_1:hover) .svg_legend_entry_1 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_2:hover, .svg_series_2:hover) .svg_series_2 polyline, svg:has(.svg_legend_entry_2:hover, .svg_series_2:hover) .svg_legend_entry_2 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_2:hover, .svg_series_2:hover) .svg_series_2 circle, svg:has(.svg_legend_entry_2:hover, .svg_series_2:hover) .svg_legend_entry_2 circle { r: 6; }
+    svg:has(.svg_legend_entry_2:hover, .svg_series_2:hover) .svg_legend_entry_2 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_3:hover, .svg_series_3:hover) .svg_series_3 polyline, svg:has(.svg_legend_entry_3:hover, .svg_series_3:hover) .svg_legend_entry_3 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_3:hover, .svg_series_3:hover) .svg_series_3 circle, svg:has(.svg_legend_entry_3:hover, .svg_series_3:hover) .svg_legend_entry_3 circle { r: 6; }
+    svg:has(.svg_legend_entry_3:hover, .svg_series_3:hover) .svg_legend_entry_3 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_4:hover, .svg_series_4:hover) .svg_series_4 polyline, svg:has(.svg_legend_entry_4:hover, .svg_series_4:hover) .svg_legend_entry_4 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_4:hover, .svg_series_4:hover) .svg_series_4 circle, svg:has(.svg_legend_entry_4:hover, .svg_series_4:hover) .svg_legend_entry_4 circle { r: 6; }
+    svg:has(.svg_legend_entry_4:hover, .svg_series_4:hover) .svg_legend_entry_4 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_5:hover, .svg_series_5:hover) .svg_series_5 polyline, svg:has(.svg_legend_entry_5:hover, .svg_series_5:hover) .svg_legend_entry_5 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_5:hover, .svg_series_5:hover) .svg_series_5 circle, svg:has(.svg_legend_entry_5:hover, .svg_series_5:hover) .svg_legend_entry_5 circle { r: 6; }
+    svg:has(.svg_legend_entry_5:hover, .svg_series_5:hover) .svg_legend_entry_5 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_6:hover, .svg_series_6:hover) .svg_series_6 polyline, svg:has(.svg_legend_entry_6:hover, .svg_series_6:hover) .svg_legend_entry_6 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_6:hover, .svg_series_6:hover) .svg_series_6 circle, svg:has(.svg_legend_entry_6:hover, .svg_series_6:hover) .svg_legend_entry_6 circle { r: 6; }
+    svg:has(.svg_legend_entry_6:hover, .svg_series_6:hover) .svg_legend_entry_6 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_7:hover, .svg_series_7:hover) .svg_series_7 polyline, svg:has(.svg_legend_entry_7:hover, .svg_series_7:hover) .svg_legend_entry_7 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_7:hover, .svg_series_7:hover) .svg_series_7 circle, svg:has(.svg_legend_entry_7:hover, .svg_series_7:hover) .svg_legend_entry_7 circle { r: 6; }
+    svg:has(.svg_legend_entry_7:hover, .svg_series_7:hover) .svg_legend_entry_7 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_8:hover, .svg_series_8:hover) .svg_series_8 polyline, svg:has(.svg_legend_entry_8:hover, .svg_series_8:hover) .svg_legend_entry_8 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_8:hover, .svg_series_8:hover) .svg_series_8 circle, svg:has(.svg_legend_entry_8:hover, .svg_series_8:hover) .svg_legend_entry_8 circle { r: 6; }
+    svg:has(.svg_legend_entry_8:hover, .svg_series_8:hover) .svg_legend_entry_8 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_9:hover, .svg_series_9:hover) .svg_series_9 polyline, svg:has(.svg_legend_entry_9:hover, .svg_series_9:hover) .svg_legend_entry_9 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_9:hover, .svg_series_9:hover) .svg_series_9 circle, svg:has(.svg_legend_entry_9:hover, .svg_series_9:hover) .svg_legend_entry_9 circle { r: 6; }
+    svg:has(.svg_legend_entry_9:hover, .svg_series_9:hover) .svg_legend_entry_9 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_10:hover, .svg_series_10:hover) .svg_series_10 polyline, svg:has(.svg_legend_entry_10:hover, .svg_series_10:hover) .svg_legend_entry_10 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_10:hover, .svg_series_10:hover) .svg_series_10 circle, svg:has(.svg_legend_entry_10:hover, .svg_series_10:hover) .svg_legend_entry_10 circle { r: 6; }
+    svg:has(.svg_legend_entry_10:hover, .svg_series_10:hover) .svg_legend_entry_10 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_11:hover, .svg_series_11:hover) .svg_series_11 polyline, svg:has(.svg_legend_entry_11:hover, .svg_series_11:hover) .svg_legend_entry_11 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_11:hover, .svg_series_11:hover) .svg_series_11 circle, svg:has(.svg_legend_entry_11:hover, .svg_series_11:hover) .svg_legend_entry_11 circle { r: 6; }
+    svg:has(.svg_legend_entry_11:hover, .svg_series_11:hover) .svg_legend_entry_11 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_12:hover, .svg_series_12:hover) .svg_series_12 polyline, svg:has(.svg_legend_entry_12:hover, .svg_series_12:hover) .svg_legend_entry_12 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_12:hover, .svg_series_12:hover) .svg_series_12 circle, svg:has(.svg_legend_entry_12:hover, .svg_series_12:hover) .svg_legend_entry_12 circle { r: 6; }
+    svg:has(.svg_legend_entry_12:hover, .svg_series_12:hover) .svg_legend_entry_12 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_13:hover, .svg_series_13:hover) .svg_series_13 polyline, svg:has(.svg_legend_entry_13:hover, .svg_series_13:hover) .svg_legend_entry_13 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_13:hover, .svg_series_13:hover) .svg_series_13 circle, svg:has(.svg_legend_entry_13:hover, .svg_series_13:hover) .svg_legend_entry_13 circle { r: 6; }
+    svg:has(.svg_legend_entry_13:hover, .svg_series_13:hover) .svg_legend_entry_13 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_14:hover, .svg_series_14:hover) .svg_series_14 polyline, svg:has(.svg_legend_entry_14:hover, .svg_series_14:hover) .svg_legend_entry_14 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_14:hover, .svg_series_14:hover) .svg_series_14 circle, svg:has(.svg_legend_entry_14:hover, .svg_series_14:hover) .svg_legend_entry_14 circle { r: 6; }
+    svg:has(.svg_legend_entry_14:hover, .svg_series_14:hover) .svg_legend_entry_14 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_15:hover, .svg_series_15:hover) .svg_series_15 polyline, svg:has(.svg_legend_entry_15:hover, .svg_series_15:hover) .svg_legend_entry_15 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_15:hover, .svg_series_15:hover) .svg_series_15 circle, svg:has(.svg_legend_entry_15:hover, .svg_series_15:hover) .svg_legend_entry_15 circle { r: 6; }
+    svg:has(.svg_legend_entry_15:hover, .svg_series_15:hover) .svg_legend_entry_15 text { fill: #000; font-weight: bold; }
+  </style>
+  <line x1="109.1" y1="10" x2="109.1" y2="260" stroke="#e0e0e0" stroke-width="1"/>
+  <line x1="189.9" y1="10" x2="189.9" y2="260" stroke="#e0e0e0" stroke-width="1"/>
+  <line x1="235.0" y1="10" x2="235.0" y2="260" stroke="#e0e0e0" stroke-width="1"/>
+  <line x1="268.3" y1="10" x2="268.3" y2="260" stroke="#e0e0e0" stroke-width="1"/>
+  <line x1="309.9" y1="10" x2="309.9" y2="260" stroke="#e0e0e0" stroke-width="1"/>
+  <line x1="349.6" y1="10" x2="349.6" y2="260" stroke="#e0e0e0" stroke-width="1"/>
+  <line x1="378.8" y1="10" x2="378.8" y2="260" stroke="#e0e0e0" stroke-width="1"/>
+  <line x1="397.3" y1="10" x2="397.3" y2="260" stroke="#e0e0e0" stroke-width="1"/>
+  <line x1="416.5" y1="10" x2="416.5" y2="260" stroke="#e0e0e0" stroke-width="1"/>
+  <line x1="432.2" y1="10" x2="432.2" y2="260" stroke="#e0e0e0" stroke-width="1"/>
+  <line x1="500.8" y1="10" x2="500.8" y2="260" stroke="#e0e0e0" stroke-width="1"/>
+  <line x1="85" y1="260.0" x2="520" y2="260.0" stroke="#888" stroke-width="1.5"/>
+  <line x1="85" y1="210.0" x2="520" y2="210.0" stroke="#888" stroke-width="1.5"/>
+  <line x1="85" y1="160.0" x2="520" y2="160.0" stroke="#888" stroke-width="1.5"/>
+  <line x1="85" y1="110.0" x2="520" y2="110.0" stroke="#888" stroke-width="1.5"/>
+  <line x1="85" y1="60.0" x2="520" y2="60.0" stroke="#000" stroke-width="4"/>
+  <line x1="85" y1="10.0" x2="520" y2="10.0" stroke="#888" stroke-width="1.5"/>
+  <rect x="85" y="10" width="435" height="250" fill="none" stroke="#888" stroke-width="1.5"/>
+  <line x1="109.1" y1="260" x2="109.1" y2="265" stroke="#888" stroke-width="1.5"/>
+  <text x="109.1" y="282" text-anchor="middle" font-size="15" font-family="Arial,sans-serif" fill="#333" transform="rotate(-90 109.1 282)">1.8</text>
+  <line x1="189.9" y1="260" x2="189.9" y2="265" stroke="#888" stroke-width="1.5"/>
+  <text x="189.9" y="282" text-anchor="middle" font-size="15" font-family="Arial,sans-serif" fill="#333" transform="rotate(-90 189.9 282)">3.6</text>
+  <line x1="235.0" y1="260" x2="235.0" y2="265" stroke="#888" stroke-width="1.5"/>
+  <text x="235.0" y="282" text-anchor="middle" font-size="15" font-family="Arial,sans-serif" fill="#333" transform="rotate(-90 235.0 282)">5.3</text>
+  <line x1="268.3" y1="260" x2="268.3" y2="265" stroke="#888" stroke-width="1.5"/>
+  <text x="268.3" y="282" text-anchor="middle" font-size="15" font-family="Arial,sans-serif" fill="#333" transform="rotate(-90 268.3 282)">7.1</text>
+  <line x1="309.9" y1="260" x2="309.9" y2="265" stroke="#888" stroke-width="1.5"/>
+  <text x="309.9" y="282" text-anchor="middle" font-size="15" font-family="Arial,sans-serif" fill="#333" transform="rotate(-90 309.9 282)">10.1</text>
+  <line x1="349.6" y1="260" x2="349.6" y2="265" stroke="#888" stroke-width="1.5"/>
+  <text x="349.6" y="282" text-anchor="middle" font-size="15" font-family="Arial,sans-serif" fill="#333" transform="rotate(-90 349.6 282)">14.2</text>
+  <line x1="378.8" y1="260" x2="378.8" y2="265" stroke="#888" stroke-width="1.5"/>
+  <text x="378.8" y="282" text-anchor="middle" font-size="15" font-family="Arial,sans-serif" fill="#333" transform="rotate(-90 378.8 282)">18.1</text>
+  <line x1="397.3" y1="260" x2="397.3" y2="265" stroke="#888" stroke-width="1.5"/>
+  <text x="397.3" y="282" text-anchor="middle" font-size="15" font-family="Arial,sans-serif" fill="#333" transform="rotate(-90 397.3 282)">21.2</text>
+  <line x1="416.5" y1="260" x2="416.5" y2="265" stroke="#888" stroke-width="1.5"/>
+  <text x="416.5" y="282" text-anchor="middle" font-size="15" font-family="Arial,sans-serif" fill="#333" transform="rotate(-90 416.5 282)">24.9</text>
+  <line x1="432.2" y1="260" x2="432.2" y2="265" stroke="#888" stroke-width="1.5"/>
+  <text x="432.2" y="282" text-anchor="middle" font-size="15" font-family="Arial,sans-serif" fill="#333" transform="rotate(-90 432.2 282)">28.5</text>
+  <line x1="500.8" y1="260" x2="500.8" y2="265" stroke="#888" stroke-width="1.5"/>
+  <text x="500.8" y="282" text-anchor="middle" font-size="15" font-family="Arial,sans-serif" fill="#333" transform="rotate(-90 500.8 282)">51.0</text>
+  <line x1="80" y1="260.0" x2="85" y2="260.0" stroke="#888" stroke-width="1.5"/>
+  <text x="77" y="264.0" text-anchor="end" font-size="15" font-family="Arial,sans-serif" fill="#333">0.01 %</text>
+  <line x1="80" y1="210.0" x2="85" y2="210.0" stroke="#888" stroke-width="1.5"/>
+  <text x="77" y="214.0" text-anchor="end" font-size="15" font-family="Arial,sans-serif" fill="#333">0.1 %</text>
+  <line x1="80" y1="160.0" x2="85" y2="160.0" stroke="#888" stroke-width="1.5"/>
+  <text x="77" y="164.0" text-anchor="end" font-size="15" font-family="Arial,sans-serif" fill="#333">1 %</text>
+  <line x1="80" y1="110.0" x2="85" y2="110.0" stroke="#888" stroke-width="1.5"/>
+  <text x="77" y="114.0" text-anchor="end" font-size="15" font-family="Arial,sans-serif" fill="#333">10 %</text>
+  <line x1="80" y1="60.0" x2="85" y2="60.0" stroke="#000" stroke-width="4"/>
+  <text x="77" y="64.0" text-anchor="end" font-size="15" font-family="Arial,sans-serif" fill="#333">100 %</text>
+  <line x1="80" y1="10.0" x2="85" y2="10.0" stroke="#888" stroke-width="1.5"/>
+  <text x="77" y="14.0" text-anchor="end" font-size="15" font-family="Arial,sans-serif" fill="#333">1000 %</text>
+  <text x="535.0" y="282" text-anchor="start" font-size="15" font-family="Arial,sans-serif" fill="#222">MHz</text>
+  <text transform="rotate(-90 25 135.0)" x="25" y="135.0" text-anchor="middle" font-size="15" font-family="Arial,sans-serif" fill="#222">η (Efficiency)</text>
+  <g class="svg_series_0">
+  <polyline points="266.65,110.24 348.39,58.68 396.20,38.26 430.13,24.01" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
+  <polyline points="266.65,110.24 348.39,58.68 396.20,38.26 430.13,24.01" fill="none" stroke="#e452ff" stroke-width="1.8" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  <circle cx="266.65" cy="110.24" r="4" fill="#e452ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="348.39" cy="58.68" r="4" fill="#e452ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="396.20" cy="38.26" r="4" fill="#e452ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="430.13" cy="24.01" r="4" fill="#e452ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="svg_series_1">
+  <polyline points="268.32,129.31 310.05,123.24 349.72,93.03 378.86,107.72 397.47,79.98 416.46,64.14 433.70,65.31" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
+  <polyline points="268.32,129.31 310.05,123.24 349.72,93.03 378.86,107.72 397.47,79.98 416.46,64.14 433.70,65.31" fill="none" stroke="#8e7900" stroke-width="1.8" clip-path="url(#plotarea)"/>
+  <circle cx="268.32" cy="129.31" r="4" fill="#8e7900" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="310.05" cy="123.24" r="4" fill="#8e7900" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="349.72" cy="93.03" r="4" fill="#8e7900" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="378.86" cy="107.72" r="4" fill="#8e7900" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="397.47" cy="79.98" r="4" fill="#8e7900" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="416.46" cy="64.14" r="4" fill="#8e7900" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="433.70" cy="65.31" r="4" fill="#8e7900" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="svg_series_2">
+  <polyline points="268.32,117.43 310.20,96.86 349.84,96.31 378.83,71.75 397.37,103.04 416.37,69.40 433.58,84.73" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
+  <polyline points="268.32,117.43 310.20,96.86 349.84,96.31 378.83,71.75 397.37,103.04 416.37,69.40 433.58,84.73" fill="none" stroke="#ff7266" stroke-width="1.8" clip-path="url(#plotarea)"/>
+  <circle cx="268.32" cy="117.43" r="4" fill="#ff7266" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="310.20" cy="96.86" r="4" fill="#ff7266" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="349.84" cy="96.31" r="4" fill="#ff7266" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="378.83" cy="71.75" r="4" fill="#ff7266" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="397.37" cy="103.04" r="4" fill="#ff7266" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="416.37" cy="69.40" r="4" fill="#ff7266" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="433.58" cy="84.73" r="4" fill="#ff7266" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="svg_series_3">
+  <polyline points="184.92,126.12 266.65,74.56 348.39,24.81" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
+  <polyline points="184.92,126.12 266.65,74.56 348.39,24.81" fill="none" stroke="#6db3ff" stroke-width="1.8" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  <circle cx="184.92" cy="126.12" r="4" fill="#6db3ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="266.65" cy="74.56" r="4" fill="#6db3ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="348.39" cy="24.81" r="4" fill="#6db3ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="svg_series_4">
+  <polyline points="189.86,133.29 235.22,126.54 268.27,127.29 310.08,94.88 349.70,96.78" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
+  <polyline points="189.86,133.29 235.22,126.54 268.27,127.29 310.08,94.88 349.70,96.78" fill="none" stroke="#802690" stroke-width="1.8" clip-path="url(#plotarea)"/>
+  <circle cx="189.86" cy="133.29" r="4" fill="#802690" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="235.22" cy="126.54" r="4" fill="#802690" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="268.27" cy="127.29" r="4" fill="#802690" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="310.08" cy="94.88" r="4" fill="#802690" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="349.70" cy="96.78" r="4" fill="#802690" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="svg_series_5">
+  <polyline points="266.65,135.04 348.39,84.96 396.20,63.27 430.13,49.20" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
+  <polyline points="266.65,135.04 348.39,84.96 396.20,63.27 430.13,49.20" fill="none" stroke="#005659" stroke-width="1.8" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  <circle cx="266.65" cy="135.04" r="4" fill="#005659" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="348.39" cy="84.96" r="4" fill="#005659" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="396.20" cy="63.27" r="4" fill="#005659" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="430.13" cy="49.20" r="4" fill="#005659" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="svg_series_6">
+  <polyline points="268.34,165.25 268.37,161.94 310.20,145.77 310.22,144.84 349.79,128.44 349.79,128.19 378.76,118.97 378.79,121.44 397.39,114.02 397.52,116.63 416.34,110.52 416.56,108.45 433.51,107.36 433.65,106.66" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
+  <polyline points="268.34,165.25 268.37,161.94 310.20,145.77 310.22,144.84 349.79,128.44 349.79,128.19 378.76,118.97 378.79,121.44 397.39,114.02 397.52,116.63 416.34,110.52 416.56,108.45 433.51,107.36 433.65,106.66" fill="none" stroke="#9c3b4f" stroke-width="1.8" clip-path="url(#plotarea)"/>
+  <circle cx="268.34" cy="165.25" r="4" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="268.37" cy="161.94" r="4" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="310.20" cy="145.77" r="4" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="310.22" cy="144.84" r="4" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="349.79" cy="128.44" r="4" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="349.79" cy="128.19" r="4" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="378.76" cy="118.97" r="4" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="378.79" cy="121.44" r="4" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="397.39" cy="114.02" r="4" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="397.52" cy="116.63" r="4" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="416.34" cy="110.52" r="4" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="416.56" cy="108.45" r="4" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="433.51" cy="107.36" r="4" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="433.65" cy="106.66" r="4" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="svg_series_7">
+  <polyline points="189.86,186.13 268.33,156.23 309.89,136.41" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
+  <polyline points="189.86,186.13 268.33,156.23 309.89,136.41" fill="none" stroke="#018700" stroke-width="1.8" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  <circle cx="189.86" cy="186.13" r="4" fill="#018700" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="268.33" cy="156.23" r="4" fill="#018700" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="309.89" cy="136.41" r="4" fill="#018700" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="svg_series_8">
+  <polyline points="109.09,258.23 189.86,178.71 268.33,141.00" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
+  <polyline points="109.09,258.23 189.86,178.71 268.33,141.00" fill="none" stroke="#4d33ff" stroke-width="1.8" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  <circle cx="109.09" cy="258.23" r="4" fill="#4d33ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="189.86" cy="178.71" r="4" fill="#4d33ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="268.33" cy="141.00" r="4" fill="#4d33ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="svg_series_9">
+  <polyline points="112.88,165.53 189.02,129.80 235.22,127.47 268.33,115.11 309.89,117.60" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
+  <polyline points="112.88,165.53 189.02,129.80 235.22,127.47 268.33,115.11 309.89,117.60" fill="none" stroke="#8287ff" stroke-width="1.8" clip-path="url(#plotarea)"/>
+  <circle cx="112.88" cy="165.53" r="4" fill="#8287ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="189.02" cy="129.80" r="4" fill="#8287ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="235.22" cy="127.47" r="4" fill="#8287ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="268.33" cy="115.11" r="4" fill="#8287ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="309.89" cy="117.60" r="4" fill="#8287ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="svg_series_10">
+  <polyline points="348.99,140.62 378.79,118.67 397.61,108.84 416.51,101.20 432.64,93.51" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
+  <polyline points="348.99,140.62 378.79,118.67 397.61,108.84 416.51,101.20 432.64,93.51" fill="none" stroke="#00acc6" stroke-width="1.8" clip-path="url(#plotarea)"/>
+  <circle cx="348.99" cy="140.62" r="4" fill="#00acc6" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="378.79" cy="118.67" r="4" fill="#00acc6" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="397.61" cy="108.84" r="4" fill="#00acc6" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="416.51" cy="101.20" r="4" fill="#00acc6" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="432.64" cy="93.51" r="4" fill="#00acc6" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="svg_series_11">
+  <polyline points="265.64,178.79 445.39,66.42" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
+  <polyline points="265.64,178.79 445.39,66.42" fill="none" stroke="#fd03ca" stroke-width="1.8" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  <circle cx="265.64" cy="178.79" r="4" fill="#fd03ca" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="445.39" cy="66.42" r="4" fill="#fd03ca" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="svg_series_12">
+  <polyline points="349.02,118.02 396.91,96.77 430.52,88.02" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
+  <polyline points="349.02,118.02 396.91,96.77 430.52,88.02" fill="none" stroke="#03c600" stroke-width="1.8" clip-path="url(#plotarea)"/>
+  <circle cx="349.02" cy="118.02" r="4" fill="#03c600" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="396.91" cy="96.77" r="4" fill="#03c600" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="430.52" cy="88.02" r="4" fill="#03c600" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="svg_series_13">
+  <polyline points="269.15,165.11 350.03,135.64" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
+  <polyline points="269.15,165.11 350.03,135.64" fill="none" stroke="#95b577" stroke-width="1.8" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  <circle cx="269.15" cy="165.11" r="4" fill="#95b577" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="350.03" cy="135.64" r="4" fill="#95b577" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="svg_series_14">
+  <polyline points="109.11,199.67 187.35,155.88 235.12,139.94 267.91,128.62 310.29,110.65 349.04,108.91 378.66,108.60 396.62,88.36 416.39,81.27 430.42,76.53" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
+  <polyline points="109.11,199.67 187.35,155.88 235.12,139.94 267.91,128.62 310.29,110.65 349.04,108.91 378.66,108.60 396.62,88.36 416.39,81.27 430.42,76.53" fill="none" stroke="#ffa52f" stroke-width="1.8" clip-path="url(#plotarea)"/>
+  <circle cx="109.11" cy="199.67" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="187.35" cy="155.88" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="235.12" cy="139.94" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="267.91" cy="128.62" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="310.29" cy="110.65" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="349.04" cy="108.91" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="378.66" cy="108.60" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="396.62" cy="88.36" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="416.39" cy="81.27" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="430.42" cy="76.53" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="svg_series_15">
+  <polyline points="187.35,147.87 235.11,130.68 267.89,110.79 310.31,86.61 349.01,63.70 396.62,65.18 416.36,74.61 430.44,76.09" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
+  <polyline points="187.35,147.87 235.11,130.68 267.89,110.79 310.31,86.61 349.01,63.70 396.62,65.18 416.36,74.61 430.44,76.09" fill="none" stroke="#d60000" stroke-width="1.8" clip-path="url(#plotarea)"/>
+  <circle cx="187.35" cy="147.87" r="4" fill="#d60000" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="235.11" cy="130.68" r="4" fill="#d60000" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="267.89" cy="110.79" r="4" fill="#d60000" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="310.31" cy="86.61" r="4" fill="#d60000" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="349.01" cy="63.70" r="4" fill="#d60000" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="396.62" cy="65.18" r="4" fill="#d60000" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="416.36" cy="74.61" r="4" fill="#d60000" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="430.44" cy="76.09" r="4" fill="#d60000" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="svg_legend_entry_0">
+  <rect x="525" y="10" width="225" height="14" fill="transparent"/>
+  <line x1="525" y1="17" x2="550" y2="17" stroke="#e452ff" stroke-width="2" stroke-dasharray="8,4"/>
+  <circle cx="537" cy="17" r="4" fill="#e452ff" stroke="white" stroke-width="1"/>
+  <text x="557" y="21" font-size="11" font-family="Arial,sans-serif" fill="#333">Mazzoni Baby Datasheet</text>
+  </g>
+  <g class="svg_legend_entry_1">
+  <rect x="525" y="24" width="225" height="14" fill="transparent"/>
+  <line x1="525" y1="31" x2="550" y2="31" stroke="#8e7900" stroke-width="2"/>
+  <circle cx="537" cy="31" r="4" fill="#8e7900" stroke="white" stroke-width="1"/>
+  <text x="557" y="35" font-size="11" font-family="Arial,sans-serif" fill="#333">Mazzoni Baby HB0SM</text>
+  </g>
+  <g class="svg_legend_entry_2">
+  <rect x="525" y="38" width="225" height="14" fill="transparent"/>
+  <line x1="525" y1="45" x2="550" y2="45" stroke="#ff7266" stroke-width="2"/>
+  <circle cx="537" cy="45" r="4" fill="#ff7266" stroke="white" stroke-width="1"/>
+  <text x="557" y="49" font-size="11" font-family="Arial,sans-serif" fill="#333">Mazzoni Baby HB9PWD</text>
+  </g>
+  <g class="svg_legend_entry_3">
+  <rect x="525" y="52" width="225" height="14" fill="transparent"/>
+  <line x1="525" y1="59" x2="550" y2="59" stroke="#6db3ff" stroke-width="2" stroke-dasharray="8,4"/>
+  <circle cx="537" cy="59" r="4" fill="#6db3ff" stroke="white" stroke-width="1"/>
+  <text x="557" y="63" font-size="11" font-family="Arial,sans-serif" fill="#333">Mazzoni Midi Datasheet</text>
+  </g>
+  <g class="svg_legend_entry_4">
+  <rect x="525" y="66" width="225" height="14" fill="transparent"/>
+  <line x1="525" y1="73" x2="550" y2="73" stroke="#802690" stroke-width="2"/>
+  <circle cx="537" cy="73" r="4" fill="#802690" stroke="white" stroke-width="1"/>
+  <text x="557" y="77" font-size="11" font-family="Arial,sans-serif" fill="#333">Mazzoni Midi HB0SM</text>
+  </g>
+  <g class="svg_legend_entry_5">
+  <rect x="525" y="80" width="225" height="14" fill="transparent"/>
+  <line x1="525" y1="87" x2="550" y2="87" stroke="#005659" stroke-width="2" stroke-dasharray="8,4"/>
+  <circle cx="537" cy="87" r="4" fill="#005659" stroke="white" stroke-width="1"/>
+  <text x="557" y="91" font-size="11" font-family="Arial,sans-serif" fill="#333">Mazzoni Stealth Datasheet</text>
+  </g>
+  <g class="svg_legend_entry_6">
+  <rect x="525" y="94" width="225" height="14" fill="transparent"/>
+  <line x1="525" y1="101" x2="550" y2="101" stroke="#9c3b4f" stroke-width="2"/>
+  <circle cx="537" cy="101" r="4" fill="#9c3b4f" stroke="white" stroke-width="1"/>
+  <text x="557" y="105" font-size="11" font-family="Arial,sans-serif" fill="#333">Mazzoni Stealth HE9DJB</text>
+  </g>
+  <g class="svg_legend_entry_7">
+  <rect x="525" y="108" width="225" height="14" fill="transparent"/>
+  <line x1="525" y1="115" x2="550" y2="115" stroke="#018700" stroke-width="2" stroke-dasharray="8,4"/>
+  <circle cx="537" cy="115" r="4" fill="#018700" stroke="white" stroke-width="1"/>
+  <text x="557" y="119" font-size="11" font-family="Arial,sans-serif" fill="#333">Selfmade 0.86m n2 DK3SS</text>
+  </g>
+  <g class="svg_legend_entry_8">
+  <rect x="525" y="122" width="225" height="14" fill="transparent"/>
+  <line x1="525" y1="129" x2="550" y2="129" stroke="#4d33ff" stroke-width="2" stroke-dasharray="8,4"/>
+  <circle cx="537" cy="129" r="4" fill="#4d33ff" stroke="white" stroke-width="1"/>
+  <text x="557" y="133" font-size="11" font-family="Arial,sans-serif" fill="#333">Selfmade 1.25m n2 DK3SS</text>
+  </g>
+  <g class="svg_legend_entry_9">
+  <rect x="525" y="136" width="225" height="14" fill="transparent"/>
+  <line x1="525" y1="143" x2="550" y2="143" stroke="#8287ff" stroke-width="2"/>
+  <circle cx="537" cy="143" r="4" fill="#8287ff" stroke="white" stroke-width="1"/>
+  <text x="557" y="147" font-size="11" font-family="Arial,sans-serif" fill="#333">Selfmade 1_9_heliax HB9ASB</text>
+  </g>
+  <g class="svg_legend_entry_10">
+  <rect x="525" y="150" width="225" height="14" fill="transparent"/>
+  <line x1="525" y1="157" x2="550" y2="157" stroke="#00acc6" stroke-width="2"/>
+  <circle cx="537" cy="157" r="4" fill="#00acc6" stroke="white" stroke-width="1"/>
+  <text x="557" y="161" font-size="11" font-family="Arial,sans-serif" fill="#333">Selfmade 3P HB9BPO</text>
+  </g>
+  <g class="svg_legend_entry_11">
+  <rect x="525" y="164" width="225" height="14" fill="transparent"/>
+  <line x1="525" y1="171" x2="550" y2="171" stroke="#fd03ca" stroke-width="2" stroke-dasharray="8,4"/>
+  <circle cx="537" cy="171" r="4" fill="#fd03ca" stroke="white" stroke-width="1"/>
+  <text x="557" y="175" font-size="11" font-family="Arial,sans-serif" fill="#333">Selfmade epicenter W6NBC</text>
+  </g>
+  <g class="svg_legend_entry_12">
+  <rect x="525" y="178" width="225" height="14" fill="transparent"/>
+  <line x1="525" y1="185" x2="550" y2="185" stroke="#03c600" stroke-width="2"/>
+  <circle cx="537" cy="185" r="4" fill="#03c600" stroke="white" stroke-width="1"/>
+  <text x="557" y="189" font-size="11" font-family="Arial,sans-serif" fill="#333">Selfmade foil_pvc_0_71 F4WDO</text>
+  </g>
+  <g class="svg_legend_entry_13">
+  <rect x="525" y="192" width="225" height="14" fill="transparent"/>
+  <line x1="525" y1="199" x2="550" y2="199" stroke="#95b577" stroke-width="2" stroke-dasharray="8,4"/>
+  <circle cx="537" cy="199" r="4" fill="#95b577" stroke="white" stroke-width="1"/>
+  <text x="557" y="203" font-size="11" font-family="Arial,sans-serif" fill="#333">Selfmade square_1m EA4AGY</text>
+  </g>
+  <g class="svg_legend_entry_14">
+  <rect x="525" y="206" width="225" height="14" fill="transparent"/>
+  <line x1="525" y1="213" x2="550" y2="213" stroke="#ffa52f" stroke-width="2"/>
+  <circle cx="537" cy="213" r="4" fill="#ffa52f" stroke="white" stroke-width="1"/>
+  <text x="557" y="217" font-size="11" font-family="Arial,sans-serif" fill="#333">Selfmade Tubby indoor HB9ISP</text>
+  </g>
+  <g class="svg_legend_entry_15">
+  <rect x="525" y="220" width="225" height="14" fill="transparent"/>
+  <line x1="525" y1="227" x2="550" y2="227" stroke="#d60000" stroke-width="2"/>
+  <circle cx="537" cy="227" r="4" fill="#d60000" stroke="white" stroke-width="1"/>
+  <text x="557" y="231" font-size="11" font-family="Arial,sans-serif" fill="#333">Selfmade Tubby outdoor HB9ISP</text>
+  </g>
+</svg>

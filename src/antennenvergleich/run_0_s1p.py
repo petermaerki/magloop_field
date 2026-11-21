@@ -227,11 +227,12 @@ def fit_antenna_model(
     _w = (1.0 - _mag) / (1.0 + _mag)  # = 1/SWR: down-weights far-from-resonance points
 
     def residual(p):
-        logR, logQ, logLp, alpha, tau_ns = p
+        logR, logQ, Lp, alpha, tau_ns = p
 
         R = np.exp(logR)
         Q = np.exp(logQ)
-        Lp = np.exp(logLp)
+        # Lp is fitted directly (not log-transformed) to allow negative values,
+        # which model capacitive coupling (jω·L_P < 0 ↔ series capacitor).
         tau = tau_ns * 1e-9
 
         g = model_s11(
@@ -254,51 +255,59 @@ def fit_antenna_model(
 
     best = None
 
-    for R0 in (0.05, 0.2, 1.0):
-        for Q0 in (50, 150, 500, 1500):
-            for Lp0 in (10e-9, 50e-9, 200e-9):
-                res = least_squares(
-                    residual,
-                    x0=[
-                        np.log(R0),
-                        np.log(Q0),
-                        np.log(Lp0),
-                        0.2,  # alpha dB one-way
-                        b_tau_s_hint * 1e9,  # tau ns
-                    ],
-                    bounds=(
-                        [
-                            np.log(R_res_min_ohm),
-                            np.log(Q_min),
-                            np.log(Lp_min_H),
-                            alpha_min_db,
-                            b_tau_s_hint * 1e9 - 122.0,
+    # Search both coupling polarities independently so each sub-search stays
+    # within its own half-space.  Inductive coupling (L_P > 0) is tried first
+    # with the original log-parameterised starting grid; capacitive coupling
+    # (L_P < 0, e.g. a small series capacitor at the feed) is tried with
+    # mirrored negative starting values.  The global minimum wins.
+    for Lp0_values, lp_lo, lp_hi in (
+        ((10e-9, 50e-9, 200e-9), Lp_min_H, Lp_max_H),    # inductive: L_P > 0
+        ((-10e-9, -50e-9, -200e-9), -Lp_max_H, -Lp_min_H),  # capacitive: L_P < 0
+    ):
+        for R0 in (0.05, 0.2, 1.0):
+            for Q0 in (50, 150, 500, 1500):
+                for Lp0 in Lp0_values:
+                    res = least_squares(
+                        residual,
+                        x0=[
+                            np.log(R0),
+                            np.log(Q0),
+                            Lp0,
+                            0.2,  # alpha dB one-way
+                            b_tau_s_hint * 1e9,  # tau ns
                         ],
-                        [
-                            np.log(R_res_max_ohm),
-                            np.log(Q_max),
-                            np.log(Lp_max_H),
-                            alpha_max_db,
-                            b_tau_s_hint * 1e9 + 12.0,
-                        ],
-                    ),
-                    ftol=1e-13,
-                    xtol=1e-13,
-                    gtol=1e-13,
-                    max_nfev=5000,
-                )
+                        bounds=(
+                            [
+                                np.log(R_res_min_ohm),
+                                np.log(Q_min),
+                                lp_lo,
+                                alpha_min_db,
+                                b_tau_s_hint * 1e9 - 122.0,
+                            ],
+                            [
+                                np.log(R_res_max_ohm),
+                                np.log(Q_max),
+                                lp_hi,
+                                alpha_max_db,
+                                b_tau_s_hint * 1e9 + 12.0,
+                            ],
+                        ),
+                        ftol=1e-13,
+                        xtol=1e-13,
+                        gtol=1e-13,
+                        max_nfev=5000,
+                    )
 
-                if best is None or res.cost < best.cost:
-                    best = res
+                    if best is None or res.cost < best.cost:
+                        best = res
 
     if best is None or not best.success:
         return None
 
-    logR, logQ, logLp, alpha, tau_ns = best.x
+    logR, logQ, Lp, alpha, tau_ns = best.x
 
     R = np.exp(logR)
     Q = np.exp(logQ)
-    Lp = np.exp(logLp)
     tau = tau_ns * 1e-9
 
     omega0 = 2 * np.pi * f0_hz

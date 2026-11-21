@@ -1,0 +1,19 @@
+=== Messpunkt A ===
+cable_a_loss_db: 0.1516 dB
+cable_a_loss_db: 0.1380 dB
+cable_a_loss_db: 0.3031 dB
+connectors_loss_db: 0.4000 dB
+attenuation_cables_connectors_total_dbm: 0.9928 dB
+tx_after_cable_w: 79.566 W
+--- debug_h_field_inputs ---
+closest_band_f_Hz: 14158855.0 (source: s1p model fit: 20260820_1747_baby_swr_1p2_330grad_14MHz.s1p)
+closest_band_bw262_Hz: 30210.820956 (source: s1p model fit: 20260820_1747_baby_swr_1p2_330grad_14MHz.s1p)
+closest_band_swr_min: 1.304004 (source: s1p measurement: 20260820_1747_baby_swr_1p2_330grad_14MHz.s1p)
+antenna_D_m: 0.940000, antenna_d_m: 0.049400, n: 1, p_m: 0.000000
+point_xyz_m: (-9.050000, 0.299000, -0.321000), r_m: 9.060626, kr: 2.714003
+tx_after_cable_w: 79.565535
+I_main_loop_A: 15.182187, m_Am2: 10.536101
+--- /debug_h_field_inputs ---
+h_field_expected_A_m: 0.006524 A/m
+h_field_measured_A_m: 0.027007 A/m
+h_field_factor_measured_to_expected: 4.140

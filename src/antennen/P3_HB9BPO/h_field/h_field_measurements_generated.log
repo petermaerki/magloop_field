@@ -1,0 +1,270 @@
+=== Messpunkt A ===
+cable_a_loss_db: 0.5318 dB
+cable_a_loss_db: 0.0267 dB
+connectors_loss_db: 0.2000 dB
+attenuation_cables_connectors_total_dbm: 0.7584 dB
+tx_after_cable_w: 8.398 W
+--- debug_h_field_inputs ---
+closest_band_f_Hz: 14071580.0 (source: s1p model fit: 20260827_1344_antenne_14p1MHz.s1p)
+closest_band_bw262_Hz: 99141.036188 (source: s1p model fit: 20260827_1344_antenne_14p1MHz.s1p)
+closest_band_swr_min: 1.386343 (source: s1p measurement: 20260827_1344_antenne_14p1MHz.s1p)
+antenna_D_m: 0.761667, antenna_d_m: 0.012000, n: 1, p_m: 0.000000
+point_xyz_m: (0.000000, 2.000000, 0.000000), r_m: 2.000000, kr: 0.589855
+tx_after_cable_w: 8.397601
+I_main_loop_A: 2.546529, m_Am2: 1.160295
+--- /debug_h_field_inputs ---
+h_field_expected_A_m: 0.011330 A/m
+h_field_measured_A_m: 0.008946 A/m
+h_field_factor_measured_to_expected: 0.790
+=== Messpunkt B ===
+cable_a_loss_db: 0.5318 dB
+cable_a_loss_db: 0.0267 dB
+connectors_loss_db: 0.2000 dB
+attenuation_cables_connectors_total_dbm: 0.7584 dB
+tx_after_cable_w: 8.398 W
+--- debug_h_field_inputs ---
+closest_band_f_Hz: 14071580.0 (source: s1p model fit: 20260827_1344_antenne_14p1MHz.s1p)
+closest_band_bw262_Hz: 99141.036188 (source: s1p model fit: 20260827_1344_antenne_14p1MHz.s1p)
+closest_band_swr_min: 1.386343 (source: s1p measurement: 20260827_1344_antenne_14p1MHz.s1p)
+antenna_D_m: 0.761667, antenna_d_m: 0.012000, n: 1, p_m: 0.000000
+point_xyz_m: (0.000000, 7.000000, 0.000000), r_m: 7.000000, kr: 2.064491
+tx_after_cable_w: 8.397601
+I_main_loop_A: 2.546529, m_Am2: 1.160295
+--- /debug_h_field_inputs ---
+h_field_expected_A_m: 0.001039 A/m
+h_field_measured_A_m: 0.003138 A/m
+h_field_factor_measured_to_expected: 3.019
+=== Messpunkt C ===
+cable_a_loss_db: 0.5318 dB
+cable_a_loss_db: 0.0267 dB
+connectors_loss_db: 0.2000 dB
+attenuation_cables_connectors_total_dbm: 0.7584 dB
+tx_after_cable_w: 8.398 W
+--- debug_h_field_inputs ---
+closest_band_f_Hz: 14071580.0 (source: s1p model fit: 20260827_1344_antenne_14p1MHz.s1p)
+closest_band_bw262_Hz: 99141.036188 (source: s1p model fit: 20260827_1344_antenne_14p1MHz.s1p)
+closest_band_swr_min: 1.386343 (source: s1p measurement: 20260827_1344_antenne_14p1MHz.s1p)
+antenna_D_m: 0.761667, antenna_d_m: 0.012000, n: 1, p_m: 0.000000
+point_xyz_m: (-2.000000, 0.000000, 0.000000), r_m: 2.000000, kr: 0.589855
+tx_after_cable_w: 8.397601
+I_main_loop_A: 2.546529, m_Am2: 1.160295
+--- /debug_h_field_inputs ---
+h_field_expected_A_m: 0.023714 A/m
+h_field_measured_A_m: 0.024640 A/m
+h_field_factor_measured_to_expected: 1.039
+=== Messpunkt A ===
+cable_a_loss_db: 0.6015 dB
+cable_a_loss_db: 0.0329 dB
+connectors_loss_db: 0.2000 dB
+attenuation_cables_connectors_total_dbm: 0.8344 dB
+tx_after_cable_w: 8.252 W
+--- debug_h_field_inputs ---
+closest_band_f_Hz: 18116488.0 (source: s1p model fit: 20260827_1435_antenne_18p1MHz.s1p)
+closest_band_bw262_Hz: 102157.654845 (source: s1p model fit: 20260827_1435_antenne_18p1MHz.s1p)
+closest_band_swr_min: 1.040207 (source: s1p measurement: 20260827_1435_antenne_18p1MHz.s1p)
+antenna_D_m: 0.761667, antenna_d_m: 0.012000, n: 1, p_m: 0.000000
+point_xyz_m: (0.000000, 2.000000, 0.000000), r_m: 2.000000, kr: 0.759367
+tx_after_cable_w: 8.252083
+I_main_loop_A: 2.519574, m_Am2: 1.148013
+--- /debug_h_field_inputs ---
+h_field_expected_A_m: 0.010468 A/m
+h_field_measured_A_m: 0.011957 A/m
+h_field_factor_measured_to_expected: 1.142
+=== Messpunkt B ===
+cable_a_loss_db: 0.6015 dB
+cable_a_loss_db: 0.0329 dB
+connectors_loss_db: 0.2000 dB
+attenuation_cables_connectors_total_dbm: 0.8344 dB
+tx_after_cable_w: 8.252 W
+--- debug_h_field_inputs ---
+closest_band_f_Hz: 18116488.0 (source: s1p model fit: 20260827_1435_antenne_18p1MHz.s1p)
+closest_band_bw262_Hz: 102157.654845 (source: s1p model fit: 20260827_1435_antenne_18p1MHz.s1p)
+closest_band_swr_min: 1.040207 (source: s1p measurement: 20260827_1435_antenne_18p1MHz.s1p)
+antenna_D_m: 0.761667, antenna_d_m: 0.012000, n: 1, p_m: 0.000000
+point_xyz_m: (0.000000, 7.000000, 0.000000), r_m: 7.000000, kr: 2.657783
+tx_after_cable_w: 8.252083
+I_main_loop_A: 2.519574, m_Am2: 1.148013
+--- /debug_h_field_inputs ---
+h_field_expected_A_m: 0.001763 A/m
+h_field_measured_A_m: 0.003256 A/m
+h_field_factor_measured_to_expected: 1.846
+=== Messpunkt C ===
+cable_a_loss_db: 0.6015 dB
+cable_a_loss_db: 0.0329 dB
+connectors_loss_db: 0.2000 dB
+attenuation_cables_connectors_total_dbm: 0.8344 dB
+tx_after_cable_w: 8.252 W
+--- debug_h_field_inputs ---
+closest_band_f_Hz: 18116488.0 (source: s1p model fit: 20260827_1435_antenne_18p1MHz.s1p)
+closest_band_bw262_Hz: 102157.654845 (source: s1p model fit: 20260827_1435_antenne_18p1MHz.s1p)
+closest_band_swr_min: 1.040207 (source: s1p measurement: 20260827_1435_antenne_18p1MHz.s1p)
+antenna_D_m: 0.761667, antenna_d_m: 0.012000, n: 1, p_m: 0.000000
+point_xyz_m: (-2.000000, 0.000000, 0.000000), r_m: 2.000000, kr: 0.759367
+tx_after_cable_w: 8.252083
+I_main_loop_A: 2.519574, m_Am2: 1.148013
+--- /debug_h_field_inputs ---
+h_field_expected_A_m: 0.026757 A/m
+h_field_measured_A_m: 0.017686 A/m
+h_field_factor_measured_to_expected: 0.661
+=== Messpunkt A ===
+cable_a_loss_db: 0.6503 dB
+cable_a_loss_db: 0.0372 dB
+connectors_loss_db: 0.2000 dB
+attenuation_cables_connectors_total_dbm: 0.8875 dB
+tx_after_cable_w: 8.152 W
+--- debug_h_field_inputs ---
+closest_band_f_Hz: 21252655.0 (source: s1p model fit: 20260827_1426_antenne_21p3MHz.s1p)
+closest_band_bw262_Hz: 123563.334020 (source: s1p model fit: 20260827_1426_antenne_21p3MHz.s1p)
+closest_band_swr_min: 1.025835 (source: s1p measurement: 20260827_1426_antenne_21p3MHz.s1p)
+antenna_D_m: 0.761667, antenna_d_m: 0.012000, n: 1, p_m: 0.000000
+point_xyz_m: (0.000000, 2.000000, 0.000000), r_m: 2.000000, kr: 0.890860
+tx_after_cable_w: 8.151641
+I_main_loop_A: 2.277234, m_Am2: 1.037594
+--- /debug_h_field_inputs ---
+h_field_expected_A_m: 0.009524 A/m
+h_field_measured_A_m: 0.017737 A/m
+h_field_factor_measured_to_expected: 1.862
+=== Messpunkt B ===
+cable_a_loss_db: 0.6503 dB
+cable_a_loss_db: 0.0372 dB
+connectors_loss_db: 0.2000 dB
+attenuation_cables_connectors_total_dbm: 0.8875 dB
+tx_after_cable_w: 8.152 W
+--- debug_h_field_inputs ---
+closest_band_f_Hz: 21252655.0 (source: s1p model fit: 20260827_1426_antenne_21p3MHz.s1p)
+closest_band_bw262_Hz: 123563.334020 (source: s1p model fit: 20260827_1426_antenne_21p3MHz.s1p)
+closest_band_swr_min: 1.025835 (source: s1p measurement: 20260827_1426_antenne_21p3MHz.s1p)
+antenna_D_m: 0.761667, antenna_d_m: 0.012000, n: 1, p_m: 0.000000
+point_xyz_m: (0.000000, 7.000000, 0.000000), r_m: 7.000000, kr: 3.118010
+tx_after_cable_w: 8.151641
+I_main_loop_A: 2.277234, m_Am2: 1.037594
+--- /debug_h_field_inputs ---
+h_field_expected_A_m: 0.002230 A/m
+h_field_measured_A_m: 0.003118 A/m
+h_field_factor_measured_to_expected: 1.398
+=== Messpunkt C ===
+cable_a_loss_db: 0.6503 dB
+cable_a_loss_db: 0.0372 dB
+connectors_loss_db: 0.2000 dB
+attenuation_cables_connectors_total_dbm: 0.8875 dB
+tx_after_cable_w: 8.152 W
+--- debug_h_field_inputs ---
+closest_band_f_Hz: 21252655.0 (source: s1p model fit: 20260827_1426_antenne_21p3MHz.s1p)
+closest_band_bw262_Hz: 123563.334020 (source: s1p model fit: 20260827_1426_antenne_21p3MHz.s1p)
+closest_band_swr_min: 1.025835 (source: s1p measurement: 20260827_1426_antenne_21p3MHz.s1p)
+antenna_D_m: 0.761667, antenna_d_m: 0.012000, n: 1, p_m: 0.000000
+point_xyz_m: (-2.000000, 0.000000, 0.000000), r_m: 2.000000, kr: 0.890860
+tx_after_cable_w: 8.151641
+I_main_loop_A: 2.277234, m_Am2: 1.037594
+--- /debug_h_field_inputs ---
+h_field_expected_A_m: 0.027118 A/m
+h_field_measured_A_m: 0.017333 A/m
+h_field_factor_measured_to_expected: 0.639
+=== Messpunkt A ===
+cable_a_loss_db: 0.7034 dB
+cable_a_loss_db: 0.0420 dB
+connectors_loss_db: 0.2000 dB
+attenuation_cables_connectors_total_dbm: 0.9454 dB
+tx_after_cable_w: 8.044 W
+--- debug_h_field_inputs ---
+closest_band_f_Hz: 24946891.0 (source: s1p model fit: 20260827_1419_antenne_24p9MHz.s1p)
+closest_band_bw262_Hz: 165637.832126 (source: s1p model fit: 20260827_1419_antenne_24p9MHz.s1p)
+closest_band_swr_min: 1.075367 (source: s1p measurement: 20260827_1419_antenne_24p9MHz.s1p)
+antenna_D_m: 0.761667, antenna_d_m: 0.012000, n: 1, p_m: 0.000000
+point_xyz_m: (0.000000, 2.000000, 0.000000), r_m: 2.000000, kr: 1.045701
+tx_after_cable_w: 8.043845
+I_main_loop_A: 1.952678, m_Am2: 0.889714
+--- /debug_h_field_inputs ---
+h_field_expected_A_m: 0.009292 A/m
+h_field_measured_A_m: 0.018002 A/m
+h_field_factor_measured_to_expected: 1.937
+=== Messpunkt B ===
+cable_a_loss_db: 0.7034 dB
+cable_a_loss_db: 0.0420 dB
+connectors_loss_db: 0.2000 dB
+attenuation_cables_connectors_total_dbm: 0.9454 dB
+tx_after_cable_w: 8.044 W
+--- debug_h_field_inputs ---
+closest_band_f_Hz: 24946891.0 (source: s1p model fit: 20260827_1419_antenne_24p9MHz.s1p)
+closest_band_bw262_Hz: 165637.832126 (source: s1p model fit: 20260827_1419_antenne_24p9MHz.s1p)
+closest_band_swr_min: 1.075367 (source: s1p measurement: 20260827_1419_antenne_24p9MHz.s1p)
+antenna_D_m: 0.761667, antenna_d_m: 0.012000, n: 1, p_m: 0.000000
+point_xyz_m: (0.000000, 7.000000, 0.000000), r_m: 7.000000, kr: 3.659953
+tx_after_cable_w: 8.043845
+I_main_loop_A: 1.952678, m_Am2: 0.889714
+--- /debug_h_field_inputs ---
+h_field_expected_A_m: 0.002668 A/m
+h_field_measured_A_m: 0.003893 A/m
+h_field_factor_measured_to_expected: 1.459
+=== Messpunkt C ===
+cable_a_loss_db: 0.7034 dB
+cable_a_loss_db: 0.0420 dB
+connectors_loss_db: 0.2000 dB
+attenuation_cables_connectors_total_dbm: 0.9454 dB
+tx_after_cable_w: 8.044 W
+--- debug_h_field_inputs ---
+closest_band_f_Hz: 24946891.0 (source: s1p model fit: 20260827_1419_antenne_24p9MHz.s1p)
+closest_band_bw262_Hz: 165637.832126 (source: s1p model fit: 20260827_1419_antenne_24p9MHz.s1p)
+closest_band_swr_min: 1.075367 (source: s1p measurement: 20260827_1419_antenne_24p9MHz.s1p)
+antenna_D_m: 0.761667, antenna_d_m: 0.012000, n: 1, p_m: 0.000000
+point_xyz_m: (-2.000000, 0.000000, 0.000000), r_m: 2.000000, kr: 1.045701
+tx_after_cable_w: 8.043845
+I_main_loop_A: 1.952678, m_Am2: 0.889714
+--- /debug_h_field_inputs ---
+h_field_expected_A_m: 0.025610 A/m
+h_field_measured_A_m: 0.015500 A/m
+h_field_factor_measured_to_expected: 0.605
+=== Messpunkt A ===
+cable_a_loss_db: 0.7522 dB
+cable_a_loss_db: 0.0463 dB
+connectors_loss_db: 0.2000 dB
+attenuation_cables_connectors_total_dbm: 0.9985 dB
+tx_after_cable_w: 7.946 W
+--- debug_h_field_inputs ---
+closest_band_f_Hz: 28603940.0 (source: s1p model fit: 20260827_1409_antenne_28p6MHz.s1p)
+closest_band_bw262_Hz: 201910.545526 (source: s1p model fit: 20260827_1409_antenne_28p6MHz.s1p)
+closest_band_swr_min: 1.110155 (source: s1p measurement: 20260827_1409_antenne_28p6MHz.s1p)
+antenna_D_m: 0.761667, antenna_d_m: 0.012000, n: 1, p_m: 0.000000
+point_xyz_m: (0.000000, 2.000000, 0.000000), r_m: 2.000000, kr: 1.198991
+tx_after_cable_w: 7.946002
+I_main_loop_A: 1.756578, m_Am2: 0.800364
+--- /debug_h_field_inputs ---
+h_field_expected_A_m: 0.010161 A/m
+h_field_measured_A_m: 0.013237 A/m
+h_field_factor_measured_to_expected: 1.303
+=== Messpunkt B ===
+cable_a_loss_db: 0.7522 dB
+cable_a_loss_db: 0.0463 dB
+connectors_loss_db: 0.2000 dB
+attenuation_cables_connectors_total_dbm: 0.9985 dB
+tx_after_cable_w: 7.946 W
+--- debug_h_field_inputs ---
+closest_band_f_Hz: 28603940.0 (source: s1p model fit: 20260827_1409_antenne_28p6MHz.s1p)
+closest_band_bw262_Hz: 201910.545526 (source: s1p model fit: 20260827_1409_antenne_28p6MHz.s1p)
+closest_band_swr_min: 1.110155 (source: s1p measurement: 20260827_1409_antenne_28p6MHz.s1p)
+antenna_D_m: 0.761667, antenna_d_m: 0.012000, n: 1, p_m: 0.000000
+point_xyz_m: (0.000000, 7.000000, 0.000000), r_m: 7.000000, kr: 4.196469
+tx_after_cable_w: 7.946002
+I_main_loop_A: 1.756578, m_Am2: 0.800364
+--- /debug_h_field_inputs ---
+h_field_expected_A_m: 0.003181 A/m
+h_field_measured_A_m: 0.005778 A/m
+h_field_factor_measured_to_expected: 1.816
+=== Messpunkt C ===
+cable_a_loss_db: 0.7522 dB
+cable_a_loss_db: 0.0463 dB
+connectors_loss_db: 0.2000 dB
+attenuation_cables_connectors_total_dbm: 0.9985 dB
+tx_after_cable_w: 7.946 W
+--- debug_h_field_inputs ---
+closest_band_f_Hz: 28603940.0 (source: s1p model fit: 20260827_1409_antenne_28p6MHz.s1p)
+closest_band_bw262_Hz: 201910.545526 (source: s1p model fit: 20260827_1409_antenne_28p6MHz.s1p)
+closest_band_swr_min: 1.110155 (source: s1p measurement: 20260827_1409_antenne_28p6MHz.s1p)
+antenna_D_m: 0.761667, antenna_d_m: 0.012000, n: 1, p_m: 0.000000
+point_xyz_m: (-2.000000, 0.000000, 0.000000), r_m: 2.000000, kr: 1.198991
+tx_after_cable_w: 7.946002
+I_main_loop_A: 1.756578, m_Am2: 0.800364
+--- /debug_h_field_inputs ---
+h_field_expected_A_m: 0.024860 A/m
+h_field_measured_A_m: 0.020502 A/m
+h_field_factor_measured_to_expected: 0.825
