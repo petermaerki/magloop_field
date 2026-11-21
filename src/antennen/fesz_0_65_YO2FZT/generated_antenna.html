@@ -330,9 +330,9 @@ Thanks: Many thanks to Fesz for providing the measurement data and for the count
 <figcaption>The variable air capacitor is a custom design by Fesz, made from PCBs and 3D-printed parts.</figcaption>
 		</figure>
 
-<p>Information about the butterfly PCB air capacitor, including 3D models and gerber files: <a href="https://github.com/FeszElectronics/DIY-Variable-Capacitor">github.com/FeszElectronics/DIY-Variable-Capacitor</a>
+<p>Information about the butterfly PCB air capacitor, including 3D models and Gerber files: <a href="https://github.com/FeszElectronics/DIY-Variable-Capacitor">github.com/FeszElectronics/DIY-Variable-Capacitor</a>
 </p>
-<p>Youtube Video: <a href="https://youtu.be/tf2oflHAvQ0">https://youtu.be/tf2oflHAvQ0</a>
+<p>YouTube video: <a href="https://youtu.be/tf2oflHAvQ0">https://youtu.be/tf2oflHAvQ0</a>
 </p>
 
 
@@ -351,13 +351,13 @@ Thanks: Many thanks to Fesz for providing the measurement data and for the count
 	<tr>
 		<td>Plate thickness</td>
 		<td>d<sub>p</sub></td>
-		<td>1.6</td>
+		<td>1</td>
 		<td>mm</td>
 	</tr>
 	<tr>
 		<td>Clearance</td>
 		<td>d<sub>c</sub></td>
-		<td>0.7</td>
+		<td>1</td>
 		<td>mm</td>
 	</tr>
 	<tr>
@@ -380,17 +380,17 @@ Thanks: Many thanks to Fesz for providing the measurement data and for the count
 	</tr>
 </table>
 <p>
-Total air gap for both capacitors in series: 1.4 mm.<br>
+Total air gap for both capacitors in series: 1 mm.<br>
 Rule of thumb for dielectric strength: 3 kVp/mm.<br>
-U<sub>p</sub> = 4.2 kVp.<br>
-U<sub>rms</sub> = U<sub>p</sub> / √2 = 3.0 kV.
+U<sub>p</sub> = 3 kVp.<br>
+U<sub>rms</sub> = U<sub>p</sub> / √2 = 2.1 kV.
 </p>
 
 
-<p>Measured Values:</p>
+<p>Measured values:</p>
 <ul>
 	<li>Capacitance:  5 ... 26 pF</li>
-	<li>Breakdown Voltage:  3.84 kV DC</li>
+	<li>Breakdown voltage:  3.84 kV DC</li>
 </ul>
 
 <figure>
@@ -399,21 +399,48 @@ U<sub>rms</sub> = U<sub>p</sub> / √2 = 3.0 kV.
 			<figcaption>RF Voltage rating approximation by Fesz.</figcaption>
 </figure>
 
-<p>The antenna is operated at 5W as this is the limit of the transmitter. The limit of the antenna is higher.</p>
+<p>The antenna is operated at 5 W as this is the limit of the transmitter. The limit of the antenna is higher.</p>
 
-<h3>Balun</h3>
+<h3>Matching board</h3>
+
+
+
 
 <figure>
-	<a href="../../shared/YO2FZT/images/balun.png"><img src="../../shared/YO2FZT/images/balun.png"
+	<a href="../../shared/YO2FZT/images/04975.jpg"><img src="../../shared/YO2FZT/images/04975.jpg"
 			style="max-width: 500px; width: 100%; height: auto;"></a>
-			<figcaption>Schematic of the matching board. C2 is the variable air capacitor.</figcaption>
+			<figcaption>Casing with capacitor on top and matching board below.</figcaption>
+</figure>
+
+
+
+
+<figure>
+	<a href="../../shared/YO2FZT/images/04978.jpg"><img src="../../shared/YO2FZT/images/04978.jpg"
+			style="max-width: 500px; width: 100%; height: auto;"></a>
+			<figcaption>Capacitor details.</figcaption>
 </figure>
 
 <figure>
-	<a href="../../shared/YO2FZT/images/matching_board.png"><img src="../../shared/YO2FZT/images/matching_board.png"
+	<a href="../../shared/YO2FZT/images/04981.jpg"><img src="../../shared/YO2FZT/images/04981.jpg"
 			style="max-width: 500px; width: 100%; height: auto;"></a>
-			<figcaption>Matching board.</figcaption>
+			<figcaption>Matching board with toroid coils of the balun.</figcaption>
 </figure>
+
+<figure>
+	<a href="../../shared/YO2FZT/images/04984.jpg"><img src="../../shared/YO2FZT/images/04984.jpg"
+			style="max-width: 500px; width: 100%; height: auto;"></a>
+			<figcaption>Matching board with switches and porcelain capacitors.</figcaption>
+</figure>
+<figure>
+	<a href="../../shared/YO2FZT/images/schematic.jpg"><img src="../../shared/YO2FZT/images/schematic.jpg"
+			style="max-width: 500px; width: 100%; height: auto;"></a>
+			<figcaption>Schematic.</figcaption>
+</figure>
+
+<p>Depending on the band, 23.5 pF can be switched in parallel with the air capacitor.<br>
+S1P filename: <code>L</code> = 23.5 pF switched in parallel; <code>H</code> = not switched in.</p>
+<p>The coupling can be adjusted with switches.</p>
 
 <p>Further details are explained in the videos.</p>
 <ul>
@@ -624,7 +651,7 @@ The cable attenuation alpha and the cable delay tau in the following table shoul
 
 
 <h2>Final Remarks</h2>
-<p>It is a joy to design and build antennas from scratch. It is inspiring when the knowledge gained is shared with the community. Many thanks to Fesz for your contributions.</p>
+<p>It is a joy to see you design and build antennas from scratch. It is inspiring when the knowledge gained is shared with the community. Many thanks to Fesz for your contributions.</p>
 
 <hr>
 <p>Overview of all Antennas with filter/selection: <a href="../../../index.html?page=compare">compare page</a><br>
