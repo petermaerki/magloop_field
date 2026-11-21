@@ -26,7 +26,7 @@ ANTENNENDATEN = Antenna(
     overview_pictures=("images/small_loop_thumbnail.jpg",),
     info_environment_str=FESZ.info_environment_str,
     info_conductor_str=(
-        "C538 LSZH Tasker 10.3mm outer diameter approx 2m, 10.3mm outer diameter, PL-259 at the ends. Center conductor not floating."
+        "C538 LSZH Tasker 10.3mm outer diameter approx 2 m, PL-259 at the ends. Center conductor not connected."
     ),
     info_capacitor_str=FESZ.info_capacitor_str,
     info_thanks_str=FESZ.info_thanks_str,

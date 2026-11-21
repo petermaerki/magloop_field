@@ -14,7 +14,7 @@ ANTENNENDATEN = Antenna(
     D_m=FloatText(0.95, "EMail Fesz, 2026-11-20, about 0.95."),
     d_m=FloatText(
         0.0081,
-        "Unclear, no specifiation in datasheet. I took the value of LMR400 here.",
+        "Unclear, no specification in datasheet. I took the value of LMR400 here.",
     ),
     n=FESZ.n,
     p_m=FESZ.p_m,
@@ -25,7 +25,7 @@ ANTENNENDATEN = Antenna(
     info_str=FESZ.info_str,
     overview_pictures=("images/large_loop_thumbnail.jpg",),
     info_environment_str=FESZ.info_environment_str,
-    info_conductor_str="RG213plus BP200 Messi & Paoloni approx 4m, 10.3mm outer diameter, PL-259 at the ends.  Center conductor not floating.",
+    info_conductor_str="RG213plus BP200 Messi & Paoloni approx 4 m, 10.3mm outer diameter, PL-259 at the ends. Center not connected.",
     info_capacitor_str=FESZ.info_capacitor_str,
     info_thanks_str=FESZ.info_thanks_str,
     environment_html="../../shared/YO2FZT/environment.html",
