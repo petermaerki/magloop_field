@@ -67,12 +67,14 @@ def _hover_style(series_count: int) -> str:
         series = f"{hover} .{CLASS_SVG_SERIES}_{i}"
         legend = f"{hover} .{CLASS_SVG_LEGEND_ENTRY}_{i}"
         rules.append(
-            f"{series} polyline, {legend} line {{ stroke-width: {LINE_WIDTH_HIGHLIGHT}; }}"
+            f"{legend} line {{ stroke-width: {LINE_WIDTH_HIGHLIGHT}; }}"
         )
         rules.append(
             f"{series} circle, {legend} circle {{ r: {DOT_RADIUS_HIGHLIGHT}; }}"
         )
         rules.append(f"{legend} text {{ fill: #000; font-weight: bold; }}")
+        rules.append(f"{hover} .eta_labels_{i} {{ display: block; }}")
+        rules.append(f"{hover} .hl_{i} {{ display: block; }}")
     joined = "\n    ".join(rules)
     return f"  <style>\n    {joined}\n  </style>"
 
@@ -175,6 +177,9 @@ class _DiagramSvgBase:
                     for antenna, _ in data
                 ]
             )
+        # Highlight + labels overlays: drawn last so they appear above all curves.
+        buf += self._draw_highlight_overlay(data)
+        buf += self._draw_labels_overlay(data)
         buf.append("</svg>")
         return "\n".join(buf)
 
@@ -269,6 +274,13 @@ class _DiagramSvgBase:
             f'  <text transform="rotate(-90 {y_label_x} {y_label_y:.1f})" x="{y_label_x}" y="{y_label_y:.1f}" text-anchor="middle" font-size="{FONT_SIZE_LABELS}" font-family="Arial,sans-serif" fill="#222">η (Efficiency)</text>',
         ]
 
+    def _point_tooltip(self, x: float, eta: float) -> str:
+        val = eta * 100
+        return f"{val:.0f}%" if val >= 10 else f"{val:.2g}%"
+
+    def _coords(self, pts: list[tuple[float, float]]) -> str:
+        return " ".join(f"{self._px(x):.2f},{self._py(eta):.2f}" for x, eta in pts)
+
     def _draw_series(
         self,
         index: int,
@@ -277,7 +289,7 @@ class _DiagramSvgBase:
         dashed: bool = False,
     ) -> list[str]:
         lines = [f'  <g class="{CLASS_SVG_SERIES}_{index}">']
-        coords = " ".join(f"{self._px(x):.2f},{self._py(eta):.2f}" for x, eta in pts)
+        coords = self._coords(pts)
         dash_attr = ' stroke-dasharray="8,4"' if dashed else ""
         # Invisible wide polyline: easier hover target than the thin visible line.
         # Inline style outranks the hover rule, so its width never changes.
@@ -288,9 +300,70 @@ class _DiagramSvgBase:
             f'  <polyline points="{coords}" fill="none" stroke="{color}" stroke-width="{LINE_WIDTH_SERIES}"{dash_attr} clip-path="url(#plotarea)"/>'
         )
         for x, eta in pts:
+            cx = self._px(x)
+            cy = self._py(eta)
             lines.append(
-                f'  <circle cx="{self._px(x):.2f}" cy="{self._py(eta):.2f}" r="{DOT_RADIUS}" fill="{color}" stroke="white" stroke-width="{LINE_WIDTH_LEGEND_DOT}" clip-path="url(#plotarea)"/>'
+                f'  <circle cx="{cx:.2f}" cy="{cy:.2f}" r="{DOT_RADIUS}" fill="{color}" stroke="white" stroke-width="{LINE_WIDTH_LEGEND_DOT}" clip-path="url(#plotarea)"/>'
             )
+        lines.append("  </g>")
+        return lines
+
+    def _draw_highlight_overlay(
+        self,
+        data: list[tuple["Antenna", list[tuple[float, float]]]],
+    ) -> list[str]:
+        lines = ['  <g id="highlight_overlay">']
+        for index, (antenna, pts) in enumerate(data):
+            color = antenna.color  # type: ignore[union-attr]
+            dashed = antenna.dashed  # type: ignore[union-attr]
+            coords = self._coords(pts)
+            dash_attr = ' stroke-dasharray="8,4"' if dashed else ""
+            lines.append(f'  <g class="hl_{index}" display="none">')
+            lines.append(
+                f'  <polyline points="{coords}" fill="none" stroke="{color}"'
+                f' stroke-width="{LINE_WIDTH_HIGHLIGHT}"{dash_attr} clip-path="url(#plotarea)"/>'
+            )
+            lines.append("  </g>")
+        lines.append("  </g>")
+        return lines
+
+    def _draw_labels_overlay(
+        self,
+        data: list[tuple["Antenna", list[tuple[float, float]]]],
+    ) -> list[str]:
+        lines = ['  <g id="labels_overlay">']
+        H, FS, CH = 12, 10, 5.5  # box height, font-size, approx char width
+
+        def _overlaps(ax: float, ay: float, aw: float, bx: float, by: float, bw: float) -> bool:
+            return not (ax + aw < bx or bx + bw < ax or ay + H < by or by + H < ay)
+
+        for index, (antenna, pts) in enumerate(data):
+            lines.append(f'  <g class="eta_labels_{index}" display="none">')
+            placed: list[tuple[float, float, float]] = []  # (rx, ry, W)
+            for x, eta in pts:
+                cx = self._px(x)
+                cy = self._py(eta)
+                label = self._point_tooltip(x, eta)
+                W = len(label) * CH
+                rx = cx - W / 2
+                ry = cy - H - 6
+                for _ in range(8):
+                    if not any(_overlaps(rx, ry, W, px, py, PW) for px, py, PW in placed):
+                        break
+                    ry -= H + 2
+                # Don't go above the plot area — flip to below the point instead.
+                if ry < SVG_MARGIN_TOP:
+                    ry = cy + DOT_RADIUS + 4
+                placed.append((rx, ry, W))
+                lines.append(
+                    f'  <rect x="{rx:.1f}" y="{ry:.1f}" width="{W:.1f}" height="{H}"'
+                    f' fill="white"/>'
+                )
+                lines.append(
+                    f'  <text x="{cx:.2f}" y="{ry + H - 2:.2f}" text-anchor="middle"'
+                    f' font-size="{FS}" font-family="Arial,sans-serif" fill="#222">{label}</text>'
+                )
+            lines.append("  </g>")
         lines.append("  </g>")
         return lines
 

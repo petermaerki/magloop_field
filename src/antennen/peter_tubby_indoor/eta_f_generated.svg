@@ -3,9 +3,11 @@
   <rect width="750" height="300" fill="white"/>
   <clipPath id="plotarea"><rect x="85" y="10" width="660" height="250"/></clipPath>
   <style>
-    svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_series_0 polyline, svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_legend_entry_0 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_legend_entry_0 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_series_0 circle, svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_legend_entry_0 circle { r: 6; }
     svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_legend_entry_0 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .eta_labels_0 { display: block; }
+    svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .hl_0 { display: block; }
   </style>
   <line x1="121.6" y1="10" x2="121.6" y2="260" stroke="#e0e0e0" stroke-width="1"/>
   <line x1="244.1" y1="10" x2="244.1" y2="260" stroke="#e0e0e0" stroke-width="1"/>
@@ -68,5 +70,34 @@
   <circle cx="557.81" cy="57.27" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="587.80" cy="45.46" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="609.09" cy="37.55" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  </g>
+  <g id="highlight_overlay">
+  <g class="hl_0" display="none">
+  <polyline points="121.58,242.79 240.28,169.80 312.77,143.24 362.52,124.36 426.82,94.42 485.61,91.52 530.56,91.00 557.81,57.27 587.80,45.46 609.09,37.55" fill="none" stroke="#ffa52f" stroke-width="4" clip-path="url(#plotarea)"/>
+  </g>
+  </g>
+  <g id="labels_overlay">
+  <g class="eta_labels_0" display="none">
+  <rect x="107.8" y="224.8" width="27.5" height="12" fill="white"/>
+  <text x="121.58" y="234.79" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">0.16%</text>
+  <rect x="229.3" y="151.8" width="22.0" height="12" fill="white"/>
+  <text x="240.28" y="161.80" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">1.2%</text>
+  <rect x="301.8" y="125.2" width="22.0" height="12" fill="white"/>
+  <text x="312.77" y="135.24" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">2.5%</text>
+  <rect x="351.5" y="106.4" width="22.0" height="12" fill="white"/>
+  <text x="362.52" y="116.36" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">4.2%</text>
+  <rect x="415.8" y="76.4" width="22.0" height="12" fill="white"/>
+  <text x="426.82" y="86.42" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">9.7%</text>
+  <rect x="477.4" y="73.5" width="16.5" height="12" fill="white"/>
+  <text x="485.61" y="83.52" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">11%</text>
+  <rect x="522.3" y="73.0" width="16.5" height="12" fill="white"/>
+  <text x="530.56" y="83.00" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">11%</text>
+  <rect x="549.6" y="39.3" width="16.5" height="12" fill="white"/>
+  <text x="557.81" y="49.27" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">27%</text>
+  <rect x="579.6" y="27.5" width="16.5" height="12" fill="white"/>
+  <text x="587.80" y="37.46" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">38%</text>
+  <rect x="600.8" y="19.6" width="16.5" height="12" fill="white"/>
+  <text x="609.09" y="29.55" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">47%</text>
+  </g>
   </g>
 </svg>

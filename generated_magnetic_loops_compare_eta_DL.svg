@@ -6,51 +6,83 @@
     svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_series_0 polyline, svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_legend_entry_0 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_series_0 circle, svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_legend_entry_0 circle { r: 6; }
     svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_legend_entry_0 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .eta_labels_0 { display: block; }
+    svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .hl_0 { display: block; }
     svg:has(.svg_legend_entry_1:hover, .svg_series_1:hover) .svg_series_1 polyline, svg:has(.svg_legend_entry_1:hover, .svg_series_1:hover) .svg_legend_entry_1 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_1:hover, .svg_series_1:hover) .svg_series_1 circle, svg:has(.svg_legend_entry_1:hover, .svg_series_1:hover) .svg_legend_entry_1 circle { r: 6; }
     svg:has(.svg_legend_entry_1:hover, .svg_series_1:hover) .svg_legend_entry_1 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_1:hover, .svg_series_1:hover) .eta_labels_1 { display: block; }
+    svg:has(.svg_legend_entry_1:hover, .svg_series_1:hover) .hl_1 { display: block; }
     svg:has(.svg_legend_entry_2:hover, .svg_series_2:hover) .svg_series_2 polyline, svg:has(.svg_legend_entry_2:hover, .svg_series_2:hover) .svg_legend_entry_2 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_2:hover, .svg_series_2:hover) .svg_series_2 circle, svg:has(.svg_legend_entry_2:hover, .svg_series_2:hover) .svg_legend_entry_2 circle { r: 6; }
     svg:has(.svg_legend_entry_2:hover, .svg_series_2:hover) .svg_legend_entry_2 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_2:hover, .svg_series_2:hover) .eta_labels_2 { display: block; }
+    svg:has(.svg_legend_entry_2:hover, .svg_series_2:hover) .hl_2 { display: block; }
     svg:has(.svg_legend_entry_3:hover, .svg_series_3:hover) .svg_series_3 polyline, svg:has(.svg_legend_entry_3:hover, .svg_series_3:hover) .svg_legend_entry_3 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_3:hover, .svg_series_3:hover) .svg_series_3 circle, svg:has(.svg_legend_entry_3:hover, .svg_series_3:hover) .svg_legend_entry_3 circle { r: 6; }
     svg:has(.svg_legend_entry_3:hover, .svg_series_3:hover) .svg_legend_entry_3 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_3:hover, .svg_series_3:hover) .eta_labels_3 { display: block; }
+    svg:has(.svg_legend_entry_3:hover, .svg_series_3:hover) .hl_3 { display: block; }
     svg:has(.svg_legend_entry_4:hover, .svg_series_4:hover) .svg_series_4 polyline, svg:has(.svg_legend_entry_4:hover, .svg_series_4:hover) .svg_legend_entry_4 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_4:hover, .svg_series_4:hover) .svg_series_4 circle, svg:has(.svg_legend_entry_4:hover, .svg_series_4:hover) .svg_legend_entry_4 circle { r: 6; }
     svg:has(.svg_legend_entry_4:hover, .svg_series_4:hover) .svg_legend_entry_4 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_4:hover, .svg_series_4:hover) .eta_labels_4 { display: block; }
+    svg:has(.svg_legend_entry_4:hover, .svg_series_4:hover) .hl_4 { display: block; }
     svg:has(.svg_legend_entry_5:hover, .svg_series_5:hover) .svg_series_5 polyline, svg:has(.svg_legend_entry_5:hover, .svg_series_5:hover) .svg_legend_entry_5 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_5:hover, .svg_series_5:hover) .svg_series_5 circle, svg:has(.svg_legend_entry_5:hover, .svg_series_5:hover) .svg_legend_entry_5 circle { r: 6; }
     svg:has(.svg_legend_entry_5:hover, .svg_series_5:hover) .svg_legend_entry_5 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_5:hover, .svg_series_5:hover) .eta_labels_5 { display: block; }
+    svg:has(.svg_legend_entry_5:hover, .svg_series_5:hover) .hl_5 { display: block; }
     svg:has(.svg_legend_entry_6:hover, .svg_series_6:hover) .svg_series_6 polyline, svg:has(.svg_legend_entry_6:hover, .svg_series_6:hover) .svg_legend_entry_6 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_6:hover, .svg_series_6:hover) .svg_series_6 circle, svg:has(.svg_legend_entry_6:hover, .svg_series_6:hover) .svg_legend_entry_6 circle { r: 6; }
     svg:has(.svg_legend_entry_6:hover, .svg_series_6:hover) .svg_legend_entry_6 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_6:hover, .svg_series_6:hover) .eta_labels_6 { display: block; }
+    svg:has(.svg_legend_entry_6:hover, .svg_series_6:hover) .hl_6 { display: block; }
     svg:has(.svg_legend_entry_7:hover, .svg_series_7:hover) .svg_series_7 polyline, svg:has(.svg_legend_entry_7:hover, .svg_series_7:hover) .svg_legend_entry_7 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_7:hover, .svg_series_7:hover) .svg_series_7 circle, svg:has(.svg_legend_entry_7:hover, .svg_series_7:hover) .svg_legend_entry_7 circle { r: 6; }
     svg:has(.svg_legend_entry_7:hover, .svg_series_7:hover) .svg_legend_entry_7 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_7:hover, .svg_series_7:hover) .eta_labels_7 { display: block; }
+    svg:has(.svg_legend_entry_7:hover, .svg_series_7:hover) .hl_7 { display: block; }
     svg:has(.svg_legend_entry_8:hover, .svg_series_8:hover) .svg_series_8 polyline, svg:has(.svg_legend_entry_8:hover, .svg_series_8:hover) .svg_legend_entry_8 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_8:hover, .svg_series_8:hover) .svg_series_8 circle, svg:has(.svg_legend_entry_8:hover, .svg_series_8:hover) .svg_legend_entry_8 circle { r: 6; }
     svg:has(.svg_legend_entry_8:hover, .svg_series_8:hover) .svg_legend_entry_8 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_8:hover, .svg_series_8:hover) .eta_labels_8 { display: block; }
+    svg:has(.svg_legend_entry_8:hover, .svg_series_8:hover) .hl_8 { display: block; }
     svg:has(.svg_legend_entry_9:hover, .svg_series_9:hover) .svg_series_9 polyline, svg:has(.svg_legend_entry_9:hover, .svg_series_9:hover) .svg_legend_entry_9 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_9:hover, .svg_series_9:hover) .svg_series_9 circle, svg:has(.svg_legend_entry_9:hover, .svg_series_9:hover) .svg_legend_entry_9 circle { r: 6; }
     svg:has(.svg_legend_entry_9:hover, .svg_series_9:hover) .svg_legend_entry_9 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_9:hover, .svg_series_9:hover) .eta_labels_9 { display: block; }
+    svg:has(.svg_legend_entry_9:hover, .svg_series_9:hover) .hl_9 { display: block; }
     svg:has(.svg_legend_entry_10:hover, .svg_series_10:hover) .svg_series_10 polyline, svg:has(.svg_legend_entry_10:hover, .svg_series_10:hover) .svg_legend_entry_10 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_10:hover, .svg_series_10:hover) .svg_series_10 circle, svg:has(.svg_legend_entry_10:hover, .svg_series_10:hover) .svg_legend_entry_10 circle { r: 6; }
     svg:has(.svg_legend_entry_10:hover, .svg_series_10:hover) .svg_legend_entry_10 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_10:hover, .svg_series_10:hover) .eta_labels_10 { display: block; }
+    svg:has(.svg_legend_entry_10:hover, .svg_series_10:hover) .hl_10 { display: block; }
     svg:has(.svg_legend_entry_11:hover, .svg_series_11:hover) .svg_series_11 polyline, svg:has(.svg_legend_entry_11:hover, .svg_series_11:hover) .svg_legend_entry_11 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_11:hover, .svg_series_11:hover) .svg_series_11 circle, svg:has(.svg_legend_entry_11:hover, .svg_series_11:hover) .svg_legend_entry_11 circle { r: 6; }
     svg:has(.svg_legend_entry_11:hover, .svg_series_11:hover) .svg_legend_entry_11 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_11:hover, .svg_series_11:hover) .eta_labels_11 { display: block; }
+    svg:has(.svg_legend_entry_11:hover, .svg_series_11:hover) .hl_11 { display: block; }
     svg:has(.svg_legend_entry_12:hover, .svg_series_12:hover) .svg_series_12 polyline, svg:has(.svg_legend_entry_12:hover, .svg_series_12:hover) .svg_legend_entry_12 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_12:hover, .svg_series_12:hover) .svg_series_12 circle, svg:has(.svg_legend_entry_12:hover, .svg_series_12:hover) .svg_legend_entry_12 circle { r: 6; }
     svg:has(.svg_legend_entry_12:hover, .svg_series_12:hover) .svg_legend_entry_12 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_12:hover, .svg_series_12:hover) .eta_labels_12 { display: block; }
+    svg:has(.svg_legend_entry_12:hover, .svg_series_12:hover) .hl_12 { display: block; }
     svg:has(.svg_legend_entry_13:hover, .svg_series_13:hover) .svg_series_13 polyline, svg:has(.svg_legend_entry_13:hover, .svg_series_13:hover) .svg_legend_entry_13 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_13:hover, .svg_series_13:hover) .svg_series_13 circle, svg:has(.svg_legend_entry_13:hover, .svg_series_13:hover) .svg_legend_entry_13 circle { r: 6; }
     svg:has(.svg_legend_entry_13:hover, .svg_series_13:hover) .svg_legend_entry_13 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_13:hover, .svg_series_13:hover) .eta_labels_13 { display: block; }
+    svg:has(.svg_legend_entry_13:hover, .svg_series_13:hover) .hl_13 { display: block; }
     svg:has(.svg_legend_entry_14:hover, .svg_series_14:hover) .svg_series_14 polyline, svg:has(.svg_legend_entry_14:hover, .svg_series_14:hover) .svg_legend_entry_14 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_14:hover, .svg_series_14:hover) .svg_series_14 circle, svg:has(.svg_legend_entry_14:hover, .svg_series_14:hover) .svg_legend_entry_14 circle { r: 6; }
     svg:has(.svg_legend_entry_14:hover, .svg_series_14:hover) .svg_legend_entry_14 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_14:hover, .svg_series_14:hover) .eta_labels_14 { display: block; }
+    svg:has(.svg_legend_entry_14:hover, .svg_series_14:hover) .hl_14 { display: block; }
     svg:has(.svg_legend_entry_15:hover, .svg_series_15:hover) .svg_series_15 polyline, svg:has(.svg_legend_entry_15:hover, .svg_series_15:hover) .svg_legend_entry_15 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_15:hover, .svg_series_15:hover) .svg_series_15 circle, svg:has(.svg_legend_entry_15:hover, .svg_series_15:hover) .svg_legend_entry_15 circle { r: 6; }
     svg:has(.svg_legend_entry_15:hover, .svg_series_15:hover) .svg_legend_entry_15 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_15:hover, .svg_series_15:hover) .eta_labels_15 { display: block; }
+    svg:has(.svg_legend_entry_15:hover, .svg_series_15:hover) .hl_15 { display: block; }
   </style>
   <line x1="85.0" y1="10" x2="85.0" y2="260" stroke="#e0e0e0" stroke-width="1"/>
   <line x1="172.0" y1="10" x2="172.0" y2="260" stroke="#e0e0e0" stroke-width="1"/>
@@ -335,5 +367,259 @@
   <line x1="525" y1="227" x2="550" y2="227" stroke="#d60000" stroke-width="2"/>
   <circle cx="537" cy="227" r="4" fill="#d60000" stroke="white" stroke-width="1"/>
   <text x="557" y="231" font-size="11" font-family="Arial,sans-serif" fill="#333">Selfmade Tubby outdoor HB9ISP</text>
+  </g>
+  <g id="highlight_overlay">
+  <g class="hl_0" display="none">
+  <polyline points="132.36,110.24 197.01,58.68 261.65,38.26 326.30,24.01" fill="none" stroke="#e452ff" stroke-width="4" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="hl_1" display="none">
+  <polyline points="133.28,129.31 161.12,123.24 198.47,93.03 235.13,107.72 263.74,79.98 298.01,64.14 334.26,65.31" fill="none" stroke="#8e7900" stroke-width="4" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="hl_2" display="none">
+  <polyline points="133.28,117.43 161.24,96.86 198.61,96.31 235.09,71.75 263.58,103.04 297.82,69.40 333.98,84.73" fill="none" stroke="#ff7266" stroke-width="4" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="hl_3" display="none">
+  <polyline points="133.74,126.12 199.76,74.56 331.80,24.81" fill="none" stroke="#6db3ff" stroke-width="4" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="hl_4" display="none">
+  <polyline points="136.56,133.29 168.86,126.54 201.58,127.29 258.54,94.88 334.74,96.78" fill="none" stroke="#802690" stroke-width="4" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="hl_5" display="none">
+  <polyline points="113.23,135.04 158.74,84.96 204.26,63.27 249.77,49.20" fill="none" stroke="#005659" stroke-width="4" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="hl_6" display="none">
+  <polyline points="113.89,165.25 113.90,161.94 133.56,145.77 133.57,144.84 159.83,128.44 159.83,128.19 185.48,118.97 185.51,121.44 205.64,114.02 205.79,116.63 229.69,110.52 229.99,108.45 255.07,107.36 255.30,106.66" fill="none" stroke="#9c3b4f" stroke-width="4" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="hl_7" display="none">
+  <polyline points="98.55,186.13 127.70,156.23 153.05,136.41" fill="none" stroke="#018700" stroke-width="4" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="hl_8" display="none">
+  <polyline points="90.31,258.23 112.54,178.71 154.91,141.00" fill="none" stroke="#4d33ff" stroke-width="4" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="hl_9" display="none">
+  <polyline points="103.18,165.53 135.36,129.80 167.81,127.47 200.25,115.11 256.25,117.60" fill="none" stroke="#8287ff" stroke-width="4" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="hl_10" display="none">
+  <polyline points="173.01,140.62 203.28,118.67 226.75,108.84 254.39,101.20 281.76,93.51" fill="none" stroke="#00acc6" stroke-width="4" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="hl_11" display="none">
+  <polyline points="161.52,178.79 498.46,66.42" fill="none" stroke="#fd03ca" stroke-width="4" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="hl_12" display="none">
+  <polyline points="168.54,118.02 219.07,96.77 268.97,88.02" fill="none" stroke="#03c600" stroke-width="4" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="hl_13" display="none">
+  <polyline points="146.98,165.11 225.09,135.64" fill="none" stroke="#95b577" stroke-width="4" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="hl_14" display="none">
+  <polyline points="85.91,199.67 103.04,155.88 120.68,139.94 137.66,128.62 167.91,110.65 206.89,108.91 246.64,108.60 276.07,88.36 314.10,81.27 345.23,76.53" fill="none" stroke="#ffa52f" stroke-width="4" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="hl_15" display="none">
+  <polyline points="103.04,147.87 120.68,130.68 137.65,110.79 167.92,86.61 206.86,63.70 276.06,65.18 314.04,74.61 345.27,76.09" fill="none" stroke="#d60000" stroke-width="4" clip-path="url(#plotarea)"/>
+  </g>
+  </g>
+  <g id="labels_overlay">
+  <g class="eta_labels_0" display="none">
+  <rect x="121.4" y="92.2" width="22.0" height="12" fill="white"/>
+  <text x="132.36" y="102.24" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">9.9%</text>
+  <rect x="186.0" y="40.7" width="22.0" height="12" fill="white"/>
+  <text x="197.01" y="50.68" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">106%</text>
+  <rect x="250.7" y="20.3" width="22.0" height="12" fill="white"/>
+  <text x="261.65" y="30.26" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">272%</text>
+  <rect x="315.3" y="32.0" width="22.0" height="12" fill="white"/>
+  <text x="326.30" y="42.01" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">524%</text>
+  </g>
+  <g class="eta_labels_1" display="none">
+  <rect x="122.3" y="111.3" width="22.0" height="12" fill="white"/>
+  <text x="133.28" y="121.31" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">4.1%</text>
+  <rect x="150.1" y="105.2" width="22.0" height="12" fill="white"/>
+  <text x="161.12" y="115.24" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">5.4%</text>
+  <rect x="190.2" y="75.0" width="16.5" height="12" fill="white"/>
+  <text x="198.47" y="85.03" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">22%</text>
+  <rect x="226.9" y="89.7" width="16.5" height="12" fill="white"/>
+  <text x="235.13" y="99.72" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">11%</text>
+  <rect x="255.5" y="62.0" width="16.5" height="12" fill="white"/>
+  <text x="263.74" y="71.98" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">40%</text>
+  <rect x="289.8" y="46.1" width="16.5" height="12" fill="white"/>
+  <text x="298.01" y="56.14" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">83%</text>
+  <rect x="326.0" y="47.3" width="16.5" height="12" fill="white"/>
+  <text x="334.26" y="57.31" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">78%</text>
+  </g>
+  <g class="eta_labels_2" display="none">
+  <rect x="122.3" y="99.4" width="22.0" height="12" fill="white"/>
+  <text x="133.28" y="109.43" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">7.1%</text>
+  <rect x="153.0" y="78.9" width="16.5" height="12" fill="white"/>
+  <text x="161.24" y="88.86" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">18%</text>
+  <rect x="190.4" y="78.3" width="16.5" height="12" fill="white"/>
+  <text x="198.61" y="88.31" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">19%</text>
+  <rect x="226.8" y="53.8" width="16.5" height="12" fill="white"/>
+  <text x="235.09" y="63.75" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">58%</text>
+  <rect x="255.3" y="85.0" width="16.5" height="12" fill="white"/>
+  <text x="263.58" y="95.04" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">14%</text>
+  <rect x="289.6" y="51.4" width="16.5" height="12" fill="white"/>
+  <text x="297.82" y="61.40" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">65%</text>
+  <rect x="325.7" y="66.7" width="16.5" height="12" fill="white"/>
+  <text x="333.98" y="76.73" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">32%</text>
+  </g>
+  <g class="eta_labels_3" display="none">
+  <rect x="122.7" y="108.1" width="22.0" height="12" fill="white"/>
+  <text x="133.74" y="118.12" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">4.8%</text>
+  <rect x="191.5" y="56.6" width="16.5" height="12" fill="white"/>
+  <text x="199.76" y="66.56" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">51%</text>
+  <rect x="320.8" y="32.8" width="22.0" height="12" fill="white"/>
+  <text x="331.80" y="42.81" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">505%</text>
+  </g>
+  <g class="eta_labels_4" display="none">
+  <rect x="125.6" y="115.3" width="22.0" height="12" fill="white"/>
+  <text x="136.56" y="125.29" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">3.4%</text>
+  <rect x="157.9" y="108.5" width="22.0" height="12" fill="white"/>
+  <text x="168.86" y="118.54" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">4.7%</text>
+  <rect x="190.6" y="109.3" width="22.0" height="12" fill="white"/>
+  <text x="201.58" y="119.29" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">4.5%</text>
+  <rect x="250.3" y="76.9" width="16.5" height="12" fill="white"/>
+  <text x="258.54" y="86.88" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">20%</text>
+  <rect x="326.5" y="78.8" width="16.5" height="12" fill="white"/>
+  <text x="334.74" y="88.78" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">18%</text>
+  </g>
+  <g class="eta_labels_5" display="none">
+  <rect x="102.2" y="117.0" width="22.0" height="12" fill="white"/>
+  <text x="113.23" y="127.04" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">3.2%</text>
+  <rect x="150.5" y="67.0" width="16.5" height="12" fill="white"/>
+  <text x="158.74" y="76.96" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">32%</text>
+  <rect x="196.0" y="45.3" width="16.5" height="12" fill="white"/>
+  <text x="204.26" y="55.27" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">86%</text>
+  <rect x="238.8" y="31.2" width="22.0" height="12" fill="white"/>
+  <text x="249.77" y="41.20" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">164%</text>
+  </g>
+  <g class="eta_labels_6" display="none">
+  <rect x="100.1" y="147.3" width="27.5" height="12" fill="white"/>
+  <text x="113.89" y="157.25" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">0.79%</text>
+  <rect x="100.1" y="129.9" width="27.5" height="12" fill="white"/>
+  <text x="113.90" y="139.94" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">0.91%</text>
+  <rect x="122.6" y="113.8" width="22.0" height="12" fill="white"/>
+  <text x="133.56" y="123.77" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">1.9%</text>
+  <rect x="128.1" y="126.8" width="11.0" height="12" fill="white"/>
+  <text x="133.57" y="136.84" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">2%</text>
+  <rect x="148.8" y="110.4" width="22.0" height="12" fill="white"/>
+  <text x="159.83" y="120.44" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">4.3%</text>
+  <rect x="148.8" y="96.2" width="22.0" height="12" fill="white"/>
+  <text x="159.83" y="106.19" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">4.3%</text>
+  <rect x="174.5" y="101.0" width="22.0" height="12" fill="white"/>
+  <text x="185.48" y="110.97" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">6.6%</text>
+  <rect x="174.5" y="75.4" width="22.0" height="12" fill="white"/>
+  <text x="185.51" y="85.44" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">5.9%</text>
+  <rect x="194.6" y="54.0" width="22.0" height="12" fill="white"/>
+  <text x="205.64" y="64.02" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">8.3%</text>
+  <rect x="194.8" y="28.6" width="22.0" height="12" fill="white"/>
+  <text x="205.79" y="38.63" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">7.4%</text>
+  <rect x="218.7" y="92.5" width="22.0" height="12" fill="white"/>
+  <text x="229.69" y="102.52" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">9.8%</text>
+  <rect x="221.7" y="76.5" width="16.5" height="12" fill="white"/>
+  <text x="229.99" y="86.45" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">11%</text>
+  <rect x="246.8" y="89.4" width="16.5" height="12" fill="white"/>
+  <text x="255.07" y="99.36" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">11%</text>
+  <rect x="247.0" y="74.7" width="16.5" height="12" fill="white"/>
+  <text x="255.30" y="84.66" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">12%</text>
+  </g>
+  <g class="eta_labels_7" display="none">
+  <rect x="87.6" y="168.1" width="22.0" height="12" fill="white"/>
+  <text x="98.55" y="178.13" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">0.3%</text>
+  <rect x="116.7" y="138.2" width="22.0" height="12" fill="white"/>
+  <text x="127.70" y="148.23" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">1.2%</text>
+  <rect x="147.6" y="118.4" width="11.0" height="12" fill="white"/>
+  <text x="153.05" y="128.41" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">3%</text>
+  </g>
+  <g class="eta_labels_8" display="none">
+  <rect x="73.8" y="240.2" width="33.0" height="12" fill="white"/>
+  <text x="90.31" y="250.23" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">0.011%</text>
+  <rect x="98.8" y="160.7" width="27.5" height="12" fill="white"/>
+  <text x="112.54" y="170.71" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">0.42%</text>
+  <rect x="143.9" y="123.0" width="22.0" height="12" fill="white"/>
+  <text x="154.91" y="133.00" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">2.4%</text>
+  </g>
+  <g class="eta_labels_9" display="none">
+  <rect x="89.4" y="147.5" width="27.5" height="12" fill="white"/>
+  <text x="103.18" y="157.53" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">0.78%</text>
+  <rect x="129.9" y="111.8" width="11.0" height="12" fill="white"/>
+  <text x="135.36" y="121.80" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">4%</text>
+  <rect x="156.8" y="109.5" width="22.0" height="12" fill="white"/>
+  <text x="167.81" y="119.47" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">4.5%</text>
+  <rect x="189.2" y="97.1" width="22.0" height="12" fill="white"/>
+  <text x="200.25" y="107.11" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">7.9%</text>
+  <rect x="250.7" y="99.6" width="11.0" height="12" fill="white"/>
+  <text x="256.25" y="109.60" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">7%</text>
+  </g>
+  <g class="eta_labels_10" display="none">
+  <rect x="162.0" y="122.6" width="22.0" height="12" fill="white"/>
+  <text x="173.01" y="132.62" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">2.4%</text>
+  <rect x="192.3" y="100.7" width="22.0" height="12" fill="white"/>
+  <text x="203.28" y="110.67" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">6.7%</text>
+  <rect x="218.5" y="90.8" width="16.5" height="12" fill="white"/>
+  <text x="226.75" y="100.84" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">11%</text>
+  <rect x="246.1" y="83.2" width="16.5" height="12" fill="white"/>
+  <text x="254.39" y="93.20" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">15%</text>
+  <rect x="273.5" y="75.5" width="16.5" height="12" fill="white"/>
+  <text x="281.76" y="85.51" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">21%</text>
+  </g>
+  <g class="eta_labels_11" display="none">
+  <rect x="147.8" y="160.8" width="27.5" height="12" fill="white"/>
+  <text x="161.52" y="170.79" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">0.42%</text>
+  <rect x="490.2" y="48.4" width="16.5" height="12" fill="white"/>
+  <text x="498.46" y="58.42" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">74%</text>
+  </g>
+  <g class="eta_labels_12" display="none">
+  <rect x="157.5" y="100.0" width="22.0" height="12" fill="white"/>
+  <text x="168.54" y="110.02" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">6.9%</text>
+  <rect x="210.8" y="78.8" width="16.5" height="12" fill="white"/>
+  <text x="219.07" y="88.77" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">18%</text>
+  <rect x="260.7" y="70.0" width="16.5" height="12" fill="white"/>
+  <text x="268.97" y="80.02" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">28%</text>
+  </g>
+  <g class="eta_labels_13" display="none">
+  <rect x="133.2" y="147.1" width="27.5" height="12" fill="white"/>
+  <text x="146.98" y="157.11" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">0.79%</text>
+  <rect x="214.1" y="117.6" width="22.0" height="12" fill="white"/>
+  <text x="225.09" y="127.64" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">3.1%</text>
+  </g>
+  <g class="eta_labels_14" display="none">
+  <rect x="72.2" y="181.7" width="27.5" height="12" fill="white"/>
+  <text x="85.91" y="191.67" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">0.16%</text>
+  <rect x="92.0" y="137.9" width="22.0" height="12" fill="white"/>
+  <text x="103.04" y="147.88" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">1.2%</text>
+  <rect x="109.7" y="121.9" width="22.0" height="12" fill="white"/>
+  <text x="120.68" y="131.94" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">2.5%</text>
+  <rect x="126.7" y="96.6" width="22.0" height="12" fill="white"/>
+  <text x="137.66" y="106.62" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">4.2%</text>
+  <rect x="156.9" y="92.7" width="22.0" height="12" fill="white"/>
+  <text x="167.91" y="102.65" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">9.7%</text>
+  <rect x="198.6" y="90.9" width="16.5" height="12" fill="white"/>
+  <text x="206.89" y="100.91" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">11%</text>
+  <rect x="238.4" y="90.6" width="16.5" height="12" fill="white"/>
+  <text x="246.64" y="100.60" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">11%</text>
+  <rect x="267.8" y="70.4" width="16.5" height="12" fill="white"/>
+  <text x="276.07" y="80.36" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">27%</text>
+  <rect x="305.9" y="63.3" width="16.5" height="12" fill="white"/>
+  <text x="314.10" y="73.27" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">38%</text>
+  <rect x="337.0" y="58.5" width="16.5" height="12" fill="white"/>
+  <text x="345.23" y="68.53" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">47%</text>
+  </g>
+  <g class="eta_labels_15" display="none">
+  <rect x="92.0" y="129.9" width="22.0" height="12" fill="white"/>
+  <text x="103.04" y="139.87" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">1.7%</text>
+  <rect x="109.7" y="112.7" width="22.0" height="12" fill="white"/>
+  <text x="120.68" y="122.68" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">3.9%</text>
+  <rect x="126.7" y="92.8" width="22.0" height="12" fill="white"/>
+  <text x="137.65" y="102.79" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">9.6%</text>
+  <rect x="159.7" y="68.6" width="16.5" height="12" fill="white"/>
+  <text x="167.92" y="78.61" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">29%</text>
+  <rect x="198.6" y="45.7" width="16.5" height="12" fill="white"/>
+  <text x="206.86" y="55.70" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">84%</text>
+  <rect x="267.8" y="47.2" width="16.5" height="12" fill="white"/>
+  <text x="276.06" y="57.18" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">79%</text>
+  <rect x="305.8" y="56.6" width="16.5" height="12" fill="white"/>
+  <text x="314.04" y="66.61" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">51%</text>
+  <rect x="337.0" y="58.1" width="16.5" height="12" fill="white"/>
+  <text x="345.27" y="68.09" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">48%</text>
+  </g>
   </g>
 </svg>
