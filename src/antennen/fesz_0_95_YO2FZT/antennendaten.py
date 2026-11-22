@@ -6,7 +6,7 @@ from antennenvergleich.datatypes import (
 )
 
 ANTENNENDATEN = Antenna(
-    ctl_draft=True,
+    # ctl_draft=True,
     # color="#9ae4ff",  # color from compare_colors.py
     selection_brand="Selfmade",
     selection_location=FESZ.selection_location,

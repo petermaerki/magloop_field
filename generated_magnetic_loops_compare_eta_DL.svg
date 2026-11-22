@@ -3,86 +3,96 @@
   <rect width="750" height="300" fill="white"/>
   <clipPath id="plotarea"><rect x="85" y="10" width="435" height="250"/></clipPath>
   <style>
-    svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_series_0 polyline, svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_legend_entry_0 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_legend_entry_0 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_series_0 circle, svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_legend_entry_0 circle { r: 6; }
     svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .svg_legend_entry_0 text { fill: #000; font-weight: bold; }
     svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .eta_labels_0 { display: block; }
     svg:has(.svg_legend_entry_0:hover, .svg_series_0:hover) .hl_0 { display: block; }
-    svg:has(.svg_legend_entry_1:hover, .svg_series_1:hover) .svg_series_1 polyline, svg:has(.svg_legend_entry_1:hover, .svg_series_1:hover) .svg_legend_entry_1 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_1:hover, .svg_series_1:hover) .svg_legend_entry_1 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_1:hover, .svg_series_1:hover) .svg_series_1 circle, svg:has(.svg_legend_entry_1:hover, .svg_series_1:hover) .svg_legend_entry_1 circle { r: 6; }
     svg:has(.svg_legend_entry_1:hover, .svg_series_1:hover) .svg_legend_entry_1 text { fill: #000; font-weight: bold; }
     svg:has(.svg_legend_entry_1:hover, .svg_series_1:hover) .eta_labels_1 { display: block; }
     svg:has(.svg_legend_entry_1:hover, .svg_series_1:hover) .hl_1 { display: block; }
-    svg:has(.svg_legend_entry_2:hover, .svg_series_2:hover) .svg_series_2 polyline, svg:has(.svg_legend_entry_2:hover, .svg_series_2:hover) .svg_legend_entry_2 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_2:hover, .svg_series_2:hover) .svg_legend_entry_2 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_2:hover, .svg_series_2:hover) .svg_series_2 circle, svg:has(.svg_legend_entry_2:hover, .svg_series_2:hover) .svg_legend_entry_2 circle { r: 6; }
     svg:has(.svg_legend_entry_2:hover, .svg_series_2:hover) .svg_legend_entry_2 text { fill: #000; font-weight: bold; }
     svg:has(.svg_legend_entry_2:hover, .svg_series_2:hover) .eta_labels_2 { display: block; }
     svg:has(.svg_legend_entry_2:hover, .svg_series_2:hover) .hl_2 { display: block; }
-    svg:has(.svg_legend_entry_3:hover, .svg_series_3:hover) .svg_series_3 polyline, svg:has(.svg_legend_entry_3:hover, .svg_series_3:hover) .svg_legend_entry_3 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_3:hover, .svg_series_3:hover) .svg_legend_entry_3 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_3:hover, .svg_series_3:hover) .svg_series_3 circle, svg:has(.svg_legend_entry_3:hover, .svg_series_3:hover) .svg_legend_entry_3 circle { r: 6; }
     svg:has(.svg_legend_entry_3:hover, .svg_series_3:hover) .svg_legend_entry_3 text { fill: #000; font-weight: bold; }
     svg:has(.svg_legend_entry_3:hover, .svg_series_3:hover) .eta_labels_3 { display: block; }
     svg:has(.svg_legend_entry_3:hover, .svg_series_3:hover) .hl_3 { display: block; }
-    svg:has(.svg_legend_entry_4:hover, .svg_series_4:hover) .svg_series_4 polyline, svg:has(.svg_legend_entry_4:hover, .svg_series_4:hover) .svg_legend_entry_4 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_4:hover, .svg_series_4:hover) .svg_legend_entry_4 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_4:hover, .svg_series_4:hover) .svg_series_4 circle, svg:has(.svg_legend_entry_4:hover, .svg_series_4:hover) .svg_legend_entry_4 circle { r: 6; }
     svg:has(.svg_legend_entry_4:hover, .svg_series_4:hover) .svg_legend_entry_4 text { fill: #000; font-weight: bold; }
     svg:has(.svg_legend_entry_4:hover, .svg_series_4:hover) .eta_labels_4 { display: block; }
     svg:has(.svg_legend_entry_4:hover, .svg_series_4:hover) .hl_4 { display: block; }
-    svg:has(.svg_legend_entry_5:hover, .svg_series_5:hover) .svg_series_5 polyline, svg:has(.svg_legend_entry_5:hover, .svg_series_5:hover) .svg_legend_entry_5 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_5:hover, .svg_series_5:hover) .svg_legend_entry_5 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_5:hover, .svg_series_5:hover) .svg_series_5 circle, svg:has(.svg_legend_entry_5:hover, .svg_series_5:hover) .svg_legend_entry_5 circle { r: 6; }
     svg:has(.svg_legend_entry_5:hover, .svg_series_5:hover) .svg_legend_entry_5 text { fill: #000; font-weight: bold; }
     svg:has(.svg_legend_entry_5:hover, .svg_series_5:hover) .eta_labels_5 { display: block; }
     svg:has(.svg_legend_entry_5:hover, .svg_series_5:hover) .hl_5 { display: block; }
-    svg:has(.svg_legend_entry_6:hover, .svg_series_6:hover) .svg_series_6 polyline, svg:has(.svg_legend_entry_6:hover, .svg_series_6:hover) .svg_legend_entry_6 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_6:hover, .svg_series_6:hover) .svg_legend_entry_6 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_6:hover, .svg_series_6:hover) .svg_series_6 circle, svg:has(.svg_legend_entry_6:hover, .svg_series_6:hover) .svg_legend_entry_6 circle { r: 6; }
     svg:has(.svg_legend_entry_6:hover, .svg_series_6:hover) .svg_legend_entry_6 text { fill: #000; font-weight: bold; }
     svg:has(.svg_legend_entry_6:hover, .svg_series_6:hover) .eta_labels_6 { display: block; }
     svg:has(.svg_legend_entry_6:hover, .svg_series_6:hover) .hl_6 { display: block; }
-    svg:has(.svg_legend_entry_7:hover, .svg_series_7:hover) .svg_series_7 polyline, svg:has(.svg_legend_entry_7:hover, .svg_series_7:hover) .svg_legend_entry_7 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_7:hover, .svg_series_7:hover) .svg_legend_entry_7 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_7:hover, .svg_series_7:hover) .svg_series_7 circle, svg:has(.svg_legend_entry_7:hover, .svg_series_7:hover) .svg_legend_entry_7 circle { r: 6; }
     svg:has(.svg_legend_entry_7:hover, .svg_series_7:hover) .svg_legend_entry_7 text { fill: #000; font-weight: bold; }
     svg:has(.svg_legend_entry_7:hover, .svg_series_7:hover) .eta_labels_7 { display: block; }
     svg:has(.svg_legend_entry_7:hover, .svg_series_7:hover) .hl_7 { display: block; }
-    svg:has(.svg_legend_entry_8:hover, .svg_series_8:hover) .svg_series_8 polyline, svg:has(.svg_legend_entry_8:hover, .svg_series_8:hover) .svg_legend_entry_8 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_8:hover, .svg_series_8:hover) .svg_legend_entry_8 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_8:hover, .svg_series_8:hover) .svg_series_8 circle, svg:has(.svg_legend_entry_8:hover, .svg_series_8:hover) .svg_legend_entry_8 circle { r: 6; }
     svg:has(.svg_legend_entry_8:hover, .svg_series_8:hover) .svg_legend_entry_8 text { fill: #000; font-weight: bold; }
     svg:has(.svg_legend_entry_8:hover, .svg_series_8:hover) .eta_labels_8 { display: block; }
     svg:has(.svg_legend_entry_8:hover, .svg_series_8:hover) .hl_8 { display: block; }
-    svg:has(.svg_legend_entry_9:hover, .svg_series_9:hover) .svg_series_9 polyline, svg:has(.svg_legend_entry_9:hover, .svg_series_9:hover) .svg_legend_entry_9 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_9:hover, .svg_series_9:hover) .svg_legend_entry_9 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_9:hover, .svg_series_9:hover) .svg_series_9 circle, svg:has(.svg_legend_entry_9:hover, .svg_series_9:hover) .svg_legend_entry_9 circle { r: 6; }
     svg:has(.svg_legend_entry_9:hover, .svg_series_9:hover) .svg_legend_entry_9 text { fill: #000; font-weight: bold; }
     svg:has(.svg_legend_entry_9:hover, .svg_series_9:hover) .eta_labels_9 { display: block; }
     svg:has(.svg_legend_entry_9:hover, .svg_series_9:hover) .hl_9 { display: block; }
-    svg:has(.svg_legend_entry_10:hover, .svg_series_10:hover) .svg_series_10 polyline, svg:has(.svg_legend_entry_10:hover, .svg_series_10:hover) .svg_legend_entry_10 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_10:hover, .svg_series_10:hover) .svg_legend_entry_10 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_10:hover, .svg_series_10:hover) .svg_series_10 circle, svg:has(.svg_legend_entry_10:hover, .svg_series_10:hover) .svg_legend_entry_10 circle { r: 6; }
     svg:has(.svg_legend_entry_10:hover, .svg_series_10:hover) .svg_legend_entry_10 text { fill: #000; font-weight: bold; }
     svg:has(.svg_legend_entry_10:hover, .svg_series_10:hover) .eta_labels_10 { display: block; }
     svg:has(.svg_legend_entry_10:hover, .svg_series_10:hover) .hl_10 { display: block; }
-    svg:has(.svg_legend_entry_11:hover, .svg_series_11:hover) .svg_series_11 polyline, svg:has(.svg_legend_entry_11:hover, .svg_series_11:hover) .svg_legend_entry_11 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_11:hover, .svg_series_11:hover) .svg_legend_entry_11 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_11:hover, .svg_series_11:hover) .svg_series_11 circle, svg:has(.svg_legend_entry_11:hover, .svg_series_11:hover) .svg_legend_entry_11 circle { r: 6; }
     svg:has(.svg_legend_entry_11:hover, .svg_series_11:hover) .svg_legend_entry_11 text { fill: #000; font-weight: bold; }
     svg:has(.svg_legend_entry_11:hover, .svg_series_11:hover) .eta_labels_11 { display: block; }
     svg:has(.svg_legend_entry_11:hover, .svg_series_11:hover) .hl_11 { display: block; }
-    svg:has(.svg_legend_entry_12:hover, .svg_series_12:hover) .svg_series_12 polyline, svg:has(.svg_legend_entry_12:hover, .svg_series_12:hover) .svg_legend_entry_12 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_12:hover, .svg_series_12:hover) .svg_legend_entry_12 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_12:hover, .svg_series_12:hover) .svg_series_12 circle, svg:has(.svg_legend_entry_12:hover, .svg_series_12:hover) .svg_legend_entry_12 circle { r: 6; }
     svg:has(.svg_legend_entry_12:hover, .svg_series_12:hover) .svg_legend_entry_12 text { fill: #000; font-weight: bold; }
     svg:has(.svg_legend_entry_12:hover, .svg_series_12:hover) .eta_labels_12 { display: block; }
     svg:has(.svg_legend_entry_12:hover, .svg_series_12:hover) .hl_12 { display: block; }
-    svg:has(.svg_legend_entry_13:hover, .svg_series_13:hover) .svg_series_13 polyline, svg:has(.svg_legend_entry_13:hover, .svg_series_13:hover) .svg_legend_entry_13 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_13:hover, .svg_series_13:hover) .svg_legend_entry_13 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_13:hover, .svg_series_13:hover) .svg_series_13 circle, svg:has(.svg_legend_entry_13:hover, .svg_series_13:hover) .svg_legend_entry_13 circle { r: 6; }
     svg:has(.svg_legend_entry_13:hover, .svg_series_13:hover) .svg_legend_entry_13 text { fill: #000; font-weight: bold; }
     svg:has(.svg_legend_entry_13:hover, .svg_series_13:hover) .eta_labels_13 { display: block; }
     svg:has(.svg_legend_entry_13:hover, .svg_series_13:hover) .hl_13 { display: block; }
-    svg:has(.svg_legend_entry_14:hover, .svg_series_14:hover) .svg_series_14 polyline, svg:has(.svg_legend_entry_14:hover, .svg_series_14:hover) .svg_legend_entry_14 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_14:hover, .svg_series_14:hover) .svg_legend_entry_14 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_14:hover, .svg_series_14:hover) .svg_series_14 circle, svg:has(.svg_legend_entry_14:hover, .svg_series_14:hover) .svg_legend_entry_14 circle { r: 6; }
     svg:has(.svg_legend_entry_14:hover, .svg_series_14:hover) .svg_legend_entry_14 text { fill: #000; font-weight: bold; }
     svg:has(.svg_legend_entry_14:hover, .svg_series_14:hover) .eta_labels_14 { display: block; }
     svg:has(.svg_legend_entry_14:hover, .svg_series_14:hover) .hl_14 { display: block; }
-    svg:has(.svg_legend_entry_15:hover, .svg_series_15:hover) .svg_series_15 polyline, svg:has(.svg_legend_entry_15:hover, .svg_series_15:hover) .svg_legend_entry_15 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_15:hover, .svg_series_15:hover) .svg_legend_entry_15 line { stroke-width: 4; }
     svg:has(.svg_legend_entry_15:hover, .svg_series_15:hover) .svg_series_15 circle, svg:has(.svg_legend_entry_15:hover, .svg_series_15:hover) .svg_legend_entry_15 circle { r: 6; }
     svg:has(.svg_legend_entry_15:hover, .svg_series_15:hover) .svg_legend_entry_15 text { fill: #000; font-weight: bold; }
     svg:has(.svg_legend_entry_15:hover, .svg_series_15:hover) .eta_labels_15 { display: block; }
     svg:has(.svg_legend_entry_15:hover, .svg_series_15:hover) .hl_15 { display: block; }
+    svg:has(.svg_legend_entry_16:hover, .svg_series_16:hover) .svg_legend_entry_16 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_16:hover, .svg_series_16:hover) .svg_series_16 circle, svg:has(.svg_legend_entry_16:hover, .svg_series_16:hover) .svg_legend_entry_16 circle { r: 6; }
+    svg:has(.svg_legend_entry_16:hover, .svg_series_16:hover) .svg_legend_entry_16 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_16:hover, .svg_series_16:hover) .eta_labels_16 { display: block; }
+    svg:has(.svg_legend_entry_16:hover, .svg_series_16:hover) .hl_16 { display: block; }
+    svg:has(.svg_legend_entry_17:hover, .svg_series_17:hover) .svg_legend_entry_17 line { stroke-width: 4; }
+    svg:has(.svg_legend_entry_17:hover, .svg_series_17:hover) .svg_series_17 circle, svg:has(.svg_legend_entry_17:hover, .svg_series_17:hover) .svg_legend_entry_17 circle { r: 6; }
+    svg:has(.svg_legend_entry_17:hover, .svg_series_17:hover) .svg_legend_entry_17 text { fill: #000; font-weight: bold; }
+    svg:has(.svg_legend_entry_17:hover, .svg_series_17:hover) .eta_labels_17 { display: block; }
+    svg:has(.svg_legend_entry_17:hover, .svg_series_17:hover) .hl_17 { display: block; }
   </style>
   <line x1="85.0" y1="10" x2="85.0" y2="260" stroke="#e0e0e0" stroke-width="1"/>
   <line x1="172.0" y1="10" x2="172.0" y2="260" stroke="#e0e0e0" stroke-width="1"/>
@@ -234,19 +244,36 @@
   <circle cx="498.46" cy="66.42" r="4" fill="#fd03ca" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="svg_series_12">
+  <polyline points="183.31,110.33 202.22,103.12 226.75,98.46 247.02,94.15" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
+  <polyline points="183.31,110.33 202.22,103.12 226.75,98.46 247.02,94.15" fill="none" stroke="#db6d01" stroke-width="1.8" clip-path="url(#plotarea)"/>
+  <circle cx="183.31" cy="110.33" r="4" fill="#db6d01" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="202.22" cy="103.12" r="4" fill="#db6d01" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="226.75" cy="98.46" r="4" fill="#db6d01" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="247.02" cy="94.15" r="4" fill="#db6d01" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="svg_series_13">
+  <polyline points="199.17,114.36 236.75,96.56 264.10,91.24 300.27,88.99 329.86,83.88" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
+  <polyline points="199.17,114.36 236.75,96.56 264.10,91.24 300.27,88.99 329.86,83.88" fill="none" stroke="#ff7ed1" stroke-width="1.8" clip-path="url(#plotarea)"/>
+  <circle cx="199.17" cy="114.36" r="4" fill="#ff7ed1" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="236.75" cy="96.56" r="4" fill="#ff7ed1" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="264.10" cy="91.24" r="4" fill="#ff7ed1" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="300.27" cy="88.99" r="4" fill="#ff7ed1" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="329.86" cy="83.88" r="4" fill="#ff7ed1" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="svg_series_14">
   <polyline points="168.54,118.02 219.07,96.77 268.97,88.02" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
   <polyline points="168.54,118.02 219.07,96.77 268.97,88.02" fill="none" stroke="#03c600" stroke-width="1.8" clip-path="url(#plotarea)"/>
   <circle cx="168.54" cy="118.02" r="4" fill="#03c600" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="219.07" cy="96.77" r="4" fill="#03c600" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="268.97" cy="88.02" r="4" fill="#03c600" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
-  <g class="svg_series_13">
+  <g class="svg_series_15">
   <polyline points="146.98,165.11 225.09,135.64" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
   <polyline points="146.98,165.11 225.09,135.64" fill="none" stroke="#95b577" stroke-width="1.8" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
   <circle cx="146.98" cy="165.11" r="4" fill="#95b577" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="225.09" cy="135.64" r="4" fill="#95b577" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
-  <g class="svg_series_14">
+  <g class="svg_series_16">
   <polyline points="85.91,199.67 103.04,155.88 120.68,139.94 137.66,128.62 167.91,110.65 206.89,108.91 246.64,108.60 276.07,88.36 314.10,81.27 345.23,76.53" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
   <polyline points="85.91,199.67 103.04,155.88 120.68,139.94 137.66,128.62 167.91,110.65 206.89,108.91 246.64,108.60 276.07,88.36 314.10,81.27 345.23,76.53" fill="none" stroke="#ffa52f" stroke-width="1.8" clip-path="url(#plotarea)"/>
   <circle cx="85.91" cy="199.67" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
@@ -260,7 +287,7 @@
   <circle cx="314.10" cy="81.27" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="345.23" cy="76.53" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
-  <g class="svg_series_15">
+  <g class="svg_series_17">
   <polyline points="103.04,147.87 120.68,130.68 137.65,110.79 167.92,86.61 206.86,63.70 276.06,65.18 314.04,74.61 345.27,76.09" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
   <polyline points="103.04,147.87 120.68,130.68 137.65,110.79 167.92,86.61 206.86,63.70 276.06,65.18 314.04,74.61 345.27,76.09" fill="none" stroke="#d60000" stroke-width="1.8" clip-path="url(#plotarea)"/>
   <circle cx="103.04" cy="147.87" r="4" fill="#d60000" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
@@ -346,27 +373,39 @@
   </g>
   <g class="svg_legend_entry_12">
   <rect x="525" y="178" width="225" height="14" fill="transparent"/>
-  <line x1="525" y1="185" x2="550" y2="185" stroke="#03c600" stroke-width="2"/>
-  <circle cx="537" cy="185" r="4" fill="#03c600" stroke="white" stroke-width="1"/>
-  <text x="557" y="189" font-size="11" font-family="Arial,sans-serif" fill="#333">Selfmade foil_pvc_0_71 F4WDO</text>
+  <line x1="525" y1="185" x2="550" y2="185" stroke="#db6d01" stroke-width="2"/>
+  <circle cx="537" cy="185" r="4" fill="#db6d01" stroke="white" stroke-width="1"/>
+  <text x="557" y="189" font-size="11" font-family="Arial,sans-serif" fill="#333">Selfmade fesz_0.65 YO2FZT</text>
   </g>
   <g class="svg_legend_entry_13">
   <rect x="525" y="192" width="225" height="14" fill="transparent"/>
-  <line x1="525" y1="199" x2="550" y2="199" stroke="#95b577" stroke-width="2" stroke-dasharray="8,4"/>
-  <circle cx="537" cy="199" r="4" fill="#95b577" stroke="white" stroke-width="1"/>
-  <text x="557" y="203" font-size="11" font-family="Arial,sans-serif" fill="#333">Selfmade square_1m EA4AGY</text>
+  <line x1="525" y1="199" x2="550" y2="199" stroke="#ff7ed1" stroke-width="2"/>
+  <circle cx="537" cy="199" r="4" fill="#ff7ed1" stroke="white" stroke-width="1"/>
+  <text x="557" y="203" font-size="11" font-family="Arial,sans-serif" fill="#333">Selfmade fesz_0.95 YO2FZT</text>
   </g>
   <g class="svg_legend_entry_14">
   <rect x="525" y="206" width="225" height="14" fill="transparent"/>
-  <line x1="525" y1="213" x2="550" y2="213" stroke="#ffa52f" stroke-width="2"/>
-  <circle cx="537" cy="213" r="4" fill="#ffa52f" stroke="white" stroke-width="1"/>
-  <text x="557" y="217" font-size="11" font-family="Arial,sans-serif" fill="#333">Selfmade Tubby indoor HB9ISP</text>
+  <line x1="525" y1="213" x2="550" y2="213" stroke="#03c600" stroke-width="2"/>
+  <circle cx="537" cy="213" r="4" fill="#03c600" stroke="white" stroke-width="1"/>
+  <text x="557" y="217" font-size="11" font-family="Arial,sans-serif" fill="#333">Selfmade foil_pvc_0_71 F4WDO</text>
   </g>
   <g class="svg_legend_entry_15">
   <rect x="525" y="220" width="225" height="14" fill="transparent"/>
-  <line x1="525" y1="227" x2="550" y2="227" stroke="#d60000" stroke-width="2"/>
-  <circle cx="537" cy="227" r="4" fill="#d60000" stroke="white" stroke-width="1"/>
-  <text x="557" y="231" font-size="11" font-family="Arial,sans-serif" fill="#333">Selfmade Tubby outdoor HB9ISP</text>
+  <line x1="525" y1="227" x2="550" y2="227" stroke="#95b577" stroke-width="2" stroke-dasharray="8,4"/>
+  <circle cx="537" cy="227" r="4" fill="#95b577" stroke="white" stroke-width="1"/>
+  <text x="557" y="231" font-size="11" font-family="Arial,sans-serif" fill="#333">Selfmade square_1m EA4AGY</text>
+  </g>
+  <g class="svg_legend_entry_16">
+  <rect x="525" y="234" width="225" height="14" fill="transparent"/>
+  <line x1="525" y1="241" x2="550" y2="241" stroke="#ffa52f" stroke-width="2"/>
+  <circle cx="537" cy="241" r="4" fill="#ffa52f" stroke="white" stroke-width="1"/>
+  <text x="557" y="245" font-size="11" font-family="Arial,sans-serif" fill="#333">Selfmade Tubby indoor HB9ISP</text>
+  </g>
+  <g class="svg_legend_entry_17">
+  <rect x="525" y="248" width="225" height="14" fill="transparent"/>
+  <line x1="525" y1="255" x2="550" y2="255" stroke="#d60000" stroke-width="2"/>
+  <circle cx="537" cy="255" r="4" fill="#d60000" stroke="white" stroke-width="1"/>
+  <text x="557" y="259" font-size="11" font-family="Arial,sans-serif" fill="#333">Selfmade Tubby outdoor HB9ISP</text>
   </g>
   <g id="highlight_overlay">
   <g class="hl_0" display="none">
@@ -406,15 +445,21 @@
   <polyline points="161.52,178.79 498.46,66.42" fill="none" stroke="#fd03ca" stroke-width="4" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
   </g>
   <g class="hl_12" display="none">
-  <polyline points="168.54,118.02 219.07,96.77 268.97,88.02" fill="none" stroke="#03c600" stroke-width="4" clip-path="url(#plotarea)"/>
+  <polyline points="183.31,110.33 202.22,103.12 226.75,98.46 247.02,94.15" fill="none" stroke="#db6d01" stroke-width="4" clip-path="url(#plotarea)"/>
   </g>
   <g class="hl_13" display="none">
-  <polyline points="146.98,165.11 225.09,135.64" fill="none" stroke="#95b577" stroke-width="4" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  <polyline points="199.17,114.36 236.75,96.56 264.10,91.24 300.27,88.99 329.86,83.88" fill="none" stroke="#ff7ed1" stroke-width="4" clip-path="url(#plotarea)"/>
   </g>
   <g class="hl_14" display="none">
-  <polyline points="85.91,199.67 103.04,155.88 120.68,139.94 137.66,128.62 167.91,110.65 206.89,108.91 246.64,108.60 276.07,88.36 314.10,81.27 345.23,76.53" fill="none" stroke="#ffa52f" stroke-width="4" clip-path="url(#plotarea)"/>
+  <polyline points="168.54,118.02 219.07,96.77 268.97,88.02" fill="none" stroke="#03c600" stroke-width="4" clip-path="url(#plotarea)"/>
   </g>
   <g class="hl_15" display="none">
+  <polyline points="146.98,165.11 225.09,135.64" fill="none" stroke="#95b577" stroke-width="4" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="hl_16" display="none">
+  <polyline points="85.91,199.67 103.04,155.88 120.68,139.94 137.66,128.62 167.91,110.65 206.89,108.91 246.64,108.60 276.07,88.36 314.10,81.27 345.23,76.53" fill="none" stroke="#ffa52f" stroke-width="4" clip-path="url(#plotarea)"/>
+  </g>
+  <g class="hl_17" display="none">
   <polyline points="103.04,147.87 120.68,130.68 137.65,110.79 167.92,86.61 206.86,63.70 276.06,65.18 314.04,74.61 345.27,76.09" fill="none" stroke="#d60000" stroke-width="4" clip-path="url(#plotarea)"/>
   </g>
   </g>
@@ -568,6 +613,28 @@
   <text x="498.46" y="58.42" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">74%</text>
   </g>
   <g class="eta_labels_12" display="none">
+  <rect x="172.3" y="92.3" width="22.0" height="12" fill="white"/>
+  <text x="183.31" y="102.33" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">9.9%</text>
+  <rect x="194.0" y="71.1" width="16.5" height="12" fill="white"/>
+  <text x="202.22" y="81.12" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">14%</text>
+  <rect x="218.5" y="80.5" width="16.5" height="12" fill="white"/>
+  <text x="226.75" y="90.46" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">17%</text>
+  <rect x="238.8" y="76.1" width="16.5" height="12" fill="white"/>
+  <text x="247.02" y="86.15" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">21%</text>
+  </g>
+  <g class="eta_labels_13" display="none">
+  <rect x="188.2" y="96.4" width="22.0" height="12" fill="white"/>
+  <text x="199.17" y="106.36" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">8.2%</text>
+  <rect x="228.5" y="78.6" width="16.5" height="12" fill="white"/>
+  <text x="236.75" y="88.56" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">19%</text>
+  <rect x="255.8" y="73.2" width="16.5" height="12" fill="white"/>
+  <text x="264.10" y="83.24" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">24%</text>
+  <rect x="292.0" y="71.0" width="16.5" height="12" fill="white"/>
+  <text x="300.27" y="80.99" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">26%</text>
+  <rect x="321.6" y="65.9" width="16.5" height="12" fill="white"/>
+  <text x="329.86" y="75.88" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">33%</text>
+  </g>
+  <g class="eta_labels_14" display="none">
   <rect x="157.5" y="100.0" width="22.0" height="12" fill="white"/>
   <text x="168.54" y="110.02" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">6.9%</text>
   <rect x="210.8" y="78.8" width="16.5" height="12" fill="white"/>
@@ -575,13 +642,13 @@
   <rect x="260.7" y="70.0" width="16.5" height="12" fill="white"/>
   <text x="268.97" y="80.02" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">28%</text>
   </g>
-  <g class="eta_labels_13" display="none">
+  <g class="eta_labels_15" display="none">
   <rect x="133.2" y="147.1" width="27.5" height="12" fill="white"/>
   <text x="146.98" y="157.11" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">0.79%</text>
   <rect x="214.1" y="117.6" width="22.0" height="12" fill="white"/>
   <text x="225.09" y="127.64" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">3.1%</text>
   </g>
-  <g class="eta_labels_14" display="none">
+  <g class="eta_labels_16" display="none">
   <rect x="72.2" y="181.7" width="27.5" height="12" fill="white"/>
   <text x="85.91" y="191.67" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">0.16%</text>
   <rect x="92.0" y="137.9" width="22.0" height="12" fill="white"/>
@@ -603,7 +670,7 @@
   <rect x="337.0" y="58.5" width="16.5" height="12" fill="white"/>
   <text x="345.23" y="68.53" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">47%</text>
   </g>
-  <g class="eta_labels_15" display="none">
+  <g class="eta_labels_17" display="none">
   <rect x="92.0" y="129.9" width="22.0" height="12" fill="white"/>
   <text x="103.04" y="139.87" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">1.7%</text>
   <rect x="109.7" y="112.7" width="22.0" height="12" fill="white"/>
