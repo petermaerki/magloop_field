@@ -100,6 +100,40 @@ def _source_power_load(_antenna: Antenna, _bd: BandData) -> str:
     return "[Computed] P_load = P_fwd * eta_SWR_ant"
 
 
+def _c_lambda_css(calc: AntennaCalculator) -> str:
+    """CSS class for the C/λ cell based on the four colour zones."""
+    val = calc.C_lambda
+    if val < constants.C_LAMBDA_LIMIT_0p1:
+        return ""
+    if val < constants.C_LAMBDA_LIMIT_0p2:
+        return " clambda-0p1"
+    if val < constants.C_LAMBDA_LIMIT_0p3:
+        return " clambda-0p2"
+    return " clambda-0p3"
+
+
+def _c_lambda_accuracy_text(calc: AntennaCalculator) -> str:
+    val = calc.C_lambda
+    if val < constants.C_LAMBDA_LIMIT_0p1:
+        return "accurate"
+    if val < constants.C_LAMBDA_LIMIT_0p2:
+        return "moderate"
+    if val < constants.C_LAMBDA_LIMIT_0p3:
+        return "reduced"
+    return "questionable"
+
+
+def _c_lambda_accuracy_tooltip(calc: AntennaCalculator) -> str:
+    val = calc.C_lambda
+    if val < constants.C_LAMBDA_LIMIT_0p1:
+        return f"C/λ = {val:.4f} < {constants.C_LAMBDA_LIMIT_0p1}: electrically small loop, small-loop approximation reliable."
+    if val < constants.C_LAMBDA_LIMIT_0p2:
+        return f"C/λ = {val:.4f} ({constants.C_LAMBDA_LIMIT_0p1}–{constants.C_LAMBDA_LIMIT_0p2}): minor deviations from small-loop model expected."
+    if val < constants.C_LAMBDA_LIMIT_0p3:
+        return f"C/λ = {val:.4f} ({constants.C_LAMBDA_LIMIT_0p2}–{constants.C_LAMBDA_LIMIT_0p3}): noticeable deviations from small-loop model."
+    return f"C/λ = {val:.4f} ≥ {constants.C_LAMBDA_LIMIT_0p3}: approaching resonant size, small-loop approximation unreliable."
+
+
 # (column-1 label, unit, tooltip description, value formatter, source formatter)
 _ROWS: list[tuple[str, str, str, RowFormatter, SourceFormatter]] = [
     (
@@ -129,6 +163,20 @@ _ROWS: list[tuple[str, str, str, RowFormatter, SourceFormatter]] = [
         "Mittenfrequenz des betrachteten Bandes.",
         lambda c: f"{c.f_Hz / 1e6:.3f}",
         lambda _antenna, bd: bd.f_Hz.source,
+    ),
+    (
+        "C/λ",
+        "1",
+        "C/λ = π·D·f/c — Loop circumference relative to wavelength. < 0.1: electrically small, calculations reliable. 0.1–0.3: increasing deviation. > 0.3: small-loop approximation questionable.",
+        lambda c: f"{c.C_lambda:.2f}",
+        lambda _antenna, _bd: "Computed: C/λ = π·D·f/c",
+    ),
+    (
+        "Calculation accuracy",
+        "",
+        "Qualitative accuracy of the small-loop approximation based on C/λ.",
+        lambda c: _c_lambda_accuracy_text(c),
+        lambda _antenna, _bd: "",
     ),
     (
         "Intrinsic bandwidth <i>B</i><sub>int</sub>",
@@ -466,6 +514,7 @@ class HtmlRenderer:
                 is_rloss = "Loss" in label
                 is_efficiency_row = "Antenna efficiency" in label
                 is_source_row = label.startswith("Source")
+                is_clambda = label == "Calculation accuracy"
                 unit_html = f"<b>{unit}</b>" if is_efficiency_row else unit
                 tooltip_attr = html.escape(tooltip, quote=True)
                 row_class_parts = []
@@ -492,11 +541,12 @@ class HtmlRenderer:
                     highlight_over_100_efficiency = (
                         is_efficiency_row and (calc.eta * 100) > 100
                     )
-                    extra = (
-                        " neg"
-                        if (highlight_neg or highlight_over_100_efficiency)
-                        else ""
-                    )
+                    if highlight_neg or highlight_over_100_efficiency:
+                        extra = " neg"
+                    elif is_clambda:
+                        extra = _c_lambda_css(calc)
+                    else:
+                        extra = ""
                     if is_source_row:
                         tooltip_text = (
                             entry.antenna.bandwidth_source_tooltip_str
@@ -504,6 +554,10 @@ class HtmlRenderer:
                             or source_text
                         )
                         source_attr = html.escape(tooltip_text, quote=True)
+                    elif label == "Calculation accuracy":
+                        source_attr = html.escape(
+                            _c_lambda_accuracy_tooltip(calc), quote=True
+                        )
                     else:
                         source_attr = html.escape(source_text, quote=True)
                     row += f"<td class='val{extra}' title='{source_attr}'>{val}</td>"

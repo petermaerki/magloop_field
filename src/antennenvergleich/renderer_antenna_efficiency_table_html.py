@@ -5,6 +5,11 @@ from decimal import Decimal, ROUND_HALF_UP
 
 from magloop_field.calculations import AntennaCalculator as FieldAntennaCalculator
 
+from .constants import (
+    C_LAMBDA_LIMIT_0p1,
+    C_LAMBDA_LIMIT_0p2,
+    C_LAMBDA_LIMIT_0p3,
+)
 from .constants_s1p import DIRECTORY_S1P_RESULTS
 from .datatypes import Antenna
 
@@ -26,6 +31,18 @@ def _fmt_pico(v: float) -> str:
 
 ROW_SPECS: list[tuple[str, str, str, str]] = [
     ("Frequency <i>f</i>", "MHz", "f", "Center frequency of the considered band."),
+    (
+        "C/λ",
+        "1",
+        "C_lambda",
+        "C/λ = π·D·f/c — Loop circumference relative to wavelength. < 0.1: electrically small, calculations reliable. 0.1–0.3: increasing deviation. > 0.3: small-loop approximation questionable.",
+    ),
+    (
+        "Calculation accuracy",
+        "",
+        "C_lambda_accuracy",
+        "Qualitative accuracy of the small-loop approximation based on C/λ.",
+    ),
     (
         "Intrinsic bandwidth <i>B</i><sub>int</sub>",
         "kHz",
@@ -123,6 +140,40 @@ ROW_SPECS: list[tuple[str, str, str, str]] = [
 ]
 
 MERGED_SINGLE_VALUE_KEYS = {"D", "d", "n", "L"}
+
+
+def _c_lambda_css(calc: FieldAntennaCalculator) -> str:
+    """CSS class for the C/λ cell based on the four colour zones."""
+    val = calc.C_lambda
+    if val < C_LAMBDA_LIMIT_0p1:
+        return "val"
+    if val < C_LAMBDA_LIMIT_0p2:
+        return "val clambda-0p1"
+    if val < C_LAMBDA_LIMIT_0p3:
+        return "val clambda-0p2"
+    return "val clambda-0p3"
+
+
+def _c_lambda_accuracy_text(calc: FieldAntennaCalculator) -> str:
+    val = calc.C_lambda
+    if val < C_LAMBDA_LIMIT_0p1:
+        return "accurate"
+    if val < C_LAMBDA_LIMIT_0p2:
+        return "moderate"
+    if val < C_LAMBDA_LIMIT_0p3:
+        return "reduced"
+    return "questionable"
+
+
+def _c_lambda_accuracy_tooltip(calc: FieldAntennaCalculator) -> str:
+    val = calc.C_lambda
+    if val < C_LAMBDA_LIMIT_0p1:
+        return f"C/λ = {val:.4f} < {C_LAMBDA_LIMIT_0p1}: electrically small loop, small-loop approximation reliable."
+    if val < C_LAMBDA_LIMIT_0p2:
+        return f"C/λ = {val:.4f} ({C_LAMBDA_LIMIT_0p1}–{C_LAMBDA_LIMIT_0p2}): minor deviations from small-loop model expected."
+    if val < C_LAMBDA_LIMIT_0p3:
+        return f"C/λ = {val:.4f} ({C_LAMBDA_LIMIT_0p2}–{C_LAMBDA_LIMIT_0p3}): noticeable deviations from small-loop model."
+    return f"C/λ = {val:.4f} ≥ {C_LAMBDA_LIMIT_0p3}: approaching resonant size, small-loop approximation unreliable."
 
 
 def _filename_timestamp_key(file_name: str) -> tuple[int, int, str]:
@@ -233,6 +284,12 @@ def _value_source(
         return antenna_data.n.source
     if key == "f":
         return str(item["source_f"])
+    if key == "C_lambda":
+        return "Computed: C/λ = π·D·f/c"
+    if key == "C_lambda_accuracy":
+        if calc is None:
+            return "Computed: C/λ = π·D·f/c"
+        return _c_lambda_accuracy_tooltip(calc)
     if key == "bw":
         return str(item["source_bw"])
     if key == "swr_min":
@@ -247,7 +304,9 @@ def _value_source(
         return antenna_data.powerPfwd_W.source
     if key in {"L", "C", "Q0", "RT", "RR", "RLoss", "eta", "I", "U", "m"}:
         return (
-            "Computed from geometry and measurement data." if calc is not None else file_name
+            "Computed from geometry and measurement data."
+            if calc is not None
+            else file_name
         )
     return file_name
 
@@ -263,6 +322,10 @@ def _format_value(calc: FieldAntennaCalculator | None, key: str) -> str:
         return f"{calc.n:.0f}"
     if key == "f":
         return f"{calc.f_Hz / 1e6:.3f}"
+    if key == "C_lambda":
+        return f"{calc.C_lambda:.2f}"
+    if key == "C_lambda_accuracy":
+        return _c_lambda_accuracy_text(calc)
     if key == "bw":
         return f"{calc.bw262_Hz / 1e3:.1f}"
     if key == "P":
@@ -358,6 +421,8 @@ def build_efficiency_table(
                     css += " neg"
                 if key == "eta" and calc is not None and (calc.eta * 100) > 100:
                     css += " neg"
+                if key == "C_lambda_accuracy" and calc is not None:
+                    css = _c_lambda_css(calc)
                 cells.append(
                     EfficiencyCell(
                         value=_format_value(calc, key),

@@ -42,6 +42,17 @@ td.neg {
     background: #ffcccc;
 }
 
+td.clambda-0p1 {
+}
+
+td.clambda-0p2 {
+    border-bottom: 3px solid #ff9800;
+}
+
+td.clambda-0p3 {
+    border-bottom: 3px solid #ff9800;
+}
+
 tr.band-row td {
     background: #fff59d;
     font-weight: 600;

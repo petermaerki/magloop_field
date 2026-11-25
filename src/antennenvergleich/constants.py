@@ -29,6 +29,11 @@ C_LIGHT_MS = 299792458.0
 m/s
 """
 
+C_LAMBDA_LIMIT_0p1 = 0.1
+"""C/λ < this → (electrically very small loop)."""
+C_LAMBDA_LIMIT_0p2 = 0.2
+C_LAMBDA_LIMIT_0p3 = 0.3
+
 BANDS = f_hz_by_band_name = {
     "70cm": 435_000_000,
     "2m": 145_000_000,

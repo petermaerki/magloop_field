@@ -295,6 +295,11 @@ class AntennaCalculator:
         return math.pi * (self.D_m / 2) ** 2
 
     @property
+    def C_lambda(self) -> float:
+        """Circumference-to-wavelength ratio C/λ = π·D·f/c (dimensionless)."""
+        return math.pi * self.D_m * self.f_Hz / C_LIGHT_MS
+
+    @property
     def RR_Ohm(self) -> float:
         """Radiation resistance [Ohm] — Rayleigh term with King finite-size correction."""
         rayleigh = 31171.0 * ((self.A_m2 * self.f_Hz**2) / C_LIGHT_MS**2) ** 2

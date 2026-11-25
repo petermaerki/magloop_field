@@ -6,7 +6,12 @@ from pyodide.ffi import JsNull, create_proxy
 from pyscript import when
 from pyscript.web import page
 
-from antennenvergleich import constants_ctl, renderer_diagram_svg, webui_filter
+from antennenvergleich import (
+    constants,
+    constants_ctl,
+    renderer_diagram_svg,
+    webui_filter,
+)
 from webui import util_compare
 
 try:
@@ -157,6 +162,28 @@ def do_calculate_antenna_efficiency(e=None):
     page["b#out_RT_mOhm"].innerHTML = f"{ac.RT_Ohm:.3g}"
     page["b#out_RLoss_Ohm"].innerHTML = f"{(ac.RT_Ohm - ac.RR_Ohm):.3g}"
     page["b#out_RR_mOhm"].innerHTML = f"{ac.RR_Ohm:.3g}"
+    page["b#out_c_lambda"].innerHTML = f"{ac.C_lambda:.2f}"
+    _c_lambda_val = ac.C_lambda
+    if _c_lambda_val < constants.C_LAMBDA_LIMIT_0p1:
+        _accuracy_text = "accurate"
+        _accuracy_css = ""
+        _accuracy_tooltip = f"C/λ = {_c_lambda_val:.4f} < {constants.C_LAMBDA_LIMIT_0p1}: electrically small loop, small-loop approximation reliable."
+    elif _c_lambda_val < constants.C_LAMBDA_LIMIT_0p2:
+        _accuracy_text = "moderate"
+        _accuracy_css = "clambda-0p1"
+        _accuracy_tooltip = f"C/λ = {_c_lambda_val:.4f} ({constants.C_LAMBDA_LIMIT_0p1}–{constants.C_LAMBDA_LIMIT_0p2}): minor deviations from small-loop model expected."
+    elif _c_lambda_val < constants.C_LAMBDA_LIMIT_0p3:
+        _accuracy_text = "reduced"
+        _accuracy_css = "clambda-0p2"
+        _accuracy_tooltip = f"C/λ = {_c_lambda_val:.4f} ({constants.C_LAMBDA_LIMIT_0p2}–{constants.C_LAMBDA_LIMIT_0p3}): noticeable deviations from small-loop model."
+    else:
+        _accuracy_text = "questionable"
+        _accuracy_css = "clambda-0p3"
+        _accuracy_tooltip = f"C/λ = {_c_lambda_val:.4f} ≥ {constants.C_LAMBDA_LIMIT_0p3}: approaching resonant size, small-loop approximation unreliable."
+    _accuracy_cell = document.getElementById("out_c_lambda_accuracy_cell")
+    page["b#out_c_lambda_accuracy"].innerHTML = _accuracy_text
+    _accuracy_cell.className = _accuracy_css
+    _accuracy_cell.title = _accuracy_tooltip
     page["b#out_eta_swr_ant_percent"].innerHTML = f"{(100.0 * ac.eta_SWR_ant):.3g}"
     page["b#out_powerPload_W"].innerHTML = f"{ac.powerPload_W:.3g}"
     page["b#out_eta_percent"].innerHTML = f"{(100.0 * ac.eta):.3g}"
