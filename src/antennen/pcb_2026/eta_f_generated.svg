@@ -55,37 +55,40 @@
   <text x="745.0" y="282" text-anchor="middle" font-size="15" font-family="Arial,sans-serif" fill="#222" transform="rotate(-90 745.0 282)">MHz</text>
   <text transform="rotate(-90 25 135.0)" x="25" y="135.0" text-anchor="middle" font-size="15" font-family="Arial,sans-serif" fill="#222">η (Efficiency)</text>
   <g class="svg_series_0">
-  <polyline points="332.26,257.96 400.60,210.47 484.88,151.32 484.96,155.64 486.64,149.90 490.15,132.02 718.50,20.31" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
-  <polyline points="332.26,257.96 400.60,210.47 484.88,151.32 484.96,155.64 486.64,149.90 490.15,132.02 718.50,20.31" fill="none" stroke="#85a301" stroke-width="1.8" clip-path="url(#plotarea)"/>
-  <circle cx="332.26" cy="257.96" r="4" fill="#85a301" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="400.60" cy="210.47" r="4" fill="#85a301" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="484.88" cy="151.32" r="4" fill="#85a301" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="484.96" cy="155.64" r="4" fill="#85a301" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="486.64" cy="149.90" r="4" fill="#85a301" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="490.15" cy="132.02" r="4" fill="#85a301" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="718.50" cy="20.31" r="4" fill="#85a301" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <polyline points="361.12,208.37 426.64,163.78 485.87,134.63 530.63,139.55 557.77,99.78 587.80,85.66 609.12,77.09 712.65,18.15" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
+  <polyline points="361.12,208.37 426.64,163.78 485.87,134.63 530.63,139.55 557.77,99.78 587.80,85.66 609.12,77.09 712.65,18.15" fill="none" stroke="#85a301" stroke-width="1.8" clip-path="url(#plotarea)"/>
+  <circle cx="361.12" cy="208.37" r="4" fill="#85a301" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="426.64" cy="163.78" r="4" fill="#85a301" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="485.87" cy="134.63" r="4" fill="#85a301" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="530.63" cy="139.55" r="4" fill="#85a301" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="557.77" cy="99.78" r="4" fill="#85a301" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="587.80" cy="85.66" r="4" fill="#85a301" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="609.12" cy="77.09" r="4" fill="#85a301" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="712.65" cy="18.15" r="4" fill="#85a301" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g id="highlight_overlay">
   <g class="hl_0" display="none">
-  <polyline points="332.26,257.96 400.60,210.47 484.88,151.32 484.96,155.64 486.64,149.90 490.15,132.02 718.50,20.31" fill="none" stroke="#85a301" stroke-width="4" clip-path="url(#plotarea)"/>
+  <polyline points="361.12,208.37 426.64,163.78 485.87,134.63 530.63,139.55 557.77,99.78 587.80,85.66 609.12,77.09 712.65,18.15" fill="none" stroke="#85a301" stroke-width="4" clip-path="url(#plotarea)"/>
   </g>
   </g>
   <g id="labels_overlay">
   <g class="eta_labels_0" display="none">
-  <rect x="326.8" y="240.0" width="11.0" height="12" fill="white"/>
-  <text x="332.26" y="249.96" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">1%</text>
-  <rect x="389.6" y="192.5" width="22.0" height="12" fill="white"/>
-  <text x="400.60" y="202.47" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">2.5%</text>
-  <rect x="473.9" y="133.3" width="22.0" height="12" fill="white"/>
-  <text x="484.88" y="143.32" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">7.4%</text>
-  <rect x="474.0" y="109.6" width="22.0" height="12" fill="white"/>
-  <text x="484.96" y="119.64" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">6.8%</text>
-  <rect x="475.6" y="89.9" width="22.0" height="12" fill="white"/>
-  <text x="486.64" y="99.90" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">7.6%</text>
-  <rect x="481.9" y="72.0" width="16.5" height="12" fill="white"/>
-  <text x="490.15" y="82.02" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">11%</text>
-  <rect x="710.2" y="28.3" width="16.5" height="12" fill="white"/>
-  <text x="718.50" y="38.31" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">83%</text>
+  <rect x="350.1" y="190.4" width="22.0" height="12" fill="white"/>
+  <text x="361.12" y="200.37" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">2.6%</text>
+  <rect x="415.6" y="145.8" width="22.0" height="12" fill="white"/>
+  <text x="426.64" y="155.78" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">5.9%</text>
+  <rect x="477.6" y="116.6" width="16.5" height="12" fill="white"/>
+  <text x="485.87" y="126.63" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">10%</text>
+  <rect x="519.6" y="121.5" width="22.0" height="12" fill="white"/>
+  <text x="530.63" y="131.55" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">9.2%</text>
+  <rect x="549.5" y="81.8" width="16.5" height="12" fill="white"/>
+  <text x="557.77" y="91.78" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">19%</text>
+  <rect x="579.6" y="67.7" width="16.5" height="12" fill="white"/>
+  <text x="587.80" y="77.66" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">25%</text>
+  <rect x="600.9" y="59.1" width="16.5" height="12" fill="white"/>
+  <text x="609.12" y="69.09" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">29%</text>
+  <rect x="704.4" y="26.1" width="16.5" height="12" fill="white"/>
+  <text x="712.65" y="36.15" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">86%</text>
   </g>
   </g>
 </svg>
