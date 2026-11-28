@@ -2,11 +2,12 @@
 
 import html
 import math
+from typing import NamedTuple
 
 from .antenna_calculations import (
     _make_calc,
 )
-from .constants import BANDS, C_LIGHT_MS
+from .constants import BANDS, C_LAMBDA_LIMIT_0p2
 from .datatypes import Antenna
 
 FILENAME_SVG_ETA_F = "generated_magnetic_loops_compare_eta_f.svg"
@@ -14,7 +15,7 @@ FILENAME_SVG_ETA_F_PER_ANTENNA = "eta_f_generated.svg"
 ID_SVG_ETA_F = "id_svg_eta_f"
 CLASS_SVG_LEGEND_ENTRY = "svg_legend_entry"
 CLASS_SVG_SERIES = "svg_series"
-FILENAME_SVG_ETA_DL = "generated_magnetic_loops_compare_eta_DL.svg"
+FILENAME_SVG_ETA_CL = "generated_magnetic_loops_compare_eta_CL.svg"
 
 SVG_WIDTH = 750
 SVG_HEIGHT = 300
@@ -42,6 +43,9 @@ DOT_RADIUS = 4
 DOT_RADIUS_HIGHLIGHT = 6
 LINE_WIDTH_LEGEND = 2
 LINE_WIDTH_LEGEND_DOT = 1
+LEGEND_ROW_HEIGHT = 14
+ACCURACY_LEGEND_TEXT_WIDTH = 155
+ACCURACY_LEGEND_MARKER_GAP = 7
 
 ORDINATE_TICK_VALUES = (
     1.0e-6,
@@ -53,6 +57,12 @@ ORDINATE_TICK_VALUES = (
     1.0,
     10.0,
 )
+
+
+class _Point(NamedTuple):
+    x: float
+    eta: float
+    reduced_accuracy: bool
 
 
 def _hover_style(series_count: int) -> str:
@@ -108,8 +118,8 @@ class _DiagramSvgBase:
         """Tick positions (abscissa value) and their labels."""
         raise NotImplementedError
 
-    def _points_for_antenna(self, antenna: Antenna) -> list[tuple[float, float]]:
-        """Sorted (abscissa value, eta) points of one antenna."""
+    def _points_for_antenna(self, antenna: Antenna) -> list[_Point]:
+        """Sorted points of one antenna."""
         raise NotImplementedError
 
     def _autoscale_x(self, xs: list[float]) -> None:
@@ -132,7 +142,7 @@ class _DiagramSvgBase:
 
     def _collect_data(
         self, antennas: list[Antenna]
-    ) -> list[tuple[Antenna, list[tuple[float, float]]]]:
+    ) -> list[tuple[Antenna, list[_Point]]]:
         result = []
         for antenna in antennas:
             pts = self._points_for_antenna(antenna)
@@ -146,7 +156,10 @@ class _DiagramSvgBase:
         antennas: list[Antenna],
     ) -> str:
         data = self._collect_data(antennas)
-        all_etas = [e for _, pts in data for _, e in pts]
+        show_accuracy_note = any(
+            point.reduced_accuracy for _, pts in data for point in pts
+        )
+        all_etas = [point.eta for _, pts in data for point in pts]
         if all_etas:
             min_eta = min(all_etas)
             max_eta = max(all_etas)
@@ -155,10 +168,11 @@ class _DiagramSvgBase:
             if self._ETA_MIN == self._ETA_MAX:
                 self._ETA_MIN /= 10.0
                 self._ETA_MAX *= 10.0
-        self._autoscale_x([x for _, pts in data for x, _ in pts])
+        self._autoscale_x([point.x for _, pts in data for point in pts])
         buf: list[str] = [
             '<?xml version="1.0" encoding="UTF-8"?>',
             f'<svg xmlns="http://www.w3.org/2000/svg" width="{SVG_WIDTH}" height="{SVG_HEIGHT}" viewBox="0 0 {SVG_WIDTH} {SVG_HEIGHT}">',
+            f"  <desc>Hollow circles indicate reduced or questionable calculation accuracy (C/λ ≥ {C_LAMBDA_LIMIT_0p2:g}).</desc>",
             f'  <rect width="{SVG_WIDTH}" height="{SVG_HEIGHT}" fill="white"/>',
             f'  <clipPath id="plotarea"><rect x="{SVG_MARGIN_LEFT}" y="{SVG_MARGIN_TOP}" width="{self._pw}" height="{self._ph}"/></clipPath>',
             _hover_style(series_count=len(data)),
@@ -180,6 +194,8 @@ class _DiagramSvgBase:
         # Highlight + labels overlays: drawn last so they appear above all curves.
         buf += self._draw_highlight_overlay(data)
         buf += self._draw_labels_overlay(data)
+        if show_accuracy_note:
+            buf += self._draw_accuracy_legend()
         buf.append("</svg>")
         return "\n".join(buf)
 
@@ -278,13 +294,23 @@ class _DiagramSvgBase:
         val = eta * 100
         return f"{val:.0f}%" if val >= 10 else f"{val:.2g}%"
 
-    def _coords(self, pts: list[tuple[float, float]]) -> str:
-        return " ".join(f"{self._px(x):.2f},{self._py(eta):.2f}" for x, eta in pts)
+    def _coords(self, pts: list[_Point]) -> str:
+        return " ".join(
+            f"{self._px(point.x):.2f},{self._py(point.eta):.2f}" for point in pts
+        )
+
+    def _draw_point(self, point: _Point, color: str, radius: int) -> str:
+        fill, stroke = ("white", color) if point.reduced_accuracy else (color, "white")
+        return (
+            f'  <circle cx="{self._px(point.x):.2f}" cy="{self._py(point.eta):.2f}"'
+            f' r="{radius}" fill="{fill}" stroke="{stroke}"'
+            f' stroke-width="{LINE_WIDTH_LEGEND_DOT}" clip-path="url(#plotarea)"/>'
+        )
 
     def _draw_series(
         self,
         index: int,
-        pts: list[tuple[float, float]],
+        pts: list[_Point],
         color: str,
         dashed: bool = False,
     ) -> list[str]:
@@ -299,23 +325,19 @@ class _DiagramSvgBase:
         lines.append(
             f'  <polyline points="{coords}" fill="none" stroke="{color}" stroke-width="{LINE_WIDTH_SERIES}"{dash_attr} clip-path="url(#plotarea)"/>'
         )
-        for x, eta in pts:
-            cx = self._px(x)
-            cy = self._py(eta)
-            lines.append(
-                f'  <circle cx="{cx:.2f}" cy="{cy:.2f}" r="{DOT_RADIUS}" fill="{color}" stroke="white" stroke-width="{LINE_WIDTH_LEGEND_DOT}" clip-path="url(#plotarea)"/>'
-            )
+        for point in pts:
+            lines.append(self._draw_point(point, color, DOT_RADIUS))
         lines.append("  </g>")
         return lines
 
     def _draw_highlight_overlay(
         self,
-        data: list[tuple["Antenna", list[tuple[float, float]]]],
+        data: list[tuple["Antenna", list[_Point]]],
     ) -> list[str]:
-        lines = ['  <g id="highlight_overlay">']
+        lines = ['  <g id="highlight_overlay" pointer-events="none">']
         for index, (antenna, pts) in enumerate(data):
-            color = antenna.color  # type: ignore[union-attr]
-            dashed = antenna.dashed  # type: ignore[union-attr]
+            color = antenna.color
+            dashed = antenna.dashed
             coords = self._coords(pts)
             dash_attr = ' stroke-dasharray="8,4"' if dashed else ""
             lines.append(f'  <g class="hl_{index}" display="none">')
@@ -323,13 +345,15 @@ class _DiagramSvgBase:
                 f'  <polyline points="{coords}" fill="none" stroke="{color}"'
                 f' stroke-width="{LINE_WIDTH_HIGHLIGHT}"{dash_attr} clip-path="url(#plotarea)"/>'
             )
+            for point in pts:
+                lines.append(self._draw_point(point, color, DOT_RADIUS_HIGHLIGHT))  # type: ignore[arg-type]
             lines.append("  </g>")
         lines.append("  </g>")
         return lines
 
     def _draw_labels_overlay(
         self,
-        data: list[tuple["Antenna", list[tuple[float, float]]]],
+        data: list[tuple["Antenna", list[_Point]]],
     ) -> list[str]:
         lines = ['  <g id="labels_overlay">']
         H, FS, CH = 12, 10, 5.5  # box height, font-size, approx char width
@@ -337,10 +361,10 @@ class _DiagramSvgBase:
         def _overlaps(ax: float, ay: float, aw: float, bx: float, by: float, bw: float) -> bool:
             return not (ax + aw < bx or bx + bw < ax or ay + H < by or by + H < ay)
 
-        for index, (antenna, pts) in enumerate(data):
+        for index, (_antenna, pts) in enumerate(data):
             lines.append(f'  <g class="eta_labels_{index}" display="none">')
             placed: list[tuple[float, float, float]] = []  # (rx, ry, W)
-            for x, eta in pts:
+            for x, eta, _ in pts:
                 cx = self._px(x)
                 cy = self._py(eta)
                 label = self._point_tooltip(x, eta)
@@ -371,7 +395,7 @@ class _DiagramSvgBase:
         lines = []
         lx = SVG_MARGIN_LEFT + self._pw + 5
         ly = SVG_MARGIN_TOP
-        row_height = 14
+        row_height = LEGEND_ROW_HEIGHT
         for i, (name, color, dashed) in enumerate(entries):
             y = ly + i * row_height
             dash_attr = ' stroke-dasharray="8,4"' if dashed else ""
@@ -391,6 +415,25 @@ class _DiagramSvgBase:
             )
             lines.append("  </g>")
         return lines
+
+    def _draw_accuracy_legend(self) -> list[str]:
+        right = SVG_MARGIN_LEFT + self._pw - 8
+        bottom = SVG_MARGIN_TOP + self._ph
+        circle_x = right - ACCURACY_LEGEND_TEXT_WIDTH - ACCURACY_LEGEND_MARKER_GAP - DOT_RADIUS
+        text_style = (
+            f'text-anchor="end" font-size="{FONT_SIZE_LEGEND}" '
+            'font-family="Arial,sans-serif" fill="#333" '
+            f'textLength="{ACCURACY_LEGEND_TEXT_WIDTH}" lengthAdjust="spacingAndGlyphs" '
+            'paint-order="stroke" stroke="white" stroke-width="3"'
+        )
+        return [
+            '  <g class="accuracy_legend" pointer-events="none">',
+            f'  <circle cx="{circle_x}" cy="{bottom - 25}" r="{DOT_RADIUS}" fill="#333" stroke="white" stroke-width="{LINE_WIDTH_LEGEND_DOT}"/>',
+            f'  <text x="{right}" y="{bottom - 21}" {text_style}>C/λ &lt; {C_LAMBDA_LIMIT_0p2:g}: small magnetic loop</text>',
+            f'  <circle cx="{circle_x}" cy="{bottom - 11}" r="{DOT_RADIUS}" fill="white" stroke="#333" stroke-width="{LINE_WIDTH_LEGEND_DOT}"/>',
+            f'  <text x="{right}" y="{bottom - 7}" {text_style}>C/λ ≥ {C_LAMBDA_LIMIT_0p2:g}: values less accurate</text>',
+            "  </g>",
+        ]
 
 
 class Diagramm_eta_f_svg(_DiagramSvgBase):
@@ -416,20 +459,21 @@ class Diagramm_eta_f_svg(_DiagramSvgBase):
             if self._F_MIN_HZ <= f_mhz * 1e6 <= self._F_MAX_HZ
         ]
 
-    def _points_for_antenna(self, antenna: Antenna) -> list[tuple[float, float]]:
-        pts: list[tuple[float, float]] = []
+    def _points_for_antenna(self, antenna: Antenna) -> list[_Point]:
+        pts: list[_Point] = []
         for bd in antenna.bands:
             calc = _make_calc(antenna, bd)
             if calc.eta > 0:
-                pts.append((bd.f_Hz.value, calc.eta))
+                pts.append(_Point(bd.f_Hz.value, calc.eta, calc.C_lambda >= C_LAMBDA_LIMIT_0p2))
         pts.sort()
         return pts
 
 
-class Diagramm_eta_D_lambda_svg(_DiagramSvgBase):
-    """Eta over D/lambda: linear abscissa, autoscaled to the data."""
+class Diagramm_eta_C_lambda_svg(_DiagramSvgBase):
+    """Eta over C/lambda: linear abscissa, autoscaled to the data."""
 
-    _X_AXIS_LABEL = "D / λ"
+    _X_AXIS_LABEL = "C / λ"
+    _X_TICKS_PER_UNIT = 10
 
     def __init__(self) -> None:
         super().__init__()
@@ -446,25 +490,23 @@ class Diagramm_eta_D_lambda_svg(_DiagramSvgBase):
     def _autoscale_x(self, xs: list[float]) -> None:
         self._has_x_values = bool(xs)
         if xs:
-            self._X_MIN = min(xs) * 0.95 if min(xs) > 0 else 0.0
-            self._X_MAX = max(xs) * 1.05 if max(xs) > self._X_MIN else self._X_MIN + 1.0
+            tick_count = max(1, math.ceil(max(xs) * 1.05 * self._X_TICKS_PER_UNIT))
+            self._X_MAX = tick_count / self._X_TICKS_PER_UNIT
 
     def _x_ticks(self) -> list[tuple[float, str]]:
         if not self._has_x_values:
             return []
-        ticks = []
-        for tick in range(6):
-            x_value = self._X_MIN + (self._X_MAX - self._X_MIN) * tick / 5.0
-            label = f"{x_value:.2f}".rstrip("0").rstrip(".") if x_value != 0 else "0"
-            ticks.append((x_value, label))
-        return ticks
+        tick_count = round(self._X_MAX * self._X_TICKS_PER_UNIT)
+        return [
+            (tick / self._X_TICKS_PER_UNIT, f"{tick / self._X_TICKS_PER_UNIT:.1f}" if tick else "0")
+            for tick in range(tick_count + 1)
+        ]
 
-    def _points_for_antenna(self, antenna: Antenna) -> list[tuple[float, float]]:
-        pts: list[tuple[float, float]] = []
+    def _points_for_antenna(self, antenna: Antenna) -> list[_Point]:
+        pts: list[_Point] = []
         for bd in antenna.bands:
             calc = _make_calc(antenna, bd)
             if calc.eta > 0:
-                wavelength_m = C_LIGHT_MS / bd.f_Hz.value
-                pts.append((antenna.D_m.value / wavelength_m, calc.eta))
+                pts.append(_Point(calc.C_lambda, calc.eta, calc.C_lambda >= C_LAMBDA_LIMIT_0p2))
         pts.sort()
         return pts

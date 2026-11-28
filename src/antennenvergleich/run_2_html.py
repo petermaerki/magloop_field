@@ -140,8 +140,8 @@ def main() -> None:
     filename_svg.write_text(svg, encoding="utf-8")
     print(f"Written: {filename_svg}")
 
-    svg = renderer_diagram_svg.Diagramm_eta_D_lambda_svg().render(antennas)
-    filename_svg = constants.DIRECTORY_REPO / renderer_diagram_svg.FILENAME_SVG_ETA_DL
+    svg = renderer_diagram_svg.Diagramm_eta_C_lambda_svg().render(antennas)
+    filename_svg = constants.DIRECTORY_REPO / renderer_diagram_svg.FILENAME_SVG_ETA_CL
     filename_svg.write_text(svg, encoding="utf-8")
     print(f"Written: {filename_svg}")
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="750" height="300" viewBox="0 0 750 300">
+  <desc>Hollow circles indicate reduced or questionable calculation accuracy (C/λ ≥ 0.2).</desc>
   <rect width="750" height="300" fill="white"/>
   <clipPath id="plotarea"><rect x="85" y="10" width="660" height="250"/></clipPath>
   <style>
@@ -64,9 +65,12 @@
   <circle cx="363.15" cy="170.38" r="4" fill="#018700" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="426.21" cy="137.35" r="4" fill="#018700" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
-  <g id="highlight_overlay">
+  <g id="highlight_overlay" pointer-events="none">
   <g class="hl_0" display="none">
   <polyline points="244.10,220.21 363.15,170.38 426.21,137.35" fill="none" stroke="#018700" stroke-width="4" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  <circle cx="244.10" cy="220.21" r="6" fill="#018700" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="363.15" cy="170.38" r="6" fill="#018700" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="426.21" cy="137.35" r="6" fill="#018700" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   </g>
   <g id="labels_overlay">

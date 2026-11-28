@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="750" height="300" viewBox="0 0 750 300">
+  <desc>Hollow circles indicate reduced or questionable calculation accuracy (C/λ ≥ 0.2).</desc>
   <rect width="750" height="300" fill="white"/>
   <clipPath id="plotarea"><rect x="85" y="10" width="660" height="250"/></clipPath>
   <style>
@@ -59,11 +60,14 @@
   <polyline points="485.58,155.05 558.25,101.91 609.23,80.05" fill="none" stroke="#03c600" stroke-width="1.8" clip-path="url(#plotarea)"/>
   <circle cx="485.58" cy="155.05" r="4" fill="#03c600" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="558.25" cy="101.91" r="4" fill="#03c600" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="609.23" cy="80.05" r="4" fill="#03c600" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="609.23" cy="80.05" r="4" fill="white" stroke="#03c600" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
-  <g id="highlight_overlay">
+  <g id="highlight_overlay" pointer-events="none">
   <g class="hl_0" display="none">
   <polyline points="485.58,155.05 558.25,101.91 609.23,80.05" fill="none" stroke="#03c600" stroke-width="4" clip-path="url(#plotarea)"/>
+  <circle cx="485.58" cy="155.05" r="6" fill="#03c600" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="558.25" cy="101.91" r="6" fill="#03c600" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="609.23" cy="80.05" r="6" fill="white" stroke="#03c600" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   </g>
   <g id="labels_overlay">
@@ -75,5 +79,11 @@
   <rect x="601.0" y="62.1" width="16.5" height="12" fill="white"/>
   <text x="609.23" y="72.05" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">28%</text>
   </g>
+  </g>
+  <g class="accuracy_legend" pointer-events="none">
+  <circle cx="571" cy="235" r="4" fill="#333" stroke="white" stroke-width="1"/>
+  <text x="737" y="239" text-anchor="end" font-size="11" font-family="Arial,sans-serif" fill="#333" textLength="155" lengthAdjust="spacingAndGlyphs" paint-order="stroke" stroke="white" stroke-width="3">C/λ &lt; 0.2: small magnetic loop</text>
+  <circle cx="571" cy="249" r="4" fill="white" stroke="#333" stroke-width="1"/>
+  <text x="737" y="253" text-anchor="end" font-size="11" font-family="Arial,sans-serif" fill="#333" textLength="155" lengthAdjust="spacingAndGlyphs" paint-order="stroke" stroke="white" stroke-width="3">C/λ ≥ 0.2: values less accurate</text>
   </g>
 </svg>

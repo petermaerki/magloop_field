@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="750" height="300" viewBox="0 0 750 300">
+  <desc>Hollow circles indicate reduced or questionable calculation accuracy (C/λ ≥ 0.2).</desc>
   <rect width="750" height="300" fill="white"/>
   <clipPath id="plotarea"><rect x="85" y="10" width="435" height="250"/></clipPath>
   <style>
@@ -153,8 +154,8 @@
   <polyline points="266.65,110.24 348.39,58.68 396.20,38.26 430.13,24.01" fill="none" stroke="#e452ff" stroke-width="1.8" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
   <circle cx="266.65" cy="110.24" r="4" fill="#e452ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="348.39" cy="58.68" r="4" fill="#e452ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="396.20" cy="38.26" r="4" fill="#e452ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="430.13" cy="24.01" r="4" fill="#e452ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="396.20" cy="38.26" r="4" fill="white" stroke="#e452ff" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="430.13" cy="24.01" r="4" fill="white" stroke="#e452ff" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="svg_series_1">
   <polyline points="268.32,129.31 310.05,123.24 349.72,93.03 378.86,107.72 397.47,79.98 416.46,64.14 433.70,65.31" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
@@ -163,9 +164,9 @@
   <circle cx="310.05" cy="123.24" r="4" fill="#8e7900" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="349.72" cy="93.03" r="4" fill="#8e7900" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="378.86" cy="107.72" r="4" fill="#8e7900" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="397.47" cy="79.98" r="4" fill="#8e7900" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="416.46" cy="64.14" r="4" fill="#8e7900" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="433.70" cy="65.31" r="4" fill="#8e7900" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="397.47" cy="79.98" r="4" fill="white" stroke="#8e7900" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="416.46" cy="64.14" r="4" fill="white" stroke="#8e7900" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="433.70" cy="65.31" r="4" fill="white" stroke="#8e7900" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="svg_series_2">
   <polyline points="268.32,117.43 310.20,96.86 349.84,96.31 378.83,71.75 397.37,103.04 416.37,69.40 433.58,84.73" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
@@ -174,16 +175,16 @@
   <circle cx="310.20" cy="96.86" r="4" fill="#ff7266" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="349.84" cy="96.31" r="4" fill="#ff7266" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="378.83" cy="71.75" r="4" fill="#ff7266" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="397.37" cy="103.04" r="4" fill="#ff7266" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="416.37" cy="69.40" r="4" fill="#ff7266" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="433.58" cy="84.73" r="4" fill="#ff7266" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="397.37" cy="103.04" r="4" fill="white" stroke="#ff7266" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="416.37" cy="69.40" r="4" fill="white" stroke="#ff7266" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="433.58" cy="84.73" r="4" fill="white" stroke="#ff7266" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="svg_series_3">
   <polyline points="184.92,126.12 266.65,74.56 348.39,24.81" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
   <polyline points="184.92,126.12 266.65,74.56 348.39,24.81" fill="none" stroke="#6db3ff" stroke-width="1.8" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
   <circle cx="184.92" cy="126.12" r="4" fill="#6db3ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="266.65" cy="74.56" r="4" fill="#6db3ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="348.39" cy="24.81" r="4" fill="#6db3ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="348.39" cy="24.81" r="4" fill="white" stroke="#6db3ff" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="svg_series_4">
   <polyline points="189.86,133.29 235.22,126.54 268.27,127.29 310.08,94.88 349.70,96.78" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
@@ -191,8 +192,8 @@
   <circle cx="189.86" cy="133.29" r="4" fill="#802690" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="235.22" cy="126.54" r="4" fill="#802690" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="268.27" cy="127.29" r="4" fill="#802690" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="310.08" cy="94.88" r="4" fill="#802690" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="349.70" cy="96.78" r="4" fill="#802690" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="310.08" cy="94.88" r="4" fill="white" stroke="#802690" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="349.70" cy="96.78" r="4" fill="white" stroke="#802690" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="svg_series_5">
   <polyline points="266.65,135.04 348.39,84.96 396.20,63.27 430.13,49.20" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
@@ -218,7 +219,7 @@
   <circle cx="416.34" cy="110.52" r="4" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="416.56" cy="108.45" r="4" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="433.51" cy="107.36" r="4" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="433.65" cy="106.66" r="4" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="433.65" cy="106.66" r="4" fill="white" stroke="#9c3b4f" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="svg_series_7">
   <polyline points="189.86,186.13 268.33,156.23 309.89,136.41" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
@@ -241,7 +242,7 @@
   <circle cx="189.02" cy="129.80" r="4" fill="#8287ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="235.22" cy="127.47" r="4" fill="#8287ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="268.33" cy="115.11" r="4" fill="#8287ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="309.89" cy="117.60" r="4" fill="#8287ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="309.89" cy="117.60" r="4" fill="white" stroke="#8287ff" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="svg_series_10">
   <polyline points="348.99,140.62 378.79,118.67 397.61,108.84 416.51,101.20 432.64,93.51" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
@@ -250,13 +251,13 @@
   <circle cx="378.79" cy="118.67" r="4" fill="#00acc6" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="397.61" cy="108.84" r="4" fill="#00acc6" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="416.51" cy="101.20" r="4" fill="#00acc6" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="432.64" cy="93.51" r="4" fill="#00acc6" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="432.64" cy="93.51" r="4" fill="white" stroke="#00acc6" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="svg_series_11">
   <polyline points="265.64,178.79 445.39,66.42" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
   <polyline points="265.64,178.79 445.39,66.42" fill="none" stroke="#fd03ca" stroke-width="1.8" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
   <circle cx="265.64" cy="178.79" r="4" fill="#fd03ca" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="445.39" cy="66.42" r="4" fill="#fd03ca" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="445.39" cy="66.42" r="4" fill="white" stroke="#fd03ca" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="svg_series_12">
   <polyline points="378.69,110.33 396.55,103.12 416.31,98.46 430.46,94.15" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
@@ -271,16 +272,16 @@
   <polyline points="349.10,114.36 378.75,96.56 396.43,91.24 416.37,88.99 430.49,83.88" fill="none" stroke="#ff7ed1" stroke-width="1.8" clip-path="url(#plotarea)"/>
   <circle cx="349.10" cy="114.36" r="4" fill="#ff7ed1" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="378.75" cy="96.56" r="4" fill="#ff7ed1" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="396.43" cy="91.24" r="4" fill="#ff7ed1" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="416.37" cy="88.99" r="4" fill="#ff7ed1" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="430.49" cy="83.88" r="4" fill="#ff7ed1" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="396.43" cy="91.24" r="4" fill="white" stroke="#ff7ed1" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="416.37" cy="88.99" r="4" fill="white" stroke="#ff7ed1" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="430.49" cy="83.88" r="4" fill="white" stroke="#ff7ed1" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="svg_series_14">
   <polyline points="349.02,118.02 396.91,96.77 430.52,88.02" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
   <polyline points="349.02,118.02 396.91,96.77 430.52,88.02" fill="none" stroke="#03c600" stroke-width="1.8" clip-path="url(#plotarea)"/>
   <circle cx="349.02" cy="118.02" r="4" fill="#03c600" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="396.91" cy="96.77" r="4" fill="#03c600" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="430.52" cy="88.02" r="4" fill="#03c600" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="430.52" cy="88.02" r="4" fill="white" stroke="#03c600" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="svg_series_15">
   <polyline points="269.15,165.11 350.03,135.64" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
@@ -298,9 +299,9 @@
   <circle cx="310.29" cy="110.65" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="349.04" cy="108.91" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="378.66" cy="108.60" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="396.62" cy="88.36" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="416.39" cy="81.27" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="430.42" cy="76.53" r="4" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="396.62" cy="88.36" r="4" fill="white" stroke="#ffa52f" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="416.39" cy="81.27" r="4" fill="white" stroke="#ffa52f" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="430.42" cy="76.53" r="4" fill="white" stroke="#ffa52f" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="svg_series_17">
   <polyline points="187.35,147.87 235.11,130.68 267.89,110.79 310.31,86.61 349.01,63.70 396.62,65.18 416.36,74.61 430.44,76.09" fill="none" stroke="transparent" style="stroke-width: 12;" clip-path="url(#plotarea)"/>
@@ -310,9 +311,9 @@
   <circle cx="267.89" cy="110.79" r="4" fill="#d60000" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="310.31" cy="86.61" r="4" fill="#d60000" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   <circle cx="349.01" cy="63.70" r="4" fill="#d60000" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="396.62" cy="65.18" r="4" fill="#d60000" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="416.36" cy="74.61" r="4" fill="#d60000" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
-  <circle cx="430.44" cy="76.09" r="4" fill="#d60000" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="396.62" cy="65.18" r="4" fill="white" stroke="#d60000" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="416.36" cy="74.61" r="4" fill="white" stroke="#d60000" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="430.44" cy="76.09" r="4" fill="white" stroke="#d60000" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="svg_legend_entry_0">
   <rect x="525" y="10" width="225" height="14" fill="transparent"/>
@@ -422,60 +423,154 @@
   <circle cx="537" cy="255" r="4" fill="#d60000" stroke="white" stroke-width="1"/>
   <text x="557" y="259" font-size="11" font-family="Arial,sans-serif" fill="#333">Selfmade Tubby outdoor HB9ISP</text>
   </g>
-  <g id="highlight_overlay">
+  <g id="highlight_overlay" pointer-events="none">
   <g class="hl_0" display="none">
   <polyline points="266.65,110.24 348.39,58.68 396.20,38.26 430.13,24.01" fill="none" stroke="#e452ff" stroke-width="4" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  <circle cx="266.65" cy="110.24" r="6" fill="#e452ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="348.39" cy="58.68" r="6" fill="#e452ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="396.20" cy="38.26" r="6" fill="white" stroke="#e452ff" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="430.13" cy="24.01" r="6" fill="white" stroke="#e452ff" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="hl_1" display="none">
   <polyline points="268.32,129.31 310.05,123.24 349.72,93.03 378.86,107.72 397.47,79.98 416.46,64.14 433.70,65.31" fill="none" stroke="#8e7900" stroke-width="4" clip-path="url(#plotarea)"/>
+  <circle cx="268.32" cy="129.31" r="6" fill="#8e7900" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="310.05" cy="123.24" r="6" fill="#8e7900" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="349.72" cy="93.03" r="6" fill="#8e7900" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="378.86" cy="107.72" r="6" fill="#8e7900" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="397.47" cy="79.98" r="6" fill="white" stroke="#8e7900" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="416.46" cy="64.14" r="6" fill="white" stroke="#8e7900" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="433.70" cy="65.31" r="6" fill="white" stroke="#8e7900" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="hl_2" display="none">
   <polyline points="268.32,117.43 310.20,96.86 349.84,96.31 378.83,71.75 397.37,103.04 416.37,69.40 433.58,84.73" fill="none" stroke="#ff7266" stroke-width="4" clip-path="url(#plotarea)"/>
+  <circle cx="268.32" cy="117.43" r="6" fill="#ff7266" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="310.20" cy="96.86" r="6" fill="#ff7266" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="349.84" cy="96.31" r="6" fill="#ff7266" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="378.83" cy="71.75" r="6" fill="#ff7266" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="397.37" cy="103.04" r="6" fill="white" stroke="#ff7266" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="416.37" cy="69.40" r="6" fill="white" stroke="#ff7266" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="433.58" cy="84.73" r="6" fill="white" stroke="#ff7266" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="hl_3" display="none">
   <polyline points="184.92,126.12 266.65,74.56 348.39,24.81" fill="none" stroke="#6db3ff" stroke-width="4" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  <circle cx="184.92" cy="126.12" r="6" fill="#6db3ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="266.65" cy="74.56" r="6" fill="#6db3ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="348.39" cy="24.81" r="6" fill="white" stroke="#6db3ff" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="hl_4" display="none">
   <polyline points="189.86,133.29 235.22,126.54 268.27,127.29 310.08,94.88 349.70,96.78" fill="none" stroke="#802690" stroke-width="4" clip-path="url(#plotarea)"/>
+  <circle cx="189.86" cy="133.29" r="6" fill="#802690" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="235.22" cy="126.54" r="6" fill="#802690" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="268.27" cy="127.29" r="6" fill="#802690" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="310.08" cy="94.88" r="6" fill="white" stroke="#802690" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="349.70" cy="96.78" r="6" fill="white" stroke="#802690" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="hl_5" display="none">
   <polyline points="266.65,135.04 348.39,84.96 396.20,63.27 430.13,49.20" fill="none" stroke="#005659" stroke-width="4" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  <circle cx="266.65" cy="135.04" r="6" fill="#005659" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="348.39" cy="84.96" r="6" fill="#005659" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="396.20" cy="63.27" r="6" fill="#005659" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="430.13" cy="49.20" r="6" fill="#005659" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="hl_6" display="none">
   <polyline points="268.34,165.25 268.37,161.94 310.20,145.77 310.22,144.84 349.79,128.44 349.79,128.19 378.76,118.97 378.79,121.44 397.39,114.02 397.52,116.63 416.34,110.52 416.56,108.45 433.51,107.36 433.65,106.66" fill="none" stroke="#9c3b4f" stroke-width="4" clip-path="url(#plotarea)"/>
+  <circle cx="268.34" cy="165.25" r="6" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="268.37" cy="161.94" r="6" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="310.20" cy="145.77" r="6" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="310.22" cy="144.84" r="6" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="349.79" cy="128.44" r="6" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="349.79" cy="128.19" r="6" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="378.76" cy="118.97" r="6" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="378.79" cy="121.44" r="6" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="397.39" cy="114.02" r="6" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="397.52" cy="116.63" r="6" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="416.34" cy="110.52" r="6" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="416.56" cy="108.45" r="6" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="433.51" cy="107.36" r="6" fill="#9c3b4f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="433.65" cy="106.66" r="6" fill="white" stroke="#9c3b4f" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="hl_7" display="none">
   <polyline points="189.86,186.13 268.33,156.23 309.89,136.41" fill="none" stroke="#018700" stroke-width="4" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  <circle cx="189.86" cy="186.13" r="6" fill="#018700" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="268.33" cy="156.23" r="6" fill="#018700" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="309.89" cy="136.41" r="6" fill="#018700" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="hl_8" display="none">
   <polyline points="109.09,258.23 189.86,178.71 268.33,141.00" fill="none" stroke="#4d33ff" stroke-width="4" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  <circle cx="109.09" cy="258.23" r="6" fill="#4d33ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="189.86" cy="178.71" r="6" fill="#4d33ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="268.33" cy="141.00" r="6" fill="#4d33ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="hl_9" display="none">
   <polyline points="112.88,165.53 189.02,129.80 235.22,127.47 268.33,115.11 309.89,117.60" fill="none" stroke="#8287ff" stroke-width="4" clip-path="url(#plotarea)"/>
+  <circle cx="112.88" cy="165.53" r="6" fill="#8287ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="189.02" cy="129.80" r="6" fill="#8287ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="235.22" cy="127.47" r="6" fill="#8287ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="268.33" cy="115.11" r="6" fill="#8287ff" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="309.89" cy="117.60" r="6" fill="white" stroke="#8287ff" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="hl_10" display="none">
   <polyline points="348.99,140.62 378.79,118.67 397.61,108.84 416.51,101.20 432.64,93.51" fill="none" stroke="#00acc6" stroke-width="4" clip-path="url(#plotarea)"/>
+  <circle cx="348.99" cy="140.62" r="6" fill="#00acc6" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="378.79" cy="118.67" r="6" fill="#00acc6" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="397.61" cy="108.84" r="6" fill="#00acc6" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="416.51" cy="101.20" r="6" fill="#00acc6" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="432.64" cy="93.51" r="6" fill="white" stroke="#00acc6" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="hl_11" display="none">
   <polyline points="265.64,178.79 445.39,66.42" fill="none" stroke="#fd03ca" stroke-width="4" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  <circle cx="265.64" cy="178.79" r="6" fill="#fd03ca" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="445.39" cy="66.42" r="6" fill="white" stroke="#fd03ca" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="hl_12" display="none">
   <polyline points="378.69,110.33 396.55,103.12 416.31,98.46 430.46,94.15" fill="none" stroke="#db6d01" stroke-width="4" clip-path="url(#plotarea)"/>
+  <circle cx="378.69" cy="110.33" r="6" fill="#db6d01" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="396.55" cy="103.12" r="6" fill="#db6d01" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="416.31" cy="98.46" r="6" fill="#db6d01" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="430.46" cy="94.15" r="6" fill="#db6d01" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="hl_13" display="none">
   <polyline points="349.10,114.36 378.75,96.56 396.43,91.24 416.37,88.99 430.49,83.88" fill="none" stroke="#ff7ed1" stroke-width="4" clip-path="url(#plotarea)"/>
+  <circle cx="349.10" cy="114.36" r="6" fill="#ff7ed1" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="378.75" cy="96.56" r="6" fill="#ff7ed1" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="396.43" cy="91.24" r="6" fill="white" stroke="#ff7ed1" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="416.37" cy="88.99" r="6" fill="white" stroke="#ff7ed1" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="430.49" cy="83.88" r="6" fill="white" stroke="#ff7ed1" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="hl_14" display="none">
   <polyline points="349.02,118.02 396.91,96.77 430.52,88.02" fill="none" stroke="#03c600" stroke-width="4" clip-path="url(#plotarea)"/>
+  <circle cx="349.02" cy="118.02" r="6" fill="#03c600" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="396.91" cy="96.77" r="6" fill="#03c600" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="430.52" cy="88.02" r="6" fill="white" stroke="#03c600" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="hl_15" display="none">
   <polyline points="269.15,165.11 350.03,135.64" fill="none" stroke="#95b577" stroke-width="4" stroke-dasharray="8,4" clip-path="url(#plotarea)"/>
+  <circle cx="269.15" cy="165.11" r="6" fill="#95b577" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="350.03" cy="135.64" r="6" fill="#95b577" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="hl_16" display="none">
   <polyline points="109.11,199.67 187.35,155.88 235.12,139.94 267.91,128.62 310.29,110.65 349.04,108.91 378.66,108.60 396.62,88.36 416.39,81.27 430.42,76.53" fill="none" stroke="#ffa52f" stroke-width="4" clip-path="url(#plotarea)"/>
+  <circle cx="109.11" cy="199.67" r="6" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="187.35" cy="155.88" r="6" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="235.12" cy="139.94" r="6" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="267.91" cy="128.62" r="6" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="310.29" cy="110.65" r="6" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="349.04" cy="108.91" r="6" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="378.66" cy="108.60" r="6" fill="#ffa52f" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="396.62" cy="88.36" r="6" fill="white" stroke="#ffa52f" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="416.39" cy="81.27" r="6" fill="white" stroke="#ffa52f" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="430.42" cy="76.53" r="6" fill="white" stroke="#ffa52f" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   <g class="hl_17" display="none">
   <polyline points="187.35,147.87 235.11,130.68 267.89,110.79 310.31,86.61 349.01,63.70 396.62,65.18 416.36,74.61 430.44,76.09" fill="none" stroke="#d60000" stroke-width="4" clip-path="url(#plotarea)"/>
+  <circle cx="187.35" cy="147.87" r="6" fill="#d60000" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="235.11" cy="130.68" r="6" fill="#d60000" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="267.89" cy="110.79" r="6" fill="#d60000" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="310.31" cy="86.61" r="6" fill="#d60000" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="349.01" cy="63.70" r="6" fill="#d60000" stroke="white" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="396.62" cy="65.18" r="6" fill="white" stroke="#d60000" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="416.36" cy="74.61" r="6" fill="white" stroke="#d60000" stroke-width="1" clip-path="url(#plotarea)"/>
+  <circle cx="430.44" cy="76.09" r="6" fill="white" stroke="#d60000" stroke-width="1" clip-path="url(#plotarea)"/>
   </g>
   </g>
   <g id="labels_overlay">
@@ -703,5 +798,11 @@
   <rect x="422.2" y="44.1" width="16.5" height="12" fill="white"/>
   <text x="430.44" y="54.09" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" fill="#222">48%</text>
   </g>
+  </g>
+  <g class="accuracy_legend" pointer-events="none">
+  <circle cx="346" cy="235" r="4" fill="#333" stroke="white" stroke-width="1"/>
+  <text x="512" y="239" text-anchor="end" font-size="11" font-family="Arial,sans-serif" fill="#333" textLength="155" lengthAdjust="spacingAndGlyphs" paint-order="stroke" stroke="white" stroke-width="3">C/λ &lt; 0.2: small magnetic loop</text>
+  <circle cx="346" cy="249" r="4" fill="white" stroke="#333" stroke-width="1"/>
+  <text x="512" y="253" text-anchor="end" font-size="11" font-family="Arial,sans-serif" fill="#333" textLength="155" lengthAdjust="spacingAndGlyphs" paint-order="stroke" stroke="white" stroke-width="3">C/λ ≥ 0.2: values less accurate</text>
   </g>
 </svg>
